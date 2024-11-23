@@ -7,6 +7,7 @@ import Services from './pages/Services';
 import Contact from './pages/Contact';
 import Footer from './components/Footer';
 import SessionBookingForm from './components/SessionBookingForm';
+import ComingSoon from './components/ComingSoon';
 
 function App() {
   return (
@@ -21,8 +22,8 @@ function App() {
           <Route path="/contact" element={<Contact />} />
           <Route path="/individual-therapy" element={<SessionBookingForm />} />
           <Route path="/couples-therapy" element={<SessionBookingForm />} />
-          <Route path="/family-therapy" element={<SessionBookingForm />} />
-          <Route path="/group-therapy" element={<SessionBookingForm />} />
+          <Route path="/family-therapy" element={<ComingSoon />} />
+          <Route path="/group-therapy" element={<ComingSoon />} />
         </Routes>
       </div>
       <Footer />
