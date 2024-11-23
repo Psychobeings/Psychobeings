@@ -14,6 +14,7 @@ export const cardsData = [
     {
       id: 1,
       title: 'Individual Therapy',
+      url:'individual-therapy',
       image: therapy1,
       description: 'One-on-one sessions with a professional therapist.',
       rating: 4.8,
@@ -22,6 +23,7 @@ export const cardsData = [
     {
       id: 2,
       title: 'Couples Therapy',
+      url:'couples-therapy',
       image: therapy2,
       description: 'Sessions to improve communication and connection.',
       rating: 4.6,
@@ -30,6 +32,7 @@ export const cardsData = [
     {
       id: 3,
       title: 'Family Therapy',
+      url:'family-therapy',
       image: therapy3,
       description: 'Helping families build stronger relationships.',
       rating: 4.7,
@@ -38,6 +41,7 @@ export const cardsData = [
     {
       id: 4,
       title: 'Group Therapy',
+      url:'group-therapy',
       image: therapy4,
       description: 'Support groups led by experienced professionals.',
       rating: 4.5,

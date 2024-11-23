@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import pricing1 from '../assets/pricing1.png';
 import pricing2 from '../assets/pricing2.png';
 import { cardsData, featuresData } from '../components/ServicesCardData';
+import { Link } from 'react-router-dom';
 
 const Services = () => {
   const [activeButton, setActiveButton] = useState('Individual');
@@ -38,9 +39,8 @@ const Services = () => {
             <h2 className="text-2xl font-bold mb-2">UNLOCK YOUR WELLBEING NOW</h2>
             <p className="text-lg text-blue-600 mb-4">Get 10% Off All Therapy Plans!</p>
             <div
-              className={`text-lg cursor-pointer font-semibold bg-gray-100 px-4 py-2 inline-block rounded-md border-dotted border-2 border-green-500 transition-transform ${
-                isCopied ? 'animate-pulse bg-green-100 scale-105' : ''
-              }`}
+              className={`text-lg cursor-pointer font-semibold bg-gray-100 px-4 py-2 inline-block rounded-md border-dotted border-2 border-green-500 transition-transform ${isCopied ? 'animate-pulse bg-green-100 scale-105' : ''
+                }`}
               onClick={handleCopy}
             >
               {coupon}
@@ -79,9 +79,11 @@ const Services = () => {
             </div>
             <p className="text-blue-600 font-semibold mb-4">{card.price}</p>
             <div className="flex space-x-2">
-              <button className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg">
-                Book Now
-              </button>
+              <Link to={`/${card.url}`}>
+                <button className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg">
+                  Book Now
+                </button>
+              </Link>
               <button className="bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded-lg">
                 Know More
               </button>
