@@ -29,6 +29,14 @@ const sessionSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  status: {
+    type: Boolean,
+    default: false
+  },
+  sessionTime: {
+    type: String,
+    default: ""
+  }
 }, {
   timestamps: true,
 });

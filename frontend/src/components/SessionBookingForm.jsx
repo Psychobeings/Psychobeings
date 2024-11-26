@@ -1,36 +1,49 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 
 const SessionBookingForm = ({ onSubmit }) => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     phone: '',
-    date: null,
+    date: '',
     timeSlot: '',
     concern: '',
   });
 
+  const inputStyles = "w-full px-4 py-2.5 rounded-md border border-gray-200 focus:border-deep-mint focus:ring-1 focus:ring-deep-mint focus:outline-none text-dark-gunmetal placeholder-gray-400 transition-colors duration-200";
+  const labelStyles = "block text-sm font-medium text-dark-gunmetal mb-1.5";
+
   const handleChange = (e) => {
     const { name, value } = e.target;
+    if(name === "date") console.log(typeof(value));
+    
+    console.log(name, value)
     setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
 
-  const handleDateChange = (date) => setFormData((prevData) => ({ ...prevData, date }));
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    onSubmit(formData);
+  const handleDateChange = (date) => {
+    setFormData((prevData) => ({ ...prevData, date }));
   };
 
-  const inputStyles = "w-full px-4 py-2.5 rounded-md border border-gray-200 focus:border-deep-mint focus:ring-1 focus:ring-deep-mint focus:outline-none text-dark-gunmetal placeholder-gray-400 transition-colors duration-200";
-  const labelStyles = "block text-sm font-medium text-dark-gunmetal mb-1.5";
-  const headingStyles = "text-lg sm:text-xl font-semibold text-dark-gunmetal mb-6 text-center";
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      
+      const response = await axios.post('http://localhost:8080/session-form/register', formData);
+      alert(response.data.message);
+      if (onSubmit) onSubmit(response.data.session);
+    } catch (error) {
+      alert("Failed to book appointment. Please try again.");
+      console.log(error);
+    }
+  };
 
   return (
     <div className="w-full max-w-2xl mx-auto mb-8">
-      <h2 className={headingStyles}>Book Your Appointment</h2>
+      <h2 className="text-lg sm:text-xl font-semibold text-dark-gunmetal mb-6 text-center">Book Your Appointment</h2>
       <form onSubmit={handleSubmit} className="space-y-5">
-        {/* Name */}
+        {/* Example Field */}
         <div className="w-full">
           <label htmlFor="name" className={labelStyles}>Your Name</label>
           <input
@@ -43,7 +56,8 @@ const SessionBookingForm = ({ onSubmit }) => {
             className={inputStyles}
           />
         </div>
-
+        {/* Other Fields */}
+        
         {/* Email */}
         <div className="w-full">
           <label htmlFor="email" className={labelStyles}>Email</label>
@@ -80,7 +94,7 @@ const SessionBookingForm = ({ onSubmit }) => {
             id="date"
             name="date"
             value={formData.date}
-            onChange={(e) => handleDateChange(e.target.value)}
+            onChange={handleChange}
             className={inputStyles}
           />
         </div>
@@ -120,11 +134,7 @@ const SessionBookingForm = ({ onSubmit }) => {
           </select>
         </div>
 
-        {/* Submit Button */}
-        <button
-          type="submit"
-          className="w-full sm:w-auto px-6 py-2.5 bg-deep-mint text-pure-white font-medium rounded-md hover:bg-light-deep-mint transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-deep-mint focus:ring-opacity-50"
-        >
+        <button type="submit" className="w-full sm:w-auto px-6 py-2.5 bg-deep-mint text-pure-white font-medium rounded-md hover:bg-light-deep-mint transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-deep-mint focus:ring-opacity-50">
           Book Appointment
         </button>
       </form>
