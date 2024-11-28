@@ -13,7 +13,7 @@ const Footer = () => {
         <div className="flex flex-col md:flex-row justify-between items-start space-y-8 md:space-y-0">
           {/* Logo Section */}
           <div className="flex-shrink-0">
-            <img className="w-auto h-36" src={logo2} alt="Company Logo" />
+            <img className="w-auto h-48" src={logo2} alt="Company Logo" />
           </div>
 
           {/* Content and Social Media Section */}

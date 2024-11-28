@@ -5,8 +5,8 @@ const Heading = () => {
     <>
       {/* Mint green background for the About Us title */}
       <body className="mx-0 p-0">
-        <div className="h-20 flex justify-center items-center">
-          <h2 className="text-4xl font-bold text-dark-gunmetal m-0">
+        <div className="h-20 flex justify-center items-center mb-7">
+          <h2 className="text-6xl font-bold text-dark-gunmetal m-0">
             About Us
           </h2>
         </div>

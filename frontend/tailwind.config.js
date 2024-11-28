@@ -7,8 +7,10 @@ module.exports = {
         "dark-gunmetal": "#0C2B36",
         "off-white": "#FEFEFE",
         "mint-cream": "#C2E5D3",
+        "mint-cream-light":"#D8f2e5",
         "pure-white": "#FFFFFF",
         "deep-mint": "#50B682",
+        "green-pick": "#4fb681",
         "light-deep-mint": "#73c79d", // Slightly lighter shade of deep-mint
       },
       backgroundImage: {
