@@ -19,12 +19,10 @@ const WhatWeDo = () => {
                 <div className="text-center lg:text-left space-y-4 md:space-y-6">
                     <h2 className="text-3xl md:text-4xl xl:text-5xl font-bold tracking-wide">WHAT WE DO</h2>
                     <p className="text-base md:text-lg xl:text-xl">
-                        With so many different types of professionals (and quacks) in the field,
-                        how does one know who to choose?
+                    We offer a diverse range of professional services, including individual and couples counseling, engaging workshops, and specialized CBSE Psychology tuition for students in grades 11 and 12.
                     </p>
                     <p className="text-base md:text-lg xl:text-xl">
-                        This is where we help. We only work with friendly & non-judgmental
-                        therapists that have the right qualifications.
+                    Our expertise encompasses addressing key concerns such as stress management, anxiety relief, career planning, relationship dynamics, work-life integration, recovery from childhood trauma, exploration of existential challenges, and navigating feelings of emptiness with care and precision.
                     </p>
 
                     {/* Buttons */}

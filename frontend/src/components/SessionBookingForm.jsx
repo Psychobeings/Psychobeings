@@ -1,11 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from "react-router-dom";
+import { toast } from 'react-hot-toast';
 
 const SessionBookingForm = ({ onSubmit }) => {
 
   useEffect(() => {
-    window.scrollTo(0, 0); // Scrolls to the top of the page
+    window.scrollTo(0, 0);
   }, []);
+
+  const initialFormData = {
+    name: '',
+    email: '',
+    phone: '',
+    date: '',
+    timeSlot: '',
+    concern: ''
+  };
 
   const [formData, setFormData] = useState({
     name: '',
@@ -16,31 +27,36 @@ const SessionBookingForm = ({ onSubmit }) => {
     concern: '',
   });
 
+  const navigate = useNavigate();
+
   const inputStyles = "w-full px-4 py-2.5 rounded-md border border-gray-200 focus:border-deep-mint focus:ring-1 focus:ring-deep-mint focus:outline-none text-dark-gunmetal placeholder-gray-400 transition-colors duration-200";
   const labelStyles = "block text-sm font-medium text-dark-gunmetal mb-1.5";
   const today = new Date().toISOString().split('T')[0];
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    if (name === "date") console.log(typeof (value));
 
-    console.log(name, value)
-    setFormData((prevData) => ({ ...prevData, [name]: value }));
+    let updatedValue = value;
+
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: updatedValue,
+    }));
   };
 
-  const handleDateChange = (date) => {
-    setFormData((prevData) => ({ ...prevData, date }));
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-
       const response = await axios.post('http://localhost:8080/session-form/register', formData);
-      alert(response.data.message);
+      toast.success("Appointment booked successfully! We will notify you about the timings..!");
+
       if (onSubmit) onSubmit(response.data.session);
+
+      setFormData(initialFormData);
+      navigate("/services");
     } catch (error) {
-      alert("Failed to book appointment. Please try again.");
+      toast.error(error.response?.data?.message || "Failed to book the appointment.");
       console.log(error);
     }
   };
@@ -135,11 +151,14 @@ const SessionBookingForm = ({ onSubmit }) => {
               className={inputStyles}
             >
               <option value="">Select Concern</option>
-              <option value="concern1">Concern 1</option>
-              <option value="concern2">Concern 2</option>
-              <option value="concern3">Concern 3</option>
-              <option value="concern4">Concern 4</option>
-              <option value="concern5">Concern 5</option>
+              <option value="concern1">Stress</option>
+              <option value="concern2">Anxiety</option>
+              <option value="concern3">Career counselling </option>
+              <option value="concern4">Relationship issues</option>
+              <option value="concern5">Work life balance issues</option>
+              <option value="concern5">Childhood trauma</option>
+              <option value="concern5">Existential crisis</option>
+              <option value="concern5">Emptiness in life</option>
             </select>
           </div>
 

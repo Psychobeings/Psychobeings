@@ -1,7 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import ComingSoonGif from '../assets/coming-soon.gif'
 
 const ComingSoon = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   return (
     <div className="relative w-full h-screen">
       {/* GIF Section */}
