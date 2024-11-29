@@ -13,6 +13,9 @@ module.exports = {
         "green-pick": "#4fb681",
         "light-deep-mint": "#73c79d", // Slightly lighter shade of deep-mint
       },
+      boxShadow: {
+        'custom': '0px 4px 12px rgba(0, 0, 0, 0.1)',
+      },
       backgroundImage: {
         'gradient-top': "linear-gradient(0deg, #0C2B36, #FEFEFE, #C2E5D3, #FFFFFF, #50B682)",
         'gradient-right': "linear-gradient(90deg, #0C2B36, #FEFEFE, #C2E5D3, #FFFFFF, #50B682)",
