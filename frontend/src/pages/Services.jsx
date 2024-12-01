@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import pricing1 from '../assets/pricing1.png';
 import pricing2 from '../assets/pricing2.png';
 import { cardsData, featuresData } from '../components/ServicesCardData';
@@ -8,6 +8,10 @@ const Services = () => {
   const [activeButton, setActiveButton] = useState('Individual');
   const [coupon, setCoupon] = useState('HAPPYPHYCO10');
   const [isCopied, setIsCopied] = useState(false);
+  
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const handleCopy = () => {
     navigator.clipboard.writeText('HAPPYLIFE10');

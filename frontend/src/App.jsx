@@ -8,6 +8,7 @@ import Contact from './pages/Contact';
 import Footer from './components/Footer';
 import SessionBookingForm from './components/SessionBookingForm';
 import ComingSoon from './components/ComingSoon';
+import { Toaster } from 'react-hot-toast';
 
 function App() {
   const [isContactOpen, setIsContactOpen] = useState(false);
@@ -19,6 +20,7 @@ function App() {
     <Router>
       <div className="container mx-auto">
         <Navbar onContactClick={openContactModal} />
+        <Toaster position="top-right" reverseOrder={false} />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />

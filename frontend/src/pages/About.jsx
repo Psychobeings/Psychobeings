@@ -1,5 +1,5 @@
 // src/components/AboutUs.js
-import React from "react";
+import React, { useEffect } from "react";
 import OurTeam from "../components/OurTeam";
 import Section1 from "../components/Section1";
 import Section2 from "../components/Section2";
@@ -10,6 +10,9 @@ import Founder from "../components/Founder";
 
 
 const AboutUs = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   return (
     <>
       <Heading />

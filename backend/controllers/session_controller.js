@@ -3,7 +3,6 @@ import Session from "../models/session_model.js";
 // Create a session (registerSession)
 export const registerSession = async (req, res) => {
   try {
-    console.log(req.body)
     const { name, email, phone, date, timeSlot, concern } = req.body;
     const newSession = new Session({ name, email, phone, date, timeSlot, concern });
     await newSession.save();
