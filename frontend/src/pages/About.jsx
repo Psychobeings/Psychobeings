@@ -6,6 +6,7 @@ import Section2 from "../components/Section2";
 import Heading from "../components/Heading";
 import Bullseye from "../assets/Bullseye.gif";
 import Mission from "../assets/Mission.gif";
+import Founder from "../components/Founder";
 
 
 const AboutUs = () => {
@@ -27,13 +28,13 @@ const AboutUs = () => {
         content="We envision a world where mental health is prioritized, stigma is replaced with acceptance, and individuals have the tools to achieve their highest potential. Through education, workshops, and counseling, we aim to inspire growth, self-awareness, and emotional well-being in all those we serve.  "
         image={Bullseye}
       />
-      <Section1
+      {/* <Section1
         heading="Founder's Note"
         content="Welcome to Psychobeings!  
           I'm Amanpreet , and this platform is the realization of a dream to make mental health support and education accessible to everyone. With a deep passion for psychology and years of experience, I founded Psychobeings as a safe space for individuals to learn, heal, and grow. Whether it’s through counseling, tuition, or workshops, my goal is to guide you toward a life of balance and purpose.  
           Thank you for being a part of this journey. Together, let’s redefine mental wellness and create a community where growth has no limits.  "
         image="https://img.freepik.com/free-photo/hands-holding-green-paper-brain_23-2148577394.jpg"
-      />
+      /> */}
       {/* <Section2
         heading="Our Mission"
         content="At Psychobeings, we are dedicated to fostering a world where mental
@@ -44,7 +45,7 @@ const AboutUs = () => {
               growth for a healthier, more balanced life."
         image="https://img.freepik.com/free-photo/hands-holding-green-paper-brain_23-2148577394.jpg"
       /> */}
-        
+      <Founder/>
       <OurTeam />
     </>
   );
