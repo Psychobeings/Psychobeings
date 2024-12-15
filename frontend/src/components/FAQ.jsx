@@ -9,31 +9,56 @@ const FAQ = () => {
 
   const faqs = [
     {
-      question: 'How can Psychobeings help me with my mental health?',
+      question: 'How can Psychobeings support my mental health?',
       answer:
-        'Psychobeings offers a range of mental health services, including individual and group counseling sessions. Our professionals provide personalized support to help you manage and improve your mental health.',
+        'At Psychobeings, we have created a compassionate environment designed to help you heal, grow, and thrive. Our mission is to empower individuals with the tools and support they need to overcome challenges, tap into their inner strength, and lead a fulfilling, balanced life.',
     },
     {
-      question: 'What types of counseling services do you offer?',
+      question: 'What types of concerns do you address?',
       answer:
-        'We offer various counseling services, such as individual therapy, family therapy, and specialized programs for issues like anxiety, depression, trauma, and addiction.',
+        'We offer support for a wide range of concerns, including but not limited to stress, anxiety, career guidance, relationship challenges, work-life balance, childhood trauma, existential crises, and feelings of emptiness.',
     },
     {
-      question: 'How do I schedule an appointment?',
+      question: 'What counseling services do you provide?',
       answer:
-        'You can schedule an appointment by visiting our website, using our online booking system, or calling our office. Our staff will work with you to find a convenient time.',
+        'We specialize in both Individual and Relationship Counseling. For more information on each service, please visit their respective pages on our website.',
+    },
+    {
+      question: 'How do I book an appointment?',
+      answer:
+        'Booking an appointment is easy. Simply fill out the booking form with some basic information. After we review your details, we will contact you via email with a consent form. An appointment will only be confirmed once the consent form is signed and payment is processed.',
     },
     {
       question: 'Do you accept insurance?',
       answer:
-        'Yes, we accept most insurance plans. Our team can help you verify coverage and provide information on any out-of-pocket costs.',
+        'While we do not accept insurance, we pride ourselves on offering affordable pricing. We also offer a free initial session, allowing you to explore if our services are the right fit for your long-term needs, without the financial strain.',
     },
     {
-      question: 'What if I need to cancel or reschedule?',
+      question: 'Where can I find the pricing details?',
       answer:
-        'If you need to cancel or reschedule, please inform us at least 24 hours in advance to accommodate other clients in need.',
+        'We do not publicly display our pricing as it may vary based on the complexity of each case.',
     },
-  ];
+    {
+      question: 'What if I need to cancel or reschedule my appointment?',
+      answer:
+        'We understand that life can be unpredictable. If you need to cancel or reschedule, please notify us via email as early as possible. We will be happy to work with you to find a new date and time that suits you.',
+    },
+    {
+      question: 'How long are the counseling sessions?',
+      answer:
+        'Sessions typically last between 45 to 60 minutes. However, the duration may vary based on your individual needs and concerns.',
+    },
+    {
+      question: 'How do you ensure confidentiality?',
+      answer:
+        'Your privacy is our priority. All sessions are conducted in secure, private virtual spaces, and any personal information shared remains strictly confidential. We ensure that no sensitive details are communicated via email or chat, where access may be less secure.',
+    },
+    {
+      question: 'Are your workshops only for psychology students or professionals?',
+      answer:
+        'Not at all! Our workshops are open to anyone, regardless of profession or academic background. We cover a wide range of topics that are relevant and beneficial to a wide range of people and of varied interests.',
+    },
+  ];  
 
   return (
     <section className="bg-white text-gray-900 py-16 sm:py-24 min-h-screen">
