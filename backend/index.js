@@ -15,6 +15,16 @@ Connection();
 
 app.use(cors());
 
+
+const corsOptions = {
+  origin: process.env.SOURCE_URL, 
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+};
+
+// Use configured CORS options
+app.use(cors(corsOptions));
+
 app.use('/session-form', sessionRoute);
 
 app.listen(8080, ()=>{
