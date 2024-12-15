@@ -14,10 +14,9 @@ app.use(express.json())
 
 dotenv.config();
 Connection();
-// app.use('/',(req, res, next)=>{
-//     res.send("this is from server side")
-//     next()
-// })
+
+app.use(cors());
+
 app.use('/session-form', sessionRoute);
 app.use('/api/email', EmailRouter)
 
