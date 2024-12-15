@@ -3,12 +3,10 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 
 import sessionRoute from './routes/sessionRoute.js';
-import EmailRouter from './routes/EmailRouter.js';
 import {Connection} from './config/connection.js';
 
 const app= express();
-// Enable CORS
-app.use(cors());
+
 app.use(express.urlencoded({extended: false}));
 app.use(express.json())
 
@@ -17,8 +15,17 @@ Connection();
 
 app.use(cors());
 
+
+const corsOptions = {
+  origin: process.env.SOURCE_URL, 
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+};
+
+// Use configured CORS options
+app.use(cors(corsOptions));
+
 app.use('/session-form', sessionRoute);
-app.use('/api/email', EmailRouter)
 
 app.listen(8080, ()=>{
     console.log("Server started!");
