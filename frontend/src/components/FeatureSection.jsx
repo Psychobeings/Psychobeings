@@ -1,30 +1,33 @@
 import React from 'react';
-import logo2 from '../assets/logo2.png';
+import discovery from '../assets/discovery1.png';
+import age_group from '../assets/age_group1.png';
+import internship from '../assets/internship1.png';
+import support from '../assets/support1.png';
 
 const features = [
+    {
+        title: 'A Safe Haven for Self-Discovery and Resilience',
+        description:
+          'At Psychobeings, we create a space where individuals can explore their potential, build resilience, and thrive. Join us in the revolution of mental well-being, where growth and healing are at the forefront.',
+        imgSrc: discovery,
+      },
     {
       title: 'Affordable Support with No Strings Attached',
       description:
         'Breaking barriers, not banks. Our services come with minimal costs, proving that world-class mental health care doesn’t have to come with a hefty price tag. Your journey starts risk-free with a transformative first session for free.',
-      imgSrc: logo2,
+      imgSrc: support,
     },
     {
       title: 'Specialized for a Vibrant Age Group',
       description:
         'Whether you’re navigating adolescence or stepping into adulthood, we cater to the dynamic needs of individuals aged 11 to 35—empowering the next generation to flourish with personalized care.',
-      imgSrc: logo2,
+      imgSrc: age_group,
     },
     {
       title: 'Opportunities for Growth Through Internships',
       description:
         'We don’t just support mental well-being; we’re building a future where mental health advocates thrive. Our internship programs offer passionate individuals real-world experience, contributing to the mental wellness movement.',
-      imgSrc: logo2,
-    },
-    {
-      title: 'A Safe Haven for Self-Discovery and Resilience',
-      description:
-        'At Psychobeings, we create a space where individuals can explore their potential, build resilience, and thrive. Join us in the revolution of mental well-being, where growth and healing are at the forefront.',
-      imgSrc: logo2,
+      imgSrc: internship,
     },
   ];
   
@@ -52,7 +55,7 @@ const FeatureSection = () => {
             <img
               src={feature.imgSrc}
               alt={`${feature.title} Icon`}
-              className="mb-6 w-24 h-24"
+              className="mb-8 w-24 h-24"
             />
             <h3 className="font-semibold text-xl mb-3 text-dark-gunmetal">
               {feature.title}
