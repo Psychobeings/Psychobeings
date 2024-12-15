@@ -58,7 +58,8 @@ const FAQ = () => {
       answer:
         'Not at all! Our workshops are open to anyone, regardless of profession or academic background. We cover a wide range of topics that are relevant and beneficial to a wide range of people and of varied interests.',
     },
-  ];  
+  ];
+  
 
   return (
     <section className="bg-white text-gray-900 py-16 sm:py-24 min-h-screen">

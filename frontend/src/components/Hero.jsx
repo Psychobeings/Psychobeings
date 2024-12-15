@@ -13,10 +13,10 @@ const Hero = () => {
               <span className="text-deep-mint">beings</span>
             </h1>
             <p className="text-lg sm:text-xl md:text-2xl text-gray-800 mb-4">
-              Mental health simplified.
+            Redefining mental health. One mind at a time.
             </p>
             <p className="text-base sm:text-lg md:text-xl text-gray-600 mb-8">
-              We believe in “Empowering minds, transforming lives.” Psychobeings can be your ultimate hub for psychology and mental health insights. Your journey to mental wellbeing starts here.
+            Your mental well-being matters. Here, we create a safe space to explore, heal, and grow. Whether you're seeking guidance, support, or tools to navigate life's challenges, we’re here to walk with you every step of the way. Prioritize yourself today—because peace of mind is where true strength begins.
             </p>
             <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
               <Link to="/services">
