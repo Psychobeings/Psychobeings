@@ -2,7 +2,7 @@ import React from "react";
 
 const Section1 = ({ heading, content, image }) => {
   return (
-    <section className="relative bg-mint-cream from-light-blue to-light-green py-10 md:py-16 shadow-xl rounded-2xl max-w-[calc(100%-2cm)] mx-auto">
+    <section className="relative bg-mint-cream-light from-light-blue to-light-green py-10 md:py-10 shadow-xl rounded-2xl max-w-[calc(100%-2cm)] mx-auto">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
           {/* Text Content */}

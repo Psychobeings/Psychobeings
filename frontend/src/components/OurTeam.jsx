@@ -18,7 +18,7 @@ const OurTeam = () => {
   ];
 
   return (
-    <section className="relative bg-mint-cream from-light-blue to-light-green py-10 md:py-16 shadow-xl rounded-2xl max-w-[calc(100%-2cm)] mx-auto mt-20">
+    <section className="relative from-light-blue to-light-green py-10 md:py-16 shadow-xl rounded-2xl max-w-[calc(100%-2cm)] mx-auto mt-20 mb-6">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h1 className="text-4xl font-bold leading-none sm:text-5xl text-dark-gunmetal mb-6">
@@ -32,7 +32,7 @@ const OurTeam = () => {
         </div>
 
         {/* Founder Card */}
-        <div className="flex flex-col items-center text-center bg-mint-cream-light mb-24 p-4 rounded-xl shadow-lg shadow-neutral-400/50 transition-transform transform hover:scale-105 max-w-xs mx-auto">
+        <div className="flex flex-col items-center text-center mb-24 p-4 rounded-xl shadow-lg shadow-neutral-400/50 transition-transform transform hover:scale-105 max-w-xs mx-auto">
           <div className="relative w-40 h-40 mb-4 overflow-hidden rounded-full shadow-md">
             <img
               alt="Amanpreet Kaur"
@@ -49,7 +49,7 @@ const OurTeam = () => {
           {teamMembers.map((member, id) => (
             <div
               key={id}
-              className="flex flex-col items-center text-center bg-mint-cream-light p-4 rounded-xl shadow-lg shadow-neutral-400/50 transition-transform transform hover:scale-105">
+              className="flex flex-col items-center text-center p-4 rounded-xl shadow-lg shadow-neutral-400/50 transition-transform transform hover:scale-105">
               <div className="relative w-32 h-32 mb-4 overflow-hidden rounded-full shadow-md">
                 <img
                   alt={member.name}
