@@ -48,7 +48,7 @@ const SessionBookingForm = ({ onSubmit }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:8080/session-form/register', formData);
+      const response = await axios.post(`${process.env.REACT_APP_URL}/register`, formData);
       toast.success("Appointment booked successfully! We will notify you about the timings..!");
 
       if (onSubmit) onSubmit(response.data.session);
