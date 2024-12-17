@@ -4,7 +4,7 @@ import { registerSession, getSessionDetails, deleteSession, bookSession} from '.
 const router=express.Router();
 
 router.post('/register', registerSession);
-router.put('/:id', bookSession);
+router.put('/book', bookSession);
 
 router.get('/details', getSessionDetails);
 
