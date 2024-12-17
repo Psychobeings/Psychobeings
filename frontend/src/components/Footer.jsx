@@ -20,7 +20,7 @@ const Footer = () => {
           <div className="flex flex-col space-y-6 md:max-w-xl">
             {/* Text Content */}
             <p className="text-base leading-relaxed text-gray-600">
-            Every step of your mental health journey counts. At Psychobeings, we're here to provide meaningful support, expert guidance, and a safe space where you're free to heal and grow.
+             Every step of your mental health journey counts. At Psychobeings, we're here to provide meaningful support, expert guidance, and a safe space where you're free to heal and grow.
             </p>
 
             {/* Social Media Icons */}
