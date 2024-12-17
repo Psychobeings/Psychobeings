@@ -34,8 +34,9 @@ const Sessions = () => {
     const phone = queryParams.get('phone') || '';
     const date = queryParams.get('date') || '';
     const timeSlot = queryParams.get('timeSlot') || '';
-    const status = queryParams.get('status') || '';
-    setCurrentStatus(status)
+    const status = queryParams.get('status') ||'0';
+    setCurrentStatus(status )
+    // console.log(status)
     const startIndex = (currentPage - 1) * rowsPerPage;
     const limit = rowsPerPage;
 
@@ -53,7 +54,7 @@ const Sessions = () => {
       setLoading(true);
       try {
         const response = await axios.get(
-          `${process.env.REACT_APP_URL}/details?${queryString}`
+          `${process.env.REACT_APP_URL}/session-form/details?${queryString}`
         );
         setData(response.data.result || []);
         setTotalCount(response.data.totalCount || 0);

@@ -22,8 +22,10 @@ const ConfirmDelete = ({ isOpen, onClose, sessionId, sessionName }) => {
       
        try{
         console.log(sessionId)
-           const deleted = await axios.delete(`${process.env.REACT_APP_URL}/${sessionId}`)
+           const deleted = await axios.delete(`${process.env.REACT_APP_URL}session-form/${sessionId}`)
           //  navigate('/')
+          if(deleted.status ===200)
+          onClose();
 
        }
        catch(error){
@@ -33,7 +35,7 @@ const ConfirmDelete = ({ isOpen, onClose, sessionId, sessionName }) => {
 
     
     
-      onClose();
+   
       
     } else {
       setError('Name does not match. Please try again.');

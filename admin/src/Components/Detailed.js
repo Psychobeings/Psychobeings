@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import { X, Calendar, Clock, Phone, User, CheckCircle2, XCircle, AlertTriangle, KanbanSquare, Mail  } from 'lucide-react';
 import ConfirmDelete from './ConfirmDelete'
 import { BookSession } from './BookSession';
-import { Kanban } from 'lucide-react';
+
 
 
 
