@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 import Detailed from './Detailed'; // Import the Popup component
+import {VerifiedIcon} from 'lucide-react'
 
 const modifyDate = (e) => {
   const date = new Date(e);
@@ -18,7 +19,7 @@ const Sessions = () => {
   const [loading, setLoading] = useState(false);
   const [totalCount, setTotalCount] = useState(0);
 
-  const  [ currentStatus, setCurrentStatus]  = useState(0);
+  const [currentStatus, setCurrentStatus] = useState(0);
   const [popupOpen, setPopupOpen] = useState(false); // Popup state
   const [selectedSession, setSelectedSession] = useState(null); // Store selected session
 
@@ -34,7 +35,7 @@ const Sessions = () => {
     const phone = queryParams.get('phone') || '';
     const date = queryParams.get('date') || '';
     const timeSlot = queryParams.get('timeSlot') || '';
-    const status = queryParams.get('status') || '';
+    const status = queryParams.get('status') || '0';
     setCurrentStatus(status)
     const startIndex = (currentPage - 1) * rowsPerPage;
     const limit = rowsPerPage;
@@ -60,7 +61,7 @@ const Sessions = () => {
       } catch (error) {
         console.error('Error fetching sessions:', error);
       } finally {
-        
+
         setLoading(false);
       }
     };
@@ -106,7 +107,7 @@ const Sessions = () => {
                       <th className="p-4 border-y bg-blue-gray-50/50">Phone</th>
                       <th className="p-4 border-y bg-blue-gray-50/50">Date</th>
                       <th className="p-4 border-y bg-blue-gray-50/50">TimeSlot</th>
-                      <th className="p-4 border-y bg-blue-gray-50/50"> {currentStatus==1 ? "Time" : "Actions"}</th>
+                      <th className="p-4 border-y bg-blue-gray-50/50"> {currentStatus == 1 ? "Time" : "Actions"}</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -118,19 +119,18 @@ const Sessions = () => {
                         <td className="p-4 border-b">{session.name}</td>
                         <td className="p-4 border-b">{session.phone}</td>
                         <td className="p-4 border-b">{modifyDate(session.date)}</td>
-                        <td className="p-4 border-b">{session.timeSlot.toUpperCase()}</td>
+                        <td className={`p-4 border-b flex flex-row`}>{currentStatus== 0 ?  session.timeSlot.toUpperCase() : <> {session.sessionTime } <VerifiedIcon color='green'/></>  }</td>
                         <td className="p-4 border-b">
-                        { currentStatus == 0 ?
                           <button
-                          className="px-2 py-1 text-sm bg-blue-500 text-white rounded hover:bg-blue-600 transition"
+                          className={`px-2 py-1 text-sm text-white rounded  transition ${currentStatus == 1 ? "bg-green-600 hover:bg-green-700 " : "bg-blue-500 hover:bg-blue-600"}`}
                           onClick={() => handleView({...session, date : modifyDate(session.date)})}
                         >
                           View
                         </button>
-                        :
-                        session.sessionTime
+                       
                         
-                        } 
+
+                         
                         </td>
                       </tr>
                     ))}

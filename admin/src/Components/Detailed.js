@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { X, Calendar, Clock, Phone, User, CheckCircle2, XCircle, AlertTriangle, KanbanSquare, Mail  } from 'lucide-react';
+import { X, Calendar, Clock, Phone, User, CheckCircle2, XCircle, AlertTriangle, KanbanSquare, Mail } from 'lucide-react';
 import ConfirmDelete from './ConfirmDelete'
 import { BookSession } from './BookSession';
 import { Kanban } from 'lucide-react';
@@ -10,8 +10,13 @@ const Detailed = ({ isOpen, onCloseDetailed, details }) => {
   const popupRef = useRef(null);
   const [selectedSlot, setSelectedSlot] = useState('');
   const [isAnimating, setIsAnimating] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState(null);
   const [showConfirmDelete, setShowConfirmDelete] = useState(false);
+  const [booked, setBooked] = useState(0);
+
+  useEffect(() => {
+    setBooked(details?.status)
+  }, [details])
 
   // Time slots
   const timeSlots = {
@@ -42,24 +47,28 @@ const Detailed = ({ isOpen, onCloseDetailed, details }) => {
   };
 
   // Confirm Delete Function (would typically call an API)
-  
+
   const handleAccept = () => {
     if (selectedSlot) {
 
-        BookSession(handleClose, details, setError)
-    //   console.log('Session accepted with slot:', selectedSlot);
-    //   handleClose();
+      BookSession(handleClose, details, setError, selectedSlot)
+      //   console.log('Session accepted with slot:', selectedSlot);
+      //   handleClose();
     }
   };
 
   const renderTimeSlots = (slotType) => {
     return timeSlots[slotType]?.map((slot, index) => (
-      <div 
-        key={index} 
+      <div
+        key={index}
         className={`
           flex items-center p-3 rounded-lg cursor-pointer
-          ${selectedSlot === slot 
-            ? 'bg-indigo-100 border-2 border-indigo-500' 
+          ${
+            slot === details?.sessionTime ?
+            'border-green-600 border-2'
+            :
+            selectedSlot === slot
+            ? 'bg-indigo-100 border-2 border-indigo-500'
             : 'hover:bg-gray-100 border border-gray-200'}
           transition-all duration-200 ease-in-out
         `}
@@ -75,7 +84,7 @@ const Detailed = ({ isOpen, onCloseDetailed, details }) => {
 
   return (
     <>
-      <div 
+      <div
         className={`
           fixed inset-0 flex items-center justify-center 
           bg-black bg-opacity-50 z-50 p-6
@@ -127,7 +136,7 @@ const Detailed = ({ isOpen, onCloseDetailed, details }) => {
                 </div>
                 <div className="flex items-center space-x-2">
                   <Mail className="text-indigo-600" size={18} />
-                  <span className="text-sm"><a href ={"mailto: " +  details.email}>{details.email || 'N/A'}</a></span>
+                  <span className="text-sm"><a href={"mailto: " + details.email}>{details.email || 'N/A'}</a></span>
                 </div>
                 <div className="flex items-center space-x-2">
                   <Calendar className="text-indigo-600" size={18} />
@@ -140,11 +149,25 @@ const Detailed = ({ isOpen, onCloseDetailed, details }) => {
               </div>
             </div>
 
-            {/* Time Slot Selection */}
-            <div className="mb-4">
-              <h3 className="text-lg font-semibold mb-3 text-gray-800">
-                Select a Time Slot
-              </h3>
+
+
+            <div className="mb-4 ">
+
+              {booked ?
+                <div className='flex'>
+                <AlertTriangle/>
+                <h3 className="text-lg font-semibold mb-3 text-red-800">
+                  The session is already booked at {details.sessionTime} on {details.date}!
+                </h3>
+                
+                </div>
+                :
+                <h3 className="text-lg font-semibold mb-3 text-gray-800">
+                  Select a Time Slot
+                </h3>
+
+              }
+
 
               {details.timeSlot === 'morning' || details.timeSlot === 'evening' ? (
                 <div className="space-y-2">
@@ -156,39 +179,45 @@ const Detailed = ({ isOpen, onCloseDetailed, details }) => {
                 </p>
               )}
 
-       { error &&  <AlertTriangle> {error}</AlertTriangle>}
+              {error && <AlertTriangle> {error}</AlertTriangle>}
             </div>
 
             {/* Action Buttons */}
+
             <div className="flex space-x-3 mt-4">
-              <button
-                onClick={handleDecline}
-                className="
+              {
+                !booked &&
+
+                <button
+                  onClick={handleDecline}
+                  className="
                   flex-1 flex items-center justify-center
                   px-4 py-2 bg-red-500 text-white 
                   rounded-lg hover:bg-red-600 
                   space-x-2 transition text-sm
                 "
-              >
-                <XCircle size={16} />
-                <span>Decline</span>
-              </button>
+                >
+                  <XCircle size={16} />
+                  <span>Decline</span>
+                </button>
+              }
 
               <button
                 onClick={handleAccept}
-                disabled={!selectedSlot}
+                disabled={!selectedSlot }
+                  
                 className={`
                   flex-1 flex items-center justify-center
                   px-4 py-2 text-white 
                   rounded-lg space-x-2 transition text-sm
-                  ${selectedSlot 
-                    ? 'bg-green-500 hover:bg-green-600' 
+                  ${selectedSlot
+                    ? 'bg-green-500 hover:bg-green-600'
                     : 'bg-gray-400 cursor-not-allowed'}
                 `}
               >
-            
+
                 <CheckCircle2 size={16} />
-                <span>Accept</span>
+                <span>{booked ? "Reschedule" : "Schedule"}</span>
               </button>
             </div>
           </div>
@@ -198,10 +227,10 @@ const Detailed = ({ isOpen, onCloseDetailed, details }) => {
       {/* Confirm Delete Popup */}
       <ConfirmDelete
         isOpen={showConfirmDelete}
-        onClose={() =>{ setShowConfirmDelete(false); }}
+        onClose={() => { setShowConfirmDelete(false); }}
         sessionId={details._id}
         sessionName={details.name}
-        
+
       />
     </>
   );
