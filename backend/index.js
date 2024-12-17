@@ -4,6 +4,7 @@ import cors from 'cors';
 
 import sessionRoute from './routes/sessionRoute.js';
 import admin_user from './routes/admin_user.js';
+import emailRoute from './routes/EmailRouter.js';
 import {Connection} from './config/connection.js';
 
 const app= express();
@@ -26,6 +27,7 @@ app.use(cors(corsOptions));
 
 app.use('/admin', admin_user);
 app.use('/session-form', sessionRoute);
+app.use('/email', emailRoute);
 
 app.listen(8080, ()=>{
     console.log("Server started!");
