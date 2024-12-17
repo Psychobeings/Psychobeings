@@ -53,7 +53,7 @@ const Sessions = () => {
       setLoading(true);
       try {
         const response = await axios.get(
-          `${process.env.REACT_APP_URL}/details?${queryString}`
+          `${process.env.REACT_APP_URL}/session-form/details?${queryString}`
         );
         setData(response.data.result || []);
         setTotalCount(response.data.totalCount || 0);
