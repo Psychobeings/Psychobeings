@@ -3,11 +3,11 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 const transporter = nodemailer.createTransport({
-  host: 'smtp.gmail.com',
+  host: 'smtp.zoho.in',
   port: 465,
   secure: true,
   auth: {
-    user: 'support@psychobeings.com',
+    user: process.env.EMAIL,
     pass: process.env.EmailPass
   }
 });
@@ -15,7 +15,7 @@ const transporter = nodemailer.createTransport({
 export const SendMessage = async (req, res) => {
 
   const { name, email, message } = req.body;
-  console.log(req.body );
+  console.log(email );
 
   const mailToUser = {
     from: process.env.EMAIL,
