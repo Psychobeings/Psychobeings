@@ -133,7 +133,7 @@ const Header = () => {
       {/* Tabs for Pending/Approved */}
       <div className="flex justify-center items-center w-full lg:w-1/2 mx-auto border-t p-2 space-x-4">
         <button
-          onClick={() => handleStatusChange(0)}
+          onClick={() => handleStatusChange(false)}
           className={`px-4 py-2 flex-1 border-b-2 ${
             !status ? 'border-blue-500 text-blue-500' : 'border-transparent text-gray-500'
           }`}
@@ -141,7 +141,7 @@ const Header = () => {
           Pending
         </button>
         <button
-          onClick={() => handleStatusChange(1)}
+          onClick={() => handleStatusChange(true)}
           className={`px-4 py-2 flex-1 border-b-2 ${
             status ? 'border-blue-500 text-blue-500' : 'border-transparent text-gray-500'
           }`}

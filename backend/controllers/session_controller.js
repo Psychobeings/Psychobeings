@@ -45,7 +45,7 @@ export const getSessionDetails = async (req, res) => {
     const phone = req.query.phone
     const date = req.query.date
     const timeSlot = req.query.timeSlot
-    // console.log(name)
+    // console.log(req.query.status)
 
     let result = await Session.find({
       ...(req.query.name && { name: { $regex: new RegExp(req.query.name, 'i') } }),
@@ -53,9 +53,9 @@ export const getSessionDetails = async (req, res) => {
       ...(req.query.date && { date: req.query.date }),
       ...(req.query.phone && { phone: { $regex: new RegExp(req.query.phone, 'i') } }),
       ...(req.query._id && { _id: req.query._id }),
-      ...(req.query.status && { status: req.query.status || 1 }),
+      ...(req.query.status && {status :  req.query.status}),
      ...(req.query.concern && { concern: req.query.concern }),
-   ... (   req.query.status == 0 &&{ createdTime: { $gt: Date.now() } } )
+   ... (   req.query.status == false && { createdTime: { $gt: Date.now() } } )
     })
       .sort({ date : -1 })
       .skip(startIndex)
@@ -79,7 +79,7 @@ export const bookSession = async (req, res) => {
     const  id  = req.body.id;
     const sessionTime = req.body.sessionTime
     console.log(id)
-    const changeState = await Session.findByIdAndUpdate(id, {$set: {status : 1, sessionTime}});
+    const changeState = await Session.findByIdAndUpdate(id, {$set: {status : true, sessionTime}});
     if (!changeState) {
       return res.status(404).json({ error: "Session not found" });
     }
