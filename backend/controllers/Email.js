@@ -1,6 +1,15 @@
 import nodemailer from "nodemailer";
 import dotenv from 'dotenv';
 
+const modifyDate = (e) => {
+  const date = new Date(e);
+  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const year = date.getFullYear();
+  return `${day}-${month}-${year}`;
+};
+
+
 dotenv.config();
 const transporter = nodemailer.createTransport({
   host: 'smtp.zoho.in',
@@ -105,7 +114,7 @@ export const SendConfirmSlotMessage = async (session) => {
 
   <!-- Session Details -->
   <div style="background-color: #f9f9f9; padding: 15px; border-radius: 5px; margin-bottom: 20px; text-align: left;">
-    <p style="margin: 5px 0; color: #333;"><strong>📅 Date: ${session.date} </p>
+    <p style="margin: 5px 0; color: #333;"><strong>📅 Date: ${ modifyDate(session.date)} </p>
     <p style="margin: 5px 0; color: #333;"><strong>⏰ Time Slot: ${session.sessionTime}</p>
     <p style="margin: 5px 0; color: #333;"><strong>📍 Location: <strong>Bangalore, India</strong></p>
   </div>
