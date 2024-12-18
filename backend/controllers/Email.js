@@ -3,14 +3,14 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 const transporter = nodemailer.createTransport({
-  service: "Gmail",
-  host: "smtp.gmail.com",
+  host: 'smtp.gmail.com',
+  port: 465,
+  secure: true,
   auth: {
-    user: process.env.EMAIL,
-    pass: process.env.EmailPass,
-  },
+    user: 'support@psychobeings.com',
+    pass: process.env.EmailPass
+  }
 });
-
 //..............................Send Message.....................................
 export const SendMessage = async (req, res) => {
 
@@ -18,7 +18,7 @@ export const SendMessage = async (req, res) => {
   console.log(req.body );
 
   const mailToUser = {
-    from: "rishabhsharma919319@gmail.com",
+    from: process.env.EMAIL,
     to: email,
     subject: "Message from Pshycobeings",
     html: `
@@ -41,8 +41,8 @@ export const SendMessage = async (req, res) => {
   };
 
   const mailToAdmin = {
-    from: "rishabhsharma919319@gmail.com",
-    to: "rishabhsharma919319@gmail.com",
+    from: process.env.EMAIL,
+    to: process.env.EMAIL,
     subject: "New Message from site",
     html: `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; text-align: center;">
