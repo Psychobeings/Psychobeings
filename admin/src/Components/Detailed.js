@@ -52,8 +52,7 @@ const Detailed = ({ isOpen, onCloseDetailed, details }) => {
     if (selectedSlot) {
 
       BookSession(handleClose, details, setError, selectedSlot)
-      //   console.log('Session accepted with slot:', selectedSlot);
-      //   handleClose();
+     
     }
   };
 

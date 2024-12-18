@@ -106,7 +106,6 @@ const Header = () => {
             name="timeSlot"
             value={searchParams.timeSlot}
             onChange={handleChange}
-            disabled={!searchParams.date}
             className="px-2 py-1 border rounded"
           >
             <option value="">Both Sessions</option>
