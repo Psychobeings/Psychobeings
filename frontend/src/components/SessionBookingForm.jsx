@@ -48,11 +48,11 @@ const SessionBookingForm = ({ onSubmit }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-<<<<<<< HEAD
+
       const response = await axios.post(`${process.env.REACT_APP_URL}session-form/register`, formData);
-=======
-      const response = await axios.post(`${process.env.REACT_APP_URL}/session-form/register`, formData);
->>>>>>> cbc2e1ce63e272a4fe749debfb51c133e54e957d
+
+    
+
       toast.success("Appointment booked successfully! We will notify you about the timings..!");
 
       if (onSubmit) onSubmit(response.data.session);
