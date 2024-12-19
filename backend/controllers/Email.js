@@ -29,7 +29,7 @@ export const SendMessage = async (req, res) => {
   const mailToUser = {
     from: process.env.EMAIL,
     to: email,
-    subject: "Message from Pshycobeings",
+    subject: "Message from Psychobeings",
     html: `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; text-align: center;">
         <img src="https://i.ibb.co/ZdPGNn2/logo2.png" alt="Pshycobeings" style="width: 150px; height: auto; margin-bottom: 20px;" />
@@ -95,7 +95,7 @@ export const SendConfirmSlotMessage = async (session) => {
   const mailToUser = {
     from: process.env.EMAIL,
     to: session.email,
-    subject: "Message from Pshycobeings",
+    subject: "Message from Psychobeings",
     html: `
      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; text-align: center;">
   <!-- Company Logo -->
