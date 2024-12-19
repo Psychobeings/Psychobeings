@@ -12,7 +12,7 @@ const Detailed = ({ isOpen, onCloseDetailed, details }) => {
   const [isAnimating, setIsAnimating] = useState(false);
   const [error, setError] = useState(null);
   const [showConfirmDelete, setShowConfirmDelete] = useState(false);
-  const [booked, setBooked] = useState(0);
+  const [booked, setBooked] = useState(false);
 
   useEffect(() => {
     setBooked(details?.status)
