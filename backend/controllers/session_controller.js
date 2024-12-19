@@ -79,7 +79,7 @@ export const bookSession = async (req, res) => {
     const  id  = req.body.id;
     const sessionTime = req.body.sessionTime
     console.log(id)
-    const changeState = await Session.findByIdAndUpdate(id, {$set: {status : true, sessionTime}});
+    const changeState = await Session.findByIdAndUpdate(id, {$set: {status : true, sessionTime}}, { new: true } );
     if (!changeState) {
       return res.status(404).json({ error: "Session not found" });
     }
