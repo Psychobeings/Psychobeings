@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
 import Signin from './AuthAdmin/Signin';
 import Header from './Components/Header';
@@ -6,6 +6,14 @@ import Sessions from './Components/Sessions';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  // Check local storage for token on app load
+  useEffect(() => {
+    const token = localStorage.getItem('authToken');
+    if (token) {
+      setIsAuthenticated(true); // Set user as authenticated
+    }
+  }, []);
 
   const handleLoginSuccess = () => {
     setIsAuthenticated(true);

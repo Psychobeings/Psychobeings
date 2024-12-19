@@ -43,6 +43,7 @@ const Signin = ({ onLoginSuccess }) => {
       } else if (mode === 'verifyOtp') {
         // Verify OTP
         const verify = await axios.post(`${process.env.REACT_APP_URL}/admin/email/verify`, { email, otp });
+        setPassword('')
         setMode('resetPassword');
  
       } else if (mode === 'resetPassword') {

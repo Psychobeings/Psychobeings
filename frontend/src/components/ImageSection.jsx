@@ -1,9 +1,9 @@
 import React from 'react';
-import ImageElement from '../assets/ImageElement.png';
+import ImageElement from '../assets/ImageElementUpdated.png';
 
 const ImageSection = () => {
   return (
-    <div className="relative w-full flex justify-center overflow-hidden py-10">
+    <div className="relative w-full flex justify-center overflow-hidden py-12">
       {/* Hemispherical gradient background */}
       <div
         className="absolute top-0 left-1/2 transform -translate-x-1/2 w-full bg-deep-mint-gradient opacity-30"
@@ -21,9 +21,9 @@ const ImageSection = () => {
         {/* Centered text overlay with responsive text size */}
         <div className="absolute inset-0 flex items-center justify-center">
           <p className="text-dark-gunmetal text-xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold text-center px-4">
-            We understand you 
+            We are here to understand 
             <br />
-            when no one else does
+            when the world falls silent.
           </p>
         </div>
       </div>
