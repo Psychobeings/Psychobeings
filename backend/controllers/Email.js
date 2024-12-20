@@ -11,6 +11,8 @@ const modifyDate = (e) => {
 dotenv.config({ path: '.env' });
 // console.log(process.env.EMAILADD)
 
+
+
 const transporter = nodemailer.createTransport({
   host: 'smtp-relay.brevo.com',
   port: 587,
