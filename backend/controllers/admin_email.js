@@ -15,14 +15,21 @@ let otps = {}
 
 dotenv.config();
 const transporter = nodemailer.createTransport({
-  service: "Gmail",
-  host: "smtp.gmail.com",
+  host: 'smtp-relay.brevo.com',
+  port: 587,
   auth: {
-    user: "rishabhsharma919319@gmail.com",
-    pass: process.env.EmailPass,
-  },
+    user: process.env.EMAILADD, // Brevo 
+    pass:process.env.EMAILPass // Brevo
+  }
 });
 
+transporter.verify(function (error, success) {
+  if (error) {
+    console.log("Server connection failed:", error);
+  } else {
+    console.log("Server is ready to take our messages");
+  }
+});
 
 //..............................Send Email.....................................
 export const Send = async (req, res) => {

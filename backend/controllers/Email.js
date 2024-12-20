@@ -8,23 +8,43 @@ const modifyDate = (e) => {
   const year = date.getFullYear();
   return `${day}-${month}-${year}`;
 };
+dotenv.config()
+// console.log(process.env.EMAILPass)
 
+// const transporter = nodemailer.createTransport({
+//   host: "smtpout.secureserver.net",
+//   secure: false,
+//   port: 587,
+//   auth: {
+//     user: process.env.EMAIL,
+//     pass: process.env.EmailPass
+//   },
+//   tls: {
+//     rejectUnauthorized: false // Only during development
+//   }
+// });
 
-dotenv.config();
 const transporter = nodemailer.createTransport({
-  host: 'smtp.zoho.in',
-  port: 465,
-  secure: true,
+  host: 'smtp-relay.brevo.com',
+  port: 587,
   auth: {
-    user: process.env.EMAIL,
-    pass: process.env.EmailPass
+    user: process.env.EMAILADD, // Brevo 
+    pass:process.env.EMAILPass // Brevo
+  }
+});
+
+transporter.verify(function (error, success) {
+  if (error) {
+    console.log("Server connection failed:", error);
+  } else {
+    console.log("Server is ready to take our messages");
   }
 });
 //..............................Send Message.....................................
 export const SendMessage = async (req, res) => {
 
   const { name, email, message } = req.body;
-  console.log(email );
+  console.log(email);
 
   const mailToUser = {
     from: process.env.EMAIL,
@@ -114,7 +134,7 @@ export const SendConfirmSlotMessage = async (session) => {
 
   <!-- Session Details -->
   <div style="background-color: #f9f9f9; padding: 15px; border-radius: 5px; margin-bottom: 20px; text-align: left;">
-    <p style="margin: 5px 0; color: #333;"><strong>📅 Date: ${ modifyDate(session.date)} </p>
+    <p style="margin: 5px 0; color: #333;"><strong>📅 Date: ${modifyDate(session.date)} </p>
     <p style="margin: 5px 0; color: #333;"><strong>⏰ Time Slot: ${session.sessionTime}</p>
     <p style="margin: 5px 0; color: #333;"><strong>📍 Location: <strong>Bangalore, India</strong></p>
   </div>
@@ -134,14 +154,14 @@ export const SendConfirmSlotMessage = async (session) => {
     `,
   };
 
- 
+
 
   try {
     const info = await transporter.sendMail(mailToUser);
-    console.log("Email sent: ", info.response);
-    res.status(200).send("Session booked successfully.") 
+    console.log("Email sent on booking: ", info.response);
+    res.status(200).send("Session booked successfully.")
 
-  
+
   } catch (error) {
     res.status(400).json({ message: "Error: " + error });
   }
