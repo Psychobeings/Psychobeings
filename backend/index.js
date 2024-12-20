@@ -17,6 +17,7 @@ Connection();
 
 app.use(cors());
 
+// console.log(process.env.SOURCE_URL)
 
 const corsOptions = {
   origin: [process.env.SOURCE_URL , process.env.ADMIN_URL], 
