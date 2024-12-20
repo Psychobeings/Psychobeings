@@ -8,21 +8,8 @@ const modifyDate = (e) => {
   const year = date.getFullYear();
   return `${day}-${month}-${year}`;
 };
-dotenv.config()
-// console.log(process.env.EMAILPass)
-
-// const transporter = nodemailer.createTransport({
-//   host: "smtpout.secureserver.net",
-//   secure: false,
-//   port: 587,
-//   auth: {
-//     user: process.env.EMAIL,
-//     pass: process.env.EmailPass
-//   },
-//   tls: {
-//     rejectUnauthorized: false // Only during development
-//   }
-// });
+dotenv.config({ path: '.env' });
+// console.log(process.env.EMAILADD)
 
 const transporter = nodemailer.createTransport({
   host: 'smtp-relay.brevo.com',
