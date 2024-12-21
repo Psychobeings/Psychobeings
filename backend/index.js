@@ -24,6 +24,10 @@ const corsOptions = {
 };
 
 // Use configured CORS options
+app.get('/', (req, res)=>{
+  res.send("Ping from the server !")
+})
+
 app.use(cors(corsOptions));
 
 app.use('/admin', admin_user);
