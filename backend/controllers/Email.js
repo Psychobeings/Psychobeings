@@ -1,4 +1,5 @@
 import nodemailer from "nodemailer";
+import Session from "../models/session_model.js";
 import dotenv from 'dotenv';
 
 const modifyDate = (e) => {
@@ -8,7 +9,7 @@ const modifyDate = (e) => {
   const year = date.getFullYear();
   return `${day}-${month}-${year}`;
 };
-dotenv.config({ path: '.env' });
+dotenv.config();
 // console.log(process.env.EMAILADD)
 
 
@@ -159,3 +160,51 @@ export const SendConfirmSlotMessage = async (session) => {
     res.status(400).json({ message: "Error: " + error });
   }
 };
+
+
+// ........................................................
+export const SendDeleteMessage = async (name, email, reason) => {
+ 
+  
+  console.log(email, reason)
+   
+   const mailOptions = {
+     from: process.env.EMAIL,
+     to: email,
+     subject: "Session Booking Status Update",
+     html: `
+       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; text-align: center;">
+         
+         <h2 style="color: #333; margin-bottom: 20px;">Session Booking Status Update</h2>
+         <p style="color: #555; line-height: 1.5; margin-bottom: 20px;">
+           Dear User,
+         </p>
+         <p style="color: #555; line-height: 1.5; margin-bottom: 20px;">
+           We regret to inform you that we are unable to confirm your booking status for the requested session due to the following reason:
+         </p>
+         <p style="color: #333; font-size: 1.2em; font-weight: bold; margin-bottom: 20px;">
+           ${reason}
+         </p>
+         <p style="color: #555; line-height: 1.5; margin-bottom: 20px;">
+           We apologize for any inconvenience this may have caused. Please feel free to reach out to us if you have any questions or require further assistance.
+         </p>
+         <p style="color: #555; line-height: 1.5; margin-bottom: 20px;">
+           Thank you for your understanding.
+         </p>
+       </div>
+     `,
+   };
+   
+   try {
+    
+   const info = await transporter.sendMail(mailOptions);
+   console.log("Email sent: ", info.response);
+  
+   } catch (error) {
+    console.log(error)
+   
+   }
+   //  comment
+   
+   }
+   

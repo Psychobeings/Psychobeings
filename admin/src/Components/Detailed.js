@@ -227,8 +227,9 @@ const Detailed = ({ isOpen, onCloseDetailed, details }) => {
       <ConfirmDelete
         isOpen={showConfirmDelete}
         onClose={() => { setShowConfirmDelete(false); }}
+        closeDetailed = {()=>onCloseDetailed()}
         sessionId={details._id}
-        sessionName={details.name}
+        session={details}
 
       />
     </>

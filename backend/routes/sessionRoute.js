@@ -8,6 +8,6 @@ router.put('/book', bookSession);
 
 router.get('/details', getSessionDetails);
 
-router.delete('/:id', deleteSession);
+router.post('/delete', deleteSession);
 
 export default router;

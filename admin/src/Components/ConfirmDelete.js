@@ -13,7 +13,7 @@ const deleteReasons = [
 ]
 
 // Confirm Delete Popup Component
-const ConfirmDelete = ({ isOpen, onClose, sessionId, sessionName }) => {
+const ConfirmDelete = ({ isOpen, onClose, sessionId, session, closeDetailed }) => {
   const [inputReason, setinputReason] = useState('');
   const [error, setError] = useState('');
 
@@ -30,13 +30,16 @@ const ConfirmDelete = ({ isOpen, onClose, sessionId, sessionName }) => {
 
 
     try {
-      console.log(sessionId)
-      const deleted = await axios.delete(`${process.env.REACT_APP_URL}session-form/${sessionId}`, { inputReason })
-      //  navigate('/')
+      console.log(inputReason, session)
+      const deleted = await axios.post(`${process.env.REACT_APP_URL}session-form/delete`, { inputReason, session })
+      console.log(deleted)
+      closeDetailed() 
+     onClose()
     }
     catch (error) {
       setError('Error deleting session')
     }
+
 
 
 
@@ -65,7 +68,7 @@ const ConfirmDelete = ({ isOpen, onClose, sessionId, sessionName }) => {
           <h2 className="text-2xl font-bold mb-4 text-red-600">Confirm Deletion</h2>
 
           <p className="mb-4 text-gray-700">
-            You are about to delete the session for <strong>{sessionName} </strong>.
+            You are about to delete the session for <strong>{session.name} </strong>.
             Select the reason for declining:
 
           </p>

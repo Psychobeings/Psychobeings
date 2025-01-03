@@ -1,18 +1,17 @@
 import Session from "../models/session_model.js";
-import {SendConfirmSlotMessage} from './Email.js'
+import { SendConfirmSlotMessage, SendDeleteMessage } from './Email.js'
 
 // Create a session (registerSession)
 export const registerSession = async (req, res) => {
   try {
     const { name, email, phone, date, timeSlot, concern } = req.body;
 
-    const alreadyBooked = await Session.findOne({ name, phone, date, timeSlot});
+    const alreadyBooked = await Session.findOne({ name, phone, date, timeSlot });
     console.log(alreadyBooked)
 
-    if(alreadyBooked)
-    {
+    if (alreadyBooked) {
 
-      return res.status(409).json({ message: "Session is already in queue, Please wait for confirmation !"});
+      return res.status(409).json({ message: "Session is already in queue, Please wait for confirmation !" });
     }
     const newSession = new Session({ name, email, phone, date, timeSlot, concern });
     await newSession.save();
@@ -27,13 +26,30 @@ export const registerSession = async (req, res) => {
 // Delete a session (deleteSession)
 export const deleteSession = async (req, res) => {
   try {
-    const { id } = req.params;
-    console.log(id)
-    const deletedSession = await Session.findByIdAndDelete(id);
-    if (!deletedSession) {
-      return res.status(404).json({ error: "Session not found" });
+    // const { id } = req.params;
+    const session = req.body.session
+    const reason = req.body.inputReason
+    const name = session.name
+    const email = session.email
+
+    // console.log(session)
+    
+
+
+    const deleted = await Session.findByIdAndDelete(session._id)
+  
+  
+   
+    if (deleted) {
+      await SendDeleteMessage(name, email, reason);
+      console.log("Deleted")
+      res.status(200).json({ message: "Successfully deleted session" });
     }
-    res.status(200).json({ message: "Session deleted successfully", session: deletedSession });
+
+
+
+
+
   } catch (error) {
     res.status(500).json({ error: "Failed to delete session", details: error.message });
   }
@@ -43,8 +59,8 @@ export const deleteSession = async (req, res) => {
 // Get all session details (getSessionDetails)
 export const getSessionDetails = async (req, res) => {
   try {
-   
-   
+
+
     const startIndex = parseInt(req.query.startIndex) || 0;
     const limit = parseInt(req.query.limit) || 9;
     // const order = req.query.order
@@ -62,18 +78,18 @@ export const getSessionDetails = async (req, res) => {
       ...(req.query.date && { date: req.query.date }),
       ...(req.query.phone && { phone: { $regex: new RegExp(req.query.phone, 'i') } }),
       ...(req.query._id && { _id: req.query._id }),
-      ...(req.query.status && {status :  req.query.status}),
-     ...(req.query.concern && { concern: req.query.concern }),
-   ... (   req.query.status == false && { createdTime: { $gt: Date.now() } } )
+      ...(req.query.status && { status: req.query.status }),
+      ...(req.query.concern && { concern: req.query.concern }),
+      ... (req.query.status == false && { createdTime: { $gt: Date.now() } })
     })
-      .sort({ date : -1 })
+      .sort({ date: -1 })
       .skip(startIndex)
       .limit(limit)
     // ////
     const totalCount = await result.length;
     // console.log(totalCount) 
 
-    return res.status(200).json({result, totalCount})
+    return res.status(200).json({ result, totalCount })
   } catch (error) {
     res.status(500).json({ error: "Failed to fetch session details", details: error.message });
   }
@@ -85,14 +101,14 @@ export const getSessionDetails = async (req, res) => {
 
 export const bookSession = async (req, res) => {
   try {
-    const  id  = req.body.id;
+    const id = req.body.id;
     const sessionTime = req.body.sessionTime
     console.log(id)
-    const changeState = await Session.findByIdAndUpdate(id, {$set: {status : true, sessionTime}}, { new: true } );
+    const changeState = await Session.findByIdAndUpdate(id, { $set: { status: true, sessionTime } }, { new: true });
     if (!changeState) {
       return res.status(404).json({ error: "Session not found" });
     }
-      await SendConfirmSlotMessage( changeState)
+    await SendConfirmSlotMessage(changeState)
     res.status(200).json({ message: "Session Booked successfully", session: changeState });
   } catch (error) {
     res.status(500).json({ error: "Failed to update session", details: error.message });
