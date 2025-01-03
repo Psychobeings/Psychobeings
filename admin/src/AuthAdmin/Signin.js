@@ -38,7 +38,7 @@ const Signin = ({ onLoginSuccess }) => {
 
     try {
       if (mode === 'requestReset') {
-        // Request OTP
+        // Request OTP with
         await axios.post(`${process.env.REACT_APP_URL}admin/email/send`, { email });
         setMode('verifyOtp');
       } else if (mode === 'verifyOtp') {
