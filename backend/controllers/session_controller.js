@@ -6,7 +6,8 @@ export const registerSession = async (req, res) => {
   try {
     const { name, email, phone, date, timeSlot, concern } = req.body;
 
-    const alreadyBooked = Session.findOne({ name, phone, date, timeSlot});
+    const alreadyBooked = await Session.findOne({ name, phone, date, timeSlot});
+    console.log(alreadyBooked)
 
     if(alreadyBooked)
     {
