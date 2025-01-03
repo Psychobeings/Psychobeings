@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { X, Calendar, Clock, Phone, User, CheckCircle2, XCircle, AlertTriangle } from 'lucide-react';
 import axios from 'axios';
+import { input } from '@material-tailwind/react';
 
 
 
@@ -28,21 +29,21 @@ const ConfirmDelete = ({ isOpen, onClose, sessionId, sessionName }) => {
 
 
 
-      try {
-        console.log(sessionId)
-        const deleted = await axios.delete(`${process.env.REACT_APP_URL}/session-form/${sessionId}`, {inputReason})
-        //  navigate('/')
-      }
-      catch (error) {
-        setError('Error deleting session')
-      }
+    try {
+      console.log(sessionId)
+      const deleted = await axios.delete(`${process.env.REACT_APP_URL}/session-form/${sessionId}`, { inputReason })
+      //  navigate('/')
+    }
+    catch (error) {
+      setError('Error deleting session')
+    }
 
 
 
 
-      onClose();
+    onClose();
 
-   
+
   };
 
   if (!isOpen) return null;
@@ -64,14 +65,15 @@ const ConfirmDelete = ({ isOpen, onClose, sessionId, sessionName }) => {
           <h2 className="text-2xl font-bold mb-4 text-red-600">Confirm Deletion</h2>
 
           <p className="mb-4 text-gray-700">
-            You are about to delete the session for <strong>{sessionName}</strong>.
-            
+            You are about to delete the session for <strong>{sessionName} </strong>.
+            Select the reason for declining:
+
           </p>
 
+{/*  */}
+          {/* <input type="text" value={inputReason} placeholder='' /> */}
 
-          <input type="text"  value={inputReason} placeholder='To delete, select the reason for declining:'/>
-
-        {
+          {/* {
           deleteReasons.map((reason, index) => (
             <button
             type="text"
@@ -89,7 +91,31 @@ const ConfirmDelete = ({ isOpen, onClose, sessionId, sessionName }) => {
           > {reason} </button>
             ))
         }
-         
+          */}
+
+
+
+ { deleteReasons?.map((reason, index) => (
+          <div
+            key={index}
+            className={`
+          flex items-center p-3 rounded-lg cursor-pointer
+          ${reason === inputReason ?
+                'border-green-600 border-2'
+                :
+                inputReason === reason
+                  ? 'bg-indigo-100 border-2 border-indigo-500'
+                  : 'hover:bg-gray-100 border border-gray-200'}
+          transition-all duration-200 ease-in-out
+        `}
+            onClick={() => setinputReason(reason)}
+          >
+              {reason}
+          </div>
+          ))
+  }
+
+
 
           {error && (
             <p className="text-red-500 text-sm mb-2">{error}</p>

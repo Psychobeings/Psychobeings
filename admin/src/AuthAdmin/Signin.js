@@ -18,7 +18,7 @@ const Signin = ({ onLoginSuccess }) => {
     setError('');
 
     try {
-      const response = await axios.post(`${process.env.REACT_APP_URL}/admin/signin`, {
+      const response = await axios.post(`${process.env.REACT_APP_URL}admin/signin`, {
         email,
         password
       });
@@ -28,6 +28,7 @@ const Signin = ({ onLoginSuccess }) => {
       navigate('/sessions');
     } catch (err) {
       setError(err.response?.data?.message || 'Sign in failed');
+      // console.log()
     }
   };
 
@@ -38,11 +39,11 @@ const Signin = ({ onLoginSuccess }) => {
     try {
       if (mode === 'requestReset') {
         // Request OTP
-        await axios.post(`${process.env.REACT_APP_URL}/admin/email/send`, { email });
+        await axios.post(`${process.env.REACT_APP_URL}admin/email/send`, { email });
         setMode('verifyOtp');
       } else if (mode === 'verifyOtp') {
         // Verify OTP
-        const verify = await axios.post(`${process.env.REACT_APP_URL}/admin/email/verify`, { email, otp });
+        const verify = await axios.post(`${process.env.REACT_APP_URL}admin/email/verify`, { email, otp });
         setPassword('')
         setMode('resetPassword');
  
@@ -53,7 +54,7 @@ const Signin = ({ onLoginSuccess }) => {
           return;
         }
 
-        const reset = await axios.post(`${process.env.REACT_APP_URL}/admin/reset-password`, { 
+        const reset = await axios.post(`${process.env.REACT_APP_URL}admin/reset-password`, { 
           email, 
           password
         });
