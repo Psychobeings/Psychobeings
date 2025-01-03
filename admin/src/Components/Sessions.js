@@ -57,7 +57,7 @@ const Sessions = () => {
       setLoading(true);
       try {
         const response = await axios.get(
-          `${process.env.REACT_APP_URL}/session-form/details?${queryString}`
+          `${process.env.REACT_APP_URL}session-form/details?${queryString}`
         );
         setData(response.data.result || []);
         // console.log(response.data)

@@ -18,6 +18,7 @@ const Signin = ({ onLoginSuccess }) => {
     setError('');
 
     try {
+      console.log(process.env.REACT_APP_URL)
       const response = await axios.post(`${process.env.REACT_APP_URL}admin/signin`, {
         email,
         password
@@ -27,8 +28,8 @@ const Signin = ({ onLoginSuccess }) => {
       onLoginSuccess();
       navigate('/sessions');
     } catch (err) {
-      setError(err.response?.data?.message || 'Sign in failed');
-      // console.log()
+      setError( 'Sign in failed');
+      console.log("Error:" , err)
     }
   };
 
