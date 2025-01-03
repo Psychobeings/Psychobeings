@@ -27,7 +27,7 @@ const corsOptions = {
 app.get('/', (req, res)=>{
   res.send("Ping from the server !")
 })
-https://back-psychobeings.vercel.app/
+
 app.use(cors(corsOptions));
 
 app.use('/admin', admin_user);
