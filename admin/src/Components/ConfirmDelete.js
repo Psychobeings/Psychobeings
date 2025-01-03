@@ -100,9 +100,7 @@ const ConfirmDelete = ({ isOpen, onClose, sessionId, sessionName }) => {
             key={index}
             className={`
           flex items-center p-3 rounded-lg cursor-pointer
-          ${reason === inputReason ?
-                'border-green-600 border-2'
-                :
+          ${
                 inputReason === reason
                   ? 'bg-indigo-100 border-2 border-indigo-500'
                   : 'hover:bg-gray-100 border border-gray-200'}
