@@ -18,8 +18,7 @@ const Signin = ({ onLoginSuccess }) => {
     setError('');
 
     try {
-      console.log(process.env.REACT_APP_URL)
-      const response = await axios.post(`${process.env.REACT_APP_URL}admin/signin`, {
+      const response = await axios.post(`${process.env.REACT_APP_URL}/admin/signin`, {
         email,
         password
       });
@@ -39,8 +38,8 @@ const Signin = ({ onLoginSuccess }) => {
 
     try {
       if (mode === 'requestReset') {
-        // Request OTP with
-        await axios.post(`${process.env.REACT_APP_URL}admin/email/send`, { email });
+        // Request OTP
+        await axios.post(`${process.env.REACT_APP_URL}/admin/email/send`, { email });
         setMode('verifyOtp');
       } else if (mode === 'verifyOtp') {
         // Verify OTP

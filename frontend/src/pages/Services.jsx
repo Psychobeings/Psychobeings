@@ -8,7 +8,7 @@ const Services = () => {
   const [activeButton, setActiveButton] = useState('Individual');
   const [coupon, setCoupon] = useState('HAPPYPHYCO10');
   const [isCopied, setIsCopied] = useState(false);
-  
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -27,9 +27,9 @@ const Services = () => {
   return (
     <div className="p-6 md:p-8 max-w-screen-xl mx-auto">
       {/* Header Section */}
-      <div className="flex flex-col items-center justify-center bg-white p-6 md:p-8 rounded-lg shadow-md w-full max-w-screen mx-auto mb-8">
+      {/* <div className="flex flex-col items-center justify-center bg-white p-6 md:p-8 rounded-lg shadow-md w-full max-w-screen mx-auto mb-8">
         <div className="flex flex-col md:flex-row justify-between items-center w-full md:space-x-6">
-          {/* Left Image */}
+          //Left Image
           <div className="w-full md:w-1/3 p-4">
             <img
               src={pricing2}
@@ -38,7 +38,7 @@ const Services = () => {
             />
           </div>
 
-          {/* Center Content */}
+          //Center Content 
           <div className="w-full md:w-1/3 text-center p-4 flex flex-col items-center justify-center">
             <h2 className="text-2xl font-bold mb-2">UNLOCK YOUR WELLBEING NOW</h2>
             <p className="text-lg text-blue-600 mb-4">Get 10% Off All Therapy Plans!</p>
@@ -51,7 +51,7 @@ const Services = () => {
             </div>
           </div>
 
-          {/* Right Image */}
+          // Right Image 
           <div className="w-full md:w-1/3 p-4">
             <img
               src={pricing1}
@@ -60,11 +60,11 @@ const Services = () => {
             />
           </div>
         </div>
-      </div>
+      </div> */}
 
       {/* Therapy Cards Section */}
       <h1 className="text-3xl font-bold mb-6 text-center">Our Services</h1>
-      <div className="grid gap-16 sm:grid-cols-2 lg:grid-cols-2">
+      <div className="grid gap-20 sm:grid-cols-2 lg:grid-cols-2">
         {cardsData.map((card) => (
           <div
             key={card.id}
@@ -77,37 +77,45 @@ const Services = () => {
             />
             <h2 className="text-xl font-semibold mb-2">{card.title}</h2>
             <p className="text-gray-600 mb-2">{card.description}</p>
-            <div className="flex items-center justify-center mb-2">
+            {/* <div className="flex items-center justify-center mb-2">
               <span className="text-yellow-500">&#9733;</span>
               <span className="text-gray-800 ml-1">{card.rating}</span>
-            </div>
-            <p className="text-blue-600 font-semibold mb-4">{card.price}</p>
+            </div> */}
+            <p className="text-green-600 font-semibold mb-4 text-xl">Price: {card.price}</p>
             <div className="flex space-x-2">
               <Link to={`/${card.url}`}>
                 <button className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg">
                   Book Now
                 </button>
               </Link>
+              <Link to={`/services/${card.id}`}>
               <button className="bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded-lg">
                 Know More
               </button>
+              </Link>
             </div>
           </div>
         ))}
       </div>
 
       {/* Feature Section */}
-      <div className="mt-20 flex justify-center">
-        <div className="flex flex-wrap gap-6 justify-center">
-          {featuresData.map((feature) => (
-            <div key={feature.id} className="flex flex-col items-center p-4 bg-white shadow-lg rounded-lg max-w-xs text-center">
-              <img src={feature.icon} alt={feature.title} className="w-16 h-16 mb-4" />
-              <h3 className="text-lg font-semibold mb-2">{feature.title}</h3>
-              <p className="text-gray-600">{feature.subtitle}</p>
+      <div className="mt-20 text-center">
+    <h2 className="text-3xl font-bold mb-8">We value your privacy</h2>
+    
+    {/* Responsive Grid */}
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 justify-center">
+        {featuresData.map((feature) => (
+            <div 
+                key={feature.id} 
+                className="flex flex-col items-center text-center p-6 bg-white rounded-lg shadow-md min-h-[250px] justify-between"
+            >
+                <img src={feature.icon} alt={feature.title} className="w-16 h-16 mb-4" />
+                <h3 className="text-lg font-semibold">{feature.title}</h3>
+                <p className="text-gray-600">{feature.subtitle}</p>
             </div>
-          ))}
-        </div>
-      </div>
+        ))}
+    </div>
+</div>
     </div>
   );
 };

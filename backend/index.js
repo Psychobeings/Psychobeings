@@ -23,6 +23,7 @@ const corsOptions = {
   origin: [process.env.SOURCE_URL , process.env.ADMIN_URL], 
 };
 
+
 // Use configured CORS options
 app.get('/', (req, res)=>{
   res.send("Ping from the server !")
@@ -33,6 +34,7 @@ app.use(cors(corsOptions));
 app.use('/admin', admin_user);
 app.use('/session-form', sessionRoute);
 app.use('/email',SendMessage);
+
 
 app.listen(8080, ()=>{
     console.log("Server started!");
