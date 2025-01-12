@@ -32,6 +32,7 @@ const SessionBookingForm = ({ onSubmit }) => {
   const inputStyles = "w-full px-4 py-2.5 rounded-md border border-gray-200 focus:border-deep-mint focus:ring-1 focus:ring-deep-mint focus:outline-none text-dark-gunmetal placeholder-gray-400 transition-colors duration-200";
   const labelStyles = "block text-sm font-medium text-dark-gunmetal mb-1.5";
   const today = new Date().toISOString().split('T')[0];
+  
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -155,14 +156,14 @@ const SessionBookingForm = ({ onSubmit }) => {
               className={inputStyles}
             >
               <option value="">Select Concern</option>
-              <option value="concern1">Stress</option>
-              <option value="concern2">Anxiety</option>
-              <option value="concern3">Career counselling </option>
-              <option value="concern4">Relationship issues</option>
-              <option value="concern5">Work life balance issues</option>
-              <option value="concern5">Childhood trauma</option>
-              <option value="concern5">Existential crisis</option>
-              <option value="concern5">Emptiness in life</option>
+              <option value="Stress"></option>
+              <option value="Anxiety"></option>
+              <option value="Career counselling ">Career counselling </option>
+              <option value="Relationship issues">Relationship issues</option>
+              <option value="Work life balance issues">Work life balance issues</option>
+              <option value="Childhood trauma">Childhood trauma</option>
+              <option value="Existential crisis">Existential crisis</option>
+              <option value="Emptiness in life">Emptiness in life</option>
             </select>
           </div>
 
