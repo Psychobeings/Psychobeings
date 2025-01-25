@@ -1,16 +1,26 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { X, Calendar, Clock, Phone, User, CheckCircle2, XCircle, AlertTriangle } from 'lucide-react';
 import axios from 'axios';
+import { input } from '@material-tailwind/react';
+
+
+
+const deleteReasons = [
+  "Reason 1",
+  "Reason 2",
+  "Reason 3",
+  "Reason 4"
+]
 
 // Confirm Delete Popup Component
-const ConfirmDelete = ({ isOpen, onClose, sessionId, sessionName }) => {
-  const [inputName, setInputName] = useState('');
+const ConfirmDelete = ({ isOpen, onClose, sessionId, session, closeDetailed }) => {
+  const [inputReason, setinputReason] = useState('');
   const [error, setError] = useState('');
 
   // Reset input when popup opens
   useEffect(() => {
     if (isOpen) {
-      setInputName('');
+      setinputReason(null);
       setError('');
     }
   }, [isOpen]);
@@ -22,7 +32,7 @@ const ConfirmDelete = ({ isOpen, onClose, sessionId, sessionName }) => {
       
        try{
         console.log(sessionId)
-           const deleted = await axios.delete(`${process.env.REACT_APP_URL}/session-form/${sessionId}`)
+           const deleted = await axios.delete(`${process.env.REACT_APP_URL}/${sessionId}`)
           //  navigate('/')
 
        }
@@ -31,13 +41,12 @@ const ConfirmDelete = ({ isOpen, onClose, sessionId, sessionName }) => {
         }
 
 
-    
-    
-      onClose();
-      
-    } else {
-      setError('Name does not match. Please try again.');
-    }
+
+
+
+    onClose();
+
+
   };
 
   if (!isOpen) return null;
@@ -57,25 +66,57 @@ const ConfirmDelete = ({ isOpen, onClose, sessionId, sessionName }) => {
         <div className="text-center">
           <AlertTriangle className="mx-auto mb-4 text-red-500" size={48} />
           <h2 className="text-2xl font-bold mb-4 text-red-600">Confirm Deletion</h2>
-          
+
           <p className="mb-4 text-gray-700">
-            You are about to delete the session for <strong>{sessionName}</strong>. 
-            To confirm, type the client's name below:
+            You are about to delete the session for <strong>{session.name} </strong>.
+            Select the reason for declining:
+
           </p>
 
-          <input 
+{/*  */}
+          {/* <input type="text" value={inputReason} placeholder='' /> */}
+
+          {/* {
+          deleteReasons.map((reason, index) => (
+            <button
             type="text"
-            value={inputName}
-            onChange={(e) => {
-              setInputName(e.target.value);
-              setError('');
+            
+            onClick={(e) => {
+              setinputReason(reason);
+              // setError('');
+             
             }}
             placeholder="Enter client name"
             className={`
               w-full p-3 border rounded-lg mb-2
               ${error ? 'border-red-500 bg-red-50' : 'border-gray-300'}
             `}
-          />
+          > {reason} </button>
+            ))
+        }
+          */}
+
+
+
+ { deleteReasons?.map((reason, index) => (
+          <div
+            key={index}
+            className={`
+          flex items-center p-3 rounded-lg cursor-pointer
+          ${
+                inputReason === reason
+                  ? 'bg-indigo-100 border-2 border-indigo-500'
+                  : 'hover:bg-gray-100 border border-gray-200'}
+          transition-all duration-200 ease-in-out
+        `}
+            onClick={() => setinputReason(reason)}
+          >
+              {reason}
+          </div>
+          ))
+  }
+
+
 
           {error && (
             <p className="text-red-500 text-sm mb-2">{error}</p>
@@ -94,11 +135,11 @@ const ConfirmDelete = ({ isOpen, onClose, sessionId, sessionName }) => {
             </button>
             <button
               onClick={handleConfirmation}
-              disabled={!inputName.trim()}
+              disabled={!inputReason}
               className={`
                 flex-1 py-3 rounded-lg transition
-                ${inputName.trim() 
-                  ? 'bg-red-500 text-white hover:bg-red-600' 
+                ${inputReason
+                  ? 'bg-red-500 text-white hover:bg-red-600'
                   : 'bg-gray-400 text-gray-200 cursor-not-allowed'}
               `}
             >

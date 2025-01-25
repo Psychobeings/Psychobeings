@@ -12,11 +12,6 @@ const Detailed = ({ isOpen, onCloseDetailed, details }) => {
   const [isAnimating, setIsAnimating] = useState(false);
   const [error, setError] = useState(null);
   const [showConfirmDelete, setShowConfirmDelete] = useState(false);
-  const [booked, setBooked] = useState(0);
-
-  useEffect(() => {
-    setBooked(details?.status)
-  }, [details])
 
   // Time slots
   const timeSlots = {
@@ -226,10 +221,10 @@ const Detailed = ({ isOpen, onCloseDetailed, details }) => {
       {/* Confirm Delete Popup */}
       <ConfirmDelete
         isOpen={showConfirmDelete}
-        onClose={() => { setShowConfirmDelete(false); }}
+        onClose={() =>{ setShowConfirmDelete(false); }}
         sessionId={details._id}
         sessionName={details.name}
-
+        
       />
     </>
   );

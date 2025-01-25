@@ -9,7 +9,7 @@ import Footer from './components/Footer';
 import SessionBookingForm from './components/SessionBookingForm';
 import ComingSoon from './components/ComingSoon';
 import { Toaster } from 'react-hot-toast';
-
+import TherapyDetails from './pages/TherapyDetails'
 function App() {
   const [isContactOpen, setIsContactOpen] = useState(false);
 
@@ -25,6 +25,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route path="/services" element={<Services />} />
+          <Route path="/services/:therapy-id" element={<TherapyDetails/>} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/individual-therapy" element={<SessionBookingForm />} />

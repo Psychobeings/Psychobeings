@@ -18,7 +18,7 @@ export const cardsData = [
       image: therapy1,
       description: 'One-on-one sessions with a professional therapist.',
       rating: 4.8,
-      price: '$70/hour',
+      price: '500₹',
     },
     {
       id: 2,
@@ -27,7 +27,7 @@ export const cardsData = [
       image: therapy2,
       description: 'Sessions to improve communication and connection.',
       rating: 4.6,
-      price: '$90/hour',
+      price: '500₹',
     },
     {
       id: 3,
@@ -36,7 +36,7 @@ export const cardsData = [
       image: therapy3,
       description: 'Helping families build stronger relationships.',
       rating: 4.7,
-      price: '$100/hour',
+      price: '500₹',
     },
     {
       id: 4,
@@ -45,17 +45,35 @@ export const cardsData = [
       image: therapy4,
       description: 'Support groups led by experienced professionals.',
       rating: 4.5,
-      price: '$50/hour',
+      price: '500₹',
+    },
+    {
+      id: 5,
+      title: 'Group Therapy',
+      url:'group-therapy',
+      image: therapy4,
+      description: 'Support groups led by experienced professionals.',
+      rating: 4.5,
+      price: '500₹',
+    },
+    {
+      id: 6,
+      title: 'Group Therapy',
+      url:'group-therapy',
+      image: therapy4,
+      description: 'Support groups led by experienced professionals.',
+      rating: 4.5,
+      price: '500₹',
     },
   ];
    // Dummy data for the new feature section (replace with actual icons/images as needed)
    export  const featuresData = [
-    { id: 1, icon: img1, title: 'Therapist (45 mins)', subtitle: 'Psychiatrist (30 mins)' },
-    { id: 2, icon: img2, title: 'Lifetime Validity', subtitle: '30 Day Refund Policy' },
-    { id: 3, icon: img3, title: 'Uniform Pricing', subtitle: 'Video | Call | Chat' },
-    { id: 4, icon: img4, title: 'Couple Appointment', subtitle: '= 2 Sessions' },
-    { id: 5, icon: img5, title: '7-Day Customer', subtitle: 'Care Support' },
-    { id: 6, icon: img6, title: '100% Confidential', subtitle: '& Secure' },
+    { id: 1, icon: img1, title: 'Registered psychiatrists and therapists ', subtitle: '' },
+    { id: 2, icon: img2, title: 'Completely confidential care', subtitle: '' },
+    { id: 3, icon: img3, title: 'Personalised and evidence based treatment', subtitle: '' },
+    { id: 4, icon: img4, title: 'For everyone - Men, Women, LGBTQ+', subtitle: '' },
+    { id: 5, icon: img5, title: 'Made by doctors', subtitle: '' },
+    { id: 6, icon: img6, title: "Discreet delivery of medicines", subtitle: '' },
   ];
 
 

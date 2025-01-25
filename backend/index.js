@@ -17,21 +17,24 @@ Connection();
 
 app.use(cors());
 
+// console.log(process.env.SOURCE_URL)
 
 const corsOptions = {
   origin: [process.env.SOURCE_URL , process.env.ADMIN_URL], 
 };
 
+
 // Use configured CORS options
+app.get('/', (req, res)=>{
+  res.send("Ping from the server !")
+})
+
 app.use(cors(corsOptions));
 
 app.use('/admin', admin_user);
 app.use('/session-form', sessionRoute);
-<<<<<<< HEAD
-app.use('/email',SendMessage);
-=======
 app.use('/email', emailRoute);
->>>>>>> cbc2e1ce63e272a4fe749debfb51c133e54e957d
+
 
 app.listen(8080, ()=>{
     console.log("Server started!");

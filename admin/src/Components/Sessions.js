@@ -57,7 +57,7 @@ const Sessions = () => {
       setLoading(true);
       try {
         const response = await axios.get(
-          `${process.env.REACT_APP_URL}/session-form/details?${queryString}`
+          `${process.env.REACT_APP_URL}session-form/details?${queryString}`
         );
         setData(response.data.result || []);
         // console.log(response.data)
@@ -117,13 +117,13 @@ const Sessions = () => {
                   <tbody>
                     {data?.map((session, index) => (
                       <tr key={session.session_id}>
-                        <td className="p-4 border-b text-center">
+                        <td className="p-4 border-b text-center ">
                           {index + 1 + (currentPage - 1) * rowsPerPage}
                         </td>
                         <td className="p-4 border-b">{session.name}</td>
                         <td className="p-4 border-b">{session.phone}</td>
                         <td className="p-4 border-b">{modifyDate(session.date)}</td>
-                        <td className={`p-4 border-b flex flex-row gap-1`}>{ !currentStatus ?  session.timeSlot.toUpperCase() :  session.sessionTime }  { currentStatus &&  <VerifiedIcon color='green'/>} </td>
+                        <td className="p-4 border-b">{session.timeSlot.toUpperCase()}</td>
                         <td className="p-4 border-b">
                           <button
                           className={`px-2 py-1 text-sm text-white rounded  transition ${ currentStatus ? "bg-green-600 hover:bg-green-700 " : "bg-blue-500 hover:bg-blue-600"}`}

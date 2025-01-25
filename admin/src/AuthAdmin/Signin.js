@@ -27,7 +27,8 @@ const Signin = ({ onLoginSuccess }) => {
       onLoginSuccess();
       navigate('/sessions');
     } catch (err) {
-      setError(err.response?.data?.message || 'Sign in failed');
+      setError( 'Sign in failed');
+      console.log("Error:" , err)
     }
   };
 
@@ -43,7 +44,6 @@ const Signin = ({ onLoginSuccess }) => {
       } else if (mode === 'verifyOtp') {
         // Verify OTP
         const verify = await axios.post(`${process.env.REACT_APP_URL}/admin/email/verify`, { email, otp });
-        setPassword('')
         setMode('resetPassword');
  
       } else if (mode === 'resetPassword') {
@@ -53,7 +53,7 @@ const Signin = ({ onLoginSuccess }) => {
           return;
         }
 
-        const reset = await axios.post(`${process.env.REACT_APP_URL}/admin/reset-password`, { 
+        const reset = await axios.post(`${process.env.REACT_APP_URL}admin/reset-password`, { 
           email, 
           password
         });
@@ -245,6 +245,7 @@ const Signin = ({ onLoginSuccess }) => {
       </div>
     </div>
   );
+  // comment added
 };
 
 export default Signin;
