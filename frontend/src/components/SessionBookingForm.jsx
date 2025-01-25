@@ -48,7 +48,7 @@ const SessionBookingForm = ({ onSubmit }) => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        `${process.env.REACT_APP_URL}session-form/register`,
+        `${process.env.REACT_APP_URL}/session-form/register`,
         formData
       );
       toast.success(
