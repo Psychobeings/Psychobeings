@@ -17,15 +17,8 @@ const SessionBookingForm = ({ onSubmit }) => {
     concern: ''
   };
 
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    date: '',
-    timeSlot: '',
-    concern: '',
-  });
-
+  const [formData, setFormData] = useState(initialFormData);
+  const [isLoading, setIsLoading] = useState(false); // Loading state
   const navigate = useNavigate();
 
   const inputStyles =
@@ -35,17 +28,15 @@ const SessionBookingForm = ({ onSubmit }) => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-
-    let updatedValue = value;
-
     setFormData((prevData) => ({
       ...prevData,
-      [name]: updatedValue,
+      [name]: value,
     }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true); // Start loading
     try {
       const response = await axios.post(
         `${process.env.REACT_APP_URL}/session-form/register`,
@@ -64,6 +55,8 @@ const SessionBookingForm = ({ onSubmit }) => {
         error.response?.data?.message || "Failed to book the appointment."
       );
       console.log(error);
+    } finally {
+      setIsLoading(false); // Stop loading
     }
   };
 
@@ -162,9 +155,19 @@ const SessionBookingForm = ({ onSubmit }) => {
 
           <button
             type="submit"
-            className="w-full sm:w-auto px-6 py-2.5 bg-deep-mint text-pure-white font-medium rounded-md hover:bg-light-deep-mint transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-deep-mint focus:ring-opacity-50"
+            className={`w-full sm:w-auto px-6 py-2.5 font-medium rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-opacity-50 ${
+              isLoading ? "bg-gray-400 cursor-not-allowed" : "bg-deep-mint text-pure-white hover:bg-light-deep-mint"
+            }`}
+            disabled={isLoading}
           >
-            Book Appointment
+            {isLoading ? (
+              <span className="flex items-center justify-center space-x-2">
+                <span className="loader border-white border-2 w-4 h-4 rounded-full animate-spin"></span>
+                <span>Booking...</span>
+              </span>
+            ) : (
+              "Book Appointment"
+            )}
           </button>
         </form>
       </div>
