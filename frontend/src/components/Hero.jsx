@@ -13,10 +13,10 @@ const Hero = () => {
               <span className="text-deep-mint">beings</span>
             </h1>
             <p className="text-lg sm:text-xl md:text-2xl text-gray-800 mb-4">
-            Redefining mental health. One mind at a time.
+              Redefining mental health. One mind at a time.
             </p>
             <p className="text-base sm:text-lg md:text-xl text-gray-600 mb-8">
-            Your mental well-being matters. Here, we create a safe space to explore, heal, and grow. Whether you're seeking guidance, support, or tools to navigate life's challenges, we’re here to walk with you every step of the way. Prioritize yourself today—because peace of mind is where true strength begins.
+              Your mental well-being matters. Here, we create a safe space to explore, heal, and grow. Whether you're seeking guidance, support, or tools to navigate life's challenges, we’re here to walk with you every step of the way. Prioritize yourself today—because peace of mind is where true strength begins.
             </p>
             <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
               <Link to="/services">
@@ -32,14 +32,12 @@ const Hero = () => {
             </div>
           </div>
           <div className="w-full lg:w-1/2 mt-8 lg:mt-0">
-            <div className="relative w-full h-0 pb-[75%] lg:pb-[66.66%]">
-              <div className="absolute inset-0 overflow-hidden rounded-md hidden md:block">
-                <img
-                  src={logo2}
-                  alt="Psychobeings Logo"
-                  className="w-full h-full object-cover object-center"
-                />
-              </div>
+            <div className="relative w-full h-auto">
+              <img
+                src={logo2}
+                alt="Psychobeings Logo"
+                className="w-full h-auto object-cover object-center rounded-md sm:block hidden"
+              />
             </div>
           </div>
         </div>

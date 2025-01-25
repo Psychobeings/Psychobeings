@@ -26,15 +26,15 @@ const WhatWeDo = () => {
                     </p>
 
                     {/* Buttons */}
-                    <div className="flex flex-wrap gap-4 justify-center lg:justify-start mt-4">
+                    <div className="flex flex-wrap gap-1 justify-center lg:justify-start mt-4">
                         <button className="bg-pure-white text-dark-gunmetal px-4 py-2 rounded-full font-semibold transition-colors duration-300 hover:bg-dark-gunmetal hover:text-pure-white sm:px-6 sm:py-3 md:text-lg">
                             Therapy
                         </button>
                         <button className="bg-pure-white text-dark-gunmetal px-4 py-2 rounded-full font-semibold transition-colors duration-300 hover:bg-dark-gunmetal hover:text-pure-white sm:px-6 sm:py-3 md:text-lg">
-                            Diagnosis
+                           Workshops
                         </button>
                         <button className="bg-pure-white text-dark-gunmetal px-4 py-2 rounded-full font-semibold transition-colors duration-300 hover:bg-dark-gunmetal hover:text-pure-white sm:px-6 sm:py-3 md:text-lg">
-                            Pricing
+                            Classrooms
                         </button>
                         <button className="bg-pure-white text-dark-gunmetal px-4 py-2 rounded-full font-semibold transition-colors duration-300 hover:bg-dark-gunmetal hover:text-pure-white sm:px-6 sm:py-3 md:text-lg">
                             Couple's Counseling

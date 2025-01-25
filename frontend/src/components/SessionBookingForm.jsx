@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import { toast } from 'react-hot-toast';
 
 const SessionBookingForm = ({ onSubmit }) => {
-
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -29,10 +28,10 @@ const SessionBookingForm = ({ onSubmit }) => {
 
   const navigate = useNavigate();
 
-  const inputStyles = "w-full px-4 py-2.5 rounded-md border border-gray-200 focus:border-deep-mint focus:ring-1 focus:ring-deep-mint focus:outline-none text-dark-gunmetal placeholder-gray-400 transition-colors duration-200";
+  const inputStyles =
+    "w-full px-4 py-2.5 rounded-md border border-gray-200 focus:border-deep-mint focus:ring-1 focus:ring-deep-mint focus:outline-none text-dark-gunmetal placeholder-gray-400 transition-colors duration-200";
   const labelStyles = "block text-sm font-medium text-dark-gunmetal mb-1.5";
   const today = new Date().toISOString().split('T')[0];
-  
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -45,19 +44,25 @@ const SessionBookingForm = ({ onSubmit }) => {
     }));
   };
 
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(`${process.env.REACT_APP_URL}session-form/register`, formData);
-      toast.success("Appointment booked successfully! We will notify you about the timings..!");
+      const response = await axios.post(
+        `${process.env.REACT_APP_URL}session-form/register`,
+        formData
+      );
+      toast.success(
+        "Appointment booked successfully! We will notify you about the timings..!"
+      );
 
       if (onSubmit) onSubmit(response.data.session);
 
       setFormData(initialFormData);
       navigate("/services");
     } catch (error) {
-      toast.error(error.response?.data?.message || "Failed to book the appointment.");
+      toast.error(
+        error.response?.data?.message || "Failed to book the appointment."
+      );
       console.log(error);
     }
   };
@@ -69,7 +74,7 @@ const SessionBookingForm = ({ onSubmit }) => {
           Book Your Appointment
         </h1>
         <form onSubmit={handleSubmit} className="space-y-5">
-          {/* Example Field */}
+          {/* Name */}
           <div className="w-full">
             <label htmlFor="name" className={labelStyles}>Your Name</label>
             <input
@@ -143,27 +148,22 @@ const SessionBookingForm = ({ onSubmit }) => {
 
           {/* Concerns */}
           <div className="w-full">
-            <label htmlFor="concern" className={labelStyles}>Concerns</label>
-            <select
+            <label htmlFor="concern" className={labelStyles}>Your Concerns</label>
+            <textarea
               id="concern"
               name="concern"
+              placeholder="Briefly describe your concerns..."
               value={formData.concern}
               onChange={handleChange}
-              className={inputStyles}
-            >
-              <option value="">Select Concern</option>
-              <option value="Stress"></option>
-              <option value="Anxiety"></option>
-              <option value="Career counselling ">Career counselling </option>
-              <option value="Relationship issues">Relationship issues</option>
-              <option value="Work life balance issues">Work life balance issues</option>
-              <option value="Childhood trauma">Childhood trauma</option>
-              <option value="Existential crisis">Existential crisis</option>
-              <option value="Emptiness in life">Emptiness in life</option>
-            </select>
+              rows="4"
+              className={`${inputStyles} resize-none`}
+            />
           </div>
 
-          <button type="submit" className="w-full sm:w-auto px-6 py-2.5 bg-deep-mint text-pure-white font-medium rounded-md hover:bg-light-deep-mint transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-deep-mint focus:ring-opacity-50">
+          <button
+            type="submit"
+            className="w-full sm:w-auto px-6 py-2.5 bg-deep-mint text-pure-white font-medium rounded-md hover:bg-light-deep-mint transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-deep-mint focus:ring-opacity-50"
+          >
             Book Appointment
           </button>
         </form>
