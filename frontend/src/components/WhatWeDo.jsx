@@ -1,49 +1,57 @@
 import React from 'react';
-import rightGif from '../assets/thinkingImage.gif'; // Replace with the actual GIF file path
+import rightGif from '../assets/rightGif.png'; // Replace with a better one if needed
 
 const WhatWeDo = () => {
-    return (
-        <section className="bg-deep-mint text-dark-gunmetal py-12 px-6 md:py-16 md:px-8 lg:px-16">
-            <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+  return (
+    <section className="bg-[#097f7f] text-white py-14 px-6 md:py-20 md:px-12 lg:px-20">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+        
+        {/* Left: Centered Text Content */}
+        <div className="space-y-6 text-center">
+          <h2 className="text-3xl md:text-4xl xl:text-5xl font-bold tracking-wide text-white">
+            WHAT WE DO
+          </h2>
 
-                {/* Left Side: GIF */}
-                <div className="flex justify-center lg:justify-start">
-                    <img
-                        src={rightGif}
-                        alt="Animated Illustration"
-                        className="w-48 h-48 md:w-64 md:h-64 lg:w-72 lg:h-72 xl:w-80 xl:h-80 object-cover"
-                    />
-                </div>
+          <p className="text-lg md:text-xl leading-relaxed">
+            We offer <span className="font-bold text-#064646">online counselling</span> sessions for individuals (ages 13–30) and couples, 
+            addressing stress, anxiety, work-life balance, childhood trauma, and feelings of emptiness — all in a 
+            safe, judgment-free space.
+          </p>
 
-                {/* Right Side: Content */}
-                <div className="text-center lg:text-left space-y-4 md:space-y-6">
-                    <h2 className="text-3xl md:text-4xl xl:text-5xl font-bold tracking-wide">WHAT WE DO</h2>
-                    <p className="text-base md:text-lg xl:text-xl">
-                    We offer a diverse range of professional services, including individual and couples counseling, engaging workshops, and specialized CBSE Psychology tuition for students in grades 11 and 12.
-                    </p>
-                    <p className="text-base md:text-lg xl:text-xl">
-                    Our expertise encompasses addressing key concerns such as stress management, anxiety relief, career planning, relationship dynamics, work-life integration, recovery from childhood trauma, exploration of existential challenges, and navigating feelings of emptiness with care and precision.
-                    </p>
+          <p className="text-lg md:text-xl leading-relaxed">
+            We also specialize in <span className="font-bold text-pure-white">student-focused psychological research guidance</span>, 
+            helping learners from IBDP, undergraduate, and postgraduate levels.
+          </p>
 
-                    {/* Buttons */}
-                    <div className="flex flex-wrap gap-1 justify-center lg:justify-start mt-4">
-                        <button className="bg-pure-white text-dark-gunmetal px-4 py-2 rounded-full font-semibold transition-colors duration-300 hover:bg-dark-gunmetal hover:text-pure-white sm:px-6 sm:py-3 md:text-lg">
-                            Therapy
-                        </button>
-                        <button className="bg-pure-white text-dark-gunmetal px-4 py-2 rounded-full font-semibold transition-colors duration-300 hover:bg-dark-gunmetal hover:text-pure-white sm:px-6 sm:py-3 md:text-lg">
-                           Workshops
-                        </button>
-                        <button className="bg-pure-white text-dark-gunmetal px-4 py-2 rounded-full font-semibold transition-colors duration-300 hover:bg-dark-gunmetal hover:text-pure-white sm:px-6 sm:py-3 md:text-lg">
-                            Classrooms
-                        </button>
-                        <button className="bg-pure-white text-dark-gunmetal px-4 py-2 rounded-full font-semibold transition-colors duration-300 hover:bg-dark-gunmetal hover:text-pure-white sm:px-6 sm:py-3 md:text-lg">
-                            Couple's Counseling
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </section>
-    );
+          <p className="text-lg md:text-xl leading-relaxed">
+            Whether you're seeking emotional support or academic clarity, our goal is to make your journey 
+            smoother, more confident, and deeply supported.
+          </p>
+
+          {/* Buttons */}
+          <div className="flex flex-wrap gap-3 justify-center pt-4">
+            {['Therapy', 'Pricing', 'Mentorship'].map((label, idx) => (
+              <button
+                key={idx}
+                className="bg-white text-[#092c2c] px-5 py-2.5 rounded-full font-semibold shadow-md hover:bg-[#064646] hover:text-white transition duration-300"
+              >
+                {label}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Right: GIF/Illustration */}
+        <div className="flex justify-center lg:justify-end">
+          <img
+            src={rightGif}
+            alt="Illustration"
+            className="w-60 h-60 md:w-72 md:h-72 lg:w-80 lg:h-80 xl:w-96 xl:h-96 object-contain"
+          />
+        </div>
+      </div>
+    </section>
+  );
 };
 
 export default WhatWeDo;

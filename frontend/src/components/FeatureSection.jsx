@@ -34,13 +34,13 @@ const features = [
 
 const FeatureSection = () => {
   return (
-    <section className="bg-gray-100 py-12 sm:py-16 px-4">
+    <section className="bg-[#097f7f] py-12 sm:py-16 px-4">
       <div className="container mx-auto max-w-screen-xl text-center">
         {/* Title */}
-        <h1 className="text-dark-gunmetal font-bold text-2xl sm:text-3xl md:text-5xl mb-8 pt-10">
+        <h1 className="text-white font-bold text-2xl sm:text-3xl md:text-5xl mb-8 pt-10">
         What Makes Psychobeings Unmatched in Mental Health Support?
         </h1>
-        <h2 className="text-gray-700 text-lg sm:text-xl md:text-2xl mb-12 sm:mb-16">
+        <h2 className="text-white text-lg sm:text-xl md:text-2xl mb-12 sm:mb-16">
           Discover how we stand out
         </h2>
       </div>
