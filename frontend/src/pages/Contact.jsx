@@ -28,7 +28,7 @@ const Contact = ({ onClose }) => {
     e.preventDefault();
     setIsLoading(true); // Start loading
     try {
-      const res = await axios.post(`${process.env.REACT_APP_URL}/email/sendmessage`, formData);
+      const res = await axios.post(`${process.env.REACT_APP_URL}email/sendmessage`, formData);
 
       if (res.status) {
         console.log('SUCCESS!');
