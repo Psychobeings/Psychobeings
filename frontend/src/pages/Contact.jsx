@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import Contectimg from '../assets/contectSvg.png';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const Contact = ({ onClose }) => {
+  const navigate = useNavigate();
   const [isContactOpen, setIsContactOpen] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
@@ -12,8 +14,16 @@ const Contact = ({ onClose }) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const onClosecontect = () => {
-    onClose();
-    setIsContactOpen(!isContactOpen);
+   if (onClose) {
+      // If opened as modal
+      onClose();
+      setIsContactOpen(!isContactOpen);
+    } else {
+      // If opened as standalone page
+      // setIsContactOpen(!isContactOpen);
+      navigate(-1); // go back
+      // or navigate("/") to go to home page
+    }
   };
 
   const handleChange = (e) => {
