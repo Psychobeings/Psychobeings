@@ -20,7 +20,7 @@ const ServicesPage = () => {
     },
     {
       id: 2,
-      title: "Couples Therapy",
+      title: "Corporate Wellness Counseling",
       icon: <Users className="w-8 h-8" />,
       shortDescription: "Strengthen your relationship and improve communication with your partner.",
       detailedDescription: "Couples therapy helps partners improve their relationship by enhancing communication, resolving conflicts, and rebuilding trust. Our experienced therapists guide couples through challenges while teaching valuable skills for maintaining a healthy, loving relationship. Whether you're facing specific issues or simply want to strengthen your bond, we're here to support your journey together.",
