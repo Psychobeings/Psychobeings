@@ -10,7 +10,7 @@ const ServicesPage = () => {
       title: "Individual Therapy",
       icon: <User className="w-8 h-8" />,
       shortDescription: "One-on-one sessions tailored to your personal growth and healing journey.",
-      detailedDescription: "Individual therapy provides a safe, confidential space where you can explore your thoughts, feelings, and behaviors with a trained professional. Our personalized approach helps you develop coping strategies, work through challenges, and achieve your mental health goals. Sessions are designed around your unique needs and can address anxiety, depression, trauma, relationship issues, and personal development.",
+      detailedDescription: "Individual therapy provides a safe, confidential space where you can explore your thoughts, feelings, and behaviors with a trained professional. Our personalized approach helps you develop Coping Strategies, Work through Challenges, and achieve your mental health goals. Sessions are designed around your unique needs and can address anxiety, depression, trauma, relationship issues, and personal development.",
       features: [
         "Personalized treatment plans",
         "Confidential and safe environment", 
