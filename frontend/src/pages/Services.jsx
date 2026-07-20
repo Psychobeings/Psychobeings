@@ -1,30 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import pricing1 from '../assets/pricing1.png';
-import pricing2 from '../assets/pricing2.png';
-import { cardsData, featuresData } from '../components/ServicesCardData';
-import { Link } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { featuresData } from '../components/ServicesCardData';
 import LandingPage from '../components/LandingPage';
 import BookingGuide from '../components/BookingGuide';
 
 const Services = () => {
-  const [activeButton, setActiveButton] = useState('Individual');
-  const [coupon, setCoupon] = useState('HAPPYPHYCO10');
-  const [isCopied, setIsCopied] = useState(false);
-
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
-
-  const handleCopy = () => {
-    navigator.clipboard.writeText('HAPPYLIFE10');
-    setCoupon('Copied...');
-    setIsCopied(true); // Set isCopied to true to trigger animation
-
-    setTimeout(() => {
-      setCoupon('HAPPYPHYCO10');
-      setIsCopied(false); // Reset isCopied after animation
-    }, 2000);
-  };
 
   return (
     <div className="">
