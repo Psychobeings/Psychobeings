@@ -20,7 +20,7 @@ const ServicesPage = () => {
     },
     {
       id: 2,
-      title: "Corporate Wellness Counseling",
+      title: "Corporate Wellness Counselling",
       icon: <Users className="w-8 h-8" />,
       shortDescription: "Strengthen your relationship and improve communication with your partner.",
       detailedDescription: "Couples therapy helps partners improve their relationship by enhancing communication, resolving conflicts, and rebuilding trust. Our experienced therapists guide couples through challenges while teaching valuable skills for maintaining a healthy, loving relationship. Whether you're facing specific issues or simply want to strengthen your bond, we're here to support your journey together.",
@@ -33,7 +33,7 @@ const ServicesPage = () => {
     },
     {
       id: 3,
-      title: "Family Therapy",
+      title: "Child & Adolescent Counselling",
       icon: <Home className="w-8 h-8" />,
       shortDescription: "Heal family dynamics and create stronger bonds between family members.",
       detailedDescription: "Family therapy addresses the complex dynamics within family systems, helping members communicate more effectively and resolve longstanding issues. Our therapists work with families to identify patterns, improve relationships, and create a more harmonious home environment. We address various family challenges including behavioral issues, major life transitions, and generational conflicts.",
@@ -46,7 +46,7 @@ const ServicesPage = () => {
     },
     {
       id: 4,
-      title: "Group Therapy",
+      title: "Workshops & Group Therapy",
       icon: <UserCheck className="w-8 h-8" />,
       shortDescription: "Connect with others facing similar challenges in a supportive group setting.",
       detailedDescription: "Group therapy offers a unique opportunity to heal alongside others who share similar experiences. In a supportive, structured environment, you'll gain insights, share perspectives, and develop coping skills while building meaningful connections. Our groups focus on specific topics such as anxiety, depression, addiction recovery, and life transitions, providing both individual growth and community support.",
