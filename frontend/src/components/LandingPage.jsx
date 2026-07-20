@@ -13,7 +13,7 @@ const ServicesPage = () => {
       detailedDescription: "Individual therapy provides a safe, confidential space where you can explore your thoughts, feelings, and behaviors with a trained professional. Our personalized approach helps you develop Coping Strategies, Work through Challenges, and achieve your mental health goals. Sessions are designed around your unique needs and can address anxiety, depression, trauma, relationship issues, and personal development.",
       features: [
         "Personalized treatment plans",
-        "Confidential and safe environment", 
+        "Confidential and safe environment",
         "Flexible scheduling options",
         "Evidence-based therapeutic approaches"
       ]
@@ -67,10 +67,10 @@ const ServicesPage = () => {
     setSelectedService(null);
   };
 
-  const handleBookService = (serviceName) => {
-    alert(`Booking ${serviceName}... This would redirect to booking page.`);
-    closeModal();
-  };
+  // const handleBookService = (serviceName) => {
+  //   alert(`Booking ${serviceName}... This would redirect to booking page.`);
+  //   closeModal();
+  // };
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#097f7f' }}>
@@ -99,15 +99,15 @@ const ServicesPage = () => {
                     {service.icon}
                   </div>
                 </div>
-                
+
                 <h3 className="text-2xl font-bold text-gray-800 mb-4">
                   {service.title}
                 </h3>
-                
+
                 <p className="text-gray-600 leading-relaxed text-sm">
                   {service.shortDescription}
                 </p>
-                
+
                 <div className="mt-6 text-teal-600 font-semibold text-sm group-hover:text-teal-700">
                   Learn More →
                 </div>
@@ -164,10 +164,14 @@ const ServicesPage = () => {
               {/* Book Service Button */}
               <div className="text-center">
                 <button
-                  onClick={() => handleBookService(selectedService.title)}
                   className="bg-teal-600 hover:bg-teal-700 text-white font-bold py-4 px-8 rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
                 >
-                  Book {selectedService.title} Session
+                  <a href="https://booking.myndspace.app/amanp"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Book {selectedService.title} Session
+                  </a>
                 </button>
               </div>
             </div>
