@@ -44,11 +44,14 @@ export default function HeroSection() {
 
           {/* Role */}
           <p className="mt-1 text-teal-700 font-semibold text-lg sm:text-xl transition-all duration-300 hover:text-teal-800">
-            Founder, Psychologist
+            Founder, Counselling Psychologist
           </p>
 
           {/* Qualifications */}
           <ul className="mt-5 space-y-2 text-gray-700 text-base sm:text-lg">
+            <li className="transform transition-all duration-500 delay-100 hover:translate-x-2 hover:text-teal-700">
+              🎓 PhD Scholar in Clinical Psychology — NIILM University, Kaithal
+            </li>
             <li className="transform transition-all duration-500 delay-100 hover:translate-x-2 hover:text-teal-700">
               🎓 MSc Clinical Psychology — CMR University, Bangalore
             </li>
