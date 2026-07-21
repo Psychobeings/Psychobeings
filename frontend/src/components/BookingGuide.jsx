@@ -34,7 +34,7 @@ export default function BookingGuide() {
               </div>
               <div>
                 <p className="font-medium text-gray-900">Instagram</p>
-                <p className="text-sm text-gray-600">@psychobeings</p>
+                <p className="text-sm text-gray-600">@official_psychobeings</p>
               </div>
             </div>
           </div>
