@@ -17,11 +17,10 @@ function Hero1() {
           className="text-lg md:text-xl text-teal-50 leading-relaxed animate-slide-up"
           style={{ animationDelay: '0.3s' }}
         >
-          At Psychobeings, we believe every individual deserves a safe, non-judgmental space to heal, grow, and thrive. Through personalized therapy, mindfulness-based practices, and evidence-informed psychological interventions, we help individuals build resilience, strengthen emotional wellbeing, and create meaningful, lasting change.
-          Available in English and Hindi, with online sessions nationwide and in-person appointments in Faridabad.
-          
-          400+ Sessions Conducted(Therepy Sessions, Workshops, Mentorship, Research Guidance).
-          Evidenced Based Care.(Assement and Personalized Interventions).
+          At Psychobeings, we believe every individual deserves a safe, non-judgmental space to heal, grow, and thrive. Through personalized therapy, mindfulness-based practices, and evidence-informed psychological interventions, we help individuals build resilience, strengthen emotional wellbeing, and create meaningful, lasting change.,
+          Available in English and Hindi, with online sessions nationwide and in-person appointments in Faridabad,Haryana.,
+          400+ Sessions Conducted(Therepy Sessions, Workshops, Mentorship, Research Guidance).,
+          Evidenced Based Care.(Assement and Personalized Interventions).,
           Online & In-Person Sessions.(Acessible Nationwide & Internationally)
         </p>
 
