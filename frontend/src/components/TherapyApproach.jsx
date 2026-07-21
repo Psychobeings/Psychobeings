@@ -44,14 +44,13 @@ export default function TherapyApproach() {
         <div className={`text-center space-y-6 mb-16 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
           <div className="inline-block">
             <h3 className="text-4xl md:text-5xl font-bold mb-4 text-[#097f7f]">
-              HOW DOES THEREPY WORK?
+              How Does Therepy Work?
             </h3>
             <div className="w-32 h-1 bg-gradient-to-r from-teal-600 to-teal-400 mx-auto rounded-full"></div>
           </div>
           
           <p className="text-xl md:text-2xl leading-relaxed max-w-3xl mx-auto text-gray-600 font-light">
-            Your Journey to Emotional Wellbeing Starts Here.,
-            Whether you're seeking support for yourself, your relationship, or your family, we're here to guide you through the process.
+            Whether you're seeking support for yourself, your children, or your family members, we're here to guide you through the process.
           </p>
         </div>
 
