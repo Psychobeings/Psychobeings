@@ -9,52 +9,56 @@ const ServicesPage = () => {
       id: 1,
       title: "Individual Therapy",
       icon: <User className="w-8 h-8" />,
-      shortDescription: "One-on-one sessions tailored to your personal growth and healing journey.",
-      detailedDescription: "Individual therapy provides a safe, confidential space where you can explore your thoughts, feelings, and behaviors with a trained professional. Our personalized approach helps you develop Coping Strategies, Work through Challenges, and achieve your mental health goals. Sessions are designed around your unique needs and can address anxiety, depression, trauma, relationship issues, and personal development.",
+      shortDescription: "Confidential, one-on-one therapy for anxiety management, stress regulation, overthinking, and emotional regulation.",
+      detailedDescription: "Individual therapy offers a safe, confidential, and non-judgmental space to help you navigate life's challenges — including anxiety management, stress regulation, cognitive overload and overthinking, and emotional regulation. Sessions are structured around understanding your specific concerns and building practical, evidence-based strategies to help you regain balance and clarity.",
       features: [
-        "Personalized treatment plans",
-        "Confidential and safe environment",
-        "Flexible scheduling options",
-        "Evidence-based therapeutic approaches"
+        "Initial consultation to understand presenting concerns",
+        "Collaborative goal-setting focused on anxiety, stress, or emotional regulation",
+        "Regular sessions (45-60 mins) in a supportive, non-judgmental environment",
+        "Practical tools to manage overthinking and build emotional resilience",
+        "Sessions Required: Typically 8-12 sessions as a starting framework; may extend based on the complexity of concerns and the client's individual pace of progress."
       ]
     },
     {
       id: 2,
       title: "Corporate Wellness Counselling",
       icon: <Users className="w-8 h-8" />,
-      shortDescription: "Strengthen your relationship and improve communication with your partner.",
-      detailedDescription: "Couples therapy helps partners improve their relationship by enhancing communication, resolving conflicts, and rebuilding trust. Our experienced therapists guide couples through challenges while teaching valuable skills for maintaining a healthy, loving relationship. Whether you're facing specific issues or simply want to strengthen your bond, we're here to support your journey together.",
+      shortDescription: "Workplace mental health support focused on work-life balance, occupational well-being, and stress regulation for employees.",
+      detailedDescription: "Our corporate wellness services support employee mental health with a focus on work-life balance and occupational well-being. Offerings include individual employee counselling for stress regulation and cognitive overload, alongside psychoeducational sessions designed to help teams manage workplace pressure and maintain a healthier balance between professional and personal life.",
       features: [
-        "Improved communication skills",
-        "Conflict resolution techniques",
-        "Trust rebuilding strategies",
-        "Relationship enhancement tools"
+        "Initial organizational needs assessment",
+        "Sessions focused on work-life balance, stress regulation, and occupational well-being",
+        "Delivered on-site or virtually, individually or in groups",
+        "Practical strategies employees can apply to daily work life.",
+        "Sessions Required: Program length varies by organizational scope — typically structured as a 4-8 session package per initiative; ongoing engagements available based on organizational needs."
       ]
     },
     {
       id: 3,
       title: "Child & Adolescent Counselling",
       icon: <Home className="w-8 h-8" />,
-      shortDescription: "Heal family dynamics and create stronger bonds between family members.",
-      detailedDescription: "Family therapy addresses the complex dynamics within family systems, helping members communicate more effectively and resolve longstanding issues. Our therapists work with families to identify patterns, improve relationships, and create a more harmonious home environment. We address various family challenges including behavioral issues, major life transitions, and generational conflicts.",
+      shortDescription: "Adolescent counselling and career guidance for ages 13+, supporting emotional regulation and life direction during key transitions.",
+      detailedDescription: "This service is designed for adolescents aged 13 and above, offering a safe, confidential space for counselling and career guidance. Sessions support emotional regulation, help manage stress and overthinking related to academics or the future, and provide guidance during key developmental and career-related decision points.",
       features: [
-        "Family system assessment",
-        "Improved family communication",
-        "Conflict mediation",
-        "Behavioral intervention strategies"
+        "Initial consultation with the adolescent (and parents/guardians where appropriate)",
+        "Sessions addressing emotional regulation, stress, and career-related concerns",
+        "A safe, non-judgmental space suited to ages 13+",
+        "Guidance on decision-making and navigating academic or career transitions",
+        "Sessions Required: Typically 6-10 sessions as a starting framework; may extend based on the adolescent's needs and progress."
       ]
     },
     {
       id: 4,
       title: "Workshops & Group Therapy",
       icon: <UserCheck className="w-8 h-8" />,
-      shortDescription: "Connect with others facing similar challenges in a supportive group setting.",
-      detailedDescription: "Group therapy offers a unique opportunity to heal alongside others who share similar experiences. In a supportive, structured environment, you'll gain insights, share perspectives, and develop coping skills while building meaningful connections. Our groups focus on specific topics such as anxiety, depression, addiction recovery, and life transitions, providing both individual growth and community support.",
+      shortDescription: "Group sessions on anxiety management, stress regulation, emotional regulation, and work-life balance.",
+      detailedDescription: "Workshops and group therapy sessions provide a structured, facilitated environment to build skills around anxiety management, stress regulation, emotional regulation, and work-life balance. Participants engage in a supportive group setting alongside others navigating similar challenges, gaining practical tools they can apply in daily life.",
       features: [
-        "Peer support and connection",
-        "Shared experiences and insights",
-        "Cost-effective treatment option",
-        "Specialized topic-focused groups"
+        "Pre-group consultation to confirm fit",
+        "Structured sessions covering anxiety, stress, emotional regulation, or work-life balance",
+        "Confidential group setting facilitated by a qualified psychologist/Counselling Psychologist",
+        "Practical, take-home tools for continued use",
+        "Sessions Required: Typically 6-8 sessions per workshop/group cycle; may extend or repeat based on group progress and participant needs."
       ]
     }
   ];
