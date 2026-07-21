@@ -163,10 +163,10 @@ export default function BookingGuide() {
         {/* Header */}
         <div className="text-center mb-16">
           <h1 className="text-4xl md:text-5xl font-light text-gray-900 mb-6 tracking-tight">
-            How to Book a Session
+            How to Book a Consulation
           </h1>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed font-light">
-            Begin your mental health journey with a simple, structured approach to booking professional therapeutic support.
+            Taking the first step towards seeking support is important, and we're here to make the booking process as simple and comfortable as possible.
           </p>
         </div>
 
