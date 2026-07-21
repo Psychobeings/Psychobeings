@@ -13,26 +13,26 @@ export default function TherapyApproach() {
   const approaches = [
     {
       id: 1,
-      title: "Cognitive Behavioral Therapy (CBT)",
-      description: "Evidence-based approach focusing on identifying and changing negative thought patterns",
+      title: "Book a Session",
+      description: "Pick a convenient date and time for an online or in-person appointment.",
       icon: "🧠"
     },
     {
       id: 2,
-      title: "Mindfulness-Based Practices",
-      description: "Cultivating present-moment awareness and emotional regulation through mindful techniques",
+      title: "Meet your Therapist",
+      description: "Talk through what you're experiencing in a safe, confidential and non-judgmental environment.",
       icon: "🧘"
     },
     {
       id: 3,
-      title: "Eclectic Approach",
-      description: "Integrating multiple therapeutic methods tailored to your specific needs and preferences",
+      title: "Assessment & Personalized Care",
+      description: "Evidence based screening and collaborative goal setting help create a care plan tailored to your needs.",
       icon: "⚖️"
     },
     {
       id: 4,
-      title: "Narrative Therapy",
-      description: "Helping you rewrite your personal story and discover your strengths and values",
+      title: "Begin your Journey",
+      description: "Receive personalized support, practical tools and guidance tailored to your needs.",
       icon: "📖"
     }
   ];
@@ -44,13 +44,14 @@ export default function TherapyApproach() {
         <div className={`text-center space-y-6 mb-16 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
           <div className="inline-block">
             <h3 className="text-4xl md:text-5xl font-bold mb-4 text-[#097f7f]">
-              Our Approach to Therapy
+              HOW DOES THEREPY WORK?
             </h3>
             <div className="w-32 h-1 bg-gradient-to-r from-teal-600 to-teal-400 mx-auto rounded-full"></div>
           </div>
           
           <p className="text-xl md:text-2xl leading-relaxed max-w-3xl mx-auto text-gray-600 font-light">
-            We use a flexible, client-centered approach tailored to your unique needs
+            Your Journey to Emotional Wellbeing Starts Here.,
+            Whether you're seeking support for yourself, your relationship, or your family, we're here to guide you through the process.
           </p>
         </div>
 
