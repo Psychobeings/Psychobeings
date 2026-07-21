@@ -19,7 +19,7 @@ export default function LanguageSupport() {
           Speak Freely, Be Understood
         </h2>
         <p className="text-lg md:text-xl text-gray-700 font-medium leading-relaxed">
-          We offer sessions and mentorship in <span className="font-bold text-[#097f7f]">English</span> and <span className="font-bold text-[#097f7f]">Hindi</span> to ensure you feel heard, understood, and supported in the language you're most comfortable with.
+          We offer sessions and Workshops in <span className="font-bold text-[#097f7f]">English</span> and <span className="font-bold text-[#097f7f]">Hindi</span> to ensure you feel heard, understood, and supported in the language you're most comfortable with.
         </p>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-8">
