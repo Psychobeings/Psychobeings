@@ -68,12 +68,12 @@ export const cardsData = [
   ];
    // Dummy data for the new feature section (replace with actual icons/images as needed)
    export  const featuresData = [
-    { id: 1, icon: img1, title: 'Registered psychiatrists and therapists ', subtitle: '' },
+    { id: 1, icon: img1, title: 'Registered Psychologists/Counselling Psychologists and Therapists ', subtitle: '' },
     { id: 2, icon: img2, title: 'Completely confidential care', subtitle: '' },
     { id: 3, icon: img3, title: 'Personalised and evidence based treatment', subtitle: '' },
-    { id: 4, icon: img4, title: 'For everyone - Men, Women, LGBTQ+', subtitle: '' },
-    { id: 5, icon: img5, title: 'Made by doctors', subtitle: '' },
-    { id: 6, icon: img6, title: "Discreet delivery of medicines", subtitle: '' },
+    { id: 4, icon: img4, title: 'Records safely stored & protected, with rare legal exceptions', subtitle: '' },
+    { id: 5, icon: img5, title: 'A safe space for everyone, free of judgment', subtitle: '' },
+    { id: 6, icon: img6, title: "No judgment, no disclosure", subtitle: '' },
   ];
 
 
