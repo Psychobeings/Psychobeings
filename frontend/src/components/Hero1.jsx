@@ -9,7 +9,7 @@ function Hero1() {
     >
       <div className="max-w-3xl text-center space-y-6 animate-fade-in">
         <h1 className="text-4xl md:text-5xl font-bold text-cyan-50 relative inline-block animate-slide-up">
-          We're truly glad you're here.
+          Compassionate therapy for emotional wellbeing and personal growth.
           <span className="block h-1 w-16  bg-dark-gunmetal mt-2 mx-auto rounded shadow-sm"></span>
         </h1>
 
@@ -17,16 +17,18 @@ function Hero1() {
           className="text-lg md:text-xl text-teal-50 leading-relaxed animate-slide-up"
           style={{ animationDelay: '0.3s' }}
         >
-          Seeking support is a courageous step, and we're honoured to walk alongside you.
-          Whether you're looking for therapy, guidance, or simply a safe space to reflect
-          you're in the right place.
+          At Psychobeings, we believe every individual deserves a safe, non-judgmental space to heal, grow, and thrive. Through personalized therapy, mindfulness-based practices, and evidence-informed psychological interventions, we help individuals build resilience, strengthen emotional wellbeing, and create meaningful, lasting change.
+          Available in English and Hindi, with online sessions nationwide and in-person appointments in Faridabad.
+          400+ Sessions Conducted(Therepy Sessions, Workshops, Mentorship, Research Guidance).
+          Evidenced Based Care.(Assement and Personalized Interventions).
+          Online & In-Person Sessions.(Acessible Nationwide & Internationally)
         </p>
 
         <p 
           className="text-lg md:text-xl text-teal-100 leading-relaxed animate-slide-up"
           style={{ animationDelay: '0.5s' }}
         >
-          Our compassionate team is here to support you with care, respect, and confidentiality.
+          Our Services are here to support you with care, respect, and confidentiality.
         </p>
 
         <p 
