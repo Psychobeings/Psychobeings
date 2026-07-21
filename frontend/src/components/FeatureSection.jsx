@@ -6,27 +6,27 @@ import support from '../assets/support1.png';
 
 const features = [
     {
-        title: 'A Safe Haven for Self-Discovery and Resilience',
+        title: 'Personalized Care',
         description:
-          'At Psychobeings, we create a space where individuals can explore their potential, build resilience, and thrive. Join us in the revolution of mental well-being, where growth and healing are at the forefront.',
+          'Every individual receives support shaped around their unique experiences, challenges, and goals, not a one-size-fits-all approach.',
         imgSrc: discovery,
       },
     {
-      title: 'Affordable Support with No Strings Attached',
+      title: 'Our Therapeutic Approaches',
       description:
-        'Breaking barriers, not banks. Our services come with minimal costs, proving that world-class mental health care doesn’t have to come with a hefty price tag. Your journey starts risk-free with a transformative first session for free.',
+        'Integrating CBT, DBT,Mindfulness and other proven therapeutic approaches with diverse age groups from childhood to adulthood, ensuring a holistic and effective care experience.',
       imgSrc: support,
     },
     {
-      title: 'Specialized for a Vibrant Age Group',
+      title: 'Workshops and Mentorship Opportunities',
       description:
-        'Whether you’re navigating adolescence or stepping into adulthood, we cater to the dynamic needs of individuals aged 11 to 35—empowering the next generation to flourish with personalized care.',
+        'Beyond individual sessions, we offer workshops and mentorship programs that build real-world skills and hands-on experience. To organizations and students, we help you navigate your personal and professional growth.',
       imgSrc: age_group,
     },
     {
-      title: 'Opportunities for Growth Through Internships',
+      title: 'Safe and Confidential Environment',
       description:
-        'We don’t just support mental well-being; we’re building a future where mental health advocates thrive. Our internship programs offer passionate individuals real-world experience, contributing to the mental wellness movement.',
+        'We prioritize your privacy and create a judgment-free space where you can openly express your thoughts and feelings.',
       imgSrc: internship,
     },
   ];
@@ -38,10 +38,10 @@ const FeatureSection = () => {
       <div className="container mx-auto max-w-screen-xl text-center">
         {/* Title */}
         <h1 className="text-white font-bold text-2xl sm:text-3xl md:text-5xl mb-8 pt-10">
-        What Makes Psychobeings Unmatched in Mental Health Support?
+        Why People Choose Psychobeings?
         </h1>
         <h2 className="text-white text-lg sm:text-xl md:text-2xl mb-12 sm:mb-16">
-          Discover how we stand out
+          The care goes beyond a single session. We combine personalized attention, proven therapeutic methods, and real-world learning opportunities, all within a space built on trust and confidentiality.
         </h2>
       </div>
 
