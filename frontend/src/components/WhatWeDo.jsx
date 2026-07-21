@@ -13,24 +13,22 @@ const WhatWeDo = () => {
           </h2>
 
           <p className="text-lg md:text-xl leading-relaxed">
-            We offer <span className="font-bold text-#064646">online counselling</span> sessions for individuals (ages 13–30) and couples, 
-            addressing stress, anxiety, work-life balance, childhood trauma, and feelings of emptiness — all in a 
-            safe, judgment-free space.
+            We provide confidential, evidence-based counselling <span className="font-bold text-#064646">available both online and in-person</span> sessions for individuals, adolescents, and organizations, 
+             addressing concerns including anxiety, stress, work-life balance, childhood trauma, and emotional wellbeing.
           </p>
 
           <p className="text-lg md:text-xl leading-relaxed">
-            We also specialize in <span className="font-bold text-pure-white">student-focused psychological research guidance</span>, 
-            helping learners from IBDP, undergraduate, and postgraduate levels.
+            Our services span individual therapy, adolescent counselling, corporate wellness programs, and group workshops <span className="font-bold text-pure-white">each grounded in a safe, non-judgmental approach tailored to your specific needs.</span>
           </p>
 
           <p className="text-lg md:text-xl leading-relaxed">
-            Whether you're seeking emotional support or academic clarity, our goal is to make your journey 
-            smoother, more confident, and deeply supported.
+            Whether you are seeking personal support, workplace wellbeing initiatives, or guidance
+            through a significant life transition, our aim is to provide clarity, confidence, and consistent support throughout your journey.
           </p>
 
           {/* Buttons */}
           <div className="flex flex-wrap gap-3 justify-center pt-4">
-            {['Therapy', 'Pricing', 'Mentorship'].map((label, idx) => (
+            {['Individual Therapy', 'Corporate Wellness', 'Workshops & Groups'].map((label, idx) => (
               <button
                 key={idx}
                 className="bg-white text-[#092c2c] px-5 py-2.5 rounded-full font-semibold shadow-md hover:bg-[#064646] hover:text-white transition duration-300"
