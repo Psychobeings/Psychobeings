@@ -132,18 +132,18 @@ export default function BookingGuide() {
   const benefits = [
     { 
       icon: <Award className="w-6 h-6" />, 
-      title: "Affordable Care", 
-      description: "Professional therapy sessions at ₹400 per session"
+      title: "500 +", 
+      description: "Successful Sessions Conducted"
     },
     { 
       icon: <Users className="w-6 h-6" />, 
       title: "Qualified Professionals", 
-      description: "Licensed, experienced psychologists with proven expertise"
+      description: "Experienced psychologists with Clinical and Organizational Expertise and maintaining confidentiality and privacy"
     },
     { 
       icon: <Globe className="w-6 h-6" />, 
-      title: "100% Online", 
-      description: "Access therapy from anywhere with secure video sessions"
+      title: "Online & In-Person Sessions", 
+      description: "Flexible options available nationwide and internationally"
     },
     { 
       icon: <MessageCircle className="w-6 h-6" />, 
@@ -152,8 +152,8 @@ export default function BookingGuide() {
     },
     { 
       icon: <Heart className="w-6 h-6" />, 
-      title: "Evidence-Based Care", 
-      description: "Compassionate support grounded in research and best practices"
+      title: "5.0*", 
+      description: "Client Satisfaction Rating with Positive Feedback on Care and Support"
     }
   ];
 
@@ -229,7 +229,7 @@ export default function BookingGuide() {
         {/* Header */}
         <header className="text-center py-16 px-4">
           <h1 className="text-5xl font-bold text-white mb-4 tracking-wide">
-            Why Choose Psychobeings
+            Why Clients Trust Us?
           </h1>
           <p className="text-xl text-teal-100 max-w-2xl mx-auto leading-relaxed">
             Professional mental health support designed with your wellbeing, accessibility, and comfort in mind
