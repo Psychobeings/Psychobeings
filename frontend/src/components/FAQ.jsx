@@ -9,39 +9,39 @@ const FAQ = () => {
 
   const faqs = [
     {
-      question: 'How can Psychobeings support my mental health?',
+      question: 'How can I book a Session?',
       answer:
-        'At Psychobeings, we have created a compassionate environment designed to help you heal, grow, and thrive. Our mission is to empower individuals with the tools and support they need to overcome challenges, tap into their inner strength, and lead a fulfilling, balanced life.',
+        'You can book directly through our booking page. For Workshop or Mentorship programs, you may also contact us first to check suitability.',
     },
     {
-      question: 'What types of concerns do you address?',
+      question: 'Are my sessions confidential?',
       answer:
-        'We offer support for a wide range of concerns, including but not limited to stress, anxiety, career guidance, relationship challenges, work-life balance, childhood trauma, existential crises, and feelings of emptiness.',
+        'Absolutely. All sessions are conducted in a secure and private environment, ensuring your confidentiality is maintained at all times. Except in rare legal circumstances where there is an immediate risk of harm to yourself or others',
     },
     {
-      question: 'What counseling services do you provide?',
+      question: 'Do you offer In-Person and Online sessions?',
       answer:
-        'We specialize in both Individual and Relationship Counseling. For more information on each service, please visit their respective pages on our website.',
+        'Yes. Psychobeings offers in-person sessions at Faridabad, Hyderabad and online sessions for clients in India and Internationally.',
     },
     {
-      question: 'How do I book an appointment?',
+      question: 'What are the approaches used at Psychobeings?',
       answer:
-        'Booking an appointment is easy. Simply fill out the booking form with some basic information. After we review your details, we will contact you via email with a consent form. An appointment will only be confirmed once the consent form is signed and payment is processed.',
+        'We integrate psychotherapy, CBT, DBT, Mindfulness, Emotional Regulation tools, Breathwork and Relaxation approaches where suitable.',
     },
     {
-      question: 'Do you accept insurance?',
+      question: 'Do I need a diagnosis to begin therapy?',
       answer:
-        'While we do not accept insurance, we pride ourselves on offering affordable pricing. We also offer a free initial session, allowing you to explore if our services are the right fit for your long-term needs, without the financial strain.',
+        'No. You do not need a formal diagnosis to begin therapy. Our services are designed to support individuals seeking personal growth, emotional wellbeing, and coping strategies for various life challenges. Screening and assessment may be conducted to understand your needs better and tailor the therapy accordingly and if psychiatric referral is needed, we will guide you through the process.',
     },
     {
-      question: 'Where can I find the pricing details?',
+      question: 'How long are sessions? ',
       answer:
-        'We do not publicly display our pricing as it may vary based on the complexity of each case.',
+        'A standard counseling session lasts between 45 to 60 minutes.',
     },
     {
-      question: 'What if I need to cancel or reschedule my appointment?',
+      question: 'How many sessions will I need?',
       answer:
-        'We understand that life can be unpredictable. If you need to cancel or reschedule, please notify us via email as early as possible. We will be happy to work with you to find a new date and time that suits you.',
+         'The duration varies depending on individual concerns and goals. Some seek short-term counseling for specific events, while others prefer ongoing therapy to address broader issues.',
     },
     {
       question: 'How long are the counseling sessions?',
@@ -49,14 +49,19 @@ const FAQ = () => {
         'Sessions typically last between 45 to 60 minutes. However, the duration may vary based on your individual needs and concerns.',
     },
     {
-      question: 'How do you ensure confidentiality?',
+      question: 'What if I amrunning late or need to cancel?',
       answer:
-        'Your privacy is our priority. All sessions are conducted in secure, private virtual spaces, and any personal information shared remains strictly confidential. We ensure that no sensitive details are communicated via email or chat, where access may be less secure.',
+        'If you are late, the time is typically deducted from your session duration to respect the therapists schedule. Cancellations generally require 24 to 48 hours notice to avoid being charged for the missed appointment.',
     },
     {
-      question: 'Are your workshops only for psychology students or professionals?',
+      question: 'What happens in the first session?',
       answer:
-        'Not at all! Our workshops are open to anyone, regardless of profession or academic background. We cover a wide range of topics that are relevant and beneficial to a wide range of people and of varied interests.',
+        'Your first meeting is an intake session where you and your counselor will discuss your background, current concerns, and what you hope to achieve through therapy. It is also a chance to establish boundaries and discuss how you will work together. The Psychologist will explain the therapy process, confidentiality, and answer any questions you may have.',
+    },
+    {
+      question: 'What if I do not know what to talk about? ',
+      answer:
+        'That is completely fine. Many people feel unsure where to begin. Your counselor will ask gentle, open-ended questions to guide the conversation and help you open up at a pace that feels comfortable for you',
     },
   ];
   
