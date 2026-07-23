@@ -30,6 +30,13 @@ const Navbar = ({ onContactClick }) => {
       >
         <span className="hover:underline hover:underline-offset-4 hover:decoration-2 transition-all duration-300">Our Services</span>
       </Link>
+      <Link
+        to="/packages"
+        className={`relative ${mobile ? 'block py-2 text-black' : 'mx-4'}`}
+        onClick={() => setIsOpen(false)} // Close menu on click
+      >
+        <span className="hover:underline hover:underline-offset-4 hover:decoration-2 transition-all duration-300">Packages</span>
+      </Link>
       <span
         onClick={() => {
           setIsOpen(false); // Close mobile menu if open
