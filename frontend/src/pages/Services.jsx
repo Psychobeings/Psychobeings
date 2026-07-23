@@ -38,28 +38,6 @@ const therapyConcerns = [
   'Family, relationship, and attachment challenges',
 ];
 
-const therapySessionDetails = [
-  {
-    title: 'Single Therapy Session',
-    items: ['60-minute session', 'Focused support for one concern', 'Personalised coping tools'],
-  },
-  {
-    title: 'Therapy Packages',
-    items: ['3-session and 6-session packages', 'Progress review and follow-up goals', 'Flexible online or in-person delivery'],
-  },
-];
-
-const programSessionDetails = [
-  {
-    title: 'Corporate Wellness Sessions',
-    items: ['Team wellbeing workshops', 'Employee counselling support', 'Leadership and manager training'],
-  },
-  {
-    title: 'Workshop Format',
-    items: ['2-4 hour interactive sessions', 'Group learning and practical exercises', 'Customised content for organisation needs'],
-  },
-];
-
 const Services = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -138,44 +116,61 @@ const Services = () => {
       </section>
 
       <section className="bg-slate-50 py-16">
-        <div className="max-w-6xl mx-auto px-6 text-center mb-12">
-          <p className="text-sm uppercase tracking-[0.3em] text-teal-700 font-semibold">Session Details</p>
-          <h2 className="text-4xl font-bold mt-4">Therapy and Program Session Details</h2>
-        </div>
-
-        <div className="grid gap-8 lg:grid-cols-2">
-          <div className="space-y-8">
-            <div className="rounded-[32px] border border-slate-200 bg-white p-10 shadow-sm">
-              <h3 className="text-2xl font-semibold mb-4">Therapy Sessions</h3>
-              <div className="space-y-4">
-                {therapySessionDetails.map((detail) => (
-                  <div key={detail.title} className="rounded-3xl bg-slate-50 p-6">
-                    <h4 className="text-xl font-semibold mb-3">{detail.title}</h4>
-                    <ul className="space-y-2 text-slate-600 list-disc list-inside">
-                      {detail.items.map((item) => (
-                        <li key={item}>{item}</li>
-                      ))}
-                    </ul>
-                  </div>
-                ))}
-              </div>
-            </div>
+        <div className="max-w-6xl mx-auto px-6">
+          <div className="text-center mb-12">
+            <p className="text-sm uppercase tracking-[0.3em] text-teal-700 font-semibold">Session Details</p>
+            <h2 className="text-4xl font-bold mt-4">Start with one session, continue with a plan if it feels right.</h2>
+            <p className="mt-4 text-slate-600 max-w-2xl mx-auto leading-7">
+              We recommend beginning with a single session to understand your needs before choosing a package.
+            </p>
           </div>
 
-          <div className="space-y-8">
+          <div className="grid gap-8 lg:grid-cols-2">
             <div className="rounded-[32px] border border-slate-200 bg-white p-10 shadow-sm">
-              <h3 className="text-2xl font-semibold mb-4">Program Sessions</h3>
-              <div className="space-y-4">
-                {programSessionDetails.map((detail) => (
-                  <div key={detail.title} className="rounded-3xl bg-slate-50 p-6">
-                    <h4 className="text-xl font-semibold mb-3">{detail.title}</h4>
-                    <ul className="space-y-2 text-slate-600 list-disc list-inside">
-                      {detail.items.map((item) => (
-                        <li key={item}>{item}</li>
-                      ))}
-                    </ul>
-                  </div>
-                ))}
+              <h3 className="text-2xl font-semibold mb-4">Single Session</h3>
+              <p className="text-3xl font-bold text-teal-700 mb-4">₹1700</p>
+              <p className="text-slate-600 leading-7 mb-6">One-on-one individual therapy session for adults.</p>
+              <a
+                href="https://www.layacounselling.in/booking.html"
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center rounded-full bg-teal-700 px-6 py-3 text-white font-semibold hover:bg-teal-800 transition"
+              >
+                Book Session
+              </a>
+              <p className="mt-4 text-slate-600 font-medium">Recommended</p>
+            </div>
+
+            <div className="space-y-8">
+              <div className="rounded-[32px] border border-slate-200 bg-white p-10 shadow-sm">
+                <h3 className="text-2xl font-semibold mb-4">Packages</h3>
+                <p className="text-slate-600 leading-7 mb-6">
+                  Session plans are available for continued work, consistency and deeper emotional processing.
+                </p>
+                <a
+                  href="https://www.layacounselling.in/packages.html"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center rounded-full bg-slate-900 px-6 py-3 text-white font-semibold hover:bg-slate-800 transition"
+                >
+                  View Packages
+                </a>
+              </div>
+
+              <div className="rounded-[32px] border border-slate-200 bg-white p-10 shadow-sm">
+                <h3 className="text-2xl font-semibold mb-4">Format</h3>
+                <p className="text-3xl font-bold text-teal-700 mb-4">Online & In-Person</p>
+                <p className="text-slate-600 leading-7 mb-6">
+                  Choose the format that feels accessible and comfortable for you.
+                </p>
+                <a
+                  href="https://www.layacounselling.in/contact.html"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center rounded-full bg-white px-6 py-3 text-teal-700 font-semibold border border-teal-700 hover:bg-teal-50 transition"
+                >
+                  Contact Us
+                </a>
               </div>
             </div>
           </div>
@@ -184,26 +179,60 @@ const Services = () => {
 
       <section className="max-w-7xl mx-auto px-6 py-16">
         <div className="text-center mb-12">
-          <p className="text-sm uppercase tracking-[0.3em] text-teal-700 font-semibold">Formats</p>
-          <h2 className="text-4xl font-bold mt-4">Single, Package, Online & In Person</h2>
+          <p className="text-sm uppercase tracking-[0.3em] text-teal-700 font-semibold">Program Details</p>
+          <h2 className="text-4xl font-bold mt-4">Start with one session, continue with a plan if it feels right.</h2>
+          <p className="mt-4 text-slate-600 max-w-2xl mx-auto leading-7">
+            We recommend beginning with a single program session to understand your organisation's needs before choosing a package.
+          </p>
         </div>
 
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          <div className="rounded-3xl border border-slate-200 bg-white p-8 text-center shadow-sm">
-            <p className="text-xl font-semibold mb-3">Single</p>
-            <p className="text-slate-600">Book a one-time session for focused support and immediate guidance.</p>
+        <div className="grid gap-8 lg:grid-cols-2">
+          <div className="rounded-[32px] border border-slate-200 bg-white p-10 shadow-sm">
+            <h3 className="text-2xl font-semibold mb-4">Single Session</h3>
+            <p className="text-3xl font-bold text-teal-700 mb-4">₹1700</p>
+            <p className="text-slate-600 leading-7 mb-6">One-on-one or small-group program session for teams, workshops, or corporate wellness.</p>
+            <a
+              href="https://www.layacounselling.in/booking.html"
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center rounded-full bg-teal-700 px-6 py-3 text-white font-semibold hover:bg-teal-800 transition"
+            >
+              Book Session
+            </a>
+            <p className="mt-4 text-slate-600 font-medium">Recommended</p>
           </div>
-          <div className="rounded-3xl border border-slate-200 bg-white p-8 text-center shadow-sm">
-            <p className="text-xl font-semibold mb-3">Package</p>
-            <p className="text-slate-600">Choose a session package for deeper progress and consistent care.</p>
-          </div>
-          <div className="rounded-3xl border border-slate-200 bg-white p-8 text-center shadow-sm">
-            <p className="text-xl font-semibold mb-3">Online</p>
-            <p className="text-slate-600">Access therapy and programs from anywhere with secure virtual sessions.</p>
-          </div>
-          <div className="rounded-3xl border border-slate-200 bg-white p-8 text-center shadow-sm">
-            <p className="text-xl font-semibold mb-3">In Person</p>
-            <p className="text-slate-600">Meet face-to-face in a calm, private counselling space.</p>
+
+          <div className="space-y-8">
+            <div className="rounded-[32px] border border-slate-200 bg-white p-10 shadow-sm">
+              <h3 className="text-2xl font-semibold mb-4">Packages</h3>
+              <p className="text-slate-600 leading-7 mb-6">
+                Program plans are available for continued learning, team development and workplace wellbeing.
+              </p>
+              <a
+                href="https://www.layacounselling.in/packages.html"
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center rounded-full bg-slate-900 px-6 py-3 text-white font-semibold hover:bg-slate-800 transition"
+              >
+                View Packages
+              </a>
+            </div>
+
+            <div className="rounded-[32px] border border-slate-200 bg-white p-10 shadow-sm">
+              <h3 className="text-2xl font-semibold mb-4">Format</h3>
+              <p className="text-3xl font-bold text-teal-700 mb-4">Online & In-Person</p>
+              <p className="text-slate-600 leading-7 mb-6">
+                Choose the format that feels accessible and comfortable for your team or group.
+              </p>
+              <a
+                href="https://www.layacounselling.in/contact.html"
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center rounded-full bg-white px-6 py-3 text-teal-700 font-semibold border border-teal-700 hover:bg-teal-50 transition"
+              >
+                Contact Us
+              </a>
+            </div>
           </div>
         </div>
       </section>
