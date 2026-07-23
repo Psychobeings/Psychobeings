@@ -4,84 +4,136 @@ import { Link } from 'react-router-dom';
 function Hero1() {
   return (
     <section
-  className="min-h-screen flex items-center px-6"
-  style={{ backgroundColor: "#097f7f" }}
->
-  <div className="max-w-7xl mx-auto w-full grid lg:grid-cols-2 gap-16 items-center">
+      className="relative overflow-hidden min-h-screen flex items-center px-6 lg:px-12"
+      style={{
+        background: `
+          radial-gradient(circle at top left, rgba(255,255,255,0.08), transparent 35%),
+          radial-gradient(circle at bottom right, rgba(255,255,255,0.05), transparent 40%),
+          linear-gradient(135deg,#097f7f 0%, #0a7272 100%)
+        `
+      }}
+    >
+      {/* Background Glow */}
+      <div className="absolute top-10 left-10 w-80 h-80 rounded-full bg-white/5 blur-3xl"></div>
+      <div className="absolute bottom-0 right-0 w-[450px] h-[450px] rounded-full bg-cyan-200/10 blur-[150px]"></div>
 
-  
-    <div className="max-w-2xl space-y-7 animate-fade-in text-left">
+      <div className="max-w-[1400px] mx-auto w-full grid lg:grid-cols-2 gap-24 items-center">
 
-      <h1 className="text-4xl md:text-5xl font-bold text-cyan-50 leading-tight animate-slide-up">
-        Compassionate Therapy for Emotional Wellbeing and Personal Growth.
+        {/* LEFT CONTENT */}
 
-        <span className="block h-1 w-16 bg-dark-gunmetal mt-3 rounded"></span>
-      </h1>
+        <div className="space-y-10">
 
-      <p
-        className="text-lg md:text-xl text-teal-50 leading-8 text-justify animate-slide-up"
-        style={{ animationDelay: "0.3s" }}
-      >
-        Your path to emotional wellness starts here. At Psychobeings,
-        we combine compassionate counselling, evidence-based psychological
-        interventions, and mindfulness practices to support healing,
-        personal growth, and lasting emotional wellbeing. Available in
-        English and Hindi, with online sessions nationwide and in-person
-        appointments in Faridabad, Haryana.
-      </p>
+          {/* Heading */}
 
-      <div
-        className="grid grid-cols-2 gap-8 pt-2 animate-slide-up"
-        style={{ animationDelay: "0.5s" }}
-      >
+          <div>
+            <h1
+              className="text-5xl md:text-7xl font-semibold text-white leading-[1.05]"
+              style={{
+                fontFamily: "'Playfair Display', serif",
+              }}
+            >
+              Compassionate Therapy
+              <br />
+              for Emotional Wellbeing
+              <br />
+              and Personal Growth.
+            </h1>
 
-        <div>
-          <h2 className="text-5xl font-bold text-white">
-            500+
-          </h2>
+            <div className="mt-6 h-1 w-20 rounded-full bg-white/80"></div>
+          </div>
 
-          <p className="text-teal-100 mt-2 leading-relaxed">
-            Successful Sessions
-            <br />
-            Conducted
-          </p>
+          {/* Description */}
+
+          <div className="max-w-xl">
+            <p
+              className="text-xl leading-10 text-cyan-50"
+              style={{
+                fontFamily: "Inter",
+              }}
+            >
+              Your path to emotional wellness starts here.
+              At <strong>Psychobeings</strong>, we combine
+              compassionate counselling, evidence-based psychological
+              interventions and mindfulness practices to help individuals
+              heal, grow and build emotional resilience.
+            </p>
+
+            <p className="mt-6 text-lg text-cyan-100 leading-8">
+              Sessions are available in <strong>English</strong> and
+              <strong> Hindi</strong>, with online counselling across
+              India and in-person appointments in
+              <strong> Faridabad, Haryana.</strong>
+            </p>
+          </div>
+
+          {/* Statistics */}
+
+          <div className="flex flex-wrap gap-16">
+
+            <div>
+              <h2 className="text-6xl font-bold text-white">
+                500+
+              </h2>
+
+              <p className="mt-3 text-cyan-100 text-lg leading-8">
+                Successful
+                <br />
+                Sessions Conducted
+              </p>
+            </div>
+
+            <div>
+              <h2 className="text-6xl font-bold text-white">
+                5.0★
+              </h2>
+
+              <p className="mt-3 text-cyan-100 text-lg leading-8">
+                Client Satisfaction
+                <br />
+                Rating
+              </p>
+            </div>
+
+          </div>
+
+          {/* Buttons */}
+
+          <div className="flex flex-wrap gap-5 pt-2">
+
+            <Link to="/services">
+              <button className="px-10 py-5 rounded-full bg-white text-teal-800 text-lg font-semibold shadow-2xl transition-all duration-300 hover:scale-105 hover:bg-gray-100">
+                Explore Services
+              </button>
+            </Link>
+
+            <Link to="/contact">
+              <button className="px-10 py-5 rounded-full border-2 border-white text-white text-lg font-medium transition-all duration-300 hover:bg-white hover:text-teal-800">
+                Book Appointment
+              </button>
+            </Link>
+
+          </div>
+
         </div>
 
-        <div>
-          <h2 className="text-5xl font-bold text-white">
-            5.0★
-          </h2>
+        {/* RIGHT IMAGE */}
 
-          <p className="text-teal-100 mt-2 leading-relaxed">
-            Client Satisfaction Rating
-            <br />
-            with Positive Feedback
-          </p>
+        <div className="relative flex justify-center">
+
+          {/* Glow */}
+
+          <div className="absolute w-[520px] h-[520px] bg-white/10 rounded-full blur-[120px]"></div>
+
+          <img
+            src="/images/hero-image.png"
+            alt="Psychological Counselling"
+            className="relative w-full max-w-[600px] rounded-[36px] shadow-2xl object-cover"
+          />
+
         </div>
 
       </div>
-
-      <Link to="/services">
-        <button
-          className="mt-6 px-8 py-4 rounded-full bg-white text-teal-800 text-lg font-semibold shadow-xl transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:bg-dark-gunmetal hover:text-white active:scale-95 animate-slide-up"
-          style={{ animationDelay: "0.7s" }}
-        >
-          Explore Our Services
-        </button>
-      </Link>
-
-    </div>
-
-    <div className="hidden lg:flex justify-center animate-fade-in">
-      <img
-        src="/images/hero-image.png"
-        alt="Psychological Counselling"
-        className="max-w-md w-full"
-      />
-    </div>
-
-  </div>
-</section>
+    </section>
   );
 }
 
