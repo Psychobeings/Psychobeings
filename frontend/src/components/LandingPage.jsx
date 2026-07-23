@@ -186,4 +186,4 @@ const LandingPage = () => {
   );
 };
 
-export default ServicesPage;
+export default LandingPage;
