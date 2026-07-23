@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 function Hero1() {
   return (
     <section 
-      className="min-h-screen flex items-left justify-center px-6" 
+      className="min-h-screen flex items-center justify-left px-6" 
       style={{ backgroundColor: "#097f7f" }}
     >
       <div className="max-w-3xl text-center space-y-6 animate-fade-in">
