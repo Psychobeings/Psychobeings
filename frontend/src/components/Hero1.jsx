@@ -27,7 +27,7 @@ function Hero1() {
 
           <div>
             <h1
-              className="text-5xl md:text-7xl font-semibold text-white leading-[1.05]"
+              className="text-4xl md:text-6xl font-semibold text-white leading-[1.05]"
               style={{
                 fontFamily: "'Playfair Display', serif",
               }}
