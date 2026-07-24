@@ -12,20 +12,32 @@ const homeSections = [Hero, WhatWeDo, LanguageSupport, FeatureSection, FoundersN
 
 const Home = () => {
   return (
-    <div className="min-h-screen bg-[linear-gradient(180deg,#f8fcfb_0%,#f5fbf8_100%)] text-[#1f3a3d]">
+    <div className="min-h-screen bg-gradient-to-b
+from-[#FBFEFD]
+via-[#F8FCFB]
+to-[#F2F8F7] text-[#1f3a3d]">
       <Hero1 />
-      <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-        <div className="space-y-6 lg:space-y-8">
-          {homeSections.map((Section, index) => (
-            <section
-              key={index}
-              className="overflow-hidden rounded-[32px] border border-teal-100/80 bg-white/85 p-4 shadow-[0_20px_70px_-30px_rgba(9,127,127,0.35)] backdrop-blur-sm sm:p-8 lg:p-10"
-            >
-              <Section />
-            </section>
-          ))}
-        </div>
-      </div>
+     <div className="min-h-screen bg-gradient-to-b from-[#FBFEFD] via-[#F8FCFB] to-[#F2F8F7] text-[#1f3a3d]">
+  <Hero1 />
+
+  <div className="mx-auto max-w-screen-xl px-5 py-12">
+    <div className="space-y-12">
+      {homeSections.map((Section, index) => (
+        <section
+          key={index}
+          className={`overflow-hidden rounded-3xl p-8 lg:p-10 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl ${
+            index % 2 === 0
+              ? "bg-white shadow-lg"
+              : "bg-[#F7FCFB] border border-teal-100"
+          }`}
+        >
+          <Section />
+        </section>
+      ))}
+    </div>
+  </div>
+</div>
+
     </div>
   );
 };
