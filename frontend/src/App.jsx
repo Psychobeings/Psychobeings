@@ -11,6 +11,7 @@ import SessionBookingForm from './components/SessionBookingForm';
 import ComingSoon from './components/ComingSoon';
 import { Toaster } from 'react-hot-toast';
 import TherapyDetails from './pages/TherapyDetails';
+import Booking from './pages/Booking';
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
           <Route path="/services/:therapyId" element={<TherapyDetails />} />
           <Route path="/packages" element={<Packages />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/booking" element={<Booking />} />
           <Route path="/individual-therapy" element={<SessionBookingForm />} />
           <Route path="/couples-therapy" element={<SessionBookingForm />} />
           <Route path="/family-therapy" element={<ComingSoon />} />
