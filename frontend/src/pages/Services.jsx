@@ -169,9 +169,9 @@ const Services = () => {
                   We offer therapy and structured programs designed to help individuals, children, adolescents, and organizations build emotional strength and meaningful wellbeing.
                 </p>
                 <div className="mt-8 flex flex-wrap gap-3">
-                  <Link to="/contact" className="rounded-full bg-white px-6 py-3 text-sm font-semibold text-[#0a7272] transition hover:bg-teal-50">
+                  <a href="https://booking.myndspace.app/amanp" target="_blank" rel="noopener noreferrer" className="rounded-full bg-white px-6 py-3 text-sm font-semibold text-[#0a7272] transition hover:bg-teal-50">
                     Book a consultation
-                  </Link>
+                  </a>
                   <a href="#therapy" className="rounded-full border border-white/30 px-6 py-3 text-sm font-semibold text-white transition hover:bg-white/10">
                     Explore services
                   </a>
@@ -199,10 +199,10 @@ const Services = () => {
         </div>
       </section>
 
-      <Link to="/contact" className="fixed bottom-6 right-6 z-50 inline-flex items-center gap-3 rounded-full bg-[#0a7272] px-5 py-3 text-sm font-semibold text-white shadow-[0_12px_30px_rgba(10,114,114,0.25)] transition hover:scale-105 hover:bg-[#0d5c5e]">
+      <a href="https://booking.myndspace.app/amanp" target="_blank" rel="noopener noreferrer" className="fixed bottom-6 right-6 z-50 inline-flex items-center gap-3 rounded-full bg-[#0a7272] px-5 py-3 text-sm font-semibold text-white shadow-[0_12px_30px_rgba(10,114,114,0.25)] transition hover:scale-105 hover:bg-[#0d5c5e]">
         <MessageCircle size={18} />
         Book consultation
-      </Link>
+      </a>
 
       <section id="therapy" className="px-4 py-16 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
@@ -385,9 +385,9 @@ const Services = () => {
                 </div>
               </div>
               <div className="mt-5 flex flex-wrap gap-3">
-                <Link to="/contact" className="rounded-full bg-[#0a7272] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#0d5c5e]">
-                  Contact us
-                </Link>
+                <a href="https://booking.myndspace.app/amanp" target="_blank" rel="noopener noreferrer" className="rounded-full bg-[#0a7272] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#0d5c5e]">
+                  Book now
+                </a>
                 <a href="https://maps.google.com/?q=Faridabad" target="_blank" rel="noreferrer" className="rounded-full border border-[#0a7272] px-5 py-3 text-sm font-semibold text-[#0a7272] transition hover:bg-[#f7fcfb]">
                   Open map
                 </a>
