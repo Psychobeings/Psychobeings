@@ -44,7 +44,7 @@ const Navbar = ({ onContactClick }) => {
         }}
         className={`cursor-pointer relative ${mobile ? 'block py-2 text-black' : 'mx-4'}`}
       >
-        <span className="hover:text-[#0a7272] transition-colors duration-300 transition-all duration-300">Contact Us</span>
+        <span className="hover:text-[#0a7272] transition-colors duration-300 transition-all duration-300">Contact</span>
       </span>
       <Link
   to="/booking"
