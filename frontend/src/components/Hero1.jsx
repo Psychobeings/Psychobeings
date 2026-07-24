@@ -169,7 +169,7 @@ function Hero1() {
 
           {/* RIGHT SIDE */}
 
-          <div className="relative flex justify-center lg:justify-end">
+          <div className="relative flex justify-center">
 
             {/* Background Glow */}
 
@@ -189,72 +189,62 @@ function Hero1() {
 
               </div>
 
-              {/* Floating Card 1 */}
+             {/* Floating Card 1 */}
+          
+          <div className="absolute left-full ml-8 top-16 bg-white rounded-3xl shadow-2xl px-6 py-5 z-20 hidden xl:block">
 
-              <div className="absolute -left-64 top-20 bg-white rounded-3xl shadow-2xl px-6 py-5 z-20 hidden xl:block">
+          <div className="flex items-center gap-3">
 
-                <div className="flex items-center gap-3">
+          <div className="w-12 h-12 rounded-2xl bg-teal-100 flex items-center justify-center">
+          <HeartHandshake
+           size={24}
+          className="text-teal-700"
+       />
+      </div>
 
-                  <div className="w-12 h-12 rounded-2xl bg-teal-100 flex items-center justify-center">
+      <div>
+      <h4 className="font-semibold text-gray-800">
+        Holistic Care
+      </h4>
 
-                    <HeartHandshake
-                      size={24}
-                      className="text-teal-700"
-                    />
+      <p className="text-sm text-gray-500">
+        Mind • Body • Emotions
+      </p>
+    </div>
 
-                  </div>
+  </div>
 
-                  <div>
-
-                    <h4 className="font-semibold text-gray-800">
-                      Holistic Care
-                    </h4>
-
-                    <p className="text-sm text-gray-500">
-                      Mind • Body • Emotions
-                    </p>
-
-                  </div>
-
-                </div>
-
-              </div>
-
+</div>
               {/* Floating Card 2 */}
+<div className="absolute left-full ml-8 top-56 bg-white rounded-3xl shadow-2xl px-6 py-5 z-20 hidden xl:block">
 
-              <div className="absolute -left-64 top-72 bg-white rounded-3xl shadow-2xl px-6 py-5 z-20 hidden xl:block">
+  <div className="flex items-center gap-4">
 
-                <div className="flex items-center gap-4">
+    <div>
+      <h3 className="text-3xl font-bold text-teal-700">
+        500+
+      </h3>
 
-                  <div>
+      <p className="text-gray-500 text-sm">
+        Lives Supported
+      </p>
+    </div>
 
-                    <h3 className="text-3xl font-bold text-teal-700">
-                      500+
-                    </h3>
+    <div className="w-px h-12 bg-gray-200" />
 
-                    <p className="text-gray-500 text-sm">
-                      Lives Supported
-                    </p>
+    <div>
+      <h3 className="text-3xl font-bold text-yellow-500">
+        ★5
+      </h3>
 
-                  </div>
+      <p className="text-gray-500 text-sm">
+        Client Rating
+      </p>
+    </div>
 
-                  <div className="w-px h-12 bg-gray-200" />
+  </div>
 
-                  <div>
-
-                    <h3 className="text-3xl font-bold text-yellow-500">
-                      ★5
-                    </h3>
-
-                    <p className="text-gray-500 text-sm">
-                      Client Rating
-                    </p>
-
-                  </div>
-
-                </div>
-
-              </div>
+</div>
 
               {/* Decorative Dot */}
 
