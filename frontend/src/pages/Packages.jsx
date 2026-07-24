@@ -409,14 +409,12 @@ const Packages = () => {
             </p>
 
             <div className="mt-10 flex flex-col sm:flex-row justify-center gap-5">
-              <a
-                href="https://booking.myndspace.app/amanp"
-                target="_blank"
-                rel="noopener noreferrer"
+              <Link
+                to="/booking"
                 className="bg-white text-[#018081] px-8 py-4 rounded-full font-semibold text-lg hover:bg-[#F3F8F8] transition duration-300 shadow-md"
               >
                 Schedule a Consultation
-              </a>
+              </Link>
 
               <Link
                 to="/services"
