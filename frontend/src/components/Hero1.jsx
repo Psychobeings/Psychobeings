@@ -60,7 +60,7 @@ function Hero1() {
 
             {/* Heading */}
 
-            <h1 className="playfair text-5xl md:text-6xl xl:text-7xl leading-[1.05] text-white max-w-2xl">
+            <h1 className="playfair text-[clamp(2.5rem,5vw,4.5rem)] leading-[1.1] text-white max-w-2xl">
 
               Compassionate Therapy for
 
