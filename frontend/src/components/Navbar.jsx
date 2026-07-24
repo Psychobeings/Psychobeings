@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import logo from '../assets/logo.png';
 import { Menu, X } from 'lucide-react';
 
-const Navbar = ({ onContactClick }) => {
+const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const NavItems = ({ mobile = false }) => (
@@ -37,15 +37,13 @@ const Navbar = ({ onContactClick }) => {
       >
         <span className="hover:underline hover:underline-offset-4 hover:decoration-2 transition-all duration-300">Packages</span>
       </Link>
-      <span
-        onClick={() => {
-          setIsOpen(false); // Close mobile menu if open
-          onContactClick(); // Open the modal
-        }}
-        className={`cursor-pointer relative ${mobile ? 'block py-2 text-black' : 'mx-4'}`}
+      <Link
+        to="/contact"
+        className={`relative ${mobile ? 'block py-2 text-black' : 'mx-4'}`}
+        onClick={() => setIsOpen(false)}
       >
         <span className="hover:underline hover:underline-offset-4 hover:decoration-2 transition-all duration-300">Contact Us</span>
-      </span>
+      </Link>
     </>
   );
 
