@@ -191,7 +191,7 @@ function Hero1() {
 
               {/* Floating Card 1 */}
 
-              <div className="absolute left-6 top-6 bg-white rounded-3xl shadow-2xl px-6 py-5 z-20 hidden lg:block">
+              <div className="absolute -left-64 top-20 bg-white rounded-3xl shadow-2xl px-6 py-5 z-20 hidden xl:block">
 
                 <div className="flex items-center gap-3">
 
@@ -222,7 +222,7 @@ function Hero1() {
 
               {/* Floating Card 2 */}
 
-              <div className="absolute right-6 bottom-6 bg-white rounded-3xl shadow-2xl px-6 py-5 z-20 hidden lg:block">
+              <div className="absolute -left-64 top-72 bg-white rounded-3xl shadow-2xl px-6 py-5 z-20 hidden xl:block">
 
                 <div className="flex items-center gap-4">
 
