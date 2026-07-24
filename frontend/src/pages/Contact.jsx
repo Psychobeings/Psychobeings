@@ -83,7 +83,9 @@ const Contact = () => {
 
             <div className="flex flex-wrap gap-3">
               <a
-                href="#contact-form"
+                href="https://booking.myndspace.app/amanp"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="rounded-full bg-[#0a7272] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#0b5a5d]"
               >
                 Book Appointment
