@@ -12,28 +12,28 @@ const Navbar = () => {
       <Link
         to="/"
         className={`relative ${mobile ? 'block py-2 text-black' : 'mx-4'}`}
-        onClick={() => setIsOpen(false)} // Close menu on click
+        onClick={() => setIsOpen(false)}
       >
         <span className="hover:underline hover:underline-offset-4 hover:decoration-2 transition-all duration-300">Home</span>
       </Link>
       <Link
         to="/about"
         className={`relative ${mobile ? 'block py-2 text-black' : 'mx-4'}`}
-        onClick={() => setIsOpen(false)} // Close menu on click
+        onClick={() => setIsOpen(false)}
       >
         <span className="hover:underline hover:underline-offset-4 hover:decoration-2 transition-all duration-300">About</span>
       </Link>
       <Link
         to="/services"
         className={`relative ${mobile ? 'block py-2 text-black' : 'mx-4'}`}
-        onClick={() => setIsOpen(false)} // Close menu on click
+        onClick={() => setIsOpen(false)}
       >
         <span className="hover:underline hover:underline-offset-4 hover:decoration-2 transition-all duration-300">Our Services</span>
       </Link>
       <Link
         to="/packages"
         className={`relative ${mobile ? 'block py-2 text-black' : 'mx-4'}`}
-        onClick={() => setIsOpen(false)} // Close menu on click
+        onClick={() => setIsOpen(false)}
       >
         <span className="hover:underline hover:underline-offset-4 hover:decoration-2 transition-all duration-300">Packages</span>
       </Link>
@@ -43,6 +43,13 @@ const Navbar = () => {
         onClick={() => setIsOpen(false)}
       >
         <span className="hover:underline hover:underline-offset-4 hover:decoration-2 transition-all duration-300">Book Now</span>
+      </Link>
+      <Link
+        to="/contact"
+        className={`relative ${mobile ? 'block py-2 text-black' : 'mx-4'}`}
+        onClick={() => setIsOpen(false)}
+      >
+        <span className="hover:underline hover:underline-offset-4 hover:decoration-2 transition-all duration-300">Contact Us</span>
       </Link>
     </>
   );
