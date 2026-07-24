@@ -54,7 +54,7 @@ const Navbar = () => {
         onClick={() => setIsOpen(false)}
       >
         <span className="hover:text-[#0a7272] transition-colors duration-300">
-          Contact
+          Contact Us
         </span>
       </Link>
 
