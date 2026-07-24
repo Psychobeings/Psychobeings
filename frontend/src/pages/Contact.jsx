@@ -82,14 +82,12 @@ const Contact = () => {
             </div>
 
             <div className="flex flex-wrap gap-3">
-              <a
-                href="https://booking.myndspace.app/amanp"
-                target="_blank"
-                rel="noopener noreferrer"
+              <Link
+                to="/booking"
                 className="rounded-full bg-[#0a7272] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#0b5a5d]"
               >
                 Book Appointment
-              </a>
+              </Link>
               <Link
                 to="/services"
                 className="rounded-full border border-[#0a7272] px-6 py-3 text-sm font-semibold text-[#0a7272] transition hover:bg-[#eaf6f6]"
