@@ -1,86 +1,48 @@
-import founderImage from '../../assets/Foundersimg2.jpg'; // Adjust the path as necessary
+import founderImage from '../../assets/Foundersimg2.jpg';
 
 export default function HeroSection() {
   return (
-    <section className="py-20 px-6 md:px-12 lg:px-20 bg-gradient-to-br from-gray-50 via-white to-slate-100 text-gray-800">
-      <div className="max-w-3xl mx-auto text-center">
-        {/* Blob + Circular Photo */}
-       {/* Container with bigger width */}
-<div className="relative mx-auto w-[20rem] sm:w-[26rem] aspect-square transform transition-all duration-700 hover:scale-105">
-  {/* Blob background remains same */}
-  <svg
-    viewBox="0 0 500 500"
-    className="absolute inset-0 w-full h-full -z-10 drop-shadow-xl transition-all duration-1000 animate-pulse"
-    aria-hidden="true"
-  >
-    <defs>
-      <linearGradient id="about-blob-grad" x1="0" y1="0" x2="1" y2="1">
-        <stop offset="0%" stopColor="#10b981" />
-        <stop offset="100%" stopColor="#14b8a6" />
-      </linearGradient>
-    </defs>
-    <path
-      fill="url(#about-blob-grad)"
-      d="M421,310Q367,370,310,418Q253,466,188,424Q123,382,84,318Q45,254,80,184Q115,114,184,86Q253,58,324,86Q395,114,434,184Q473,254,421,310Z"
-      className="transition-all duration-1000"
-    />
-  </svg>
+    <section className="bg-[linear-gradient(135deg,#f7fcfb_0%,#ffffff_100%)] px-6 py-16 text-gray-800 md:px-12 lg:px-20 lg:py-20">
+      <div className="mx-auto max-w-6xl rounded-[32px] border border-teal-100/80 bg-white/90 p-8 shadow-[0_18px_45px_-20px_rgba(9,127,127,0.24)] backdrop-blur sm:p-10 lg:p-14">
+        <div className="grid items-center gap-10 lg:grid-cols-[0.95fr_1.05fr]">
+          <div className="relative mx-auto flex w-full max-w-[320px] justify-center sm:max-w-[380px]">
+            <div className="absolute inset-0 rounded-full bg-teal-100/70 blur-3xl" />
+            <div className="relative w-full max-w-[300px] rounded-[28px] border border-white/70 bg-gradient-to-br from-teal-50 to-white p-3 shadow-xl sm:max-w-[340px]">
+              <img
+                src={founderImage}
+                alt="Amanpreet Kaur"
+                className="w-full rounded-[24px] object-cover"
+              />
+            </div>
+          </div>
 
-  {/* Larger image */}
-  <img
-    src={founderImage}
-    alt="Amanpreet Kaur"
-    className="absolute inset-0 m-auto w-48 h-48 sm:w-56 sm:h-56 md:w-64 md:h-64 rounded-full object-cover ring-4 ring-white shadow-2xl transition-all duration-500 hover:ring-8 hover:ring-emerald-100 hover:shadow-3xl"
-  />
-</div>
-
-
-        {/* Content with reduced gap and smooth animations */}
-        <div className="mt-6 transform transition-all duration-700 delay-300 opacity-0 animate-fade-in">
-          {/* Name */}
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-[#097f7f] transition-colors duration-300 hover:text-emerald-600">
-            Amanpreet Kaur
-          </h2>
-
-          {/* Role */}
-          <p className="mt-1 text-teal-700 font-semibold text-lg sm:text-xl transition-all duration-300 hover:text-teal-800">
-            Founder, Counselling Psychologist
-          </p>
-
-          {/* Qualifications */}
-          <ul className="mt-5 space-y-2 text-gray-700 text-base sm:text-lg">
-            <li className="transform transition-all duration-500 delay-100 hover:translate-x-2 hover:text-teal-700">
-              🎓 PhD Scholar in Clinical Psychology — NIILM University, Kaithal
-            </li>
-            <li className="transform transition-all duration-500 delay-100 hover:translate-x-2 hover:text-teal-700">
-              🎓 MSc Clinical Psychology — CMR University, Bangalore
-            </li>
-            <li className="transform transition-all duration-500 delay-200 hover:translate-x-2 hover:text-teal-700">
-              🎓 BSc Psychology Hons — Coventry University, UK
-            </li>
-            <li className="transform transition-all duration-500 delay-300 hover:translate-x-2 hover:text-teal-700">
-              🎓 Higher Diploma in Psychology — Management Development Institute of Singapore
-            </li>
-          </ul>
+          <div className="text-left">
+            <p className="mb-3 text-sm font-semibold uppercase tracking-[0.3em] text-teal-700">
+              About the founder
+            </p>
+            <h2 className="text-3xl font-extrabold tracking-tight text-[#097f7f] sm:text-4xl md:text-5xl">
+              Amanpreet Kaur
+            </h2>
+            <p className="mt-2 text-lg font-semibold text-teal-700 sm:text-xl">
+              Founder, Counselling Psychologist
+            </p>
+            <ul className="mt-6 space-y-3 text-base text-gray-700 sm:text-lg">
+              <li className="rounded-2xl border border-slate-100 bg-slate-50/80 px-4 py-3">
+                🎓 PhD Scholar in Clinical Psychology — NIILM University, Kaithal
+              </li>
+              <li className="rounded-2xl border border-slate-100 bg-slate-50/80 px-4 py-3">
+                🎓 MSc Clinical Psychology — CMR University, Bangalore
+              </li>
+              <li className="rounded-2xl border border-slate-100 bg-slate-50/80 px-4 py-3">
+                🎓 BSc Psychology Hons — Coventry University, UK
+              </li>
+              <li className="rounded-2xl border border-slate-100 bg-slate-50/80 px-4 py-3">
+                🎓 Higher Diploma in Psychology — Management Development Institute of Singapore
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
-
-      <style jsx>{`
-        @keyframes fade-in {
-          from {
-            opacity: 0;
-            transform: translateY(20px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-        
-        .animate-fade-in {
-          animation: fade-in 1s ease-out forwards;
-        }
-      `}</style>
     </section>
   );
 }
