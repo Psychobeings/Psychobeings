@@ -222,12 +222,14 @@ const Packages = () => {
                   ))}
                 </div>
 
-                <Link
-                  to="/contact"
+                <a
+                  href="https://booking.myndspace.app/amanp"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="mt-8 inline-flex justify-center items-center w-full rounded-full bg-[#018081] text-white py-4 font-semibold hover:bg-[#016A6A] transition"
                 >
                   Book Now
-                </Link>
+                </a>
               </div>
             ))}
           </div>
@@ -290,12 +292,14 @@ const Packages = () => {
                   ))}
                 </div>
 
-                <Link
-                  to="/contact"
+                <a
+                  href="https://booking.myndspace.app/amanp"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="mt-8 inline-flex justify-center items-center w-full rounded-full bg-[#018081] text-white py-4 font-semibold hover:bg-[#016A6A] transition"
                 >
                   Book Now
-                </Link>
+                </a>
               </div>
             ))}
           </div>
@@ -340,12 +344,14 @@ const Packages = () => {
                   {program.description}
                 </p>
 
-                <Link
-                  to="/contact"
+                <a
+                  href="https://booking.myndspace.app/amanp"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="inline-flex items-center mt-8 font-semibold text-[#018081] hover:gap-3 transition-all"
                 >
                   Enquire Now →
-                </Link>
+                </a>
               </div>
             ))}
           </div>
@@ -403,12 +409,14 @@ const Packages = () => {
             </p>
 
             <div className="mt-10 flex flex-col sm:flex-row justify-center gap-5">
-              <Link
-                to="/contact"
+              <a
+                href="https://booking.myndspace.app/amanp"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="bg-white text-[#018081] px-8 py-4 rounded-full font-semibold text-lg hover:bg-[#F3F8F8] transition duration-300 shadow-md"
               >
                 Schedule a Consultation
-              </Link>
+              </a>
 
               <Link
                 to="/services"
