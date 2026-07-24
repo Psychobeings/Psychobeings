@@ -149,7 +149,7 @@ const Contact = () => {
             </div>
 
             <div className="mt-6 rounded-2xl border border-white/10 bg-white/10 p-4">
-              <p className="text-sm font-semibold">Prefer a visit?</p>
+              <p className="text-sm font-semibold text-white">"Prefer a visit?</p>
               <p className="mt-2 text-sm text-[#dce9e8]">
                 We welcome clients to connect in person for a first conversation in Faridabad, Haryana, and we are happy to guide you toward the right support.
               </p>
@@ -224,7 +224,7 @@ const Contact = () => {
             </div>
 
             <div className="mt-6 rounded-2xl border border-white/10 bg-white/10 p-4">
-              <p className="text-sm font-semibold">Need a quick response?</p>
+              <p className="text-sm font-semibold text-white">Need a quick response?</p>
               <p className="mt-2 text-sm text-[#dce9e8]">We usually reply within 1–2 business days to help you take the next step with confidence.</p>
             </div>
 
