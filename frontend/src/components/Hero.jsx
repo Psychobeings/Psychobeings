@@ -28,11 +28,11 @@ const Hero = () => {
       Explore Services
     </button>
   </Link>
-  <Link to="/services">
+  <a href="https://booking.myndspace.app/amanp" target="_blank" rel="noopener noreferrer">
     <button className="px-6 py-2 rounded-full bg-[#092c2c] text-white font-medium hover:bg-[#064646] transition">
       Book a Session
     </button>
-  </Link>
+  </a>
   <Link to="/about">
     <button className="px-6 py-2 rounded-full border border-gray-300 text-gray-800 font-medium hover:bg-gray-100 transition">
       Learn More
