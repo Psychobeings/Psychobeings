@@ -100,7 +100,7 @@ export default function TherapyApproach() {
 
           {/* Enhanced CTA Button */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <Link to="/services" className="inline-block">
+            <a href="https://booking.myndspace.app/amanp" target="_blank" rel="noopener noreferrer" className="inline-block">
             <button className="group relative px-10 py-4 bg-gradient-to-r from-teal-600 to-teal-500 text-white font-bold text-lg rounded-full shadow-2xl hover:shadow-teal-500/25 transform hover:scale-105 transition-all duration-300 overflow-hidden">
               <span className="relative z-10 flex items-center space-x-2">
                 <span>Book a Session</span>
@@ -108,7 +108,7 @@ export default function TherapyApproach() {
               </span>
               <div className="absolute inset-0 bg-gradient-to-r from-teal-700 to-teal-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
             </button>
-            </Link>
+            </a>
           </div>
 
         
