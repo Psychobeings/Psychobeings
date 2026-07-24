@@ -1,10 +1,9 @@
-
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import logo from '../assets/logo.png';
 import { Menu, X } from 'lucide-react';
 
-const Navbar = ({ onContactClick }) => {
+const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const NavItems = ({ mobile = false }) => (
@@ -12,82 +11,105 @@ const Navbar = ({ onContactClick }) => {
       <Link
         to="/"
         className={`relative ${mobile ? 'block py-2 text-black' : 'mx-2'}`}
-        onClick={() => setIsOpen(false)} // Close menu on click
+        onClick={() => setIsOpen(false)}
       >
-        <span className="hover:text-[#0a7272] transition-colors duration-300 transition-all duration-300">Home</span>
+        <span className="hover:text-[#0a7272] transition-colors duration-300">
+          Home
+        </span>
       </Link>
+
       <Link
         to="/about"
         className={`relative ${mobile ? 'block py-2 text-black' : 'mx-2'}`}
-        onClick={() => setIsOpen(false)} // Close menu on click
+        onClick={() => setIsOpen(false)}
       >
-        <span className="hover:text-[#0a7272] transition-colors duration-300 transition-all duration-300">About</span>
+        <span className="hover:text-[#0a7272] transition-colors duration-300">
+          About
+        </span>
       </Link>
+
       <Link
         to="/services"
         className={`relative ${mobile ? 'block py-2 text-black' : 'mx-2'}`}
-        onClick={() => setIsOpen(false)} // Close menu on click
+        onClick={() => setIsOpen(false)}
       >
-        <span className="hover:text-[#0a7272] transition-colors duration-300 transition-all duration-300">Our Services</span>
+        <span className="hover:text-[#0a7272] transition-colors duration-300">
+          Our Services
+        </span>
       </Link>
+
       <Link
         to="/packages"
         className={`relative ${mobile ? 'block py-2 text-black' : 'mx-2'}`}
-        onClick={() => setIsOpen(false)} // Close menu on click
+        onClick={() => setIsOpen(false)}
       >
-        <span className="hover:text-[#0a7272] transition-colors duration-300 transition-all duration-300">Packages</span>
+        <span className="hover:text-[#0a7272] transition-colors duration-300">
+          Packages
+        </span>
       </Link>
-      <span
-        onClick={() => {
-          setIsOpen(false); // Close mobile menu if open
-          onContactClick(); // Open the modal
-        }}
-        className={`cursor-pointer relative ${mobile ? 'block py-2 text-black' : 'mx-4'}`}
-      >
-        <span className="hover:text-[#0a7272] transition-colors duration-300 transition-all duration-300">Contact</span>
-      </span>
+
       <Link
-  to="/booking"
-  className="rounded-full bg-[#0a7272] px-5 py-2 text-white font-medium hover:bg-[#0d5c5e] transition"
->
-  Book Now
-</Link>
+        to="/contact"
+        className={`relative ${mobile ? 'block py-2 text-black' : 'mx-4'}`}
+        onClick={() => setIsOpen(false)}
+      >
+        <span className="hover:text-[#0a7272] transition-colors duration-300">
+          Contact
+        </span>
+      </Link>
+
+      <Link
+        to="/booking"
+        onClick={() => setIsOpen(false)}
+        className="rounded-full bg-[#0a7272] px-5 py-2 text-white font-medium hover:bg-[#0d5c5e] transition"
+      >
+        Book Now
+      </Link>
     </>
   );
 
   return (
     <>
-      <nav className="sticky top-0 bg-white shadow-sm flex items-center justify-between py-3 px-4 sm:px-6 lg:px-8 z-50">
-        <div className="flex flex-shrink-0 items-center">
-          <img src={logo} alt="logo" className="mx-2 w-24 h-auto sm:w-40 md:w-48 lg:w-56" />
+      <nav className="sticky top-0 z-50 flex items-center justify-between bg-white px-4 py-3 shadow-sm sm:px-6 lg:px-8">
+        <div className="flex items-center">
+          <img
+            src={logo}
+            alt="Psychobeings Logo"
+            className="mx-2 h-auto w-24 sm:w-40 md:w-48 lg:w-56"
+          />
         </div>
-        <div className="flex justify-normal">
-          <div className="hidden md:flex items-center gap-6 text-[16px] font-medium">
-            <NavItems />
-          </div>
-          <div className="flex items-center space-x-4">
-            <button
-              onClick={() => setIsOpen(!isOpen)}
-              className={`text-gray-500 hover:text-gray-700 focus:outline-none md:hidden ${isOpen ? 'hidden' : ''}`}
-            >
-              <Menu size={24} />
-            </button>
-          </div>
+
+        <div className="hidden items-center gap-6 text-[16px] font-medium md:flex">
+          <NavItems />
         </div>
+
+        <button
+          onClick={() => setIsOpen(true)}
+          className="text-gray-600 md:hidden"
+        >
+          <Menu size={28} />
+        </button>
       </nav>
+
       {isOpen && (
-        <div className={`fixed top-0 right-0 bottom-0 w-64 bg-white shadow-lg transform transition-transform duration-300 ease-in-out ${isOpen ? 'translate-x-0' : 'translate-x-full'} md:hidden overflow-hidden z-50`}>
-          <div className="relative h-full w-full">
-            <div className="relative z-10 p-4 h-full">
-              <button
-                onClick={() => setIsOpen(false)}
-                className="absolute top-4 right-4 text-black hover:text-gray-300 focus:outline-none z-50"
-              >
-                <X size={24} />
-              </button>
-              <div className="mt-8">
-                <NavItems mobile />
-              </div>
+        <div className="fixed inset-0 z-50 md:hidden">
+          {/* Background Overlay */}
+          <div
+            className="absolute inset-0 bg-black/40"
+            onClick={() => setIsOpen(false)}
+          ></div>
+
+          {/* Sidebar */}
+          <div className="absolute right-0 top-0 h-full w-64 bg-white shadow-xl">
+            <button
+              onClick={() => setIsOpen(false)}
+              className="absolute right-4 top-4"
+            >
+              <X size={28} />
+            </button>
+
+            <div className="mt-16 flex flex-col gap-4 px-6 text-lg font-medium">
+              <NavItems mobile />
             </div>
           </div>
         </div>
