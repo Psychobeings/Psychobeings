@@ -88,11 +88,11 @@ const TherapyDetails = () => {
             Price: ₹{service.price}
           </p>
           <div className="flex justify-center lg:justify-start">
-            <a href="https://booking.myndspace.app/amanp" target="_blank" rel="noopener noreferrer">
+            <Link to="/booking">
               <button className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-lg shadow-md transform hover:translate-y-1 transition-all duration-300">
                 Book Now
               </button>
-            </a>
+            </Link>
           </div>
         </div>
       </div>
