@@ -4,64 +4,65 @@ import { Link } from 'react-router-dom';
 import logo from '../assets/logo.png';
 import { Menu, X } from 'lucide-react';
 
-const Navbar = () => {
+const Navbar = ({ onContactClick }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const NavItems = ({ mobile = false }) => (
     <>
       <Link
         to="/"
-        className={`relative ${mobile ? 'block py-2 text-black' : 'mx-4'}`}
-        onClick={() => setIsOpen(false)}
+        className={`relative ${mobile ? 'block py-2 text-black' : 'mx-2'}`}
+        onClick={() => setIsOpen(false)} // Close menu on click
       >
-        <span className="hover:underline hover:underline-offset-4 hover:decoration-2 transition-all duration-300">Home</span>
+        <span className="hover:text-[#0a7272] transition-colors duration-300 transition-all duration-300">Home</span>
       </Link>
       <Link
         to="/about"
-        className={`relative ${mobile ? 'block py-2 text-black' : 'mx-4'}`}
-        onClick={() => setIsOpen(false)}
+        className={`relative ${mobile ? 'block py-2 text-black' : 'mx-2'}`}
+        onClick={() => setIsOpen(false)} // Close menu on click
       >
-        <span className="hover:underline hover:underline-offset-4 hover:decoration-2 transition-all duration-300">About</span>
+        <span className="hover:text-[#0a7272] transition-colors duration-300 transition-all duration-300">About</span>
       </Link>
       <Link
         to="/services"
-        className={`relative ${mobile ? 'block py-2 text-black' : 'mx-4'}`}
-        onClick={() => setIsOpen(false)}
+        className={`relative ${mobile ? 'block py-2 text-black' : 'mx-2'}`}
+        onClick={() => setIsOpen(false)} // Close menu on click
       >
-        <span className="hover:underline hover:underline-offset-4 hover:decoration-2 transition-all duration-300">Our Services</span>
+        <span className="hover:text-[#0a7272] transition-colors duration-300 transition-all duration-300">Our Services</span>
       </Link>
       <Link
         to="/packages"
-        className={`relative ${mobile ? 'block py-2 text-black' : 'mx-4'}`}
-        onClick={() => setIsOpen(false)}
+        className={`relative ${mobile ? 'block py-2 text-black' : 'mx-2'}`}
+        onClick={() => setIsOpen(false)} // Close menu on click
       >
-        <span className="hover:underline hover:underline-offset-4 hover:decoration-2 transition-all duration-300">Packages</span>
+        <span className="hover:text-[#0a7272] transition-colors duration-300 transition-all duration-300">Packages</span>
       </Link>
+      <span
+        onClick={() => {
+          setIsOpen(false); // Close mobile menu if open
+          onContactClick(); // Open the modal
+        }}
+        className={`cursor-pointer relative ${mobile ? 'block py-2 text-black' : 'mx-4'}`}
+      >
+        <span className="hover:text-[#0a7272] transition-colors duration-300 transition-all duration-300">Contact Us</span>
+      </span>
       <Link
-        to="/booking"
-        className={`relative ${mobile ? 'block py-2 text-black' : 'mx-4'}`}
-        onClick={() => setIsOpen(false)}
-      >
-        <span className="hover:underline hover:underline-offset-4 hover:decoration-2 transition-all duration-300">Book Now</span>
-      </Link>
-      <Link
-        to="/contact"
-        className={`relative ${mobile ? 'block py-2 text-black' : 'mx-4'}`}
-        onClick={() => setIsOpen(false)}
-      >
-        <span className="hover:underline hover:underline-offset-4 hover:decoration-2 transition-all duration-300">Contact Us</span>
-      </Link>
+  to="/booking"
+  className="rounded-full bg-[#0a7272] px-5 py-2 text-white font-medium hover:bg-[#0d5c5e] transition"
+>
+  Book Now
+</Link>
     </>
   );
 
   return (
     <>
-      <nav className="relative flex items-center justify-between py-6 px-4 sm:px-6 lg:px-8 z-50">
+      <nav className="sticky top-0 bg-white shadow-sm flex items-center justify-between py-3 px-4 sm:px-6 lg:px-8 z-50">
         <div className="flex flex-shrink-0 items-center">
           <img src={logo} alt="logo" className="mx-2 w-24 h-auto sm:w-40 md:w-48 lg:w-56" />
         </div>
         <div className="flex justify-normal">
-          <div className="hidden md:flex items-center justify-center gap-8 text-md font-normal">
+          <div className="hidden md:flex items-center gap-6 text-[16px] font-medium">
             <NavItems />
           </div>
           <div className="flex items-center space-x-4">
