@@ -37,13 +37,15 @@ const Navbar = () => {
       >
         <span className="hover:underline hover:underline-offset-4 hover:decoration-2 transition-all duration-300">Packages</span>
       </Link>
-      <Link
-        to="/contact"
+      <a
+        href="https://booking.myndspace.app/amanp"
+        target="_blank"
+        rel="noopener noreferrer"
         className={`relative ${mobile ? 'block py-2 text-black' : 'mx-4'}`}
         onClick={() => setIsOpen(false)}
       >
-        <span className="hover:underline hover:underline-offset-4 hover:decoration-2 transition-all duration-300">Contact Us</span>
-      </Link>
+        <span className="hover:underline hover:underline-offset-4 hover:decoration-2 transition-all duration-300">Book Now</span>
+      </a>
     </>
   );
 
