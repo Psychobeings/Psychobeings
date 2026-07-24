@@ -173,7 +173,7 @@ const Contact = () => {
               <div className="aspect-video w-full bg-[#f7fcfc] p-3">
                 <iframe
                   title="Psychobeings location"
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3509.096600689368!2d77.35133527537286!3d28.416341875783488!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390cdd23f05d4aa7%3A0x8c0530d6c1a30964!2sRPS%20Palms!5e0!3m2!1sen!2sin!4v1784883614521!5m2!1sen!2sin"
+                  src="https://www.google.com/maps?q=RPS%20Palms%20Sector%2088%20Faridabad&z=17&output=embed"
                   className="h-full w-full rounded-[1.2rem] border-0"
                   loading="lazy"
                   referrerPolicy="no-referrer-when-downgrade"
