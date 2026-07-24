@@ -159,20 +159,20 @@ const Services = () => {
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,_rgba(255,255,255,0.15),_transparent_35%),radial-gradient(circle_at_bottom_right,_rgba(255,255,255,0.1),_transparent_40%)]" />
             <div className="relative grid gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
               <div>
-                <span className="inline-flex items-center rounded-full bg-white/15 px-4 py-2 text-sm font-medium">
+                <span className="inline-flex items-center rounded-full bg-[#0d5c5e] px-4 py-2 text-sm font-semibold text-white shadow-md">
                   Therapy and programs for healing, growth and balance
                 </span>
-                <h1 className="mt-6 text-4xl font-semibold leading-tight sm:text-5xl">
+                <h1 className="mt-6 text-4xl font-bold leading-tight text-white sm:text-5xl">
                   Support that meets you where you are.
                 </h1>
-                <p className="mt-5 max-w-2xl text-lg leading-8 text-teal-50">
+                <p className="mt-5 max-w-2xl text-lg leading-8 text-white/90">
                   We offer therapy and structured programs designed to help individuals, children, adolescents, and organizations build emotional strength and meaningful wellbeing.
                 </p>
                 <div className="mt-8 flex flex-wrap gap-3">
                   <Link to="/booking" className="rounded-full bg-white px-6 py-3 text-sm font-semibold text-[#0a7272] transition hover:bg-teal-50">
                     Book a consultation
                   </Link>
-                  <a href="#therapy" className="rounded-full border border-white/30 px-6 py-3 text-sm font-semibold text-white transition hover:bg-white/10">
+                  <a href="#therapy" className="rounded-full border border-white/30 px-6 py-3 text-sm font-semibold text-white transition hover:bg-white/20 border border-white/20">
                     Explore services
                   </a>
                 </div>
@@ -181,15 +181,15 @@ const Services = () => {
               <div className="rounded-[1.5rem] border border-white/20 bg-white/10 p-6 backdrop-blur">
                 <div className="grid gap-4 sm:grid-cols-2">
                   <div className="rounded-2xl bg-white/15 p-4">
-                    <p className="text-sm font-semibold">Therapy</p>
+                    <p className="text-sm font-semibold text-white">Therapy</p>
                     <p className="mt-2 text-sm text-teal-50">Individual support and child-adolescent care.</p>
                   </div>
                   <div className="rounded-2xl bg-white/15 p-4">
-                    <p className="text-sm font-semibold">Programs</p>
+                    <p className="text-sm font-semibold text-white">Programs</p>
                     <p className="mt-2 text-sm text-teal-50">Workshops and corporate wellness offerings.</p>
                   </div>
                   <div className="rounded-2xl bg-white/15 p-4 sm:col-span-2">
-                    <p className="text-sm font-semibold">Available formats</p>
+                    <p className="text-sm font-semibold text-white">Available formats</p>
                     <p className="mt-2 text-sm text-teal-50">Online across India and internationally, with in-person support in Faridabad.</p>
                   </div>
                 </div>
