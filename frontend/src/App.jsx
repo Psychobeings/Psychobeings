@@ -16,22 +16,24 @@ import Booking from './pages/Booking';
 function App() {
   return (
     <Router>
-      <div className="container mx-auto">
+      <div className="min-h-screen bg-[#f8fcfc]">
         <Navbar />
         <Toaster position="top-right" reverseOrder={false} />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/services" element={<Services />} />
-          <Route path="/services/:therapyId" element={<TherapyDetails />} />
-          <Route path="/packages" element={<Packages />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/booking" element={<Booking />} />
-          <Route path="/individual-therapy" element={<SessionBookingForm />} />
-          <Route path="/couples-therapy" element={<SessionBookingForm />} />
-          <Route path="/family-therapy" element={<ComingSoon />} />
-          <Route path="/group-therapy" element={<ComingSoon />} />
-        </Routes>
+        <main className="w-full">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/services" element={<Services />} />
+            <Route path="/services/:therapyId" element={<TherapyDetails />} />
+            <Route path="/packages" element={<Packages />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/booking" element={<Booking />} />
+            <Route path="/individual-therapy" element={<SessionBookingForm />} />
+            <Route path="/couples-therapy" element={<SessionBookingForm />} />
+            <Route path="/family-therapy" element={<ComingSoon />} />
+            <Route path="/group-therapy" element={<ComingSoon />} />
+          </Routes>
+        </main>
       </div>
       <Footer />
     </Router>
