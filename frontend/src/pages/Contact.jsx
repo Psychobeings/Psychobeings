@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { MapPin, Mail, Phone, Headphones, ArrowRight } from 'lucide-react';
 import axios from 'axios';
 import Contectimg from '../assets/contectSvg.png';
@@ -64,34 +65,45 @@ const Contact = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#fdfcf9] via-[#f6f0e8] to-[#f1e7dc] px-4 py-8 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gradient-to-br from-[#0a7272] via-[#0c6d70] to-[#0e5b5e] px-4 py-8 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-7xl">
-        <section className="grid items-center gap-8 rounded-[2rem] border border-[#e6d6c2] bg-white/80 p-6 shadow-sm backdrop-blur sm:p-8 lg:grid-cols-[1.05fr_0.95fr] lg:p-10">
+        <section className="grid items-center gap-8 rounded-[2rem] border border-white/20 bg-white/95 p-6 shadow-[0_20px_60px_rgba(0,0,0,0.08)] backdrop-blur sm:p-8 lg:grid-cols-[1.05fr_0.95fr] lg:p-10">
           <div className="space-y-6">
-            <span className="inline-flex items-center rounded-full bg-[#f2e6d8] px-4 py-2 text-sm font-medium text-[#5f3f2d]">
+            <span className="inline-flex items-center rounded-full bg-[#eaf6f6] px-4 py-2 text-sm font-medium text-[#0a5f62]">
               Contact us
             </span>
             <div className="space-y-3">
-              <h1 className="text-4xl font-semibold leading-tight text-[#1f3a3d] sm:text-5xl">
+              <h1 className="text-4xl font-semibold leading-tight text-[#0d4f50] sm:text-5xl">
                 We are here whenever you are ready to begin.
               </h1>
-              <p className="max-w-2xl text-lg text-[#5d5d5d]">
+              <p className="max-w-2xl text-lg text-[#4c6162]">
                 Whether you are looking for guidance, booking support, or a first conversation, we would love to hear from you.
               </p>
             </div>
-            <div className="grid gap-4 sm:grid-cols-2">
-              <div className="rounded-2xl border border-[#ebdfcf] bg-[#fcf7f2] p-4">
-                <p className="text-sm font-semibold text-[#1f3a3d]">Choose how you would like to reach us</p>
-                <p className="mt-2 text-sm text-[#5d5d5d]">Pick the option that feels most comfortable for you.</p>
-              </div>
-              <div className="rounded-2xl border border-[#ebdfcf] bg-[#fcf7f2] p-4">
-                <p className="text-sm font-semibold text-[#1f3a3d]">Ready to begin?</p>
-                <p className="mt-2 text-sm text-[#5d5d5d]">Share a few details and we will connect with you soon.</p>
-              </div>
+
+            <div className="flex flex-wrap gap-3">
+              <a
+                href="#contact-form"
+                className="rounded-full bg-[#0a7272] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#0b5a5d]"
+              >
+                Book Appointment
+              </a>
+              <Link
+                to="/services"
+                className="rounded-full border border-[#0a7272] px-6 py-3 text-sm font-semibold text-[#0a7272] transition hover:bg-[#eaf6f6]"
+              >
+                Explore Services
+              </Link>
+              <Link
+                to="/packages"
+                className="rounded-full border border-[#a7cfcf] px-6 py-3 text-sm font-semibold text-[#2c5d5d] transition hover:bg-[#f5fbfb]"
+              >
+                View Packages
+              </Link>
             </div>
           </div>
 
-          <div className="rounded-[2rem] border border-[#ebdfcf] bg-[#f8efe4] p-4 sm:p-6">
+          <div className="rounded-[2rem] bg-[#eaf6f6] p-4 sm:p-6">
             <img
               src={Contectimg}
               alt="Contact illustration"
@@ -100,12 +112,17 @@ const Contact = () => {
           </div>
         </section>
 
-        <section className="mt-10 grid gap-8 lg:grid-cols-[0.85fr_1.15fr]">
-          <div className="rounded-[2rem] bg-[#1f3a3d] p-8 text-white shadow-sm">
-            <h2 className="text-2xl font-semibold">Choose how you would like to reach us</h2>
-            <p className="mt-3 text-sm leading-6 text-[#dce9e8]">
-              From location details to support guidance, we have made it simple to connect with us.
-            </p>
+        <section id="contact-form" className="mt-10 grid gap-8 lg:grid-cols-[0.95fr_1.05fr]">
+          <div className="rounded-[2rem] bg-[#0f5f61] p-8 text-white shadow-sm">
+            <div className="flex items-center gap-3">
+              <div className="rounded-2xl bg-white/15 p-3">
+                <Headphones size={20} />
+              </div>
+              <div>
+                <h2 className="text-2xl font-semibold">Contact options</h2>
+                <p className="mt-1 text-sm text-[#dce9e8]">Support that feels calm, clear and personal.</p>
+              </div>
+            </div>
 
             <div className="mt-6 space-y-4">
               {supportOptions.map((option) => {
@@ -125,24 +142,38 @@ const Contact = () => {
                 );
               })}
             </div>
+
+            <div className="mt-6 rounded-2xl border border-white/10 bg-white/10 p-4">
+              <p className="text-sm font-semibold">Need a quick response?</p>
+              <p className="mt-2 text-sm text-[#dce9e8]">We usually reply within 1–2 business days to help you take the next step with confidence.</p>
+            </div>
+
+            <div className="mt-6 flex flex-wrap gap-3">
+              <Link to="/services" className="rounded-full border border-white/20 px-4 py-2 text-sm font-semibold text-white transition hover:bg-white/10">
+                Explore Therapy
+              </Link>
+              <Link to="/packages" className="rounded-full bg-white/15 px-4 py-2 text-sm font-semibold text-white transition hover:bg-white/20">
+                View Packages
+              </Link>
+            </div>
           </div>
 
-          <div className="rounded-[2rem] border border-[#e8d8c5] bg-white p-8 shadow-sm">
+          <div className="rounded-[2rem] border border-[#d7ecec] bg-white p-8 shadow-sm">
             <div className="flex items-center justify-between gap-3">
               <div>
-                <h2 className="text-2xl font-semibold text-[#1f3a3d]">Send us a message</h2>
-                <p className="mt-2 text-sm text-[#5d5d5d]">
+                <h2 className="text-2xl font-semibold text-[#0d4f50]">Send us a message</h2>
+                <p className="mt-2 text-sm text-[#4c6162]">
                   Share a few details and we will reach out with care.
                 </p>
               </div>
-              <span className="rounded-full bg-[#f2e6d8] px-3 py-1 text-sm font-medium text-[#5f3f2d]">
+              <span className="rounded-full bg-[#eaf6f6] px-3 py-1 text-sm font-medium text-[#0a5f62]">
                 Get Support
               </span>
             </div>
 
             <form className="mt-6 space-y-4" onSubmit={handlesubmit}>
               <div>
-                <label className="mb-2 block text-sm font-medium text-[#1f3a3d]" htmlFor="name">Name</label>
+                <label className="mb-2 block text-sm font-medium text-[#0d4f50]" htmlFor="name">Name</label>
                 <input
                   type="text"
                   id="name"
@@ -150,12 +181,12 @@ const Contact = () => {
                   placeholder="Your name"
                   value={formData.name}
                   onChange={handleChange}
-                  className="w-full rounded-xl border border-[#e3d4c0] px-4 py-3 outline-none transition focus:border-[#1f3a3d]"
+                  className="w-full rounded-xl border border-[#d7ecec] px-4 py-3 outline-none transition focus:border-[#0a7272]"
                   required
                 />
               </div>
               <div>
-                <label className="mb-2 block text-sm font-medium text-[#1f3a3d]" htmlFor="email">Email</label>
+                <label className="mb-2 block text-sm font-medium text-[#0d4f50]" htmlFor="email">Email</label>
                 <input
                   type="email"
                   id="email"
@@ -163,26 +194,26 @@ const Contact = () => {
                   placeholder="Your email"
                   value={formData.email}
                   onChange={handleChange}
-                  className="w-full rounded-xl border border-[#e3d4c0] px-4 py-3 outline-none transition focus:border-[#1f3a3d]"
+                  className="w-full rounded-xl border border-[#d7ecec] px-4 py-3 outline-none transition focus:border-[#0a7272]"
                   required
                 />
               </div>
               <div>
-                <label className="mb-2 block text-sm font-medium text-[#1f3a3d]" htmlFor="message">Message</label>
+                <label className="mb-2 block text-sm font-medium text-[#0d4f50]" htmlFor="message">Message</label>
                 <textarea
                   id="message"
                   name="message"
                   placeholder="How can we support you?"
                   value={formData.message}
                   onChange={handleChange}
-                  className="w-full rounded-xl border border-[#e3d4c0] px-4 py-3 outline-none transition focus:border-[#1f3a3d]"
+                  className="w-full rounded-xl border border-[#d7ecec] px-4 py-3 outline-none transition focus:border-[#0a7272]"
                   rows="5"
                   required
                 />
               </div>
               <button
                 type="submit"
-                className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#1f3a3d] px-4 py-3 font-medium text-white transition hover:bg-[#274b4f] disabled:cursor-not-allowed disabled:opacity-70"
+                className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#0a7272] px-4 py-3 font-medium text-white transition hover:bg-[#0d5c5e] disabled:cursor-not-allowed disabled:opacity-70"
                 disabled={isLoading}
               >
                 {isLoading ? (
@@ -198,7 +229,7 @@ const Contact = () => {
                 )}
               </button>
               {successMessage && (
-                <p className="rounded-xl border border-[#dce9e8] bg-[#f4fbfa] px-4 py-3 text-sm text-[#1f3a3d]">
+                <p className="rounded-xl border border-[#d7ecec] bg-[#f5fbfb] px-4 py-3 text-sm text-[#0d4f50]">
                   {successMessage}
                 </p>
               )}
