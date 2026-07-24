@@ -165,48 +165,6 @@ function Hero1() {
               </Link>
 
             </div>
-                        {/* Statistics */}
-
-            <div className="grid grid-cols-3 gap-5 mt-16 max-w-2xl">
-
-              <div className="rounded-3xl bg-white/10 backdrop-blur-xl border border-white/20 p-6 shadow-xl hover:-translate-y-2 transition-all duration-300">
-
-                <h2 className="playfair text-4xl text-white font-bold">
-                  500+
-                </h2>
-
-                <p className="text-cyan-100 mt-3 text-sm leading-6">
-                  Successful Sessions Conducted
-                </p>
-
-              </div>
-
-              <div className="rounded-3xl bg-white/10 backdrop-blur-xl border border-white/20 p-6 shadow-xl hover:-translate-y-2 transition-all duration-300">
-
-                <h2 className="playfair text-4xl text-white font-bold">
-                  5.0★
-                </h2>
-
-                <p className="text-cyan-100 mt-3 text-sm leading-6">
-                  Client Satisfaction Rating
-                </p>
-
-              </div>
-
-              <div className="rounded-3xl bg-white/10 backdrop-blur-xl border border-white/20 p-6 shadow-xl hover:-translate-y-2 transition-all duration-300">
-
-                <h2 className="playfair text-4xl text-white font-bold">
-                  100%
-                </h2>
-
-                <p className="text-cyan-100 mt-3 text-sm leading-6">
-                  Confidential Care
-                </p>
-
-              </div>
-
-            </div>
-
           </div>
 
           {/* RIGHT SIDE */}
@@ -366,7 +324,7 @@ function Hero1() {
                 </h3>
 
                 <p className="text-cyan-100 mt-2 text-sm leading-6">
-                  Flexible therapy sessions across India or at our clinic.
+                  Flexible therapy sessions across Online & In-Person.
                 </p>
 
               </div>
