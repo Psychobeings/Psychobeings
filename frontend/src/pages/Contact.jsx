@@ -74,7 +74,7 @@ const Contact = () => {
         <section className="grid items-center gap-8 rounded-[2rem] border border-white/20 bg-white/95 p-6 shadow-[0_20px_60px_rgba(0,0,0,0.08)] backdrop-blur sm:p-8 lg:grid-cols-[1.05fr_0.95fr] lg:p-10">
           <div className="space-y-6">
             <span className="inline-flex items-center rounded-full bg-[#eaf6f6] px-4 py-2 text-sm font-medium text-[#0a5f62]">
-              Contact us
+              Contact
             </span>
             <div className="space-y-3">
               <h1 className="text-4xl font-semibold leading-tight text-[#0d4f50] sm:text-5xl">
