@@ -112,11 +112,11 @@ function Hero1() {
               </button>
             </Link>
 
-            <a href="https://booking.myndspace.app/amanp" target="_blank" rel="noopener noreferrer">
+            <Link to="/booking">
               <button className="px-8 py-4 rounded-full border-2 border-white/80 text-white text-base font-medium transition-all duration-300 hover:bg-white hover:text-teal-800">
                 Book Appointment
               </button>
-            </a>
+            </Link>
           </div>
         </div>
 
