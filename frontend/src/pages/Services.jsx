@@ -199,65 +199,7 @@ const Services = () => {
         </div>
       </section>
 
-      <section id="session-details" className="px-4 py-16 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-7xl">
-          <div className="rounded-[2rem] border border-[#d7ecec] bg-white p-8 shadow-sm">
-            <h2 className="text-3xl font-semibold text-[#0d4f50]">Session details</h2>
-            <p className="mt-3 text-lg leading-7 text-[#4c6162]">Practical information about session types, payments, scheduling, and technical requirements.</p>
-
-            <div className="mt-6 grid gap-6 sm:grid-cols-2">
-              <div className="rounded-lg bg-[#f7fcfb] p-6">
-                <p className="font-semibold text-[#0a7272]">Session types</p>
-                <ul className="mt-3 text-sm text-[#4c6162] space-y-2">
-                  <li><strong>Single Session:</strong> One-off consultation or focused support.</li>
-                  <li><strong>Package:</strong> Recommended for ongoing work — progressive goals and continuity.</li>
-                  <li><strong>Duration:</strong> Typical sessions are 45–60 minutes (confirmed at booking).</li>
-                </ul>
-              </div>
-
-              <div className="rounded-lg bg-[#f7fcfb] p-6">
-                <p className="font-semibold text-[#0a7272]">General notes</p>
-                <ul className="mt-3 text-sm text-[#4c6162] space-y-2">
-                  <li><strong>Confidentiality:</strong> Sessions are private and held in a secure environment.</li>
-                  <li><strong>Platform:</strong> We use Zoom/Google Meet; links are shared after booking.</li>
-                  <li><strong>Timezones:</strong> We operate in IST — we confirm a convenient local time for international clients.</li>
-                </ul>
-              </div>
-            </div>
-
-            <div className="mt-6 grid gap-6 sm:grid-cols-2">
-              <div className="rounded-lg bg-[#f7fcfb] p-6">
-                <p className="font-semibold text-[#0a7272]">For clients in India</p>
-                <ul className="mt-3 text-sm text-[#4c6162] space-y-2">
-                  <li><strong>Currency:</strong> INR (₹). Prices shown on the site are in INR.</li>
-                  <li><strong>Payments:</strong> UPI, cards, netbanking; receipts available on request.</li>
-                  <li><strong>In-person:</strong> Available at Faridabad; please enquire for slots.</li>
-                  <li><strong>Cancellation:</strong> 24-hour notice requested for reschedules.</li>
-                </ul>
-              </div>
-
-              <div className="rounded-lg bg-[#f7fcfb] p-6">
-                <p className="font-semibold text-[#0a7272]">For clients outside India</p>
-                <ul className="mt-3 text-sm text-[#4c6162] space-y-2">
-                  <li><strong>Payments:</strong> Card, PayPal or Stripe in local currency. Exchange rates may apply.</li>
-                  <li><strong>Invoicing:</strong> We can provide invoices/receipts for international payments on request.</li>
-                  <li><strong>Technical:</strong> Stable internet, private space, and webcam recommended.</li>
-                </ul>
-              </div>
-            </div>
-
-            <div className="mt-6">
-              <Link to="/contact" className="inline-flex items-center gap-2 rounded-full bg-[#0a7272] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#0d5c5e]">
-                Ask about session details
-                <ArrowRight size={16} />
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      
-
+      <section className="px-4 py-16 sm:px-6 lg:px-8">
       <Link to="/booking" className="fixed bottom-6 right-6 z-50 inline-flex items-center gap-3 rounded-full bg-[#0a7272] px-5 py-3 text-sm font-semibold text-white shadow-[0_12px_30px_rgba(10,114,114,0.25)] transition hover:scale-105 hover:bg-[#0d5c5e]">
         <MessageCircle size={18} />
         Book consultation
@@ -387,7 +329,7 @@ const Services = () => {
         </div>
       </section>
 
-      <section id="why-trust" className="px-4 py-16 sm:px-6 lg:px-8">
+      
         <div className="mx-auto max-w-7xl">
           <div className="rounded-[2rem] border border-[#d7ecec] bg-white p-8 shadow-sm">
             <div className="flex items-center gap-3">
