@@ -199,6 +199,63 @@ const Services = () => {
         </div>
       </section>
 
+      <section id="session-details" className="px-4 py-16 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-7xl">
+          <div className="rounded-[2rem] border border-[#d7ecec] bg-white p-8 shadow-sm">
+            <h2 className="text-3xl font-semibold text-[#0d4f50]">Session details</h2>
+            <p className="mt-3 text-lg leading-7 text-[#4c6162]">Practical information about session types, payments, scheduling, and technical requirements.</p>
+
+            <div className="mt-6 grid gap-6 sm:grid-cols-2">
+              <div className="rounded-lg bg-[#f7fcfb] p-6">
+                <p className="font-semibold text-[#0a7272]">Session types</p>
+                <ul className="mt-3 text-sm text-[#4c6162] space-y-2">
+                  <li><strong>Single Session:</strong> One-off consultation or focused support.</li>
+                  <li><strong>Package:</strong> Recommended for ongoing work — progressive goals and continuity.</li>
+                  <li><strong>Duration:</strong> Typical sessions are 45–60 minutes (confirmed at booking).</li>
+                </ul>
+              </div>
+
+              <div className="rounded-lg bg-[#f7fcfb] p-6">
+                <p className="font-semibold text-[#0a7272]">General notes</p>
+                <ul className="mt-3 text-sm text-[#4c6162] space-y-2">
+                  <li><strong>Confidentiality:</strong> Sessions are private and held in a secure environment.</li>
+                  <li><strong>Platform:</strong> We use Zoom/Google Meet; links are shared after booking.</li>
+                  <li><strong>Timezones:</strong> We operate in IST — we confirm a convenient local time for international clients.</li>
+                </ul>
+              </div>
+            </div>
+
+            <div className="mt-6 grid gap-6 sm:grid-cols-2">
+              <div className="rounded-lg bg-[#f7fcfb] p-6">
+                <p className="font-semibold text-[#0a7272]">For clients in India</p>
+                <ul className="mt-3 text-sm text-[#4c6162] space-y-2">
+                  <li><strong>Currency:</strong> INR (₹). Prices shown on the site are in INR.</li>
+                  <li><strong>Payments:</strong> UPI, cards, netbanking; receipts available on request.</li>
+                  <li><strong>In-person:</strong> Available at Faridabad; please enquire for slots.</li>
+                  <li><strong>Cancellation:</strong> 24-hour notice requested for reschedules.</li>
+                </ul>
+              </div>
+
+              <div className="rounded-lg bg-[#f7fcfb] p-6">
+                <p className="font-semibold text-[#0a7272]">For clients outside India</p>
+                <ul className="mt-3 text-sm text-[#4c6162] space-y-2">
+                  <li><strong>Payments:</strong> Card, PayPal or Stripe in local currency. Exchange rates may apply.</li>
+                  <li><strong>Invoicing:</strong> We can provide invoices/receipts for international payments on request.</li>
+                  <li><strong>Technical:</strong> Stable internet, private space, and webcam recommended.</li>
+                </ul>
+              </div>
+            </div>
+
+            <div className="mt-6">
+              <Link to="/contact" className="inline-flex items-center gap-2 rounded-full bg-[#0a7272] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#0d5c5e]">
+                Ask about session details
+                <ArrowRight size={16} />
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <Link to="/booking" className="fixed bottom-6 right-6 z-50 inline-flex items-center gap-3 rounded-full bg-[#0a7272] px-5 py-3 text-sm font-semibold text-white shadow-[0_12px_30px_rgba(10,114,114,0.25)] transition hover:scale-105 hover:bg-[#0d5c5e]">
         <MessageCircle size={18} />
         Book consultation
@@ -242,57 +299,17 @@ const Services = () => {
                 <div className="mt-6 rounded-[1.5rem] border border-[#d7ecec] bg-[#f7fcfb] p-4">
                   <h4 className="text-sm font-semibold uppercase tracking-[0.2em] text-[#0a7272]">Session details</h4>
                   <div className="mt-4 grid gap-3 md:grid-cols-3">
-                    {item.sessionCards.map((card) => {
-                      if (card.title === 'Session Format') {
-                        return (
-                          <div key="session-format" className="rounded-2xl border border-[#d7ecec] bg-white p-4">
-                            <p className="text-sm font-semibold text-[#0d4f50]">Session details</p>
-                            <p className="mt-2 text-sm leading-6 text-[#4c6162]">How sessions work for clients in India and those outside India.</p>
-
-                            <div className="mt-4 grid gap-3 sm:grid-cols-2">
-                              <div className="rounded-lg bg-[#f7fcfb] p-4">
-                                <p className="font-semibold text-[#0a7272]">For clients in India</p>
-                                <ul className="mt-2 text-sm text-[#4c6162] space-y-2">
-                                  <li><strong>Currency:</strong> INR (₹). Prices shown on this page are in INR.</li>
-                                  <li><strong>Payments:</strong> UPI, cards, netbanking. Receipts available on request.</li>
-                                  <li><strong>Formats:</strong> Online (Zoom/Google Meet) and in-person at Faridabad.</li>
-                                  <li><strong>Scheduling:</strong> We operate in IST (UTC+5:30); calendar invites use local time conversion.</li>
-                                  <li><strong>Cancellation:</strong> Please give 24-hour notice to reschedule; late cancellations may incur a fee.</li>
-                                </ul>
-                              </div>
-
-                              <div className="rounded-lg bg-[#f7fcfb] p-4">
-                                <p className="font-semibold text-[#0a7272]">For clients outside India</p>
-                                <ul className="mt-2 text-sm text-[#4c6162] space-y-2">
-                                  <li><strong>Payments:</strong> Card, PayPal or Stripe in your local currency (USD/EUR etc.). Exchange rates may apply.</li>
-                                  <li><strong>Pricing:</strong> Prices are listed in INR; contact us for converted rates or invoicing options.</li>
-                                  <li><strong>Scheduling:</strong> We schedule in IST but confirm a convenient local time for you and send timezone-adjusted invites.</li>
-                                  <li><strong>Technical:</strong> Stable internet, private space, and a webcam are recommended; Zoom/Meet links are provided.</li>
-                                  <li><strong>Invoicing:</strong> Receipts and invoices are available on request for international payments.</li>
-                                </ul>
-                              </div>
-                            </div>
-
-                            <Link to={card.buttonTo} className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-[#0a7272] transition hover:text-[#0d5c5e]">
-                              {card.buttonLabel}
-                              <ArrowRight size={14} />
-                            </Link>
-                          </div>
-                        );
-                      }
-
-                      return (
-                        <div key={card.title} className="rounded-2xl border border-[#d7ecec] bg-white p-4">
-                          <p className="text-sm font-semibold text-[#0d4f50]">{card.title}</p>
-                          <p className="mt-2 text-lg font-semibold text-[#0a7272]">{card.price}</p>
-                          <p className="mt-2 text-sm leading-6 text-[#4c6162]">{card.description}</p>
-                          <Link to={card.buttonTo} className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-[#0a7272] transition hover:text-[#0d5c5e]">
-                            {card.buttonLabel}
-                            <ArrowRight size={14} />
-                          </Link>
-                        </div>
-                      );
-                    })}
+                    {item.sessionCards.filter(c => c.title !== 'Session Format').map((card) => (
+                      <div key={card.title} className="rounded-2xl border border-[#d7ecec] bg-white p-4">
+                        <p className="text-sm font-semibold text-[#0d4f50]">{card.title}</p>
+                        <p className="mt-2 text-lg font-semibold text-[#0a7272]">{card.price}</p>
+                        <p className="mt-2 text-sm leading-6 text-[#4c6162]">{card.description}</p>
+                        <Link to={card.buttonTo} className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-[#0a7272] transition hover:text-[#0d5c5e]">
+                          {card.buttonLabel}
+                          <ArrowRight size={14} />
+                        </Link>
+                      </div>
+                    ))}
                   </div>
                 </div>
 
