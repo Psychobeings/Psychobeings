@@ -242,7 +242,7 @@ const Services = () => {
                 <div className="mt-6 rounded-[1.5rem] border border-[#d7ecec] bg-[#f7fcfb] p-4">
                   <h4 className="text-sm font-semibold uppercase tracking-[0.2em] text-[#0a7272]">Session details</h4>
                   <div className="mt-4 grid gap-3 md:grid-cols-3">
-                    {item.sessionCards.filter(c => c.title !== 'Session Format').map((card) => (
+                    {item.sessionCards.map((card) => (
                       <div key={card.title} className="rounded-2xl border border-[#d7ecec] bg-white p-4">
                         <p className="text-sm font-semibold text-[#0d4f50]">{card.title}</p>
                         <p className="mt-2 text-lg font-semibold text-[#0a7272]">{card.price}</p>
@@ -328,8 +328,8 @@ const Services = () => {
         </div>
       </section>
 
-      <section id="why-trust" className="px-4 py-16 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-7xl">
+      <section className="px-4 py-16 sm:px-6 lg:px-8">
+        <div className="mx-auto grid max-w-7xl gap-8 lg:grid-cols-[1.05fr_0.95fr]">
           <div className="rounded-[2rem] border border-[#d7ecec] bg-white p-8 shadow-sm">
             <div className="flex items-center gap-3">
               <div className="rounded-2xl bg-[#eaf6f6] p-3 text-[#0a7272]">
@@ -345,11 +345,7 @@ const Services = () => {
               ))}
             </div>
           </div>
-        </div>
-      </section>
 
-      <section id="testimonials" className="px-4 py-16 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-7xl">
           <div className="rounded-[2rem] bg-[#0f5f61] p-8 text-white shadow-sm">
             <h2 className="text-3xl font-semibold">Testimonials</h2>
             <p className="mt-3 text-sm leading-7 text-[#dce9e8]">
