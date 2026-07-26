@@ -199,7 +199,6 @@ const Services = () => {
         </div>
       </section>
 
-      <section className="px-4 py-16 sm:px-6 lg:px-8">
       <Link to="/booking" className="fixed bottom-6 right-6 z-50 inline-flex items-center gap-3 rounded-full bg-[#0a7272] px-5 py-3 text-sm font-semibold text-white shadow-[0_12px_30px_rgba(10,114,114,0.25)] transition hover:scale-105 hover:bg-[#0d5c5e]">
         <MessageCircle size={18} />
         Book consultation
@@ -329,7 +328,7 @@ const Services = () => {
         </div>
       </section>
 
-      
+      <section id="why-trust" className="px-4 py-16 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
           <div className="rounded-[2rem] border border-[#d7ecec] bg-white p-8 shadow-sm">
             <div className="flex items-center gap-3">
