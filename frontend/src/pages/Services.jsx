@@ -2,37 +2,32 @@ import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, HeartHandshake, ShieldCheck, Sparkles, Building2, MapPin, MessageCircle } from 'lucide-react';
 
-// ---------------------------------------------------------------------------
-// Data
-// ---------------------------------------------------------------------------
-
 const therapyOptions = [
   {
     title: 'Individual Therapy',
-    description: 'A confidential, one-on-one space for anxiety, stress, overthinking, grief, burnout, and emotional healing — for young people and adults aged 11 to 35.',
+    description: 'A confidential, one-on-one space for anxiety, stress, overthinking, grief, burnout, and emotional healing.',
     concerns: ['Anxiety and overwhelm', 'Stress regulation', 'Burnout and emotional fatigue', 'Overthinking and decision paralysis'],
-    icon: HeartHandshake,
     sessionCards: [
       {
-        title: 'First Session',
-        price: 'Free',
-        description: 'A no-cost introductory session to see if we\u2019re the right fit for you.',
-        buttonLabel: 'Book free session',
-        buttonTo: '/contact'
-      },
-      {
         title: 'Single Session',
-        price: '\u20B91,500',
-        description: 'Ideal for focused, one-time support after your first session.',
+        price: '₹1,500',
+        description: 'Ideal for a first consultation or focused support.',
         buttonLabel: 'Book single session',
         buttonTo: '/contact'
       },
       {
         title: 'Package',
-        price: 'From \u20B98,000',
+        price: 'From ₹8,000',
         description: 'Recommended for sustained progress and ongoing support.',
         buttonLabel: 'View packages',
         buttonTo: '/packages'
+      },
+      {
+        title: 'Session Format',
+        price: 'India / International',
+        description: 'Online sessions available across India and internationally.',
+        buttonLabel: 'Choose format',
+        buttonTo: '/contact'
       }
     ],
     buttonLabel: 'Book Individual Therapy',
@@ -40,30 +35,29 @@ const therapyOptions = [
   },
   {
     title: 'Child & Adolescent Therapy',
-    description: 'Support for younger children navigating emotional, academic, and identity-related challenges with care, alongside our broader 11\u201335 age range.',
+    description: 'Support for children and adolescents navigating emotional, academic, and identity-related challenges with care.',
     concerns: ['Emotional regulation', 'School stress and confidence', 'Identity and life transitions', 'Family or peer-related difficulties'],
-    icon: HeartHandshake,
     sessionCards: [
       {
-        title: 'First Session',
-        price: 'Free',
-        description: 'A no-cost introductory session for your family to meet us.',
-        buttonLabel: 'Book free session',
-        buttonTo: '/contact'
-      },
-      {
         title: 'Single Session',
-        price: '\u20B91,800',
-        description: 'Helpful for one-time guidance after your first session.',
+        price: '₹1,800',
+        description: 'Helpful for an initial assessment or one-time guidance.',
         buttonLabel: 'Book single session',
         buttonTo: '/contact'
       },
       {
         title: 'Package',
-        price: 'From \u20B99,000',
+        price: 'From ₹9,000',
         description: 'Best for continued support through emotional growth and transitions.',
         buttonLabel: 'View packages',
         buttonTo: '/packages'
+      },
+      {
+        title: 'Session Format',
+        price: 'In-Person & Online',
+        description: 'Online support available for families across India and abroad.',
+        buttonLabel: 'Choose format',
+        buttonTo: '/contact'
       }
     ],
     buttonLabel: 'Book Child & Adolescent Support',
@@ -76,18 +70,17 @@ const programOptions = [
     title: 'Workshops',
     description: 'Interactive sessions that help individuals and groups build emotional awareness, resilience, and practical coping tools.',
     offerings: ['Anxiety and stress management', 'Emotional regulation tools', 'Mindfulness and grounding practices', 'Self-care and resilience workshops'],
-    icon: Sparkles,
     sessionCards: [
       {
         title: 'Single Session',
-        price: '\u20B92,000',
+        price: '₹2,000',
         description: 'Great for one-time workshops or focused learning.',
         buttonLabel: 'Book workshop',
         buttonTo: '/contact'
       },
       {
         title: 'Package',
-        price: 'From \u20B910,000',
+        price: 'From ₹10,000',
         description: 'Ideal for recurring workshops and deeper learning.',
         buttonLabel: 'View packages',
         buttonTo: '/packages'
@@ -107,18 +100,17 @@ const programOptions = [
     title: 'Corporate Wellness',
     description: 'Thoughtful wellbeing programs for teams and organizations focused on resilience, balance, and healthier work culture.',
     offerings: ['Employee wellbeing sessions', 'Stress and burnout support', 'Work-life balance guidance', 'Team-focused wellness workshops'],
-    icon: Building2,
     sessionCards: [
       {
         title: 'Single Session',
-        price: '\u20B92,500',
+        price: '₹2,500',
         description: 'Helpful for brief employee support or one-off interventions.',
         buttonLabel: 'Book session',
         buttonTo: '/contact'
       },
       {
         title: 'Package',
-        price: 'From \u20B915,000',
+        price: 'From ₹15,000',
         description: 'Recommended for long-term workplace wellbeing initiatives.',
         buttonLabel: 'View packages',
         buttonTo: '/packages'
@@ -154,87 +146,9 @@ const testimonials = [
   }
 ];
 
-// ---------------------------------------------------------------------------
-// Shared components
-// ---------------------------------------------------------------------------
-
-/**
- * Renders a grid of session/pricing cards. Used by both the therapy and
- * program sections so pricing structure only needs to change in one place.
- */
-const SessionCardGrid = ({ cards, groupTitle }) => (
-  <div className="mt-6 rounded-[1.5rem] border border-[#d7ecec] bg-[#f7fcfb] p-4">
-    <h4 className="text-sm font-semibold uppercase tracking-[0.2em] text-[#0a7272]">Session details</h4>
-    <div className="mt-4 grid gap-3 md:grid-cols-3">
-      {cards.map((card) => (
-        <div key={`${groupTitle}-${card.title}`} className="rounded-2xl border border-[#d7ecec] bg-white p-4">
-          <p className="text-sm font-semibold text-[#0d4f50]">{card.title}</p>
-          <p className="mt-2 text-lg font-semibold text-[#0a7272]">{card.price}</p>
-          <p className="mt-2 text-sm leading-6 text-[#4c6162]">{card.description}</p>
-          <Link
-            to={card.buttonTo}
-            state={{ service: groupTitle, tier: card.title }}
-            className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-[#0a7272] transition hover:text-[#0d5c5e]"
-          >
-            {card.buttonLabel}
-            <ArrowRight size={14} />
-          </Link>
-        </div>
-      ))}
-    </div>
-  </div>
-);
-
-/**
- * Renders one therapy/program offering card: icon + title, description,
- * bullet list, session grid, and primary CTA.
- */
-const OfferingCard = ({ item, listLabel, listItems, ctaVariant = 'solid' }) => {
-  const Icon = item.icon;
-  const ctaClasses =
-    ctaVariant === 'solid'
-      ? 'mt-6 inline-flex items-center gap-2 rounded-full bg-[#0a7272] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#0d5c5e]'
-      : 'mt-6 inline-flex items-center gap-2 rounded-full border border-[#0a7272] px-5 py-3 text-sm font-semibold text-[#0a7272] transition hover:bg-[#eaf6f6]';
-
-  return (
-    <div className="rounded-[2rem] border border-[#d7ecec] bg-white p-8 shadow-sm">
-      <div className="flex items-center gap-3">
-        <div className="rounded-2xl bg-[#eaf6f6] p-3 text-[#0a7272]">
-          <Icon size={20} />
-        </div>
-        <h3 className="text-2xl font-semibold text-[#0d4f50]">{item.title}</h3>
-      </div>
-      <p className="mt-5 text-base leading-7 text-[#4c6162]">{item.description}</p>
-
-      <div className="mt-6">
-        <h4 className="text-sm font-semibold uppercase tracking-[0.2em] text-[#0a7272]">{listLabel}</h4>
-        <ul className="mt-3 space-y-2 text-sm text-[#4c6162]">
-          {listItems.map((point) => (
-            <li key={point} className="flex items-start gap-2">
-              <span className="mt-1 h-2.5 w-2.5 shrink-0 rounded-full bg-[#0a7272]" />
-              <span>{point}</span>
-            </li>
-          ))}
-        </ul>
-      </div>
-
-      <SessionCardGrid cards={item.sessionCards} groupTitle={item.title} />
-
-      <Link to={item.buttonTo} className={ctaClasses}>
-        {item.buttonLabel}
-        <ArrowRight size={16} />
-      </Link>
-    </div>
-  );
-};
-
-// ---------------------------------------------------------------------------
-// Page
-// ---------------------------------------------------------------------------
-
 const Services = () => {
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'instant' });
+    window.scrollTo(0, 0);
   }, []);
 
   return (
@@ -252,13 +166,13 @@ const Services = () => {
                   Support that meets you where you are.
                 </h1>
                 <p className="mt-5 max-w-2xl text-lg leading-8 text-white/90">
-                  We offer therapy and structured programs for ages 11 to 35, plus wellness programs for organizations, designed to help build emotional strength and meaningful wellbeing. Every client starts with a free introductory session.
+                  We offer therapy and structured programs designed to help individuals, children, adolescents, and organizations build emotional strength and meaningful wellbeing.
                 </p>
                 <div className="mt-8 flex flex-wrap gap-3">
                   <Link to="/booking" className="rounded-full bg-white px-6 py-3 text-sm font-semibold text-[#0a7272] transition hover:bg-teal-50">
-                    Book a free consultation
+                    Book a consultation
                   </Link>
-                  <a href="#therapy" className="rounded-full border border-white/30 px-6 py-3 text-sm font-semibold text-white transition hover:bg-white/20">
+                  <a href="#therapy" className="rounded-full border border-white/30 px-6 py-3 text-sm font-semibold text-white transition hover:bg-white/20 border border-white/20">
                     Explore services
                   </a>
                 </div>
@@ -268,7 +182,7 @@ const Services = () => {
                 <div className="grid gap-4 sm:grid-cols-2">
                   <div className="rounded-2xl bg-white/15 p-4">
                     <p className="text-sm font-semibold text-white">Therapy</p>
-                    <p className="mt-2 text-sm text-teal-50">Individual support for ages 11\u201335, and dedicated child &amp; adolescent care.</p>
+                    <p className="mt-2 text-sm text-teal-50">Individual support and child-adolescent care.</p>
                   </div>
                   <div className="rounded-2xl bg-white/15 p-4">
                     <p className="text-sm font-semibold text-white">Programs</p>
@@ -285,12 +199,8 @@ const Services = () => {
         </div>
       </section>
 
-      <Link
-        to="/booking"
-        aria-label="Book a consultation"
-        className="fixed bottom-6 right-6 z-50 inline-flex items-center gap-3 rounded-full bg-[#0a7272] px-5 py-3 text-sm font-semibold text-white shadow-[0_12px_30px_rgba(10,114,114,0.25)] transition hover:scale-105 hover:bg-[#0d5c5e]"
-      >
-        <MessageCircle size={18} aria-hidden="true" />
+      <Link to="/booking" className="fixed bottom-6 right-6 z-50 inline-flex items-center gap-3 rounded-full bg-[#0a7272] px-5 py-3 text-sm font-semibold text-white shadow-[0_12px_30px_rgba(10,114,114,0.25)] transition hover:scale-105 hover:bg-[#0d5c5e]">
+        <MessageCircle size={18} />
         Book consultation
       </Link>
 
@@ -299,22 +209,58 @@ const Services = () => {
           <div className="max-w-3xl">
             <p className="text-sm font-semibold uppercase tracking-[0.3em] text-[#0a7272]">Therapy</p>
             <h2 className="mt-3 text-3xl font-semibold text-[#0d4f50] sm:text-4xl">
-              Support for ages 11 to 35.
+              Support for individuals and young people.
             </h2>
             <p className="mt-4 text-lg leading-8 text-[#4c6162]">
-              Our therapy services are designed to help you understand your concerns, build clarity, and move forward with more steadiness and self-awareness &mdash; starting with a free first session.
+              Our therapy services are designed to help you understand your concerns, build clarity, and move forward with more steadiness and self-awareness.
             </p>
           </div>
 
           <div className="mt-10 grid gap-8 lg:grid-cols-2">
             {therapyOptions.map((item) => (
-              <OfferingCard
-                key={item.title}
-                item={item}
-                listLabel="Common concerns"
-                listItems={item.concerns}
-                ctaVariant="solid"
-              />
+              <div key={item.title} className="rounded-[2rem] border border-[#d7ecec] bg-white p-8 shadow-sm">
+                <div className="flex items-center gap-3">
+                  <div className="rounded-2xl bg-[#eaf6f6] p-3 text-[#0a7272]">
+                    <HeartHandshake size={20} />
+                  </div>
+                  <h3 className="text-2xl font-semibold text-[#0d4f50]">{item.title}</h3>
+                </div>
+                <p className="mt-5 text-base leading-7 text-[#4c6162]">{item.description}</p>
+
+                <div className="mt-6">
+                  <h4 className="text-sm font-semibold uppercase tracking-[0.2em] text-[#0a7272]">Common concerns</h4>
+                  <ul className="mt-3 space-y-2 text-sm text-[#4c6162]">
+                    {item.concerns.map((concern) => (
+                      <li key={concern} className="flex items-start gap-2">
+                        <span className="mt-1 h-2.5 w-2.5 rounded-full bg-[#0a7272]" />
+                        <span>{concern}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div className="mt-6 rounded-[1.5rem] border border-[#d7ecec] bg-[#f7fcfb] p-4">
+                  <h4 className="text-sm font-semibold uppercase tracking-[0.2em] text-[#0a7272]">Session details</h4>
+                  <div className="mt-4 grid gap-3 md:grid-cols-3">
+                    {item.sessionCards.map((card) => (
+                      <div key={card.title} className="rounded-2xl border border-[#d7ecec] bg-white p-4">
+                        <p className="text-sm font-semibold text-[#0d4f50]">{card.title}</p>
+                        <p className="mt-2 text-lg font-semibold text-[#0a7272]">{card.price}</p>
+                        <p className="mt-2 text-sm leading-6 text-[#4c6162]">{card.description}</p>
+                        <Link to={card.buttonTo} className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-[#0a7272] transition hover:text-[#0d5c5e]">
+                          {card.buttonLabel}
+                          <ArrowRight size={14} />
+                        </Link>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <Link to={item.buttonTo} className="mt-6 inline-flex items-center gap-2 rounded-full bg-[#0a7272] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#0d5c5e]">
+                  {item.buttonLabel}
+                  <ArrowRight size={16} />
+                </Link>
+              </div>
             ))}
           </div>
         </div>
@@ -334,13 +280,49 @@ const Services = () => {
 
           <div className="mt-10 grid gap-8 lg:grid-cols-2">
             {programOptions.map((item) => (
-              <OfferingCard
-                key={item.title}
-                item={item}
-                listLabel="What we offer"
-                listItems={item.offerings}
-                ctaVariant="outline"
-              />
+              <div key={item.title} className="rounded-[2rem] border border-[#d7ecec] bg-white p-8 shadow-sm">
+                <div className="flex items-center gap-3">
+                  <div className="rounded-2xl bg-[#eaf6f6] p-3 text-[#0a7272]">
+                    {item.title === 'Workshops' ? <Sparkles size={20} /> : <Building2 size={20} />}
+                  </div>
+                  <h3 className="text-2xl font-semibold text-[#0d4f50]">{item.title}</h3>
+                </div>
+                <p className="mt-5 text-base leading-7 text-[#4c6162]">{item.description}</p>
+
+                <div className="mt-6">
+                  <h4 className="text-sm font-semibold uppercase tracking-[0.2em] text-[#0a7272]">What we offer</h4>
+                  <ul className="mt-3 space-y-2 text-sm text-[#4c6162]">
+                    {item.offerings.map((offering) => (
+                      <li key={offering} className="flex items-start gap-2">
+                        <span className="mt-1 h-2.5 w-2.5 rounded-full bg-[#0a7272]" />
+                        <span>{offering}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div className="mt-6 rounded-[1.5rem] border border-[#d7ecec] bg-[#f7fcfb] p-4">
+                  <h4 className="text-sm font-semibold uppercase tracking-[0.2em] text-[#0a7272]">Session details</h4>
+                  <div className="mt-4 grid gap-3 md:grid-cols-3">
+                    {item.sessionCards.map((card) => (
+                      <div key={card.title} className="rounded-2xl border border-[#d7ecec] bg-white p-4">
+                        <p className="text-sm font-semibold text-[#0d4f50]">{card.title}</p>
+                        <p className="mt-2 text-lg font-semibold text-[#0a7272]">{card.price}</p>
+                        <p className="mt-2 text-sm leading-6 text-[#4c6162]">{card.description}</p>
+                        <Link to={card.buttonTo} className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-[#0a7272] transition hover:text-[#0d5c5e]">
+                          {card.buttonLabel}
+                          <ArrowRight size={14} />
+                        </Link>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <Link to={item.buttonTo} className="mt-6 inline-flex items-center gap-2 rounded-full border border-[#0a7272] px-5 py-3 text-sm font-semibold text-[#0a7272] transition hover:bg-[#eaf6f6]">
+                  {item.buttonLabel}
+                  <ArrowRight size={16} />
+                </Link>
+              </div>
             ))}
           </div>
         </div>
@@ -372,7 +354,7 @@ const Services = () => {
             <div className="mt-8 space-y-4">
               {testimonials.map((item) => (
                 <div key={item.name} className="rounded-2xl border border-white/10 bg-white/10 p-5">
-                  <p className="text-base leading-7 text-[#f4f8f8]">&ldquo;{item.quote}&rdquo;</p>
+                  <p className="text-base leading-7 text-[#f4f8f8]">“{item.quote}”</p>
                   <p className="mt-3 text-sm font-semibold text-[#dce9e8]">{item.name}</p>
                 </div>
               ))}
@@ -406,8 +388,7 @@ const Services = () => {
                 <a href="https://booking.myndspace.app/amanp" target="_blank" rel="noopener noreferrer" className="rounded-full bg-[#0a7272] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#0d5c5e]">
                   Book now
                 </a>
-                {/* TODO: replace with your exact clinic address for a precise pin, e.g. https://maps.google.com/?q=<Clinic+Name>,+Faridabad */}
-                <a href="https://maps.google.com/?q=Psychobeings+Faridabad" target="_blank" rel="noreferrer" className="rounded-full border border-[#0a7272] px-5 py-3 text-sm font-semibold text-[#0a7272] transition hover:bg-[#f7fcfb]">
+                <a href="https://maps.google.com/?q=Faridabad" target="_blank" rel="noreferrer" className="rounded-full border border-[#0a7272] px-5 py-3 text-sm font-semibold text-[#0a7272] transition hover:bg-[#f7fcfb]">
                   Open map
                 </a>
               </div>
