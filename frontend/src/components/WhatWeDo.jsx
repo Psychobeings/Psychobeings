@@ -8,30 +8,37 @@ const WhatWeDo = () => {
         
         {/* Left: Centered Text Content */}
         <div className="space-y-6 text-center">
-          <h2 className="text-3xl md:text-4xl xl:text-5xl font-bold tracking-wide text-white">
-            WHAT WE DO
+          <p className="uppercase tracking-[0.3em] text-sm text-teal-100 font-semibold">
+            OUR APPROACH
+          </p>  
+          <h2 className="text-4xl md:text-5xl xl:text-6xl font-bold leading-tight">
+            How We Support You
           </h2>
 
           <p className="text-lg md:text-xl leading-relaxed">
-            We provide confidential, evidence-based counselling <span className="font-bold text-#064646">available both online and in-person</span> sessions for individuals, adolescents, and organizations, 
-             addressing concerns including anxiety, stress, work-life balance, childhood trauma, and emotional wellbeing.
+            Whether you're feeling overwhelmed, navigating life changes, or simply looking for a safe space to better understand yourself, we provide compassionate, evidence-based therapy tailored to your unique needs. Our sessions are available both online and in person, offering flexibility that fits your lifestyle.
           </p>
 
           <p className="text-lg md:text-xl leading-relaxed">
-            Our services span individual therapy, adolescent counselling, corporate wellness programs, and group workshops <span className="font-bold text-pure-white">each grounded in a safe, non-judgmental approach tailored to your specific needs.</span>
+            From individual therapy and adolescent counselling to corporate wellness programmes and interactive workshops, every service is designed to foster emotional resilience, self-awareness, and long-term wellbeing in a supportive, non-judgmental environment.
           </p>
 
           <p className="text-lg md:text-xl leading-relaxed">
-            Whether you are seeking personal support, workplace wellbeing initiatives, or guidance
-            through a significant life transition, our aim is to provide clarity, confidence, and consistent support throughout your journey.
+            Healing isn't about having all the answers—it's about having the right support. Whether you're taking your first step or continuing your journey, we're here to help you build confidence, gain clarity, and move forward with purpose.
           </p>
 
           {/* Buttons */}
           <div className="flex flex-wrap gap-3 justify-center pt-4">
-            {['Individual Therapy', 'Corporate Wellness', 'Workshops & Groups'].map((label, idx) => (
+            {['Book a Session', 'Explore Services', 'Our Approach'].map((label, idx) => (
               <button
                 key={idx}
-                className="bg-white text-[#092c2c] px-5 py-2.5 rounded-full font-semibold shadow-md hover:bg-[#064646] hover:text-white transition duration-300"
+                className="rounded-full
+border border-white/20
+backdrop-blur-md
+shadow-xl
+hover:scale-105
+transition-all
+duration-300"
               >
                 {label}
               </button>
