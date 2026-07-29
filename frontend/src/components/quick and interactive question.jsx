@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { ArrowRight, CheckCircle2 } from 'lucide-react';
 
-// Example assessment questions structure
 const assessmentQuestions = [
     {
         key: 'primary_concern',
@@ -89,11 +88,11 @@ export default function CareAssessment() {
                                     <button
                                         key={idx}
                                         onClick={() => {
-                                            setAnswers({
-                                                ...answers,
+                                            setAnswers((prev) => ({
+                                                ...prev,
                                                 [assessmentQuestions[assessmentStep].key]: opt.label,
-                                            });
-                                            setAssessmentStep(assessmentStep + 1);
+                                            }));
+                                            setAssessmentStep((prev) => prev + 1);
                                         }}
                                         className="p-4 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 text-left text-sm font-medium transition-all flex items-center justify-between group"
                                     >
@@ -110,10 +109,10 @@ export default function CareAssessment() {
                                 <CheckCircle2 className="w-8 h-8" />
                             </div>
                             <h3 className="text-2xl font-bold text-white">
-                                We Recommend Individual Therapy or Clarity Bundle
+                                Recommended: {answers.preferred_format || 'Individual Therapy'}
                             </h3>
                             <p className="text-[#d1fae5] text-sm max-w-lg mx-auto">
-                                Based on your responses, starting with a 1-on-1 consultation with one of our senior therapists will give you tailored strategies right away.
+                                Based on your goal of addressing {answers.primary_concern ? answers.primary_concern.toLowerCase() : 'your concerns'}, starting with a tailored consultation will give you actionable strategies right away.
                             </p>
                             <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-4">
                                 <a
