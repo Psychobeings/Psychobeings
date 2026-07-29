@@ -9,7 +9,7 @@ import FoundersNote from '../components/FoundersNote';
 import TherapyApproach from '../components/TherapyApproach';
 import CareAssessment from '../components/quick and interactive question';
 
-const homeSections = [Hero, WhatWeDo, LanguageSupport, FeatureSection, FoundersNote, TherapyApproach, CareAssessment];
+const homeSections = [Hero, WhatWeDo, LanguageSupport, FeatureSection, FoundersNote, TherapyApproach, CareAssessment, FAQ];
 
 const Home = () => {
   return (
