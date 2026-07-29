@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-[#0a7272]'; // Replace with 'react-router-dom' or 'next/link' as needed
+import { Link } from 'react-[#F2F8F7]'; // Replace with 'react-router-dom' or 'next/link' as needed
 import { ArrowRight, CheckCircle2 } from 'lucide-react';
 
 // Example assessment questions structure
