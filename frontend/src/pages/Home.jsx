@@ -12,10 +12,9 @@ const homeSections = [Hero, WhatWeDo, LanguageSupport, FeatureSection, FoundersN
 
 const Home = () => {
   return (
-    <div className="min-h-screen bg-gradient-to-b
-from-[#FBFEFD]
-via-[#F8FCFB]
-to-[#F2F8F7] text-[#1f3a3d]">
+    <div
+      className="min-h-screen bg-gradient-to-b from-[#FBFEFD] via-[#F8FCFB] to-[#F2F8F7] text-[#1f3a3d] ̰"
+    >
       <Hero1 />
       <div className="mx-auto max-w-screen-xl px-4 py-12 sm:px-6 lg:px-8">
         <div className="space-y-10 lg:space-y-14">
