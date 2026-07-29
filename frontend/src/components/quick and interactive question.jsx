@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { Link } from 'react-[#F2F8F7]'; // Replace with 'react-router-dom' or 'next/link' as needed
 import { ArrowRight, CheckCircle2 } from 'lucide-react';
 
+export default function CareAssessment() {}
 // Example assessment questions structure
 const assessmentQuestions = [
   {
@@ -44,13 +44,13 @@ export default function CareAssessment() {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header Section */}
         <div className="text-center mb-8">
-          <span className="px-3 py-1 rounded-full bg-white/10 text-emerald-200 text-xs font-semibold uppercase tracking-wider">
+          <span className="px-3 py-1 rounded-full bg-white/10 text-[#a7f3d0] text-xs font-semibold uppercase tracking-wider">
             Interactive Guide
           </span>
           <h2 className="text-2xl sm:text-3xl font-serif font-bold mt-2">
             Not sure where to begin?
           </h2>
-          <p className="text-emerald-100/90 text-sm mt-1">
+          <p className="text-[#d1fae5]/90 text-sm mt-1">
             Answer 3 quick questions to discover your recommended care route.
           </p>
         </div>
@@ -60,7 +60,7 @@ export default function CareAssessment() {
           {assessmentStep < assessmentQuestions.length ? (
             <div>
               {/* Question Header & Percentage */}
-              <div className="flex items-center justify-between mb-4 text-xs text-emerald-200 font-semibold">
+              <div className="flex items-center justify-between mb-4 text-xs text-[#a7f3d0] font-semibold">
                 <span>
                   Question {assessmentStep + 1} of {assessmentQuestions.length}
                 </span>
@@ -72,7 +72,7 @@ export default function CareAssessment() {
               {/* Progress bar */}
               <div className="w-full bg-black/20 h-1.5 rounded-full mb-6 overflow-hidden">
                 <div
-                  className="bg-emerald-300 h-full transition-all duration-300"
+                  className="bg-[#6ee7b7] h-full transition-all duration-300"
                   style={{
                     width: `${((assessmentStep + 1) / assessmentQuestions.length) * 100}%`,
                   }}
@@ -99,7 +99,7 @@ export default function CareAssessment() {
                     className="p-4 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 text-left text-sm font-medium transition-all flex items-center justify-between group"
                   >
                     <span>{opt.label}</span>
-                    <ArrowRight className="w-4 h-4 text-emerald-300 opacity-0 group-hover:opacity-100 transition-opacity" />
+                    <ArrowRight className="w-4 h-4 text-[#6ee7b7] opacity-0 group-hover:opacity-100 transition-opacity" />
                   </button>
                 ))}
               </div>
@@ -107,28 +107,28 @@ export default function CareAssessment() {
           ) : (
             /* Results Screen */
             <div className="text-center py-4 space-y-4">
-              <div className="w-12 h-12 bg-emerald-400/20 text-emerald-300 rounded-full flex items-center justify-center mx-auto">
+              <div className="w-12 h-12 bg-[#34d399]/20 text-[#6ee7b7] rounded-full flex items-center justify-center mx-auto">
                 <CheckCircle2 className="w-8 h-8" />
               </div>
               <h3 className="text-2xl font-bold text-white">
                 We Recommend Individual Therapy or Clarity Bundle
               </h3>
-              <p className="text-emerald-100 text-sm max-w-lg mx-auto">
+              <p className="text-[#d1fae5] text-sm max-w-lg mx-auto">
                 Based on your responses, starting with a 1-on-1 consultation with one of our senior therapists will give you tailored strategies right away.
               </p>
               <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-4">
-                <Link
-                  to="/booking?service=individual-therapy"
-                  className="bg-white text-[#0a7272] px-6 py-3 rounded-full font-bold text-sm hover:bg-emerald-50 transition"
+                <a
+                  href="/booking?service=individual-therapy"
+                  className="bg-[#F2F8F7] text-[#0a7272] px-6 py-3 rounded-full font-bold text-sm hover:bg-[#ecfdf5] transition"
                 >
                   Book Recommended Session
-                </Link>
+                </a>
                 <button
                   onClick={() => {
                     setAssessmentStep(0);
                     setAnswers({});
                   }}
-                  className="text-xs text-emerald-200 underline hover:text-white"
+                  className="text-xs text-[#a7f3d0] underline hover:text-white"
                 >
                   Retake Assessment
                 </button>
@@ -140,4 +140,4 @@ export default function CareAssessment() {
     </section>
   );
 }
-<CareAssessment/>
+export default CareAssessment;
