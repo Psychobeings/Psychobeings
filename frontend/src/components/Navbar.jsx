@@ -72,11 +72,15 @@ const Navbar = () => {
     <>
       <nav className="sticky top-0 z-50 flex items-center justify-between bg-white px-4 py-3 shadow-sm sm:px-6 lg:px-8">
         <div className="flex items-center">
-          <img
-            src={logo}
-            alt="Psychobeings Logo"
-            className="mx-2 h-auto w-24 sm:w-40 md:w-48 lg:w-56"
-          />
+          <Link
+            to="/"
+          >
+            <img
+              src={logo}
+              alt="Psychobeings Logo"
+              className="mx-2 h-auto w-24 sm:w-40 md:w-48 lg:w-56"
+            />
+          </Link>
         </div>
 
         <div className="hidden items-center gap-6 text-[16px] font-medium md:flex">

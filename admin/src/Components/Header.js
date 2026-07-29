@@ -67,7 +67,7 @@ const Header = () => {
       <div className="flex justify-between items-center bg-white p-4 border-b border-2">
         {/* Logo */}
         <div className="flex items-center">
-          <img width="70%" src={logo} alt="Psychobeings" />
+          <img width="70%" src={logo} alt="Psychobeings" onClick={() => navigate('/')} />
         </div>
 
         {/* Hamburger Button for small screens */}
