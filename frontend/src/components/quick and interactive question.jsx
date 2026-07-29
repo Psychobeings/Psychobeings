@@ -37,6 +37,20 @@ export default function CareAssessment() {
     const [assessmentStep, setAssessmentStep] = useState(0);
     const [answers, setAnswers] = useState({});
 
+    const handleOptionSelect = (optionLabel) => {
+        const currentKey = assessmentQuestions[assessmentStep].key;
+        setAnswers((prev) => ({
+            ...prev,
+            [currentKey]: optionLabel,
+        }));
+        setAssessmentStep((prev) => prev + 1);
+    };
+
+    const handleReset = () => {
+        setAssessmentStep(0);
+        setAnswers({});
+    };
+
     return (
         <section className="py-16 bg-gradient-to-r from-[#084e4e] to-[#0a7272] text-white">
             <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -87,14 +101,8 @@ export default function CareAssessment() {
                                 {assessmentQuestions[assessmentStep].options.map((opt, idx) => (
                                     <button
                                         key={idx}
-                                        onClick={() => {
-                                            setAnswers((prev) => ({
-                                                ...prev,
-                                                [assessmentQuestions[assessmentStep].key]: opt.label,
-                                            }));
-                                            setAssessmentStep((prev) => prev + 1);
-                                        }}
-                                        className="p-4 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 text-left text-sm font-medium transition-all flex items-center justify-between group"
+                                        onClick={() => handleOptionSelect(opt.label)}
+                                        className="p-4 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 text-left text-sm font-medium transition-all flex items-center justify-between group cursor-pointer"
                                     >
                                         <span>{opt.label}</span>
                                         <ArrowRight className="w-4 h-4 text-[#6ee7b7] opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -109,10 +117,12 @@ export default function CareAssessment() {
                                 <CheckCircle2 className="w-8 h-8" />
                             </div>
                             <h3 className="text-2xl font-bold text-white">
-                                Recommended: {answers.preferred_format || 'Individual Therapy'}
+                                {answers.preferred_format ? `Recommended: ${answers.preferred_format}` : 'We Recommend Individual Therapy'}
                             </h3>
                             <p className="text-[#d1fae5] text-sm max-w-lg mx-auto">
-                                Based on your goal of addressing {answers.primary_concern ? answers.primary_concern.toLowerCase() : 'your concerns'}, starting with a tailored consultation will give you actionable strategies right away.
+                                {answers.primary_concern 
+                                    ? `Based on your goal of ${answers.primary_concern.toLowerCase()}, starting with a personalized session will give you tailored strategies right away.`
+                                    : 'Based on your responses, starting with a 1-on-1 consultation with one of our senior therapists will give you tailored strategies right away.'}
                             </p>
                             <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-4">
                                 <a
@@ -122,11 +132,8 @@ export default function CareAssessment() {
                                     Book Recommended Session
                                 </a>
                                 <button
-                                    onClick={() => {
-                                        setAssessmentStep(0);
-                                        setAnswers({});
-                                    }}
-                                    className="text-xs text-[#a7f3d0] underline hover:text-white"
+                                    onClick={handleReset}
+                                    className="text-xs text-[#a7f3d0] underline hover:text-white cursor-pointer"
                                 >
                                     Retake Assessment
                                 </button>
