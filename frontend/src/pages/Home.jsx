@@ -7,8 +7,10 @@ import Hero1 from '../components/Hero1';
 import LanguageSupport from '../components/LanguageSupport';
 import FoundersNote from '../components/FoundersNote';
 import TherapyApproach from '../components/TherapyApproach';
+import CareAssessment from '../components/quick and interactive question';
+import Testimonials from '../components/testimonials';
 
-const homeSections = [Hero, WhatWeDo, LanguageSupport, FeatureSection, FoundersNote, TherapyApproach, FAQ];
+const homeSections = [Hero, WhatWeDo, LanguageSupport, FeatureSection, FoundersNote, TherapyApproach, CareAssessment, testimonials];
 
 const Home = () => {
   return (
