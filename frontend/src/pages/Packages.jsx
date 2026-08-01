@@ -1,614 +1,427 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import {
-  ArrowRight,
-  ShieldCheck,
-  Globe2,
-  HeartHandshake,
-  Sparkles,
-  Building2,
-  CalendarHeart,
-  Flame,
-  HelpCircle,
-  Clock,
-  RefreshCw,
-  XCircle,
-  Check
-} from 'lucide-react';
+import React, { useEffect } from "react";
+import { Link } from "react-router-dom";
 
-const domesticPackages = [
+const therapyPackages = [
   {
-    id: 'individual-domestic',
-    title: 'Individual Therapy',
+    title: "Individual Therapy",
     description:
-      'Personalised one-on-one counselling supporting anxiety, emotional overwhelm, stress management, overthinking, and personal growth.',
-    duration: '50-minute sessions',
+      "Personalised one-on-one counselling to support emotional wellbeing, stress management, anxiety, and personal growth.",
     sessions: [
       {
-        name: '3 Sessions Pack',
-        price: '₹4,200',
-        perSession: '₹1,400 / session',
-        description: 'Ideal for short-term guidance and targeted coping strategies.',
-        isPopular: false
+        name: "3 Sessions",
+        price: "₹4,200",
       },
       {
-        name: '6 Sessions Pack',
-        price: '₹8,100',
-        perSession: '₹1,350 / session',
-        description: 'Best for sustained emotional work, healing, and lasting progress.',
-        isPopular: true,
-        badge: 'Most Popular'
-      }
-    ]
+        name: "6 Sessions",
+        price: "₹8,100",
+      },
+    ],
   },
   {
-    id: 'child-domestic',
-    title: 'Child & Adolescent Therapy',
+    title: "Child & Adolescent Therapy",
     description:
-      'Compassionate counselling tailored for young individuals facing emotional, academic, social, and identity-related challenges.',
-    duration: '60-minute sessions',
+      "Compassionate counselling for children and adolescents facing emotional, behavioural, academic, and social challenges.",
     sessions: [
       {
-        name: '3 Sessions Pack',
-        price: '₹3,300',
-        perSession: '₹1,100 / session',
-        description: 'Initial structured support and emotional regulation strategies.',
-        isPopular: false
+        name: "3 Sessions",
+        price: "₹3,300",
       },
       {
-        name: '6 Sessions Pack',
-        price: '₹6,300',
-        perSession: '₹1,050 / session',
-        description: 'Comprehensive care with regular parent updates and progress tracking.',
-        isPopular: true,
-        badge: 'Recommended'
-      }
-    ]
-  }
+        name: "6 Sessions",
+        price: "₹6,300",
+      },
+    ],
+  },
 ];
 
 const internationalPackages = [
   {
-    id: 'individual-intl',
-    title: 'Individual Therapy (International)',
+    title: "Individual Therapy",
     description:
-      'Encrypted online therapy for clients living outside India, with flexible scheduling suited across worldwide time zones.',
-    duration: '50-minute sessions',
+      "Online therapy sessions for clients living outside India with flexible scheduling.",
     sessions: [
       {
-        name: '3 Sessions Pack',
-        price: '$180',
-        perSession: '$60 / session',
-        description: 'Focused international support for acute stress or life transitions.',
-        isPopular: false
+        name: "3 Sessions",
+        price: "$180",
       },
       {
-        name: '6 Sessions Pack',
-        price: '$340',
-        perSession: '$56.60 / session',
-        description: 'Sustained international therapy for deep emotional transformation.',
-        isPopular: true,
-        badge: 'Best Value'
-      }
-    ]
+        name: "6 Sessions",
+        price: "$340",
+      },
+    ],
   },
   {
-    id: 'child-intl',
-    title: 'Child & Adolescent Therapy (International)',
+    title: "Child & Adolescent Therapy",
     description:
-      'Dedicated online guidance for children and adolescents worldwide, supporting developmental growth and cross-cultural adjustments.',
-    duration: '60-minute sessions',
+      "Professional online support for children and adolescents across the globe.",
     sessions: [
       {
-        name: '3 Sessions Pack',
-        price: '$150',
-        perSession: '$50 / session',
-        description: 'Targeted support for young adults navigating academic or social stress.',
-        isPopular: false
+        name: "3 Sessions",
+        price: "$150",
       },
       {
-        name: '6 Sessions Pack',
-        price: '$285',
-        perSession: '$47.50 / session',
-        description: 'Continued developmental and emotional care for international families.',
-        isPopular: true,
-        badge: 'Recommended'
-      }
-    ]
-  }
+        name: "6 Sessions",
+        price: "$285",
+      },
+    ],
+  },
 ];
 
 const programs = [
   {
-    title: 'Corporate Programs',
-    icon: Building2,
+    title: "Corporate Programs",
     description:
-      'Employee Assistance Programs (EAP), workplace wellbeing workshops, executive stress management, burnout prevention, and empathic leadership training.',
-    offerings: [
-      'Workplace Stress & Burnout Management',
-      'Employee Assistance Counseling',
-      'Leadership Empathy & Communication'
-    ],
-    ctaText: 'Enquire for Corporate'
+      "Employee Assistance Programs, workplace wellbeing sessions, stress management, burnout prevention, and leadership wellbeing.",
   },
   {
-    title: 'Workshops & Seminars',
-    icon: Sparkles,
+    title: "Workshops",
     description:
-      'Interactive, outcome-oriented workshops for schools, colleges, institutions, and community groups focused on mental health awareness and practical coping tools.',
-    offerings: [
-      'Mindfulness & Emotional Regulation',
-      'Academic Stress & Exam Anxiety',
-      'Self-Care & Resilience Building'
-    ],
-    ctaText: 'Request Workshop'
-  }
+      "Interactive workshops for schools, colleges, organisations, and community groups on mental health and emotional wellbeing.",
+  },
 ];
 
 const notes = [
-  {
-    title: 'By Prior Appointment Only',
-    text: 'All therapy sessions must be booked in advance to reserve your preferred schedule.',
-    icon: CalendarHeart
-  },
-  {
-    title: '3-Month Package Validity',
-    text: 'Packages remain valid for 3 months from the date of purchase for continuous care.',
-    icon: Clock
-  },
-  {
-    title: '24-Hour Rescheduling Policy',
-    text: 'A minimum of 24 hours notice is required to reschedule a session without forfeiture.',
-    icon: RefreshCw
-  },
-  {
-    title: 'Non-Transferable & Non-Refundable',
-    text: 'Once started, session packages are non-transferable and non-refundable.',
-    icon: XCircle
-  },
-  {
-    title: 'Worldwide Online Access',
-    text: 'Telehealth sessions are accessible globally via secure video platforms.',
-    icon: Globe2
-  }
+  "All sessions are by prior appointment only.",
+  "Packages are valid for 3 months from the date of purchase.",
+  "A minimum of 24 hours notice is required for rescheduling.",
+  "Packages are non-transferable and non-refundable once started.",
+  "Online sessions are available worldwide.",
 ];
 
 const Packages = () => {
-  const [currencyRegion, setCurrencyRegion] = useState('ALL');
-
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#f6fbfa] text-[#183436] font-sans">
-      {/* ================= HERO SECTION ================= */}
-      <section className="relative overflow-hidden px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,_rgba(10,114,114,0.08),_transparent_35%),radial-gradient(circle_at_bottom_right,_rgba(15,95,97,0.08),_transparent_35%)]" />
+    <div className="bg-[#FAFCFC]">
+      {/* ================= HERO ================= */}
 
-        <div className="relative mx-auto max-w-5xl text-center">
-          <span className="inline-flex items-center gap-2 rounded-full border border-[#bfe1df] bg-white px-4 py-2 text-xs sm:text-sm font-semibold text-[#0a7272] shadow-sm">
-            <Sparkles size={16} />
-            Structured Wellbeing Plans
-          </span>
+      <section className="px-6 lg:px-20 pt-16 pb-20">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center">
+            <p className="uppercase tracking-[0.3em] text-[#018081] font-semibold text-sm">
+              Psychobeings
+            </p>
 
-          <h1 className="mt-6 text-4xl font-bold leading-tight text-[#0d4f50] sm:text-5xl lg:text-6xl">
-            Therapy Packages Designed for Sustained Progress
-          </h1>
+            <h1 className="text-5xl md:text-6xl font-bold text-[#18333B] mt-4">
+              Our Packages
+            </h1>
 
-          <p className="mt-6 max-w-3xl mx-auto text-base sm:text-lg leading-relaxed text-[#4c6162]">
-            Commitment to healing takes consistency. Our session packages offer continuous, structured psychological support at a guided pace tailored to your journey.
-          </p>
-
-          {/* Region / Currency Toggle */}
-          <div className="mt-8 inline-flex flex-col sm:flex-row items-center gap-3 rounded-2xl border border-[#d7ecec] bg-white p-3 shadow-sm">
-            <span className="text-xs font-bold uppercase tracking-wider text-[#0a7272] px-2">
-              Select Region / Currency:
-            </span>
-            <div className="flex bg-[#f0f8f8] p-1 rounded-xl">
-              <button
-                onClick={() => setCurrencyRegion('ALL')}
-                className={`px-4 py-2 text-xs sm:text-sm font-semibold rounded-lg transition ${
-                  currencyRegion === 'ALL'
-                    ? 'bg-[#0a7272] text-white shadow-sm'
-                    : 'text-[#4c6162] hover:text-[#0a7272]'
-                }`}
-              >
-                All Regions
-              </button>
-              <button
-                onClick={() => setCurrencyRegion('INR')}
-                className={`px-4 py-2 text-xs sm:text-sm font-semibold rounded-lg transition ${
-                  currencyRegion === 'INR'
-                    ? 'bg-[#0a7272] text-white shadow-sm'
-                    : 'text-[#4c6162] hover:text-[#0a7272]'
-                }`}
-              >
-                🇮🇳 India (INR ₹)
-              </button>
-              <button
-                onClick={() => setCurrencyRegion('USD')}
-                className={`px-4 py-2 text-xs sm:text-sm font-semibold rounded-lg transition ${
-                  currencyRegion === 'USD'
-                    ? 'bg-[#0a7272] text-white shadow-sm'
-                    : 'text-[#4c6162] hover:text-[#0a7272]'
-                }`}
-              >
-                🌐 International (USD $)
-              </button>
-            </div>
+            <p className="mt-6 max-w-3xl mx-auto text-lg leading-8 text-[#5F6F73]">
+              Thoughtfully designed therapy packages to provide consistent
+              support for emotional wellbeing, personal growth, and lasting
+              positive change.
+            </p>
           </div>
 
-          {/* Value Highlights */}
-          <div className="grid sm:grid-cols-3 gap-6 mt-12 text-left">
-            <div className="rounded-[1.75rem] bg-white border border-[#d7ecec] p-6 shadow-sm">
-              <div className="w-12 h-12 rounded-2xl bg-[#eaf6f6] flex items-center justify-center text-[#0a7272]">
-                <ShieldCheck size={24} />
+          {/* Feature Cards */}
+
+          <div className="grid md:grid-cols-3 gap-6 mt-14">
+            <div className="bg-white rounded-3xl p-8 shadow-sm border border-[#E4F1F0]">
+              <div className="w-14 h-14 rounded-full bg-[#EAF8F8] flex items-center justify-center text-3xl">
+                🔒
               </div>
-              <h3 className="font-bold text-lg mt-5 text-[#0d4f50]">
-                Confidential & Safe
+
+              <h3 className="font-semibold text-xl mt-6 text-[#18333B]">
+                Confidential Care
               </h3>
-              <p className="text-sm text-[#4c6162] mt-2 leading-relaxed">
-                Conducted in a secure, non-judgmental space governed by strict clinical ethics.
+
+              <p className="text-[#5F6F73] mt-3">
+                Every session is conducted in a safe, secure, and judgement-free
+                environment.
               </p>
             </div>
 
-            <div className="rounded-[1.75rem] bg-white border border-[#d7ecec] p-6 shadow-sm">
-              <div className="w-12 h-12 rounded-2xl bg-[#eaf6f6] flex items-center justify-center text-[#0a7272]">
-                <Globe2 size={24} />
+            <div className="bg-white rounded-3xl p-8 shadow-sm border border-[#E4F1F0]">
+              <div className="w-14 h-14 rounded-full bg-[#EAF8F8] flex items-center justify-center text-3xl">
+                💻
               </div>
-              <h3 className="font-bold text-lg mt-5 text-[#0d4f50]">
-                Flexible Telehealth
+
+              <h3 className="font-semibold text-xl mt-6 text-[#18333B]">
+                Flexible Sessions
               </h3>
-              <p className="text-sm text-[#4c6162] mt-2 leading-relaxed">
-                Convenient online sessions engineered to fit effortlessly into your routine across time zones.
+
+              <p className="text-[#5F6F73] mt-3">
+                Online appointments with flexible scheduling to suit your
+                routine.
               </p>
             </div>
 
-            <div className="rounded-[1.75rem] bg-white border border-[#d7ecec] p-6 shadow-sm">
-              <div className="w-12 h-12 rounded-2xl bg-[#eaf6f6] flex items-center justify-center text-[#0a7272]">
-                <HeartHandshake size={24} />
+            <div className="bg-white rounded-3xl p-8 shadow-sm border border-[#E4F1F0]">
+              <div className="w-14 h-14 rounded-full bg-[#EAF8F8] flex items-center justify-center text-3xl">
+                ❤️
               </div>
-              <h3 className="font-bold text-lg mt-5 text-[#0d4f50]">
-                Evidence-Based Care
+
+              <h3 className="font-semibold text-xl mt-6 text-[#18333B]">
+                Evidence-Based Support
               </h3>
-              <p className="text-sm text-[#4c6162] mt-2 leading-relaxed">
-                Tailored clinical interventions designed for tangible emotional growth and stability.
+
+              <p className="text-[#5F6F73] mt-3">
+                Therapy grounded in evidence-based approaches tailored to your
+                unique needs.
               </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* ================= DOMESTIC PACKAGES (INDIA - INR) ================= */}
-      {(currencyRegion === 'ALL' || currencyRegion === 'INR') && (
-        <section className="px-4 py-12 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-7xl">
-            <div className="max-w-3xl mb-10">
-              <span className="text-xs font-bold uppercase tracking-[0.25em] text-[#0a7272] bg-[#eaf6f6] px-3 py-1 rounded-full">
-                🇮🇳 India / Domestic
-              </span>
-              <h2 className="text-3xl font-bold text-[#0d4f50] sm:text-4xl mt-3">
-                Therapy Packages (INR)
-              </h2>
-              <p className="text-[#4c6162] mt-2 text-base">
-                Structured multi-session plans offering continuity of care at preferential rates.
-              </p>
-            </div>
+      {/* ================= THERAPY PACKAGES ================= */}
 
-            <div className="grid lg:grid-cols-2 gap-8">
-              {domesticPackages.map((pkg) => (
-                <div
-                  key={pkg.id}
-                  className="rounded-[2.5rem] border border-[#d7ecec] bg-white p-6 sm:p-8 shadow-sm flex flex-col justify-between"
-                >
-                  <div>
-                    <h3 className="text-2xl font-bold text-[#0d4f50]">
-                      {pkg.title}
-                    </h3>
-                    <p className="mt-3 text-sm leading-relaxed text-[#4c6162]">
-                      {pkg.description}
-                    </p>
+      <section className="px-6 lg:px-20 py-16">
+        <div className="max-w-6xl mx-auto">
+          <div className="mb-12 text-center">
+            <p className="text-sm uppercase tracking-[0.25em] text-[#018081] font-semibold">
+              India
+            </p>
 
-                    <div className="mt-6 space-y-4">
-                      {pkg.sessions.map((session) => (
-                        <div
-                          key={session.name}
-                          className={`relative rounded-2xl p-5 border transition ${
-                            session.isPopular
-                              ? 'bg-gradient-to-br from-[#0a7272] to-[#0d5c5e] text-white border-[#0a7272] shadow-lg'
-                              : 'bg-[#f7fcfb] border-[#d7ecec] text-[#183436]'
-                          }`}
-                        >
-                          {session.isPopular && (
-                            <div className="absolute -top-3 right-5 inline-flex items-center gap-1 rounded-full bg-amber-400 px-3 py-0.5 text-xs font-bold text-slate-900 shadow-sm">
-                              <Flame size={12} className="fill-amber-900 text-amber-900" />
-                              {session.badge}
-                            </div>
-                          )}
-
-                          <div className="flex items-start justify-between gap-4">
-                            <div>
-                              <h4 className="font-bold text-base">
-                                {session.name}
-                              </h4>
-                              <p
-                                className={`text-xs mt-0.5 ${
-                                  session.isPopular ? 'text-teal-100' : 'text-[#6b8283]'
-                                }`}
-                              >
-                                {pkg.duration} • {session.perSession}
-                              </p>
-                            </div>
-                            <span className="text-2xl font-extrabold tracking-tight">
-                              {session.price}
-                            </span>
-                          </div>
-
-                          <p
-                            className={`mt-3 text-xs leading-relaxed ${
-                              session.isPopular ? 'text-teal-50' : 'text-[#4c6162]'
-                            }`}
-                          >
-                            {session.description}
-                          </p>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div className="mt-8 pt-4">
-                    <a
-                      href="https://booking.myndspace.app/amanp"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex justify-center items-center gap-2 w-full rounded-full bg-[#0a7272] text-white py-3.5 font-bold text-sm hover:bg-[#0d5c5e] transition shadow-md"
-                    >
-                      Book India Package
-                      <ArrowRight size={16} />
-                    </a>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* ================= INTERNATIONAL PACKAGES (USD) ================= */}
-      {(currencyRegion === 'ALL' || currencyRegion === 'USD') && (
-        <section className="px-4 py-12 sm:px-6 lg:px-8 bg-[#f0f8f7]">
-          <div className="mx-auto max-w-7xl">
-            <div className="max-w-3xl mb-10">
-              <span className="text-xs font-bold uppercase tracking-[0.25em] text-[#0a7272] bg-white px-3 py-1 rounded-full border border-[#bfe1df]">
-                🌐 International / Worldwide
-              </span>
-              <h2 className="text-3xl font-bold text-[#0d4f50] sm:text-4xl mt-3">
-                Therapy Packages for International Clients (USD)
-              </h2>
-              <p className="text-[#4c6162] mt-2 text-base">
-                Flexible online tele-health sessions tailored for clients residing abroad across global time zones.
-              </p>
-            </div>
-
-            <div className="grid lg:grid-cols-2 gap-8">
-              {internationalPackages.map((pkg) => (
-                <div
-                  key={pkg.id}
-                  className="rounded-[2.5rem] border border-[#d7ecec] bg-white p-6 sm:p-8 shadow-sm flex flex-col justify-between"
-                >
-                  <div>
-                    <h3 className="text-2xl font-bold text-[#0d4f50]">
-                      {pkg.title}
-                    </h3>
-                    <p className="mt-3 text-sm leading-relaxed text-[#4c6162]">
-                      {pkg.description}
-                    </p>
-
-                    <div className="mt-6 space-y-4">
-                      {pkg.sessions.map((session) => (
-                        <div
-                          key={session.name}
-                          className={`relative rounded-2xl p-5 border transition ${
-                            session.isPopular
-                              ? 'bg-gradient-to-br from-[#0a7272] to-[#0d5c5e] text-white border-[#0a7272] shadow-lg'
-                              : 'bg-[#f7fcfb] border-[#d7ecec] text-[#183436]'
-                          }`}
-                        >
-                          {session.isPopular && (
-                            <div className="absolute -top-3 right-5 inline-flex items-center gap-1 rounded-full bg-amber-400 px-3 py-0.5 text-xs font-bold text-slate-900 shadow-sm">
-                              <Flame size={12} className="fill-amber-900 text-amber-900" />
-                              {session.badge}
-                            </div>
-                          )}
-
-                          <div className="flex items-start justify-between gap-4">
-                            <div>
-                              <h4 className="font-bold text-base">
-                                {session.name}
-                              </h4>
-                              <p
-                                className={`text-xs mt-0.5 ${
-                                  session.isPopular ? 'text-teal-100' : 'text-[#6b8283]'
-                                }`}
-                              >
-                                {pkg.duration} • {session.perSession}
-                              </p>
-                            </div>
-                            <span className="text-2xl font-extrabold tracking-tight">
-                              {session.price}
-                            </span>
-                          </div>
-
-                          <p
-                            className={`mt-3 text-xs leading-relaxed ${
-                              session.isPopular ? 'text-teal-50' : 'text-[#4c6162]'
-                            }`}
-                          >
-                            {session.description}
-                          </p>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div className="mt-8 pt-4">
-                    <a
-                      href="https://booking.myndspace.app/amanp"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex justify-center items-center gap-2 w-full rounded-full bg-[#0a7272] text-white py-3.5 font-bold text-sm hover:bg-[#0d5c5e] transition shadow-md"
-                    >
-                      Book International Package
-                      <ArrowRight size={16} />
-                    </a>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* ================= PROGRAMS SECTION ================= */}
-      <section className="px-4 py-16 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-7xl">
-          <div className="text-center max-w-3xl mx-auto mb-12">
-            <span className="text-xs font-bold uppercase tracking-[0.3em] text-[#0a7272] bg-[#eaf6f6] px-3 py-1 rounded-full">
-              Beyond Individual Care
-            </span>
-            <h2 className="text-3xl font-bold text-[#0d4f50] sm:text-4xl mt-4">
-              Institutional Programs & Workshops
+            <h2 className="text-4xl font-bold text-[#18333B] mt-3">
+              Therapy Packages
             </h2>
-            <p className="mt-3 text-base text-[#4c6162]">
-              Custom mental health solutions designed for corporate teams, educational institutions, and community groups.
+
+            <p className="text-[#5F6F73] mt-4 max-w-2xl mx-auto">
+              Choose a therapy plan that offers consistent support and
+              meaningful progress at a pace that feels right for you.
             </p>
           </div>
 
           <div className="grid lg:grid-cols-2 gap-8">
-            {programs.map((program) => {
-              const IconComponent = program.icon;
-              return (
-                <div
-                  key={program.title}
-                  className="rounded-[2.5rem] border border-[#d7ecec] bg-white p-8 shadow-sm flex flex-col justify-between transition hover:shadow-md"
-                >
-                  <div>
-                    <div className="w-14 h-14 rounded-2xl bg-[#eaf6f6] flex items-center justify-center text-[#0a7272]">
-                      <IconComponent size={26} />
-                    </div>
+            {therapyPackages.map((item) => (
+              <div
+                key={item.title}
+                className="bg-white rounded-3xl border border-[#E3EFEF] shadow-sm hover:shadow-xl transition-all duration-300 p-8"
+              >
+                <h3 className="text-2xl font-bold text-[#18333B]">
+                  {item.title}
+                </h3>
 
-                    <h3 className="text-2xl font-bold text-[#0d4f50] mt-6">
-                      {program.title}
-                    </h3>
+                <p className="mt-4 text-[#5F6F73] leading-7">
+                  {item.description}
+                </p>
 
-                    <p className="mt-3 text-sm leading-relaxed text-[#4c6162]">
-                      {program.description}
-                    </p>
-
-                    <div className="mt-6 space-y-2.5">
-                      {program.offerings.map((item) => (
-                        <div
-                          key={item}
-                          className="flex items-center gap-3 rounded-xl bg-[#f7fcfb] p-3 text-xs sm:text-sm text-[#3b4f50] border border-[#eef8f7]"
-                        >
-                          <Check size={16} className="text-[#0a7272] shrink-0" />
-                          <span>{item}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div className="mt-8 pt-4">
-                    <Link
-                      to="/contact"
-                      className="inline-flex items-center gap-2 rounded-full border-2 border-[#0a7272] px-6 py-3 text-xs sm:text-sm font-bold text-[#0a7272] hover:bg-[#0a7272] hover:text-white transition"
+                <div className="mt-8 space-y-4">
+                  {item.sessions.map((session) => (
+                    <div
+                      key={session.name}
+                      className="flex justify-between items-center border rounded-2xl p-5 bg-[#FAFCFC]"
                     >
-                      {program.ctaText}
-                      <ArrowRight size={16} />
-                    </Link>
-                  </div>
+                      <div>
+                        <h4 className="font-semibold text-[#18333B]">
+                          {session.name}
+                        </h4>
+
+                        <p className="text-sm text-[#7B8A8E]">
+                          50-minute therapy sessions
+                        </p>
+                      </div>
+
+                      <span className="text-2xl font-bold text-[#018081]">
+                        {session.price}
+                      </span>
+                    </div>
+                  ))}
                 </div>
-              );
-            })}
+
+                <a
+                  href="https://booking.myndspace.app/amanp"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-8 inline-flex justify-center items-center w-full rounded-full bg-[#018081] text-white py-4 font-semibold hover:bg-[#016A6A] transition"
+                >
+                  Book Now
+                </a>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* ================= IMPORTANT NOTES & POLICIES ================= */}
-      <section className="px-4 py-16 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-7xl rounded-[2.5rem] bg-[#f0f8f7] border border-[#d7ecec] p-8 sm:p-12">
-          <div className="max-w-3xl mb-8">
-            <span className="text-xs font-bold uppercase tracking-[0.25em] text-[#0a7272]">
-              Package Guidelines
-            </span>
-            <h2 className="text-3xl font-bold text-[#0d4f50] mt-2">
-              Important Terms & Policies
+      {/* ================= INTERNATIONAL PACKAGES ================= */}
+
+      <section className="px-6 lg:px-20 py-16 bg-[#F7FBFB]">
+        <div className="max-w-6xl mx-auto">
+          <div className="mb-12 text-center">
+            <p className="text-sm uppercase tracking-[0.25em] text-[#018081] font-semibold">
+              Worldwide
+            </p>
+
+            <h2 className="text-4xl font-bold text-[#18333B] mt-3">
+              Therapy Packages for International Clients
             </h2>
-            <p className="text-sm text-[#4c6162] mt-1">
-              Please review our operational guidelines prior to purchasing a session package.
+
+            <p className="text-[#5F6F73] mt-4 max-w-2xl mx-auto">
+              Secure online counselling for clients living outside India with
+              flexible scheduling across different time zones.
             </p>
           </div>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {notes.map((note) => {
-              const Icon = note.icon;
-              return (
-                <div
-                  key={note.title}
-                  className="rounded-2xl bg-white p-5 border border-[#d7ecec] shadow-sm flex flex-col justify-between"
-                >
-                  <div className="flex items-center gap-3 text-[#0a7272]">
-                    <Icon size={20} />
-                    <h4 className="font-bold text-sm text-[#0d4f50]">
-                      {note.title}
-                    </h4>
-                  </div>
-                  <p className="mt-3 text-xs leading-relaxed text-[#4c6162]">
-                    {note.text}
-                  </p>
+          <div className="grid lg:grid-cols-2 gap-8">
+            {internationalPackages.map((item) => (
+              <div
+                key={item.title}
+                className="bg-white rounded-3xl border border-[#E3EFEF] shadow-sm hover:shadow-xl transition-all duration-300 p-8"
+              >
+                <h3 className="text-2xl font-bold text-[#18333B]">
+                  {item.title}
+                </h3>
+
+                <p className="mt-4 text-[#5F6F73] leading-7">
+                  {item.description}
+                </p>
+
+                <div className="mt-8 space-y-4">
+                  {item.sessions.map((session) => (
+                    <div
+                      key={session.name}
+                      className="flex justify-between items-center border rounded-2xl p-5 bg-[#FAFCFC]"
+                    >
+                      <div>
+                        <h4 className="font-semibold text-[#18333B]">
+                          {session.name}
+                        </h4>
+
+                        <p className="text-sm text-[#7B8A8E]">
+                          Online therapy sessions
+                        </p>
+                      </div>
+
+                      <span className="text-2xl font-bold text-[#018081]">
+                        {session.price}
+                      </span>
+                    </div>
+                  ))}
                 </div>
-              );
-            })}
+
+                <a
+                  href="https://booking.myndspace.app/amanp"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-8 inline-flex justify-center items-center w-full rounded-full bg-[#018081] text-white py-4 font-semibold hover:bg-[#016A6A] transition"
+                >
+                  Book Now
+                </a>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ================= PROGRAMS ================= */}
+
+      <section className="px-6 lg:px-20 py-20">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-12">
+            <p className="uppercase tracking-[0.25em] text-[#018081] font-semibold text-sm">
+              Beyond Individual Therapy
+            </p>
+
+            <h2 className="text-4xl font-bold text-[#18333B] mt-3">
+              Programs
+            </h2>
+
+            <p className="mt-4 text-[#5F6F73] max-w-2xl mx-auto leading-7">
+              We collaborate with schools, colleges, organisations, and
+              communities to promote emotional wellbeing through customised
+              mental health programs and workshops.
+            </p>
+          </div>
+
+          <div className="grid lg:grid-cols-2 gap-8">
+            {programs.map((program) => (
+              <div
+                key={program.title}
+                className="bg-white rounded-3xl border border-[#E4F1F0] shadow-sm hover:shadow-xl transition duration-300 p-8"
+              >
+                <div className="w-16 h-16 rounded-2xl bg-[#EAF8F8] flex items-center justify-center text-3xl mb-6">
+                  {program.title === "Corporate Programs" ? "🏢" : "🎤"}
+                </div>
+
+                <h3 className="text-2xl font-bold text-[#18333B]">
+                  {program.title}
+                </h3>
+
+                <p className="mt-4 text-[#5F6F73] leading-7">
+                  {program.description}
+                </p>
+
+                <a
+                  href="https://booking.myndspace.app/amanp"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center mt-8 font-semibold text-[#018081] hover:gap-3 transition-all"
+                >
+                  Enquire Now →
+                </a>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ================= IMPORTANT NOTES ================= */}
+
+      <section className="px-6 lg:px-20 pb-20">
+        <div className="max-w-6xl mx-auto rounded-3xl bg-[#F7FBFB] border border-[#E4F1F0] p-10">
+          <div className="mb-8">
+            <p className="uppercase tracking-[0.25em] text-[#018081] font-semibold text-sm">
+              Please Read
+            </p>
+
+            <h2 className="text-4xl font-bold text-[#18333B] mt-3">
+              Important Notes
+            </h2>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-6">
+            {notes.map((note, index) => (
+              <div
+                key={index}
+                className="flex items-start gap-4 bg-white rounded-2xl p-5 shadow-sm"
+              >
+                <div className="w-8 h-8 rounded-full bg-[#018081] text-white flex items-center justify-center font-bold flex-shrink-0">
+                  ✓
+                </div>
+
+                <p className="text-[#5F6F73] leading-7">{note}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
       {/* ================= CALL TO ACTION ================= */}
-      <section className="px-4 pb-20 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-7xl">
-          <div className="rounded-[2.5rem] bg-gradient-to-r from-[#0a7272] via-[#0d5c5e] to-[#0f5f61] text-white px-8 sm:px-12 py-14 text-center shadow-xl relative overflow-hidden">
-            <div className="relative z-10 max-w-3xl mx-auto">
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-4 py-1.5 text-xs font-bold text-teal-100 backdrop-blur-md">
-                <HelpCircle size={14} />
-                Need Personalized Guidance?
-              </span>
 
-              <h2 className="text-3xl sm:text-4xl font-bold mt-4 leading-tight">
-                Not sure which package fits your current situation?
-              </h2>
+      <section className="px-6 lg:px-20 pb-24">
+        <div className="max-w-6xl mx-auto">
+          <div className="rounded-[40px] bg-gradient-to-r from-[#018081] to-[#0A6F70] text-white px-8 md:px-16 py-16 text-center shadow-xl">
+            <p className="uppercase tracking-[0.3em] text-sm text-[#D9F4F3] font-semibold">
+              Need Guidance?
+            </p>
 
-              <p className="mt-4 text-sm sm:text-base leading-relaxed text-teal-50/90">
-                Selecting the right plan shouldn't feel overwhelming. Reach out for a brief consultation and we will guide you toward the format best aligned with your needs.
-              </p>
+            <h2 className="text-4xl md:text-5xl font-bold mt-4">
+              Not sure which plan is right for you?
+            </h2>
 
-              <div className="mt-8 flex flex-col sm:flex-row justify-center gap-4">
-                <a
-                  href="https://booking.myndspace.app/amanp"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="bg-white text-[#0a7272] px-8 py-3.5 rounded-full font-bold text-sm hover:bg-teal-50 transition shadow-md"
-                >
-                  Schedule Consultation
-                </a>
+            <p className="mt-6 max-w-3xl mx-auto text-lg leading-8 text-[#E7F7F6]">
+              Choosing the right therapy package can feel overwhelming. We're
+              happy to guide you based on your concerns, goals, and preferences
+              to help you get started with confidence.
+            </p>
 
-                <Link
-                  to="/services"
-                  className="border border-white/40 bg-white/10 text-white px-8 py-3.5 rounded-full font-bold text-sm hover:bg-white hover:text-[#0a7272] transition backdrop-blur-sm"
-                >
-                  Explore All Services
-                </Link>
-              </div>
+            <div className="mt-10 flex flex-col sm:flex-row justify-center gap-5">
+              <Link
+                to="/booking"
+                className="bg-white text-[#018081] px-8 py-4 rounded-full font-semibold text-lg hover:bg-[#F3F8F8] transition duration-300 shadow-md"
+              >
+                Schedule a Consultation
+              </Link>
+
+              <Link
+                to="/services"
+                className="border border-white text-white px-8 py-4 rounded-full font-semibold text-lg hover:bg-white hover:text-[#018081] transition duration-300"
+              >
+                Explore Services
+              </Link>
             </div>
           </div>
         </div>
