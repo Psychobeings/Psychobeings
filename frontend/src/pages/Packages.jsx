@@ -7,14 +7,12 @@ import {
   HeartHandshake,
   Sparkles,
   Building2,
-  CheckCircle2,
   CalendarHeart,
   Flame,
   HelpCircle,
   Clock,
   RefreshCw,
   XCircle,
-  MapPin,
   Check
 } from 'lucide-react';
 
@@ -176,7 +174,7 @@ const notes = [
 ];
 
 const Packages = () => {
-  const [currencyRegion, setCurrencyRegion] = useState('ALL'); // 'ALL' | 'INR' | 'USD'
+  const [currencyRegion, setCurrencyRegion] = useState('ALL');
 
   useEffect(() => {
     window.scrollTo(0, 0);
