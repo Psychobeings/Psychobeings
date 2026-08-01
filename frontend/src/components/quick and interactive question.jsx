@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ArrowRight, CheckCircle2 } from 'lucide-react';
+import { ArrowRight, CheckCircle2, RotateCcw, ChevronLeft, Sparkles } from 'lucide-react';
 
 const assessmentQuestions = [
     {
@@ -46,95 +46,148 @@ export default function CareAssessment() {
         setAssessmentStep((prev) => prev + 1);
     };
 
+    const handleBack = () => {
+        if (assessmentStep > 0) {
+            setAssessmentStep((prev) => prev - 1);
+        }
+    };
+
     const handleReset = () => {
         setAssessmentStep(0);
         setAnswers({});
     };
 
+    const progressPercentage = Math.round(
+        ((assessmentStep) / assessmentQuestions.length) * 100
+    );
+
     return (
-        <section className="py-16 bg-gradient-to-r from-[#084e4e] to-[#0a7272] text-white">
-            <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <section className="relative overflow-hidden bg-gradient-to-br from-[#063b3b] via-[#084e4e] to-[#0a7272] py-20 text-white">
+            {/* Ambient Lighting FX */}
+            <div className="pointer-events-none absolute -top-24 -left-24 h-96 w-96 rounded-full bg-[#6ee7b7]/10 blur-3xl" />
+            <div className="pointer-events-none absolute -bottom-24 -right-24 h-96 w-96 rounded-full bg-[#0a7272]/30 blur-3xl" />
+
+            <div className="relative mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
                 {/* Header Section */}
-                <div className="text-center mb-8">
-                    <span className="px-3 py-1 rounded-full bg-white/10 text-[#a7f3d0] text-xs font-semibold uppercase tracking-wider">
-                        Interactive Guide
+                <div className="mb-10 text-center">
+                    <span className="inline-flex items-center gap-1.5 rounded-full border border-[#6ee7b7]/30 bg-white/10 px-3.5 py-1 text-xs font-semibold uppercase tracking-wider text-[#a7f3d0] backdrop-blur-md">
+                        <Sparkles className="h-3.5 w-3.5 text-[#6ee7b7]" />
+                        Interactive Assessment
                     </span>
-                    <h2 className="text-2xl sm:text-3xl font-serif font-bold mt-2">
+                    <h2 className="mt-4 font-serif text-3xl font-bold tracking-tight text-white sm:text-4xl">
                         Not sure where to begin?
                     </h2>
-                    <p className="text-[#d1fae5]/90 text-sm mt-1">
-                        Answer 3 quick questions to discover your recommended care route.
+                    <p className="mt-2 text-base text-[#d1fae5]/80">
+                        Answer 3 quick questions to discover your personalized care route.
                     </p>
                 </div>
 
-                {/* Assessment Card */}
-                <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 sm:p-8 border border-white/15 shadow-xl">
+                {/* Assessment Glass Card */}
+                <div className="relative rounded-3xl border border-white/20 bg-white/10 p-6 sm:p-10 backdrop-blur-xl shadow-2xl transition-all">
                     {assessmentStep < assessmentQuestions.length ? (
                         <div>
-                            {/* Question Header & Percentage */}
-                            <div className="flex items-center justify-between mb-4 text-xs text-[#a7f3d0] font-semibold">
-                                <span>
-                                    Question {assessmentStep + 1} of {assessmentQuestions.length}
-                                </span>
-                                <span>
-                                    {Math.round(((assessmentStep + 1) / assessmentQuestions.length) * 100)}% Complete
-                                </span>
+                            {/* Question Header Nav & Progress Percentage */}
+                            <div className="mb-3 flex items-center justify-between text-xs font-semibold text-[#a7f3d0]">
+                                <div className="flex items-center gap-2">
+                                    {assessmentStep > 0 && (
+                                        <button
+                                            onClick={handleBack}
+                                            className="flex items-center gap-1 text-[#d1fae5] hover:text-white transition-colors cursor-pointer mr-2"
+                                        >
+                                            <ChevronLeft className="h-4 w-4" />
+                                            Back
+                                        </button>
+                                    )}
+                                    <span>
+                                        Step {assessmentStep + 1} of {assessmentQuestions.length}
+                                    </span>
+                                </div>
+                                <span>{progressPercentage}% Completed</span>
                             </div>
 
-                            {/* Progress bar */}
-                            <div className="w-full bg-black/20 h-1.5 rounded-full mb-6 overflow-hidden">
+                            {/* Animated Progress Bar */}
+                            <div className="mb-8 h-2 w-full overflow-hidden rounded-full bg-black/25 p-0.5">
                                 <div
-                                    className="bg-[#6ee7b7] h-full transition-all duration-300"
+                                    className="h-full rounded-full bg-gradient-to-r from-[#34d399] to-[#6ee7b7] transition-all duration-500 ease-out shadow-[0_0_12px_rgba(110,231,183,0.5)]"
                                     style={{
-                                        width: `${((assessmentStep + 1) / assessmentQuestions.length) * 100}%`,
+                                        width: `${Math.max(progressPercentage, 10)}%`,
                                     }}
                                 />
                             </div>
 
                             {/* Question Title */}
-                            <h3 className="text-lg sm:text-xl font-bold text-white mb-6">
+                            <h3 className="mb-6 text-xl font-semibold text-white sm:text-2xl">
                                 {assessmentQuestions[assessmentStep].title}
                             </h3>
 
                             {/* Options Grid */}
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div className="grid grid-cols-1 gap-3.5 sm:grid-cols-2">
                                 {assessmentQuestions[assessmentStep].options.map((opt, idx) => (
                                     <button
                                         key={idx}
                                         onClick={() => handleOptionSelect(opt.label)}
-                                        className="p-4 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 text-left text-sm font-medium transition-all flex items-center justify-between group cursor-pointer"
+                                        className="group relative flex items-center justify-between rounded-2xl border border-white/15 bg-white/5 p-4 sm:p-5 text-left text-sm font-medium text-white transition-all duration-200 hover:-translate-y-0.5 hover:border-white/40 hover:bg-white/15 hover:shadow-lg cursor-pointer"
                                     >
-                                        <span>{opt.label}</span>
-                                        <ArrowRight className="w-4 h-4 text-[#6ee7b7] opacity-0 group-hover:opacity-100 transition-opacity" />
+                                        <div className="flex items-center gap-3">
+                                            <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-white/10 text-xs font-semibold text-[#a7f3d0] group-hover:bg-[#6ee7b7] group-hover:text-[#084e4e] transition-colors">
+                                                0{idx + 1}
+                                            </span>
+                                            <span className="leading-snug">{opt.label}</span>
+                                        </div>
+                                        <ArrowRight className="h-4 w-4 shrink-0 text-[#6ee7b7] opacity-0 transition-all duration-200 group-hover:translate-x-1 group-hover:opacity-100" />
                                     </button>
                                 ))}
                             </div>
                         </div>
                     ) : (
                         /* Results Screen */
-                        <div className="text-center py-4 space-y-4">
-                            <div className="w-12 h-12 bg-[#34d399]/20 text-[#6ee7b7] rounded-full flex items-center justify-center mx-auto">
-                                <CheckCircle2 className="w-8 h-8" />
+                        <div className="py-4 text-center">
+                            <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-full bg-[#34d399]/20 text-[#6ee7b7] ring-8 ring-[#34d399]/10">
+                                <CheckCircle2 className="h-10 w-10" />
                             </div>
-                            <h3 className="text-2xl font-bold text-white">
-                                {answers.preferred_format ? `Recommended: ${answers.preferred_format}` : 'We Recommend Individual Therapy'}
+
+                            <span className="text-xs font-semibold uppercase tracking-widest text-[#a7f3d0]">
+                                Your Recommended Path
+                            </span>
+                            
+                            <h3 className="mt-1 text-2xl font-bold text-white sm:text-3xl">
+                                {answers.preferred_format ? answers.preferred_format : '1-on-1 Dedicated Coaching'}
                             </h3>
-                            <p className="text-[#d1fae5] text-sm max-w-lg mx-auto">
+
+                            <p className="mx-auto mt-3 max-w-lg text-sm sm:text-base leading-relaxed text-[#d1fae5]/90">
                                 {answers.primary_concern 
-                                    ? `Based on your goal of ${answers.primary_concern.toLowerCase()}, starting with a personalized session will give you tailored strategies right away.`
-                                    : 'Based on your responses, starting with a 1-on-1 consultation with one of our senior therapists will give you tailored strategies right away.'}
+                                    ? `To help with ${answers.primary_concern.toLowerCase()}, starting with a personalized plan will give you direct, actionable strategies tailored to your needs.`
+                                    : 'Based on your preferences, starting with a 1-on-1 consultation with one of our specialists will give you tailored strategies right away.'}
                             </p>
-                            <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-4">
+
+                            {/* User Selection Summary */}
+                            <div className="my-6 rounded-2xl border border-white/10 bg-black/20 p-4 text-left">
+                                <span className="text-xs font-medium text-[#a7f3d0]/80 uppercase tracking-wider block mb-2">
+                                    Summary of your selections:
+                                </span>
+                                <div className="flex flex-wrap gap-2 text-xs">
+                                    {Object.values(answers).map((val, i) => (
+                                        <span key={i} className="rounded-md bg-white/10 px-2.5 py-1 text-white">
+                                            ✓ {val}
+                                        </span>
+                                    ))}
+                                </div>
+                            </div>
+
+                            {/* Call to Actions */}
+                            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2">
                                 <a
-                                    href="/booking?service=individual-therapy"
-                                    className="bg-[#F2F8F7] text-[#0a7272] px-6 py-3 rounded-full font-bold text-sm hover:bg-[#ecfdf5] transition"
+                                    href="/booking?service=recommended"
+                                    className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-full bg-white px-8 py-3.5 text-sm font-bold text-[#0a7272] shadow-lg hover:bg-[#ecfdf5] transition-all hover:scale-[1.02]"
                                 >
                                     Book Recommended Session
+                                    <ArrowRight className="h-4 w-4" />
                                 </a>
                                 <button
                                     onClick={handleReset}
-                                    className="text-xs text-[#a7f3d0] underline hover:text-white cursor-pointer"
+                                    className="inline-flex items-center gap-1.5 text-xs text-[#a7f3d0] hover:text-white transition-colors cursor-pointer py-2"
                                 >
+                                    <RotateCcw className="h-3.5 w-3.5" />
                                     Retake Assessment
                                 </button>
                             </div>
