@@ -1,150 +1,113 @@
-import { Heart, Users, Shield, Target, Award, BookOpen } from 'lucide-react';
+import React from 'react';
+import { Heart, Users, Shield, Target, Award, BookOpen, Sparkles } from 'lucide-react';
+
+const missionPillars = [
+  {
+    icon: <Heart className="h-6 w-6" />,
+    title: 'Safe Space',
+    desc: 'Creating judgment-free environments',
+  },
+  {
+    icon: <Users className="h-6 w-6" />,
+    title: 'Collaborative',
+    desc: 'Working together on your healing',
+  },
+  {
+    icon: <BookOpen className="h-6 w-6" />,
+    title: 'Educational',
+    desc: 'Empowering through mental literacy',
+  },
+  {
+    icon: <Shield className="h-6 w-6" />,
+    title: 'Resilience',
+    desc: 'Building strength to tackle challenges',
+  },
+  {
+    icon: <Award className="h-6 w-6" />,
+    title: 'Evidence-Based',
+    desc: 'Grounded in proven clinical approaches',
+  },
+  {
+    icon: <Target className="h-6 w-6" />,
+    title: 'Goal-Oriented',
+    desc: 'Focusing on actionable growth',
+  },
+];
 
 export default function OurMission() {
   return (
-    <section className="bg-white py-12 md:py-16 lg:py-24 px-4 md:px-12 lg:px-20">
-      <div className="max-w-7xl mx-auto">
+    <section className="relative overflow-hidden bg-slate-50/50 py-16 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-8">
+      {/* Ambient Radial Background Accents */}
+      <div className="pointer-events-none absolute inset-0 overflow-hidden">
+        <div className="absolute -top-32 left-1/2 -translate-x-1/2 h-96 w-[40rem] rounded-full bg-[#097f7f]/10 blur-3xl" />
+      </div>
+
+      <div className="relative mx-auto max-w-6xl">
         
-        {/* Header */}
-        <div className="text-center mb-8 md:mb-12 lg:mb-16">
+        {/* Header Badge & Title */}
+        <div className="text-center mb-12 sm:mb-16">
+          <span className="inline-flex items-center gap-1.5 rounded-full border border-[#097f7f]/20 bg-[#097f7f]/10 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-[#097f7f]">
+            <Sparkles className="h-3.5 w-3.5" />
+            Core Purpose
+          </span>
           
-          <h2 className="text-3xl md:text-4xl lg:text-6xl font-bold text-[#097f7f] mb-4">
+          <h2 className="mt-4 font-serif text-3xl font-bold tracking-tight text-[#0d4f50] sm:text-4xl lg:text-5xl">
             Our Mission
           </h2>
         </div>
 
-        {/* Desktop Layout */}
-        <div className="hidden lg:grid lg:grid-cols-5 gap-16 items-center">
+        {/* Central Hero Mission Statements */}
+        <div className="grid gap-6 lg:grid-cols-12 items-stretch mb-16">
           
-          {/* Left Icons Column */}
-          <div className="flex flex-col space-y-12">
-            <div className="text-center group">
-              <div className="w-24 h-24 bg-gray-50 hover:bg-[#097f7f] rounded-2xl flex items-center justify-center mx-auto mb-4 transition-all duration-300 shadow-lg">
-                <Heart className="w-12 h-12 text-[#097f7f] group-hover:text-white transition-colors duration-300" />
-              </div>
-              <p className="text-lg text-gray-700 font-semibold">Safe Space</p>
-            </div>
-            
-            <div className="text-center group">
-              <div className="w-24 h-24 bg-gray-50 hover:bg-[#097f7f] rounded-2xl flex items-center justify-center mx-auto mb-4 transition-all duration-300 shadow-lg">
-                <Users className="w-12 h-12 text-[#097f7f] group-hover:text-white transition-colors duration-300" />
-              </div>
-              <p className="text-lg text-gray-700 font-semibold">Collaborative</p>
-            </div>
-            
-            <div className="text-center group">
-              <div className="w-24 h-24 bg-gray-50 hover:bg-[#097f7f] rounded-2xl flex items-center justify-center mx-auto mb-4 transition-all duration-300 shadow-lg">
-                <BookOpen className="w-12 h-12 text-[#097f7f] group-hover:text-white transition-colors duration-300" />
-              </div>
-              <p className="text-lg text-gray-700 font-semibold">Educational</p>
-            </div>
-          </div>
-
-          {/* Center Content - 3 columns wide */}
-          <div className="col-span-3 text-center px-8">
-            <p className="text-2xl text-gray-800 leading-relaxed mb-10 font-light">
-              At <span className="font-bold text-[#097f7f] text-3xl">Psychobeings</span>, our mission is to facilitate 
-              <span className="font-semibold text-black"> mental well-being, overall growth, and personal development</span> by creating a 
-              <span className="font-semibold text-[#097f7f]"> safe, supportive, and collaborative space</span> wherein each and every individual feels 
-              <span className="font-semibold text-black"> heard, respected, and valued</span>.
+          {/* Primary Statement Card */}
+          <div className="lg:col-span-7 flex flex-col justify-center rounded-3xl border border-[#d7ecec] bg-white p-8 sm:p-10 shadow-md">
+            <p className="text-lg sm:text-xl lg:text-2xl font-light leading-relaxed text-slate-700">
+              At <span className="font-bold text-[#097f7f]">Psychobeings</span>, our mission is to facilitate{' '}
+              <span className="font-semibold text-slate-900">mental well-being, overall growth, and personal development</span>{' '}
+              by creating a <span className="font-semibold text-[#097f7f]">safe, supportive, and collaborative space</span>{' '}
+              wherein each and every individual feels <span className="font-semibold text-slate-900">heard, respected, and valued</span>.
             </p>
-            
-            <div className="bg-gradient-to-r from-[#097f7f] to-[#0a8f8f] text-white rounded-2xl p-10 shadow-2xl">
-              <p className="text-xl leading-relaxed font-medium">
-                We have committed ourselves to <span className="font-bold text-2xl">empower all individuals</span> to overcome their challenges, 
-                build resilience, and lead fulfilling lives through <span className="font-bold">evidence-based guidance, education, and counseling</span>.
-              </p>
-            </div>
           </div>
 
-          {/* Right Icons Column */}
-          <div className="flex flex-col space-y-12">
-            <div className="text-center group">
-              <div className="w-24 h-24 bg-gray-50 hover:bg-[#097f7f] rounded-2xl flex items-center justify-center mx-auto mb-4 transition-all duration-300 shadow-lg">
-                <Shield className="w-12 h-12 text-[#097f7f] group-hover:text-white transition-colors duration-300" />
-              </div>
-              <p className="text-lg text-gray-700 font-semibold">Resilience</p>
-            </div>
-            
-            <div className="text-center group">
-              <div className="w-24 h-24 bg-gray-50 hover:bg-[#097f7f] rounded-2xl flex items-center justify-center mx-auto mb-4 transition-all duration-300 shadow-lg">
-                <Award className="w-12 h-12 text-[#097f7f] group-hover:text-white transition-colors duration-300" />
-              </div>
-              <p className="text-lg text-gray-700 font-semibold">Evidence-Based</p>
-            </div>
-            
-            <div className="text-center group">
-              <div className="w-24 h-24 bg-gray-50 hover:bg-[#097f7f] rounded-2xl flex items-center justify-center mx-auto mb-4 transition-all duration-300 shadow-lg">
-                <Target className="w-12 h-12 text-[#097f7f] group-hover:text-white transition-colors duration-300" />
-              </div>
-              <p className="text-lg text-gray-700 font-semibold">Goal-Oriented</p>
+          {/* Callout Commitment Banner */}
+          <div className="lg:col-span-5 flex flex-col justify-center rounded-3xl bg-gradient-to-br from-[#097f7f] via-[#0a8f8f] to-[#0b6b6b] p-8 sm:p-10 text-white shadow-xl">
+            <div className="relative z-10">
+              <span className="text-xs font-bold uppercase tracking-wider text-teal-200">
+                Our Commitment
+              </span>
+              <p className="mt-3 text-lg sm:text-xl font-medium leading-relaxed">
+                We empower individuals to overcome challenges, build resilience, and lead fulfilling lives through{' '}
+                <span className="font-bold underline decoration-teal-300 underline-offset-4">
+                  evidence-based guidance, education, and counseling
+                </span>.
+              </p>
             </div>
           </div>
         </div>
 
-        {/* Mobile and Tablet Layout */}
-        <div className="lg:hidden">
-          
-          {/* Main Content */}
-          <div className="text-center mb-8 md:mb-12">
-            <p className="text-base md:text-lg lg:text-xl text-gray-800 leading-relaxed mb-6 md:mb-8 font-light">
-              At <span className="font-bold text-[#097f7f] text-lg md:text-xl">Psychobeings</span>, our mission is to facilitate 
-              <span className="font-semibold text-black"> mental well-being, overall growth, and personal development</span> by creating a 
-              <span className="font-semibold text-[#097f7f]"> safe, supportive, and collaborative space</span> wherein each and every individual feels 
-              <span className="font-semibold text-black"> heard, respected, and valued</span>.
-            </p>
-            
-            <div className="bg-gradient-to-r from-[#097f7f] to-[#0a8f8f] text-white rounded-xl md:rounded-2xl p-6 md:p-8 shadow-xl">
-              <p className="text-base md:text-lg leading-relaxed font-medium">
-                We have committed ourselves to <span className="font-bold text-lg md:text-xl">empower all individuals</span> to overcome their challenges, 
-                build resilience, and lead fulfilling lives through <span className="font-bold">evidence-based guidance, education, and counseling</span>.
-              </p>
-            </div>
-          </div>
+        {/* 6 Core Mission Pillars Grid */}
+        <div className="mt-8">
+          <h3 className="text-center text-xs font-bold uppercase tracking-widest text-slate-500 mb-8">
+            Pillars of Our Care Approach
+          </h3>
 
-          {/* Icons Grid for Mobile/Tablet */}
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-6 md:gap-8">
-            <div className="text-center">
-              <div className="w-16 md:w-20 h-16 md:h-20 bg-gray-50 rounded-xl md:rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-md">
-                <Heart className="w-8 md:w-10 h-8 md:h-10 text-[#097f7f]" />
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 sm:gap-6">
+            {missionPillars.map((pillar, idx) => (
+              <div
+                key={idx}
+                className="group relative flex flex-col items-center rounded-2xl border border-slate-200/80 bg-white p-5 text-center shadow-xs transition-all duration-300 hover:-translate-y-1 hover:border-[#097f7f]/30 hover:shadow-lg"
+              >
+                <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-xl bg-[#097f7f]/10 text-[#097f7f] transition-colors duration-300 group-hover:bg-[#097f7f] group-hover:text-white">
+                  {pillar.icon}
+                </div>
+                <h4 className="text-sm font-bold text-slate-900 group-hover:text-[#097f7f] transition-colors">
+                  {pillar.title}
+                </h4>
+                <p className="mt-1 text-xs text-slate-500 leading-normal">
+                  {pillar.desc}
+                </p>
               </div>
-              <p className="text-sm md:text-base text-gray-700 font-semibold">Safe Space</p>
-            </div>
-            
-            <div className="text-center">
-              <div className="w-16 md:w-20 h-16 md:h-20 bg-gray-50 rounded-xl md:rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-md">
-                <Users className="w-8 md:w-10 h-8 md:h-10 text-[#097f7f]" />
-              </div>
-              <p className="text-sm md:text-base text-gray-700 font-semibold">Collaborative</p>
-            </div>
-            
-            <div className="text-center">
-              <div className="w-16 md:w-20 h-16 md:h-20 bg-gray-50 rounded-xl md:rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-md">
-                <BookOpen className="w-8 md:w-10 h-8 md:h-10 text-[#097f7f]" />
-              </div>
-              <p className="text-sm md:text-base text-gray-700 font-semibold">Educational</p>
-            </div>
-            
-            <div className="text-center">
-              <div className="w-16 md:w-20 h-16 md:h-20 bg-gray-50 rounded-xl md:rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-md">
-                <Shield className="w-8 md:w-10 h-8 md:h-10 text-[#097f7f]" />
-              </div>
-              <p className="text-sm md:text-base text-gray-700 font-semibold">Resilience</p>
-            </div>
-            
-            <div className="text-center">
-              <div className="w-16 md:w-20 h-16 md:h-20 bg-gray-50 rounded-xl md:rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-md">
-                <Award className="w-8 md:w-10 h-8 md:h-10 text-[#097f7f]" />
-              </div>
-              <p className="text-sm md:text-base text-gray-700 font-semibold">Evidence-Based</p>
-            </div>
-            
-            <div className="text-center">
-              <div className="w-16 md:w-20 h-16 md:h-20 bg-gray-50 rounded-xl md:rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-md">
-                <Target className="w-8 md:w-10 h-8 md:h-10 text-[#097f7f]" />
-              </div>
-              <p className="text-sm md:text-base text-gray-700 font-semibold">Goal-Oriented</p>
-            </div>
+            ))}
           </div>
         </div>
 
