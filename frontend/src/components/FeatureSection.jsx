@@ -4,96 +4,126 @@ import age_group from '../assets/age_group1.png';
 import internship from '../assets/internship1.png';
 import support from '../assets/support1.png';
 
-// ---------------------------------------------------------------------------
-// NOTE ON FONTS
-// This component pulls in two Google Fonts: "Fraunces" (a warm, characterful
-// serif with true italics, used for the display headline and card titles)
-// and "Inter" (body/utility sans). For production, move this <link>/@import
-// to your document <head> (e.g. index.html) instead of loading it per-
-// component, so it's fetched once and doesn't block re-renders of this
-// section specifically. It's included inline here just so this file is
-// drop-in runnable on its own.
-// ---------------------------------------------------------------------------
-
 const features = [
   {
+    number: '01',
     title: 'Personalized Care',
     description:
-      'Every individual receives support shaped around their unique experiences, challenges, and goals, not a one-size-fits-all approach.',
+      'Every individual receives support shaped around their unique experiences, challenges, and goals—never a generic template.',
     imgSrc: discovery,
+    badge: 'Tailored Support',
   },
   {
-    title: 'Our Therapeutic Approaches',
+    number: '02',
+    title: 'Therapeutic Approaches',
     description:
-      'Integrating CBT, DBT, Mindfulness, and other proven therapeutic approaches across age groups from childhood to adulthood, for a holistic and effective care experience.',
+      'Integrating CBT, DBT, Mindfulness, and other proven methodologies across all age groups for holistic, lasting growth.',
     imgSrc: support,
+    badge: 'Evidence-Based',
   },
   {
-    title: 'Workshops and Mentorship Opportunities',
+    number: '03',
+    title: 'Workshops & Mentorship',
     description:
-      'Beyond individual sessions, we offer workshops and mentorship programs that build real-world skills and hands-on experience for organizations and students navigating personal and professional growth.',
+      'Beyond 1-on-1 sessions, we offer skill-building workshops and programs for organizations and students navigating career & life goals.',
     imgSrc: age_group,
+    badge: 'Real-World Growth',
   },
   {
-    title: 'Safe and Confidential Environment',
+    number: '04',
+    title: 'Safe & Confidential Space',
     description:
-      'We prioritize your privacy and create a judgment-free space where you can openly express your thoughts and feelings.',
+      'We prioritize strict privacy and foster a compassionate, judgment-free environment where you can freely express yourself.',
     imgSrc: internship,
+    badge: 'Complete Privacy',
   },
 ];
 
 const FeatureSection = () => {
   return (
-    <section className="relative overflow-hidden bg-gradient-to-b from-[#0a7272] via-[#0a6b6b] to-[#063a3b] py-24 sm:py-28 px-4">
+    <section className="relative overflow-hidden bg-gradient-to-b from-[#0a7272] via-[#096262] to-[#053233] py-24 sm:py-32 px-4 sm:px-6 lg:px-8">
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;1,9..144,500;1,9..144,600&family=Inter:wght@400;500;600&display=swap');
         .ps-font-display { font-family: 'Fraunces', Georgia, serif; }
         .ps-font-body { font-family: 'Inter', system-ui, sans-serif; }
       `}</style>
 
-      {/* Ambient depth — echoes the hero card's glow so the brand language stays consistent */}
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_15%_10%,_rgba(255,255,255,0.08),_transparent_40%),radial-gradient(circle_at_85%_90%,_rgba(201,169,98,0.10),_transparent_45%)]" />
-
-      <div className="relative container mx-auto max-w-screen-lg text-center">
-        <p className="ps-font-body text-[#c9a962] text-xs sm:text-sm font-semibold uppercase tracking-[0.35em] mb-5">
-          The Psychobeings Approach
-        </p>
-        <h2 className="ps-font-display text-white text-3xl sm:text-4xl md:text-5xl leading-tight mb-6">
-          Why people choose{' '}
-          <span className="italic text-[#e3cd94]">Psychobeings</span>
-        </h2>
-        <div className="mx-auto mb-8 h-px w-16 bg-[#c9a962]/60" />
-        <p className="ps-font-display italic text-white/80 text-lg sm:text-xl leading-relaxed max-w-2xl mx-auto mb-16 sm:mb-20">
-          &ldquo;Care that goes beyond a single session &mdash; personalized attention, proven
-          therapeutic methods, and real-world learning, all within a space built on trust.&rdquo;
-        </p>
+      {/* Ambient Radial Background Effects */}
+      <div className="pointer-events-none absolute inset-0 opacity-40">
+        <div className="absolute top-10 left-10 h-96 w-96 rounded-full bg-white/10 blur-3xl" />
+        <div className="absolute bottom-10 right-10 h-96 w-96 rounded-full bg-[#c9a962]/20 blur-3xl" />
       </div>
 
-      <div className="relative container mx-auto max-w-screen-xl grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8">
-        {features.map((feature) => (
-          <div
-            key={feature.title}
-            className="group relative flex flex-col items-center text-center bg-white/[0.98] p-8 sm:p-10 rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.25)] transition-all duration-500 motion-safe:hover:-translate-y-1.5 hover:shadow-[0_30px_60px_rgba(0,0,0,0.35)]"
-          >
-            {/* Signature hairline — mirrors the gold rule under the headline; appears on hover */}
-            <span className="absolute top-0 left-1/2 h-px w-0 -translate-x-1/2 bg-[#c9a962] transition-all duration-500 group-hover:w-16" />
+      <div className="relative mx-auto max-w-7xl">
+        {/* Header Section */}
+        <div className="mx-auto max-w-3xl text-center mb-16 sm:mb-20">
+          <span className="ps-font-body inline-block rounded-full border border-[#c9a962]/40 bg-[#c9a962]/10 px-4 py-1.5 text-xs font-bold uppercase tracking-[0.3em] text-[#e3cd94] backdrop-blur-md">
+            The Psychobeings Approach
+          </span>
+          
+          <h2 className="ps-font-display mt-6 text-3xl sm:text-4xl lg:text-5xl font-medium leading-tight text-white">
+            Why people choose <span className="italic text-[#e3cd94]">Psychobeings</span>
+          </h2>
+          
+          <div className="mx-auto my-6 h-0.5 w-16 rounded-full bg-gradient-to-r from-transparent via-[#c9a962] to-transparent" />
+          
+          <p className="ps-font-display italic text-lg sm:text-xl leading-relaxed text-emerald-50/80">
+            &ldquo;Care that goes beyond a single session &mdash; personalized attention, proven
+            therapeutic methods, and real-world learning within a space built on trust.&rdquo;
+          </p>
+        </div>
 
-            <div className="mb-7 flex h-20 w-20 items-center justify-center rounded-full bg-[#eaf6f6] ring-1 ring-transparent transition-all duration-500 group-hover:ring-[#c9a962]/50 group-hover:bg-[#f5f0e2]">
-              <img
-                src={feature.imgSrc}
-                alt=""
-                aria-hidden="true"
-                className="h-11 w-11 object-contain"
-              />
+        {/* Feature Cards Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10 items-stretch">
+          {features.map((feature) => (
+            <div
+              key={feature.title}
+              className="group relative flex flex-col justify-between overflow-hidden rounded-3xl border border-white/20 bg-white/95 p-8 sm:p-10 shadow-2xl transition-all duration-300 hover:-translate-y-2 hover:border-[#c9a962]/50 hover:bg-white hover:shadow-[0_30px_60px_rgba(0,0,0,0.3)]"
+            >
+              {/* Top Accent Highlight Bar on Hover */}
+              <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[#0a7272] via-[#c9a962] to-[#0a7272] opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+
+              <div>
+                {/* Top Badge & Number */}
+                <div className="flex items-center justify-between mb-6">
+                  <span className="ps-font-body rounded-full bg-[#0a7272]/10 px-3 py-1 text-xs font-semibold text-[#0a7272]">
+                    {feature.badge}
+                  </span>
+                  <span className="ps-font-display text-2xl font-bold text-[#c9a962]/50 group-hover:text-[#c9a962] transition-colors">
+                    {feature.number}
+                  </span>
+                </div>
+
+                {/* Icon Container & Title */}
+                <div className="flex items-start gap-5 mb-5">
+                  <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-[#eaf6f6] ring-1 ring-black/5 transition-all duration-300 group-hover:scale-105 group-hover:bg-[#f5f0e2] group-hover:ring-[#c9a962]/40">
+                    <img
+                      src={feature.imgSrc}
+                      alt=""
+                      aria-hidden="true"
+                      className="h-9 w-9 object-contain transition-transform duration-300 group-hover:scale-110"
+                    />
+                  </div>
+                  
+                  <h3 className="ps-font-display text-2xl font-medium text-[#0d3b3c] leading-tight self-center">
+                    {feature.title}
+                  </h3>
+                </div>
+
+                {/* Description */}
+                <p className="ps-font-body text-slate-600 text-sm sm:text-base leading-relaxed">
+                  {feature.description}
+                </p>
+              </div>
+
+              {/* Bottom Subtle Bar */}
+              <div className="mt-8 pt-4 border-t border-slate-100 flex items-center justify-between text-xs font-medium text-[#0a7272]/80 group-hover:text-[#0a7272]">
+                <span>Psychobeings Standard</span>
+                <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
+              </div>
             </div>
-            <h3 className="ps-font-display text-xl sm:text-2xl mb-3 text-[#0d3b3c]">
-              {feature.title}
-            </h3>
-            <p className="ps-font-body text-gray-600 text-base leading-relaxed">
-              {feature.description}
-            </p>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </section>
   );
