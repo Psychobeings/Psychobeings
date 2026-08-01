@@ -33,7 +33,7 @@ function Hero1() {
             {/* Heading */}
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 tracking-tight leading-tight font-serif">
               Compassionate Therapy for{" "}
-              <span className="text-[#0a7272] underline decoration-teal-300 decoration-wavy underline-offset-8">
+              <span className="text-[#0a7272]">
                 Emotional Wellbeing
               </span>{" "}
               & Personal Growth
