@@ -8,6 +8,7 @@ import LanguageSupport from '../components/LanguageSupport';
 import FoundersNote from '../components/FoundersNote';
 import TherapyApproach from '../components/TherapyApproach';
 import CareAssessment from '../components/quick and interactive question';
+import FeaturedServices from "./components/FeaturedServices";
 
 const homeSections = [Hero, WhatWeDo, LanguageSupport, FeatureSection, FoundersNote, TherapyApproach, CareAssessment, FAQ];
 
