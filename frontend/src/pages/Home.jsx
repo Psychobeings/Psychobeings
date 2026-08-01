@@ -11,7 +11,7 @@ import CareAssessment from '../components/quick and interactive question';
 import FeaturedServices from '../components/FeaturedServices';
 import Testimonials from '../components/Testimonials';
 
-const homeSections = [Hero, WhatWeDo, LanguageSupport, FeatureSection, FoundersNote, TherapyApproach, CareAssessment, FAQ, FeaturedServices, Testimonials];
+const homeSections = [Hero, WhatWeDo, LanguageSupport, FeatureSection, FoundersNote, TherapyApproach, CareAssessment, FeaturedServices, Testimonials,FAQ];
 
 const Home = () => {
   return (
