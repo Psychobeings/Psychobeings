@@ -1,6 +1,5 @@
 import React from 'react';
 import TCard from './TCard';
-import { Star } from 'lucide-react';
 
 const TESTIMONIALS = [
   {
