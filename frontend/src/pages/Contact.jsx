@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { Mail, Phone, MapPin, Clock, Send, CheckCircle2, ShieldAlert } from 'lucide-react';
+import { Mail, MapPin, Clock, Send, CheckCircle2, ShieldAlert } from 'lucide-react';
 
-export const Contact = () => {
+const Contact = () => {
   const [submitted, setSubmitted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
@@ -30,11 +30,12 @@ export const Contact = () => {
     setIsLoading(true);
     setErrorMessage('');
 
+    // Ensure baseUrl formats cleanly regardless of environment setup
+    const rawUrl = process.env.REACT_APP_URL || '';
+    const baseUrl = rawUrl.endsWith('/') ? rawUrl : `${rawUrl}/`;
+
     try {
-      const res = await axios.post(
-        `${process.env.REACT_APP_URL}email/sendmessage`,
-        formData
-      );
+      const res = await axios.post(`${baseUrl}email/sendmessage`, formData);
 
       if (res.status >= 200 && res.status < 300) {
         setSubmitted(true);
@@ -246,7 +247,7 @@ export const Contact = () => {
               </div>
 
               {/* Map Graphic Block */}
-              <div className="bg-white rounded-3xl p-6 border border-slate-200 overflow-hidden shadow-2xs">
+              <div className="bg-white rounded-3xl p-6 border border-slate-200 overflow-hidden shadow-xs">
                 <p className="text-xs font-bold uppercase text-slate-500 mb-2">Location Map</p>
                 <div className="w-full h-44 rounded-xl overflow-hidden border border-slate-200">
                   <iframe
