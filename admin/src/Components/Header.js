@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import logo from "../Assets/logo.png";
+import logoname from "../Assets/logoname.png";
 import {VerifiedIcon, TimerResetIcon} from 'lucide-react'
 
 const Header = () => {
