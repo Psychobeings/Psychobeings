@@ -1,10 +1,8 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import { Calendar, UserCheck, ClipboardCheck, Sparkles, ArrowRight, CheckCircle2 } from "lucide-react";
 
 export default function TherapyApproach() {
   const [isVisible, setIsVisible] = useState(false);
-  const [activeStep, setActiveStep] = useState(1);
+  const [hoveredCard, setHoveredCard] = useState(null);
 
   useEffect(() => {
     const timer = setTimeout(() => setIsVisible(true), 100);
@@ -19,8 +17,15 @@ export default function TherapyApproach() {
       subtitle: "Seamless & Confidential",
       description:
         "Select a convenient date and time for an online or in-person consultation through our secure booking portal.",
-      icon: Calendar,
-      highlights: ["Flexible scheduling", "Online or in-person options"]
+      highlights: ["Flexible scheduling", "Online or in-person"],
+      svg: (
+        <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+          <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+          <line x1="16" y1="2" x2="16" y2="6" />
+          <line x1="8" y1="2" x2="8" y2="6" />
+          <line x1="3" y1="10" x2="21" y2="10" />
+        </svg>
+      )
     },
     {
       id: 2,
@@ -29,8 +34,14 @@ export default function TherapyApproach() {
       subtitle: "First Session Intake",
       description:
         "Meet with your psychologist in a confidential, non-judgmental environment to discuss your concerns, expectations, and goals.",
-      icon: UserCheck,
-      highlights: ["Confidential environment", "Goal exploration"]
+      highlights: ["Confidential environment", "Goal exploration"],
+      svg: (
+        <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+          <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+          <circle cx="8.5" cy="7" r="4" />
+          <polyline points="17 11 19 13 23 9" />
+        </svg>
+      )
     },
     {
       id: 3,
@@ -39,149 +50,111 @@ export default function TherapyApproach() {
       subtitle: "Evidence-Based Insights",
       description:
         "Through clinical insights and evidence-based screening, we collaborate with you to formulate a customized care plan tailored to your needs.",
-      icon: ClipboardCheck,
-      highlights: ["Collaborative care plan", "Targeted strategies"]
+      highlights: ["Collaborative care plan", "Targeted strategies"],
+      svg: (
+        <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+          <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
+          <rect x="8" y="2" width="8" height="4" rx="1" ry="1" />
+          <path d="m9 14 2 2 4-4" />
+        </svg>
+      )
     },
     {
       id: 4,
       step: "04",
       title: "Engage in Targeted Care",
-      subtitle: "Ongoing Growth & Resilience",
+      subtitle: "Ongoing Growth",
       description:
         "Begin your sessions equipped with actionable tools, evidence-based techniques, and ongoing compassionate clinical guidance.",
-      icon: Sparkles,
-      highlights: ["Practical coping tools", "Long-term wellness focus"]
+      highlights: ["Practical coping tools", "Long-term wellness"],
+      svg: (
+        <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+          <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3z" />
+        </svg>
+      )
     }
   ];
 
   return (
-    <section className="relative bg-slate-50/60 py-24 px-6 md:px-12 lg:px-20 text-gray-800 overflow-hidden">
-      {/* Decorative subtle background elements */}
-      <div className="absolute top-0 left-1/4 w-96 h-96 bg-teal-100/30 rounded-full blur-3xl -z-10 pointer-events-none" />
-      <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-emerald-100/30 rounded-full blur-3xl -z-10 pointer-events-none" />
+    <section className="bg-slate-50/70 py-24 px-6 md:px-12 lg:px-20 text-gray-800">
+      <div className="max-w-6xl mx-auto">
+        {/* Header */}
+        <div
+          className={`text-center max-w-3xl mx-auto mb-16 transition-all duration-1000 ${
+            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+          }`}
+        >
+          <span className="text-xs font-bold uppercase tracking-widest text-teal-700 bg-teal-50 px-3.5 py-1.5 rounded-full border border-teal-100">
+            The Therapeutic Process
+          </span>
+          <h2 className="text-4xl md:text-5xl font-bold mt-4 text-gray-900 tracking-tight">
+            How Therapy Works
+          </h2>
+          <div className="w-16 h-1 bg-teal-600 rounded-full mx-auto mt-4 mb-6"></div>
+          <p className="text-lg text-gray-600 leading-relaxed font-light">
+            Whether you are seeking support for yourself, your child, or your family, we provide a structured, evidence-based space to guide you toward long-term emotional well-being.
+          </p>
+        </div>
 
-      <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
-          
-          {/* LEFT COLUMN: Sticky Header & CTA Overview */}
-          <div
-            className={`lg:col-span-5 lg:sticky lg:top-28 space-y-8 transition-all duration-1000 ${
-              isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-            }`}
-          >
-            <div>
-              <span className="text-xs font-bold uppercase tracking-widest text-teal-600 bg-teal-50 px-3.5 py-1.5 rounded-full border border-teal-100">
-                The Therapeutic Process
-              </span>
-              <h2 className="text-4xl md:text-5xl font-bold mt-4 text-gray-900 tracking-tight leading-tight">
-                How Therapy Works
-              </h2>
-              <div className="w-16 h-1 bg-teal-600 rounded-full mt-4"></div>
-            </div>
-
-            <p className="text-lg text-gray-600 leading-relaxed font-light">
-              Whether you are seeking support for yourself, your child, or your family, we provide a structured, evidence-based space to guide you toward clarity and long-term emotional well-being.
-            </p>
-
-            <div className="p-6 bg-white rounded-2xl border border-gray-100 shadow-sm space-y-4">
-              <h4 className="text-sm font-semibold uppercase tracking-wider text-gray-400">
-                What to Expect
-              </h4>
-              <ul className="space-y-3">
-                <li className="flex items-center space-x-3 text-sm text-gray-700 font-medium">
-                  <CheckCircle2 className="w-5 h-5 text-teal-600 shrink-0" />
-                  <span>Personalized clinical care tailored to your goals</span>
-                </li>
-                <li className="flex items-center space-x-3 text-sm text-gray-700 font-medium">
-                  <CheckCircle2 className="w-5 h-5 text-teal-600 shrink-0" />
-                  <span>Strict confidentiality and non-judgmental space</span>
-                </li>
-                <li className="flex items-center space-x-3 text-sm text-gray-700 font-medium">
-                  <CheckCircle2 className="w-5 h-5 text-teal-600 shrink-0" />
-                  <span>Actionable, evidence-based coping tools</span>
-                </li>
-              </ul>
-            </div>
-
-            <div className="pt-2">
-              <Link to="/booking">
-                <button className="group relative w-full sm:w-auto inline-flex items-center justify-center space-x-3 px-8 py-4 bg-teal-700 hover:bg-teal-800 text-white font-semibold rounded-xl shadow-md hover:shadow-lg transition-all duration-300">
-                  <span>Book Your Session</span>
-                  <ArrowRight className="w-5 h-5 transform group-hover:translate-x-1 transition-transform duration-300" />
-                </button>
-              </Link>
-            </div>
-          </div>
-
-          {/* RIGHT COLUMN: Vertical Connected Process Timeline */}
-          <div
-            className={`lg:col-span-7 space-y-6 transition-all duration-1000 delay-200 ${
-              isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-            }`}
-          >
-            <div className="relative pl-4 sm:pl-8 space-y-8 before:absolute before:left-[27px] sm:before:left-[43px] before:top-6 before:bottom-6 before:w-0.5 before:bg-gradient-to-b before:from-teal-500 before:via-teal-200 before:to-gray-200">
-              {approaches.map((approach) => {
-                const IconComponent = approach.icon;
-                const isActive = activeStep === approach.id;
-
-                return (
-                  <div
-                    key={approach.id}
-                    onMouseEnter={() => setActiveStep(approach.id)}
-                    className={`relative flex items-start space-x-5 sm:space-x-8 p-6 sm:p-8 rounded-2xl transition-all duration-300 border ${
-                      isActive
-                        ? "bg-white shadow-xl border-teal-200 -translate-y-0.5"
-                        : "bg-white/60 hover:bg-white shadow-sm border-gray-100 hover:border-gray-200"
-                    }`}
-                  >
-                    {/* Step Number Circle Indicator on Timeline */}
-                    <div
-                      className={`relative z-10 w-12 h-12 sm:w-14 sm:h-14 rounded-2xl flex items-center justify-center shrink-0 transition-all duration-300 ${
-                        isActive
-                          ? "bg-teal-600 text-white shadow-md shadow-teal-600/30 scale-105"
-                          : "bg-teal-50 text-teal-700 border border-teal-100"
-                      }`}
-                    >
-                      <IconComponent className="w-6 h-6" />
-                    </div>
-
-                    {/* Step Content */}
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center justify-between gap-2 mb-1">
-                        <span className="text-xs font-bold text-teal-600 uppercase tracking-wider">
-                          Step {approach.step}
-                        </span>
-                        <span className="text-xs text-gray-400 font-medium">
-                          {approach.subtitle}
-                        </span>
-                      </div>
-
-                      <h3 className="text-xl font-bold text-gray-900 mb-2">
-                        {approach.title}
-                      </h3>
-
-                      <p className="text-gray-600 leading-relaxed text-sm sm:text-base font-normal mb-4">
-                        {approach.description}
-                      </p>
-
-                      {/* Micro Highlights */}
-                      <div className="flex flex-wrap gap-2">
-                        {approach.highlights.map((highlight, idx) => (
-                          <span
-                            key={idx}
-                            className="inline-flex items-center text-xs text-slate-600 bg-slate-100 px-2.5 py-1 rounded-md"
-                          >
-                            {highlight}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
+        {/* Process Flow Cards */}
+        <div className="space-y-6">
+          {approaches.map((approach, index) => (
+            <div
+              key={approach.id}
+              onMouseEnter={() => setHoveredCard(approach.id)}
+              onMouseLeave={() => setHoveredCard(null)}
+              className={`group relative bg-white rounded-2xl p-6 sm:p-8 border border-gray-100 hover:border-teal-200 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 ${
+                isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+              }`}
+              style={{ transitionDelay: `${100 + index * 100}ms` }}
+            >
+              <div className="flex items-start space-x-5 sm:space-x-6 flex-1">
+                <div className="w-12 h-12 sm:w-14 sm:h-14 bg-teal-50 text-teal-700 rounded-2xl flex items-center justify-center shrink-0 group-hover:bg-teal-600 group-hover:text-white transition-all duration-300 shadow-sm">
+                  {approach.svg}
+                </div>
+                <div className="space-y-1">
+                  <div className="flex items-center space-x-3">
+                    <span className="text-xs font-bold text-teal-600 tracking-wider">
+                      STEP {approach.step}
+                    </span>
+                    <span className="text-xs text-gray-400 font-medium">
+                      • {approach.subtitle}
+                    </span>
                   </div>
-                );
-              })}
-            </div>
-          </div>
+                  <h3 className="text-xl font-bold text-gray-900 group-hover:text-teal-700 transition-colors">
+                    {approach.title}
+                  </h3>
+                  <p className="text-gray-600 text-sm sm:text-base leading-relaxed max-w-2xl font-normal">
+                    {approach.description}
+                  </p>
+                </div>
+              </div>
 
+              {/* Badges on right */}
+              <div className="flex flex-wrap md:flex-col gap-2 shrink-0 md:items-end w-full md:w-auto pt-4 md:pt-0 border-t md:border-t-0 border-gray-100">
+                {approach.highlights.map((highlight, idx) => (
+                  <span
+                    key={idx}
+                    className="text-xs text-slate-600 bg-slate-100 px-3 py-1.5 rounded-lg font-medium"
+                  >
+                    {highlight}
+                  </span>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* CTA Footer */}
+        <div className="mt-16 text-center space-y-6">
+          <p className="text-gray-600 text-base max-w-xl mx-auto font-light">
+            Every session is tailored to support your personal growth, resilience, and long-term mental wellness.
+          </p>
+          <a href="/booking" className="inline-block">
+            <button className="px-8 py-4 bg-teal-700 hover:bg-teal-800 text-white font-semibold rounded-full shadow-md hover:shadow-lg transition-all duration-300">
+              Book Your Session →
+            </button>
+          </a>
         </div>
       </div>
     </section>
