@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import Psychobeingslogo from './assets/Psychobeingslogo.png'; // Added relative path prefix './'
+import Psychobeingslogo from '../assets/Psychobeingslogo.png';
 
 const Hero = () => {
   return (
