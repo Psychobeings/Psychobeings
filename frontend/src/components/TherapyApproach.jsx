@@ -19,7 +19,7 @@ export default function TherapyApproach() {
       description:
         "Select a convenient date and time for an online or in-person consultation through our secure booking portal.",
       highlights: ["Flexible scheduling", "Online or in-person"],
-      svg: (
+      icon: (
         <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
           <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
           <line x1="16" y1="2" x2="16" y2="6" />
@@ -36,9 +36,9 @@ export default function TherapyApproach() {
       description:
         "Meet with your psychologist in a confidential, non-judgmental environment to discuss your concerns, expectations, and goals.",
       highlights: ["Confidential environment", "Goal exploration"],
-      svg: (
+      icon: (
         <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-          <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+          <path strokeLinecap="round" strokeLinejoin="round" d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
           <circle cx="8.5" cy="7" r="4" />
           <polyline points="17 11 19 13 23 9" />
         </svg>
@@ -52,11 +52,11 @@ export default function TherapyApproach() {
       description:
         "Through clinical insights and evidence-based screening, we collaborate with you to formulate a customized care plan tailored to your needs.",
       highlights: ["Collaborative care plan", "Targeted strategies"],
-      svg: (
+      icon: (
         <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-          <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
+          <path strokeLinecap="round" strokeLinejoin="round" d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
           <rect x="8" y="2" width="8" height="4" rx="1" ry="1" />
-          <path d="m9 14 2 2 4-4" />
+          <path strokeLinecap="round" strokeLinejoin="round" d="m9 14 2 2 4-4" />
         </svg>
       )
     },
@@ -68,9 +68,9 @@ export default function TherapyApproach() {
       description:
         "Begin your sessions equipped with actionable tools, evidence-based techniques, and ongoing compassionate clinical guidance.",
       highlights: ["Practical coping tools", "Long-term wellness"],
-      svg: (
+      icon: (
         <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-          <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3z" />
+          <path strokeLinecap="round" strokeLinejoin="round" d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3z" />
         </svg>
       )
     }
@@ -93,15 +93,16 @@ export default function TherapyApproach() {
           <h2 className="text-4xl md:text-5xl font-bold mt-4 text-gray-900 tracking-tight">
             How Therapy Works
           </h2>
-          <div className="w-16 h-1 bg-teal-600 rounded-full mx-auto mt-4 mb-6"></div>
+          <div className="w-16 h-1 bg-teal-600 rounded-full mx-auto mt-4 mb-6" />
           <p className="text-lg text-gray-600 leading-relaxed font-light">
             Whether you are seeking support for yourself, your child, or your family, we provide a structured, evidence-based space to guide you toward long-term emotional well-being.
           </p>
         </div>
 
-        {/* Step-by-step cards */}
+        {/* Step-by-Step Grid */}
         <div className="grid gap-8 lg:grid-cols-[1.4fr_0.9fr] items-start">
-          <div className="space-y-5">
+          {/* Interactive Steps List */}
+          <div className="space-y-4">
             {approaches.map((approach, index) => {
               const isActive = activeStep === approach.id;
               return (
@@ -109,39 +110,43 @@ export default function TherapyApproach() {
                   key={approach.id}
                   type="button"
                   onClick={() => setActiveStep(approach.id)}
-                  className={`group w-full rounded-[2rem] border p-6 text-left transition-all duration-300 shadow-sm hover:shadow-lg ${
+                  aria-selected={isActive}
+                  className={`group w-full rounded-2xl border p-6 text-left transition-all duration-300 shadow-sm ${
                     isActive
-                      ? "border-teal-200 bg-white shadow-xl"
-                      : "border-gray-200 bg-white/90 hover:border-teal-200"
+                      ? "border-teal-300 bg-white shadow-md ring-1 ring-teal-200"
+                      : "border-gray-200 bg-white/90 hover:border-teal-200 hover:bg-white"
                   }`}
                   style={{ transitionDelay: `${index * 80}ms` }}
                 >
                   <div className="flex items-start gap-5">
-                    <div className={`flex h-14 w-14 items-center justify-center rounded-3xl text-lg font-bold ${
-                      isActive ? "bg-teal-600 text-white" : "bg-teal-50 text-teal-700"
-                    }`}>
-                      {approach.step}
+                    <div
+                      className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-xl transition-colors duration-300 ${
+                        isActive ? "bg-teal-600 text-white" : "bg-teal-50 text-teal-700 group-hover:bg-teal-100"
+                      }`}
+                    >
+                      {approach.icon}
                     </div>
 
                     <div className="flex-1">
-                      <div className="flex flex-wrap items-center gap-3 text-xs uppercase tracking-[0.25em] text-teal-600 font-semibold mb-2">
-                        <span>{approach.subtitle}</span>
-                        {isActive && <span className="inline-block rounded-full bg-teal-100 px-3 py-1 text-teal-700">Active</span>}
+                      <div className="flex flex-wrap items-center gap-2 text-xs uppercase tracking-wider text-teal-700 font-semibold mb-1">
+                        <span>STEP {approach.step}</span>
+                        <span className="text-gray-300">•</span>
+                        <span className="text-gray-500">{approach.subtitle}</span>
                       </div>
-                      <h3 className="text-xl font-semibold text-gray-900 transition-colors group-hover:text-teal-700">
+                      <h3 className="text-lg font-semibold text-gray-900 transition-colors group-hover:text-teal-700">
                         {approach.title}
                       </h3>
-                      <p className="mt-3 text-sm text-gray-600 leading-relaxed">
+                      <p className="mt-2 text-sm text-gray-600 leading-relaxed">
                         {approach.description}
                       </p>
                     </div>
                   </div>
 
-                  <div className="mt-5 flex flex-wrap gap-2">
+                  <div className="mt-4 flex flex-wrap gap-2 pl-17">
                     {approach.highlights.map((highlight, idx) => (
                       <span
                         key={idx}
-                        className="inline-flex items-center rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-700"
+                        className="inline-flex items-center rounded-md bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-600"
                       >
                         {highlight}
                       </span>
@@ -152,52 +157,55 @@ export default function TherapyApproach() {
             })}
           </div>
 
-          <div className="sticky top-28 rounded-[2rem] border border-gray-200 bg-white p-8 shadow-xl">
-            <span className="text-xs font-semibold uppercase tracking-[0.3em] text-teal-600 bg-teal-50 px-3 py-2 rounded-full inline-block mb-4">
-              Active Step
-            </span>
-            <div className="flex items-center justify-between gap-4 mb-6">
+          {/* Sticky Active Step Highlight Card */}
+          <div className="sticky top-28 rounded-2xl border border-gray-200 bg-white p-8 shadow-xl">
+            <div className="flex items-center justify-between gap-4 mb-6 pb-4 border-b border-gray-100">
               <div>
-                <p className="text-sm uppercase tracking-[0.22em] text-teal-700 font-semibold">
-                  Step {selectedStep.step}
-                </p>
-                <h3 className="mt-3 text-3xl font-bold text-gray-900">
+                <span className="text-xs font-bold uppercase tracking-wider text-teal-700 bg-teal-50 px-3 py-1 rounded-full border border-teal-100">
+                  Step {selectedStep.step} Detail
+                </span>
+                <h3 className="mt-3 text-2xl font-bold text-gray-900">
                   {selectedStep.title}
                 </h3>
               </div>
-              <div className="flex h-14 w-14 items-center justify-center rounded-3xl bg-teal-50 text-teal-700 font-bold text-lg">
-                {selectedStep.step}
+              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-teal-50 text-teal-700">
+                {selectedStep.icon}
               </div>
             </div>
 
-            <p className="text-gray-600 leading-relaxed mb-6">{selectedStep.description}</p>
+            <p className="text-gray-600 leading-relaxed mb-6 text-sm sm:text-base">
+              {selectedStep.description}
+            </p>
 
-            <div className="space-y-3">
+            <div className="space-y-2.5 mb-8">
+              <p className="text-xs font-semibold uppercase tracking-wider text-gray-400">
+                Key Takeaways
+              </p>
               {selectedStep.highlights.map((highlight, idx) => (
-                <div key={idx} className="rounded-2xl bg-slate-50 border border-slate-100 p-4 text-sm text-slate-700">
-                  • {highlight}
+                <div
+                  key={idx}
+                  className="flex items-center gap-3 rounded-xl bg-slate-50 border border-slate-100 p-3.5 text-sm font-medium text-slate-700"
+                >
+                  <span className="h-2 w-2 rounded-full bg-teal-600" />
+                  {highlight}
                 </div>
               ))}
             </div>
 
-            <div className="mt-8">
-              <Link to="/booking" className="inline-flex w-full items-center justify-center rounded-full bg-teal-700 px-6 py-4 text-sm font-semibold text-white shadow-lg transition hover:bg-teal-800">
-                Book a Session
-              </Link>
-            </div>
+            <Link
+              to="/booking"
+              className="inline-flex w-full items-center justify-center rounded-xl bg-teal-700 px-6 py-3.5 text-sm font-semibold text-white shadow-md transition hover:bg-teal-800 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-teal-600 focus:ring-offset-2"
+            >
+              Book a Session →
+            </Link>
           </div>
         </div>
 
-        {/* CTA Footer */}
-        <div className="mt-16 text-center space-y-6">
-          <p className="text-gray-600 text-base max-w-xl mx-auto font-light">
+        {/* Footer Note */}
+        <div className="mt-16 text-center space-y-4">
+          <p className="text-gray-600 text-sm md:text-base max-w-xl mx-auto font-light">
             Every session is tailored to support your personal growth, resilience, and long-term mental wellness.
           </p>
-          <a href="/booking" className="inline-block">
-            <button className="px-8 py-4 bg-teal-700 hover:bg-teal-800 text-white font-semibold rounded-full shadow-md hover:shadow-lg transition-all duration-300">
-              Book Your Session →
-            </button>
-          </a>
         </div>
       </div>
     </section>
