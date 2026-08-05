@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import foundersimage from '../assets/foundersimage.png';
 
 export default function FoundersNote() {
