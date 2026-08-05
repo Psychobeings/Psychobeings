@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import logoname from '../assets/logoname.png';
+import Logoname from '../assets/Logoname.png';
 import { Menu, X } from 'lucide-react';
 
 const Navbar = () => {
@@ -76,7 +76,7 @@ const Navbar = () => {
             to="/"
           >
             <img
-              src={logo}
+              src={Logoname}
               alt="Psychobeings Logo"
               className="mx-2 h-auto w-24 sm:w-40 md:w-48 lg:w-56"
             />
