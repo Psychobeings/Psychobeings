@@ -117,4 +117,4 @@ export default function TherapyApproach() {
     </section>
   );
 }
-
+export default TherapyApproach;
