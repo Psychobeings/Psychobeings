@@ -2,7 +2,6 @@ import React from 'react';
 import Hero from '../components/Hero';
 import WhatWeDo from '../components/WhatWeDo';
 import FAQ from '../components/FAQ';
-import FeatureSection from '../components/FeatureSection';
 import Hero1 from '../components/Hero1';
 import LanguageSupport from '../components/LanguageSupport';
 import FoundersNote from '../components/FoundersNote';
@@ -11,7 +10,7 @@ import CareAssessment from '../components/quick and interactive question';
 import FeaturedServices from '../components/FeaturedServices';
 import Testimonials from '../components/Testimonials';
 
-const homeSections = [Hero, WhatWeDo, LanguageSupport, FeatureSection, FoundersNote, TherapyApproach, CareAssessment, FeaturedServices, Testimonials,FAQ];
+const homeSections = [Hero, WhatWeDo, LanguageSupport, FoundersNote, TherapyApproach, CareAssessment, FeaturedServices, Testimonials,FAQ];
 
 const Home = () => {
   return (
