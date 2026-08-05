@@ -8,19 +8,19 @@ const Hero = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-20">
         <div className="flex flex-col lg:flex-row items-center justify-between">
           <div className="w-full lg:w-1/2 lg:pr-12 mb-8 lg:mb-0">
-            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-none mb-4">
-              <span className="text-dark-gunmetal">Psycho</span>
-              <span className="text-[#097f7f]">beings</span>
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight mb-4">
+              <span className="text-dark-gunmetal">More Than Therapy. </span>
+              <span className="text-[#097f7f]">A Journey Towards Wellbeing.</span>
             </h1>
-            <p className="text-lg sm:text-xl md:text-2xl text-[#097f7f] italic font-serif tracking-wide mb-4">
-              "Open Doors, Open Hearts"
-            </p>
 
-            <p className="text-base sm:text-lg md:text-xl font-bold text-gray-800 mb-8">
-              Feeling Overwhelmed and or need guidance or Just Looking for Someone to Talk To?
+            <p className="text-base sm:text-lg md:text-xl font-bold text-gray-800 mb-6">
+              At Psychobeings, we believe that mental wellbeing is not simply about overcoming challenges—it's about discovering your strengths, building resilience, and creating a life that feels meaningful and balanced.
+            </p>
+            <p className="text-base sm:text-lg md:text-xl text-gray-600 mb-6">
+              Our goal is to create a therapeutic space where every individual feels respected, understood, and empowered to grow. Through evidence-based psychological care, we help you navigate life's complexities with greater clarity, confidence, and emotional wellbeing.
             </p>
             <p className="text-base sm:text-lg md:text-xl text-gray-600 mb-8">
-              No matter who you are or where you're coming from, this is a safe, inclusive, and non-judgmental space for you. We honor your story, your struggles, and your strength. You deserve support, healing, and growth and we’re here to help you find it.
+              Whether you're seeking support during a difficult time or investing in your personal growth, we're committed to walking alongside you every step of the way.
             </p>
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-center gap-4 mt-8">
               <Link to="/services">
