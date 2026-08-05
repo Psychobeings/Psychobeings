@@ -27,23 +27,23 @@ function Hero1() {
             {/* Top Badge */}
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-teal-100/80 text-[#0a7272] text-xs font-semibold tracking-wide uppercase shadow-2xs border border-teal-200">
               <Sparkles className="w-4 h-4 text-[#0a7272]" />
-              <span>Compassionate • Confidential • Evidence-Based</span>
+              <span>Evidence-Based • Confidential Care • Holistic Wellbeing</span>
             </div>
 
             {/* Heading */}
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 tracking-tight leading-tight font-serif">
-              Compassionate Therapy for{" "}
+              Helping you Heal,{" "}
               <span className="text-[#0a7272]">
-                Emotional Wellbeing
+                Grow,
               </span>{" "}
-              & Personal Growth
+              & Thrive.
             </h1>
 
             {/* Main Description */}
             <p className="text-base sm:text-lg text-slate-600 max-w-2xl mx-auto lg:mx-0 leading-relaxed font-sans">
               At <span className="font-semibold text-slate-800">Psychobeings</span>,
-              our licensed psychologists and therapists partner with you through
-              anxiety, stress, burnout, relationship concerns, and life transitions.
+              we believe that every individual deserves a safe space to be heard, understood, and empowered.
+              Through evidence-based psychological therapy and holistic wellbeing practices, we support you in overcoming life's challenges, strengthening emotional resilience, and creating meaningful, lasting change.
             </p>
 
             {/* Secondary Language & Location Info */}
