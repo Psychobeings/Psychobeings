@@ -5,12 +5,12 @@ import FAQ from '../components/FAQ';
 import Hero1 from '../components/Hero1';
 import LanguageSupport from '../components/LanguageSupport';
 import FoundersNote from '../components/FoundersNote';
-import TherapyApproach from '../components/TherapyApproach';
+import Howdoestherepywork from '../components/howdoestherepywork';
 import CareAssessment from '../components/quick and interactive question';
 import FeaturedServices from '../components/FeaturedServices';
 import Testimonials from '../components/Testimonials';
 
-const homeSections = [Hero, WhatWeDo, LanguageSupport, FoundersNote,TherapyApproach, CareAssessment, FeaturedServices, Testimonials,FAQ];
+const homeSections = [Hero, WhatWeDo, LanguageSupport, FoundersNote,Howdoestherepywork, CareAssessment, FeaturedServices, Testimonials,FAQ];
 
 const Home = () => {
   return (
