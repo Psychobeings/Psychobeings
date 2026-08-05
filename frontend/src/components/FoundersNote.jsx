@@ -115,12 +115,6 @@ export default function FoundersNote() {
                   <p className="text-xs text-gray-400 uppercase tracking-wider font-bold">Dedicated to your growth</p>
                   <p className="text-[#097f7f] font-bold text-lg">Warm regards, Amanpreet Kaur</p>
                 </div>
-
-                <Link to="/about" className="w-full sm:w-auto">
-                  <button className="w-full sm:w-auto px-7 py-3 rounded-full bg-[#092c2c] hover:bg-[#064646] text-white font-medium text-sm transition-all duration-300 shadow-md hover:shadow-lg">
-                    Read More About My Approach &rarr;
-                  </button>
-                </Link>
               </div>
 
             </div>
