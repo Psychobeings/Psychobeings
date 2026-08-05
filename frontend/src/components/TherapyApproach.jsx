@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
 export default function TherapyApproach() {
   const [isVisible, setIsVisible] = useState(false);
-  const [hoveredCard, setHoveredCard] = useState(null);
+  const [activeStep, setActiveStep] = useState(1);
 
   useEffect(() => {
     const timer = setTimeout(() => setIsVisible(true), 100);
@@ -75,6 +76,8 @@ export default function TherapyApproach() {
     }
   ];
 
+  const selectedStep = approaches.find((approach) => approach.id === activeStep) || approaches[0];
+
   return (
     <section className="bg-slate-50/70 py-24 px-6 md:px-12 lg:px-20 text-gray-800">
       <div className="max-w-6xl mx-auto">
@@ -96,53 +99,93 @@ export default function TherapyApproach() {
           </p>
         </div>
 
-        {/* Process Flow Cards */}
-        <div className="space-y-6">
-          {approaches.map((approach, index) => (
-            <div
-              key={approach.id}
-              onMouseEnter={() => setHoveredCard(approach.id)}
-              onMouseLeave={() => setHoveredCard(null)}
-              className={`group relative bg-white rounded-2xl p-6 sm:p-8 border border-gray-100 hover:border-teal-200 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 ${
-                isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-              }`}
-              style={{ transitionDelay: `${100 + index * 100}ms` }}
-            >
-              <div className="flex items-start space-x-5 sm:space-x-6 flex-1">
-                <div className="w-12 h-12 sm:w-14 sm:h-14 bg-teal-50 text-teal-700 rounded-2xl flex items-center justify-center shrink-0 group-hover:bg-teal-600 group-hover:text-white transition-all duration-300 shadow-sm">
-                  {approach.svg}
-                </div>
-                <div className="space-y-1">
-                  <div className="flex items-center space-x-3">
-                    <span className="text-xs font-bold text-teal-600 tracking-wider">
-                      STEP {approach.step}
-                    </span>
-                    <span className="text-xs text-gray-400 font-medium">
-                      • {approach.subtitle}
-                    </span>
-                  </div>
-                  <h3 className="text-xl font-bold text-gray-900 group-hover:text-teal-700 transition-colors">
-                    {approach.title}
-                  </h3>
-                  <p className="text-gray-600 text-sm sm:text-base leading-relaxed max-w-2xl font-normal">
-                    {approach.description}
-                  </p>
-                </div>
-              </div>
+        {/* Step-by-step cards */}
+        <div className="grid gap-8 lg:grid-cols-[1.4fr_0.9fr] items-start">
+          <div className="space-y-5">
+            {approaches.map((approach, index) => {
+              const isActive = activeStep === approach.id;
+              return (
+                <button
+                  key={approach.id}
+                  type="button"
+                  onClick={() => setActiveStep(approach.id)}
+                  className={`group w-full rounded-[2rem] border p-6 text-left transition-all duration-300 shadow-sm hover:shadow-lg ${
+                    isActive
+                      ? "border-teal-200 bg-white shadow-xl"
+                      : "border-gray-200 bg-white/90 hover:border-teal-200"
+                  }`}
+                  style={{ transitionDelay: `${index * 80}ms` }}
+                >
+                  <div className="flex items-start gap-5">
+                    <div className={`flex h-14 w-14 items-center justify-center rounded-3xl text-lg font-bold ${
+                      isActive ? "bg-teal-600 text-white" : "bg-teal-50 text-teal-700"
+                    }`}>
+                      {approach.step}
+                    </div>
 
-              {/* Badges on right */}
-              <div className="flex flex-wrap md:flex-col gap-2 shrink-0 md:items-end w-full md:w-auto pt-4 md:pt-0 border-t md:border-t-0 border-gray-100">
-                {approach.highlights.map((highlight, idx) => (
-                  <span
-                    key={idx}
-                    className="text-xs text-slate-600 bg-slate-100 px-3 py-1.5 rounded-lg font-medium"
-                  >
-                    {highlight}
-                  </span>
-                ))}
+                    <div className="flex-1">
+                      <div className="flex flex-wrap items-center gap-3 text-xs uppercase tracking-[0.25em] text-teal-600 font-semibold mb-2">
+                        <span>{approach.subtitle}</span>
+                        {isActive && <span className="inline-block rounded-full bg-teal-100 px-3 py-1 text-teal-700">Active</span>}
+                      </div>
+                      <h3 className="text-xl font-semibold text-gray-900 transition-colors group-hover:text-teal-700">
+                        {approach.title}
+                      </h3>
+                      <p className="mt-3 text-sm text-gray-600 leading-relaxed">
+                        {approach.description}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="mt-5 flex flex-wrap gap-2">
+                    {approach.highlights.map((highlight, idx) => (
+                      <span
+                        key={idx}
+                        className="inline-flex items-center rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-700"
+                      >
+                        {highlight}
+                      </span>
+                    ))}
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+
+          <div className="sticky top-28 rounded-[2rem] border border-gray-200 bg-white p-8 shadow-xl">
+            <span className="text-xs font-semibold uppercase tracking-[0.3em] text-teal-600 bg-teal-50 px-3 py-2 rounded-full inline-block mb-4">
+              Active Step
+            </span>
+            <div className="flex items-center justify-between gap-4 mb-6">
+              <div>
+                <p className="text-sm uppercase tracking-[0.22em] text-teal-700 font-semibold">
+                  Step {selectedStep.step}
+                </p>
+                <h3 className="mt-3 text-3xl font-bold text-gray-900">
+                  {selectedStep.title}
+                </h3>
+              </div>
+              <div className="flex h-14 w-14 items-center justify-center rounded-3xl bg-teal-50 text-teal-700 font-bold text-lg">
+                {selectedStep.step}
               </div>
             </div>
-          ))}
+
+            <p className="text-gray-600 leading-relaxed mb-6">{selectedStep.description}</p>
+
+            <div className="space-y-3">
+              {selectedStep.highlights.map((highlight, idx) => (
+                <div key={idx} className="rounded-2xl bg-slate-50 border border-slate-100 p-4 text-sm text-slate-700">
+                  • {highlight}
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-8">
+              <Link to="/booking" className="inline-flex w-full items-center justify-center rounded-full bg-teal-700 px-6 py-4 text-sm font-semibold text-white shadow-lg transition hover:bg-teal-800">
+                Book a Session
+              </Link>
+            </div>
+          </div>
         </div>
 
         {/* CTA Footer */}
