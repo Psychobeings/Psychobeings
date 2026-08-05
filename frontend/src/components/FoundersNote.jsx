@@ -11,115 +11,123 @@ export default function FoundersNote() {
   }, []);
 
   return (
-    <section className="relative bg-gradient-to-br from-slate-50 via-white to-teal-50 py-20 px-6 md:px-12 lg:px-20 overflow-hidden">
-      {/* Background decoration */}
-      <div className="absolute inset-0 opacity-5">
-        <div className="absolute top-20 left-10 w-32 h-32 rounded-full bg-teal-600 blur-3xl"></div>
-        <div className="absolute bottom-20 right-10 w-40 h-40 rounded-full bg-teal-400 blur-3xl"></div>
-      </div>
+    <section className="relative bg-gradient-to-b from-slate-50 via-teal-50/20 to-white py-20 px-6 sm:px-8 lg:px-16 overflow-hidden">
       
-      <div className="relative max-w-7xl mx-auto">
-        {/* Header with enhanced styling */}
-        <div className={`text-center space-y-4 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-          <div className="inline-block">
-           <h2 className="text-4xl md:text-5xl font-bold mb-4 text-[#097f7f]">
-              Founder's Note
-            </h2>
-            <div className="w-24 h-1 bg-gradient-to-r from-teal-600 to-teal-400 mx-auto mt-4 rounded-full"></div>
-          </div>
-          <p className="text-gray-600 text-lg max-w-2xl mx-auto">
-            A personal message from the heart of Psychobeings
+      {/* Soft Ambient Background Elements */}
+      <div className="absolute top-1/4 -left-20 w-80 h-80 rounded-full bg-teal-200/30 blur-3xl pointer-events-none"></div>
+      <div className="absolute bottom-10 right-0 w-96 h-96 rounded-full bg-emerald-100/40 blur-3xl pointer-events-none"></div>
+
+      <div className="relative max-w-7xl mx-auto space-y-16">
+        
+        {/* Section Header */}
+        <div className={`text-center space-y-3 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+          <span className="inline-block px-4 py-1.5 bg-teal-100/70 text-[#097f7f] text-xs font-bold uppercase tracking-widest rounded-full">
+            Clinical Care & Support
+          </span>
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-gray-900 tracking-tight">
+            Meet Your <span className="text-[#097f7f]">Psychologist</span>
+          </h2>
+          <p className="text-gray-600 text-base sm:text-lg max-w-xl mx-auto font-medium">
+            Compassionate, evidence-based therapy tailored to your unique journey.
           </p>
         </div>
 
-        <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 pt-16 items-center">
-          {/* Left: Enhanced Founder Info */}
-          <div className={`text-center justify-self-center lg:text-left space-y-6 transition-all duration-1000 delay-300 ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-8'}`}>
-            <div className="relative inline-block group">
-              <div className="absolute inset-0 bg-gradient-to-r from-teal-400 to-teal-600 rounded-full blur-lg opacity-25 group-hover:opacity-40 transition-opacity duration-300"></div>
-              <img
-                src={foundersimage}
-                alt="Founder"
-                className="relative w-56 h-56 mx-auto lg:mx-0 rounded-full object-cover shadow-2xl border-4 border-white group-hover:scale-105 transition-transform duration-300"
-              />
-            </div>
+        {/* Main Content Layout Card */}
+        <div className={`bg-white/80 backdrop-blur-xl border border-teal-100/80 rounded-3xl p-8 sm:p-12 lg:p-16 shadow-xl shadow-teal-900/5 transition-all duration-1000 delay-200 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
             
-            <div className="space-y-3">
-              <h3 className="text-3xl font-bold text-gray-800">Amanpreet kaur</h3>
+            {/* Left Profile Card */}
+            <div className="lg:col-span-5 flex flex-col items-center lg:items-start text-center lg:text-left space-y-6">
+              
+              {/* Image Frame */}
+              <div className="relative group">
+                <div className="absolute -inset-1.5 bg-gradient-to-r from-[#097f7f] to-emerald-400 rounded-3xl blur opacity-30 group-hover:opacity-60 transition duration-500"></div>
+                <div className="relative w-56 h-64 sm:w-64 sm:h-72 rounded-2xl overflow-hidden shadow-xl bg-slate-100">
+                  <img
+                    src={foundersimage}
+                    alt="Amanpreet Kaur - Clinical Psychologist"
+                    className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"
+                  />
+                </div>
+              </div>
+
+              {/* Identity & Badges */}
+              <div className="space-y-2 w-full">
+                <h3 className="text-2xl sm:text-3xl font-bold text-gray-900">
+                  Amanpreet Kaur
+                </h3>
+                <p className="text-[#097f7f] font-semibold text-base">
+                  Lead Psychologist & Founder
+                </p>
+
+                <div className="flex flex-wrap justify-center lg:justify-start gap-2 pt-2">
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-teal-50 border border-teal-200 text-[#097f7f] text-xs font-semibold rounded-lg">
+                    <span>🎓</span> Clinical Psychologist (M.Sc.)
+                  </span>
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-teal-50 border border-teal-200 text-[#097f7f] text-xs font-semibold rounded-lg">
+                    <span>🌱</span> Psychotherapy & Counseling
+                  </span>
+                </div>
+              </div>
+
+              {/* Quick Specializations Bar */}
+              <div className="w-full pt-4 border-t border-gray-100 space-y-2 text-xs text-gray-500 font-medium text-center lg:text-left">
+                <p className="uppercase tracking-wider font-bold text-gray-400">Areas of Focus</p>
+                <div className="flex flex-wrap justify-center lg:justify-start gap-x-3 gap-y-1 text-gray-700">
+                  <span>• Anxiety & Stress</span>
+                  <span>• Life Transitions</span>
+                  <span>• Relationship Counseling</span>
+                  <span>• Self-Esteem</span>
+                </div>
+              </div>
+
+            </div>
+
+            {/* Right Letter Body */}
+            <div className="lg:col-span-7 space-y-6 text-gray-700 leading-relaxed text-base sm:text-lg">
+              
               <div className="space-y-2">
-                <p className="text-teal-600 font-semibold text-lg">Founder, Psychobeings</p>
-                <div className="flex flex-wrap justify-center lg:justify-start gap-2">
-                  <span className="px-3 py-1 bg-teal-100 text-teal-700 rounded-full text-sm font-medium">
-                    Psychologist
-                  </span>
-                  <span className="px-3 py-1 bg-teal-100 text-teal-700 rounded-full text-sm font-medium">
-                  Clinical Psychologist (M.Sc.) 
-                  </span>
-                </div>
+                <span className="text-4xl text-[#097f7f] font-serif leading-none block">“</span>
+                <p className="text-xl sm:text-2xl font-bold text-gray-900 leading-snug">
+                  Welcome. Therapy is a collaborative space where you are always heard, respected, and valued.
+                </p>
               </div>
+
+              <p className="text-gray-600">
+                Taking the first step toward mental wellness can feel daunting. My commitment is to provide you with a safe, confidential, and completely non-judgmental environment where you can freely explore your thoughts and emotions.
+              </p>
+
+              {/* Featured Highlight Block */}
+              <div className="p-5 rounded-2xl bg-gradient-to-r from-teal-50/80 to-emerald-50/50 border-l-4 border-[#097f7f] space-y-1">
+                <p className="text-sm font-semibold text-[#097f7f]">My Clinical Philosophy</p>
+                <p className="text-sm sm:text-base text-gray-800 italic">
+                  I integrate scientifically supported, evidence-based methods tailored specifically to your unique life experience and goals. Therapy isn't one-size-fits-all—it's built together.
+                </p>
+              </div>
+
+              <p className="text-gray-600">
+                Whether you're struggling with daily overwhelm, navigating complex relationships, or simply seeking personal clarity, we will work side by side to build lasting resilience and practical tools for growth.
+              </p>
+
+              {/* Footer Signoff & Action Button */}
+              <div className="pt-4 flex flex-col sm:flex-row items-center justify-between gap-6 border-t border-gray-100">
+                <div>
+                  <p className="text-xs text-gray-400 uppercase tracking-wider font-bold">Dedicated to your growth</p>
+                  <p className="text-[#097f7f] font-bold text-lg">Warm regards, Amanpreet Kaur</p>
+                </div>
+
+                <Link to="/about" className="w-full sm:w-auto">
+                  <button className="w-full sm:w-auto px-7 py-3 rounded-full bg-[#092c2c] hover:bg-[#064646] text-white font-medium text-sm transition-all duration-300 shadow-md hover:shadow-lg">
+                    Read More About My Approach &rarr;
+                  </button>
+                </Link>
+              </div>
+
             </div>
 
-            {/* Quote decoration */}
-            <div className="relative pt-6">
-              <div className="absolute top-0 left-1/2 lg:left-0 transform -translate-x-1/2 lg:translate-x-0 w-12 h-0.5 bg-gradient-to-r from-teal-400 to-teal-600"></div>
-            </div>
-          </div>
-
-          {/* Right: Enhanced Note with better typography */}
-          <div className={`space-y-6 justify-self-center transition-all duration-1000 delay-500 ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'}`}>
-            <div className="relative">
-              {/* Large opening quote */}
-              <div className="absolute -top-4 -left-4 text-6xl text-teal-200 font-serif">"</div>
-              
-              <div className="space-y-6 text-gray-700 text-lg leading-relaxed pl-8">
-                <p className="text-xl font-medium text-gray-800">
-                  When I started <span className="font-bold bg-gradient-to-r from-teal-600 to-teal-500 bg-clip-text text-transparent">Psychobeings</span>, I envisioned a space where mental health support felt human, accessible, and stigma-free.
-                </p>
-                
-                <p>
-                  As someone deeply rooted in psychology and mental wellness, I've witnessed the transformative power of therapy when offered with compassion and authenticity.
-                </p>
-                
-                <div className="relative pl-4 border-l-4 border-teal-300 bg-teal-50 py-4 rounded-r-lg">
-                  <p className="italic">
-                    <span className="font-semibold text-teal-700">Psychobeings</span> isn't just a service—it's a commitment to helping individuals feel heard, valued, and empowered.
-                  </p>
-                </div>
-                
-                <p>
-                  Whether you're a student, a young adult, or simply someone looking for clarity, know that <span className="font-semibold text-teal-600">you're not alone</span>.
-                </p>
-                
-                <div className="relative">
-                  <p className="text-lg font-medium text-gray-800">
-                    Thank you for trusting us with your journey. We're here to walk beside you every step of the way.
-                  </p>
-                  
-                  {/* Signature line */}
-                  <div className="mt-6 flex items-center space-x-4">
-                    <div className="w-16 h-0.5 bg-teal-400"></div>
-                    <span className="text-teal-600 font-semibold">With gratitude</span>
-                  </div>
-                  
-                  {/* About Us Button */}
-                  <div className="mt-8">
-                    <Link to="/about" className="inline-block">
-                    <button className="group relative px-8 py-3 bg-gradient-to-r from-teal-600 to-teal-500 text-white font-semibold rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 overflow-hidden">
-                      <span className="relative z-10">Learn More About Us</span>
-                      <div className="absolute inset-0 bg-gradient-to-r from-teal-700 to-teal-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                    </button>
-                    </Link>
-                  </div>
-                </div>
-              </div>
-              
-              {/* Closing quote */}
-              <div className="absolute -bottom-4 right-0 text-6xl text-teal-200 font-serif">"</div>
-            </div>
           </div>
         </div>
 
-   
       </div>
     </section>
   );
