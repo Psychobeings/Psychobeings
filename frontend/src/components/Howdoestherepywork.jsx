@@ -3,25 +3,25 @@ import React from 'react';
 const steps = [
   {
     number: "01",
-    title: "Initial Consultation",
+    title: "Book a session",
     description: "We start with a safe, confidential space to discuss your goals, current challenges, and what you hope to achieve through therapy.",
     tag: "Step One"
   },
   {
     number: "02",
-    title: "Personalized Plan",
+    title: "Initial consultation & Assessment",
     description: "Together, we map out a tailored therapeutic roadmap using evidence-based techniques suited to your unique personality and needs.",
     tag: "Step Two"
   },
   {
     number: "03",
-    title: "Active Sessions",
+    title: "Goals and Therapy structure",
     description: "In regular sessions, you’ll explore thought patterns, build coping strategies, process emotions, and gain deeper self-awareness.",
     tag: "Step Three"
   },
   {
     number: "04",
-    title: "Growth & Mastery",
+    title: "Growth & Progress Tracking",
     description: "Apply practical tools in your everyday life, build long-term resilience, and experience real transformation in your mental well-being.",
     tag: "Step Four"
   }
@@ -37,7 +37,7 @@ export default function HowTherapyWorks() {
           Your Journey To Healing
         </span>
         <h2 className="text-3xl md:text-5xl font-bold text-[#0F171E] mb-4">
-          How Therapy Works at <span className="text-[#247B85]">PsychoBeings</span>
+          How Therapy Works? <span className="text-[#247B85]">A Step-by-Step Guide</span>
         </h2>
         <p className="text-slate-600 text-lg leading-relaxed">
           Therapy is a collaborative process designed to help you understand your mind, process complex emotions, and create meaningful, lasting change in your daily life.
