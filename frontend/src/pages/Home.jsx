@@ -1,6 +1,8 @@
 import React from 'react';
+import WhatWeDo from '../components/WhatWeDo';
 import FAQ from '../components/FAQ';
 import Hero1 from '../components/Hero1';
+import Hero from '../components/Hero';
 import LanguageSupport from '../components/LanguageSupport';
 import FoundersNote from '../components/FoundersNote';
 import HowTherapyWorks from '../components/Howdoestherepywork';
@@ -8,7 +10,8 @@ import CareAssessment from '../components/quick and interactive question';
 import FeaturedServices from '../components/FeaturedServices';
 import Testimonials from '../components/Testimonials';
 
-const homeSections = [Hero1,FoundersNote,LanguageSupport, HowTherapyWorks, CareAssessment, FeaturedServices, Testimonials, FAQ];
+const homeSections = [Hero, WhatWeDo, LanguageSupport, FoundersNote, HowTherapyWorks, CareAssessment, FeaturedServices, Testimonials, FAQ];
+
 
 const Home = () => {
   return (
@@ -29,4 +32,6 @@ const Home = () => {
     </div>
   );
 };
+
+
 export default Home;
