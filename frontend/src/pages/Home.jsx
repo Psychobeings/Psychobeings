@@ -10,6 +10,7 @@ import FAQ from '../components/FAQ';
 
 // Defined dynamic sections to map over (excluding HeroHome so it doesn't render twice)
 const homeSections = [
+  HeroHome,
   AboutHome,
   MeetYourPsychologist,
   Thedifference,
