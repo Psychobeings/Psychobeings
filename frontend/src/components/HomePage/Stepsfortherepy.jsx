@@ -2,7 +2,7 @@ import React from 'react';
 import { Calendar, ClipboardCheck, Compass, Sparkles, ArrowRight } from 'lucide-react';
 
 export default function Stepsfortherepy() {
-  const steps = [
+  const stepsfortherepy = [
     {
       number: "01",
       stepTag: "Step One",

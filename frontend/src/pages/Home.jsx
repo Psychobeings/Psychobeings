@@ -5,7 +5,6 @@ import MeetYourPsychologist from '../components/HomePage/Meetyourpsychologist';
 import Thedifference from '../components/HomePage/Thedifference';
 import Serviceshome from '../components/HomePage/Serviceshome';
 import Stepsfortherepy from '../components/HomePage/Stepsfortherepy';
-import Howdoestherepywork from '../components/Howdoestherepywork';
 import FAQ from '../components/FAQ';
 
 // Defined dynamic sections to map over (excluding HeroHome so it doesn't render twice)
