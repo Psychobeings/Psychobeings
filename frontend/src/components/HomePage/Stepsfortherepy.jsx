@@ -73,26 +73,6 @@ export default function Stepsfortherepy() {
             </div>
           ))}
         </div>
-
-        {/* Call to Action Banner */}
-        <div className="bg-[#E6F0F0] border border-[#1C7C83]/20 rounded-[2rem] p-6 sm:p-10 flex flex-col sm:flex-row items-center justify-between gap-6">
-          <div className="space-y-1 text-center sm:text-left max-w-2xl">
-            <h3 className="text-xl sm:text-2xl font-serif font-bold text-[#1F3A3D]">
-              Ready to take the first step towards wellness?
-            </h3>
-            <p className="text-gray-600 text-xs sm:text-sm">
-              Empower your mind today with expert psychological support tailored just for you.
-            </p>
-          </div>
-          
-          <a 
-            href="#book" 
-            className="shrink-0 bg-[#1C7C83] hover:bg-[#135B60] text-white font-medium text-sm px-8 py-3.5 rounded-full shadow-sm hover:shadow transition-all duration-300 text-center w-full sm:w-auto"
-          >
-            Book a Session
-          </a>
-        </div>
-
       </div>
     </section>
   );
