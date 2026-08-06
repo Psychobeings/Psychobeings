@@ -16,9 +16,9 @@ const reviews = [
   },
   {
     quote:
-      "A very positive experience overall. She is a patient listener and creates a judgement-free space that makes it easy to talk openly. The environment is warm, comfortable, and sessions start right on time with no waiting or delays...",
-    author: "A Banerjee",
-    rating: 5,
+      "Super organized and always prepared, which makes every session feel smooth. Very warm, supportive, and easy to talk to.",
+    author: "J.D",
+    rating: 4.5,
   },
   {
     quote:
