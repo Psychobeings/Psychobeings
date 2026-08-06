@@ -4,6 +4,7 @@ import AboutHome from '../components/HomePage/AboutHome';
 import MeetYourPsychologist from '../components/HomePage/Meetyourpsychologist';
 import Thedifference from '../components/HomePage/Thedifference';
 import Serviceshome from '../components/HomePage/Serviceshome';
+import Stepsfortherepy from '../components/HomePage/Stepsfortherepy';
 import Howdoestherepywork from '../components/Howdoestherepywork';
 import FAQ from '../components/FAQ';
 
@@ -13,7 +14,7 @@ const homeSections = [
   MeetYourPsychologist,
   Thedifference,
   Serviceshome,
-  Howdoestherepywork,
+  Stepsfortherepy,
   FAQ,
 ];
 
