@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowRight, Star, ShieldCheck, Users } from 'lucide-react'; // Optional: icons via lucide-react
+import { ArrowRight, ShieldCheck } from 'lucide-react';
 
 const HeroSection = () => {
   return (
