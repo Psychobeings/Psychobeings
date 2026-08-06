@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import foundersimage from "../assets/foundersimage.png";
+import foundersimage from "../../assets/foundersimage.png";
 
 export default function MeetYourPsychologist() {
   const [isVisible, setIsVisible] = useState(false);
