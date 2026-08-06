@@ -44,16 +44,7 @@ export default function MeetYourPsychologist() {
                 className="w-full h-full object-cover object-top filter grayscale contrast-[1.05] hover:grayscale-0 hover:scale-105 transition-all duration-700 ease-out"
               />
               
-              {/* Corner Badge */}
-              <div className="absolute bottom-4 left-4 right-4 bg-white/95 backdrop-blur-md px-4 py-2.5 rounded-xl border border-[#1C7C83]/15 shadow-sm flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <span className="w-2.5 h-2.5 rounded-full bg-[#1C7C83]"></span>
-                  <span className="text-xs font-bold text-[#1F3A3D]">Accepting New Clients</span>
-                </div>
-                <span className="text-[11px] font-semibold text-[#1C7C83] bg-[#E6F0F0] px-2 py-0.5 rounded">Online & In-Person</span>
-              </div>
             </div>
-
             {/* Profile Identity Details */}
             <div className="space-y-3">
               <div>
@@ -61,7 +52,7 @@ export default function MeetYourPsychologist() {
                   Amanpreet Kaur
                 </h3>
                 <p className="text-[#1C7C83] font-semibold text-xs tracking-wider uppercase mt-0.5">
-                  Lead Clinical Psychologist & Founder
+                  Counselling Psychologist & Founder
                 </p>
               </div>
 
@@ -71,7 +62,7 @@ export default function MeetYourPsychologist() {
                   M.Sc. Clinical Psychology
                 </span>
                 <span className="px-3 py-1 bg-[#E6F0F0] border border-[#1C7C83]/15 text-[#1F3A3D] text-xs font-medium rounded-full">
-                  Licensed Psychotherapist
+                  Phd Scholar In Clinical Psychology.
                 </span>
               </div>
             </div>
