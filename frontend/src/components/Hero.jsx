@@ -4,15 +4,21 @@ import Psychobeingslogo from '../assets/Psychobeingslogo.png';
 
 const Hero = () => {
   return (
-    <section className="bg-white text-slate-800 py-16 lg:py-24">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-20">
+    // Updated: Clean white background with subtle ambient glows matching Hero1
+    <section className="relative overflow-hidden bg-white text-slate-800 py-16 lg:py-24">
+      
+      {/* Soft Ambient Background Lighting (Matching Hero1 style) */}
+      <div className="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 rounded-full bg-teal-100/40 blur-3xl pointer-events-none" />
+      <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-96 h-96 rounded-full bg-emerald-100/40 blur-3xl pointer-events-none" />
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-20 relative z-10">
         
         {/* Main Grid: Logo Left, All Content & Header Right */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
           
           {/* LEFT COLUMN: Clean Visual Logo Frame */}
           <div className="lg:col-span-5 flex justify-center lg:justify-start">
-            <div className="w-full max-w-md bg-white border border-[#C7E5E5] rounded-2xl p-8 sm:p-10 shadow-sm flex flex-col items-center justify-center min-h-[340px]">
+            <div className="w-full max-w-md bg-white border border-[#C7E5E5]/80 rounded-2xl p-8 sm:p-10 shadow-sm flex flex-col items-center justify-center min-h-[340px]">
               <img
                 src={Psychobeingslogo}
                 alt="Psychobeings Logo"
@@ -25,12 +31,12 @@ const Hero = () => {
             </div>
           </div>
 
-          {/* RIGHT COLUMN: Header, Narrative & CTAs (All text right-aligned/placed on right) */}
+          {/* RIGHT COLUMN: Header, Narrative & CTAs */}
           <div className="lg:col-span-7 space-y-8 text-left">
             
             {/* Header Content */}
             <div className="space-y-4">
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#187D7D08] border border-[#187D7D]/20">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-teal-50/80 border border-teal-100">
                 <span className="w-1.5 h-1.5 rounded-full bg-[#187D7D] animate-pulse" />
                 <span className="text-[#187D7D] font-semibold tracking-widest uppercase text-xs">
                   ABOUT PSYCHOBEINGS
@@ -71,7 +77,7 @@ const Hero = () => {
                   </button>
                 </Link>
                 <Link to="/services">
-                  <button className="px-6 py-3.5 rounded-xl bg-white border border-[#187D7D]/40 text-[#187D7D] hover:bg-[#187D7D08] font-semibold text-sm transition-all duration-300 cursor-pointer">
+                  <button className="px-6 py-3.5 rounded-xl bg-white border border-[#187D7D]/40 text-[#187D7D] hover:bg-teal-50/50 font-semibold text-sm transition-all duration-300 cursor-pointer">
                     Explore Services
                   </button>
                 </Link>
@@ -84,10 +90,12 @@ const Hero = () => {
             </div>
 
           </div>
+
         </div>
+
       </div>
     </section>
   );
-}
+};
 
 export default Hero;
