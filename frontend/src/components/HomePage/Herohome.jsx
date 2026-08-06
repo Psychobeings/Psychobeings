@@ -12,7 +12,7 @@ const HeroHome = () => {
           {/* Top Pill / Badge */}
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#E6F0F0] border border-[#1C7C83]/20 text-[#1C7C83] text-xs sm:text-sm font-semibold tracking-wide">
             <span className="w-2 h-2 rounded-full bg-[#1C7C83] animate-pulse"></span>
-            Evidence-Based Psychological Therapy & Holistic Wellbeing
+            Evidence-Based Psychological Therapy
           </div>
 
           {/* Main Headline */}
