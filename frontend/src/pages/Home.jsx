@@ -1,23 +1,8 @@
 import React from 'react';
 import HeroHome from '../components/HomePage/Herohome';
 import Howdoestherepywork from '../components/Howdoestherepywork';
-
-
-const homeSections = [HeroHome,Howdoestherepywork];
-
-
-import React from 'react';
-import Hero1 from './Hero1'; // Ensure your Hero1 component is imported from your components folder
-
-// Dynamic section wrapper array
-const homeSections = [
-  // Example sub-components inside your page wrapper
-  // Replace or import your actual section components here (e.g., AboutSection, ServicesSection, TestimonialsSection)
-  AboutSection,
-  ServicesSection,
-  ApproachSection,
-  CTASection,
-];
+import FAQ from '../components/FAQ';
+const homeSections = [HeroHome,Howdoestherepywork,FAQ];
 
 const Home = () => {
   return (
