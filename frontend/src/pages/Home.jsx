@@ -7,6 +7,7 @@ import Serviceshome from '../components/HomePage/Serviceshome';
 import Stepsfortherepy from '../components/HomePage/Stepsfortherepy';
 import Reviewssection from '../components/HomePage/Reviewssection';
 import FAQ from '../components/FAQ';
+import Languagesupport from '../components/Languagesupport';
 
 // Defined dynamic sections to map over (excluding HeroHome so it doesn't render twice)
 const homeSections = [
@@ -14,6 +15,7 @@ const homeSections = [
   AboutHome,
   MeetYourPsychologist,
   Thedifference,
+  Languagesupport,
   Serviceshome,
   Stepsfortherepy,
   Reviewssection,
