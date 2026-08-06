@@ -1,7 +1,7 @@
 import React from 'react';
 import { ArrowRight, ShieldCheck } from 'lucide-react';
 
-const HeroSection = () => {
+const HeroHome = () => {
   return (
     <section className="bg-[#F2F7F7] text-[#1A1D20] py-16 px-6 md:px-12 lg:px-20 min-h-[90vh] flex items-center">
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
@@ -25,7 +25,7 @@ const HeroSection = () => {
           <p className="text-base sm:text-lg text-gray-700 max-w-2xl leading-relaxed font-sans">
             At Psychobeings, we believe that every individual deserves a safe space to be heard, understood, and empowered. Through evidence-based psychological therapy and holistic wellbeing practices, 
             we support you in overcoming life's challenges, strengthening emotional resilience, and creating meaningful, lasting change.
-            Therepy Sessions are available in English and Hindi, with secure online counselling across India and in-person appointments in Faridabad, Haryana.
+            Therapy Sessions are available in English and Hindi, with secure online counselling across India and in-person appointments in Faridabad, Haryana.
           </p>
 
           {/* Key Metrics / Social Proof Badges */}
@@ -99,4 +99,4 @@ const HeroSection = () => {
   );
 };
 
-export default HeroSection;
+export default HeroHome;
