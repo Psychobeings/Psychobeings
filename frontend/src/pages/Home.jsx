@@ -3,6 +3,7 @@ import HeroHome from '../components/HomePage/Herohome';
 import AboutHome from '../components/HomePage/AboutHome';
 import MeetYourPsychologist from '../components/HomePage/Meetyourpsychologist';
 import Thedifference from '../components/HomePage/Thedifference';
+import Serviceshome from '../components/HomePage/Serviceshome';
 import Howdoestherepywork from '../components/Howdoestherepywork';
 import FAQ from '../components/FAQ';
 
@@ -11,6 +12,7 @@ const homeSections = [
   AboutHome,
   MeetYourPsychologist,
   Thedifference,
+  Serviceshome,
   Howdoestherepywork,
   FAQ,
 ];
