@@ -4,21 +4,20 @@ import Psychobeingslogo from '../assets/Psychobeingslogo.png';
 
 const Hero = () => {
   return (
-    // Updated: Clean white background with subtle ambient glows matching Hero1
-    <section className="relative overflow-hidden bg-white text-slate-800 py-16 lg:py-24">
+    <section className="relative overflow-hidden bg-white text-slate-800 py-12 lg:py-20">
       
-      {/* Soft Ambient Background Lighting (Matching Hero1 style) */}
+      {/* Soft Ambient Background Lighting (Matches Hero1) */}
       <div className="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 rounded-full bg-teal-100/40 blur-3xl pointer-events-none" />
       <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-96 h-96 rounded-full bg-emerald-100/40 blur-3xl pointer-events-none" />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-20 relative z-10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
-        {/* Main Grid: Logo Left, All Content & Header Right */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+        {/* Main Grid: Logo Left, All Content Right */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
           
-          {/* LEFT COLUMN: Clean Visual Logo Frame */}
+          {/* LEFT COLUMN: Logo Card */}
           <div className="lg:col-span-5 flex justify-center lg:justify-start">
-            <div className="w-full max-w-md bg-white border border-[#C7E5E5]/80 rounded-2xl p-8 sm:p-10 shadow-sm flex flex-col items-center justify-center min-h-[340px]">
+            <div className="w-full max-w-md bg-white border border-teal-100/80 rounded-2xl p-8 sm:p-10 shadow-sm flex flex-col items-center justify-center min-h-[340px]">
               <img
                 src={Psychobeingslogo}
                 alt="Psychobeings Logo"
@@ -31,32 +30,32 @@ const Hero = () => {
             </div>
           </div>
 
-          {/* RIGHT COLUMN: Header, Narrative & CTAs */}
-          <div className="lg:col-span-7 space-y-8 text-left">
+          {/* RIGHT COLUMN: Text Content & CTAs */}
+          <div className="lg:col-span-7 space-y-6 text-left">
             
-            {/* Header Content */}
-            <div className="space-y-4">
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-teal-50/80 border border-teal-100">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#187D7D] animate-pulse" />
-                <span className="text-[#187D7D] font-semibold tracking-widest uppercase text-xs">
-                  ABOUT PSYCHOBEINGS
-                </span>
-              </div>
-
-              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-serif text-slate-950 tracking-tight leading-tight">
-                More Than Therapy. <br />
-                <span className="italic font-normal text-transparent bg-clip-text bg-gradient-to-r from-[#187D7D] to-[#3BB6A7]">
-                  A Space to Heal, Grow, and Thrive.
-                </span>
-              </h1>
-
-              <p className="text-slate-700 text-base sm:text-lg leading-relaxed font-light">
-                At Psychobeings, we believe therapy is more than addressing challenges—it's about creating lasting emotional well-being and helping you build a life that feels meaningful and fulfilling.
-              </p>
+            {/* Top Badge */}
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-teal-50/80 border border-teal-100">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#187D7D] animate-pulse" />
+              <span className="text-[#187D7D] font-semibold tracking-widest uppercase text-xs">
+                ABOUT PSYCHOBEINGS
+              </span>
             </div>
 
-            {/* Narrative Content */}
-            <div className="space-y-6 text-slate-600 leading-relaxed text-base sm:text-lg font-light">
+            {/* Heading */}
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-serif text-slate-950 tracking-tight leading-tight">
+              More Than Therapy. <br />
+              <span className="italic font-normal text-transparent bg-clip-text bg-gradient-to-r from-[#187D7D] to-[#3BB6A7]">
+                A Space to Heal, Grow, and Thrive.
+              </span>
+            </h2>
+
+            {/* Main Paragraph */}
+            <p className="text-slate-600 text-base sm:text-lg leading-relaxed font-sans">
+              At Psychobeings, we believe therapy is more than addressing challenges—it's about creating lasting emotional well-being and helping you build a life that feels meaningful and fulfilling.
+            </p>
+
+            {/* Sub Narrative */}
+            <div className="space-y-4 text-slate-600 leading-relaxed text-sm sm:text-base font-light">
               <p className="border-l-2 border-[#187D7D] pl-4 text-slate-800 font-normal">
                 We offer a safe, confidential, and non-judgmental space where you can explore your thoughts, emotions, and experiences at your own pace.
               </p>
@@ -72,17 +71,17 @@ const Hero = () => {
               {/* Action Buttons */}
               <div className="flex flex-wrap gap-4 pt-2">
                 <Link to="/booking">
-                  <button className="px-6 py-3.5 rounded-xl bg-[#092c2c] hover:bg-[#187D7D] text-white font-semibold text-sm transition-all duration-300 shadow-md cursor-pointer">
+                  <button className="px-6 py-3 rounded-full bg-[#0a7272] hover:bg-[#0d5c5e] text-white font-medium text-sm transition-all duration-200 shadow-md cursor-pointer">
                     Book a Session
                   </button>
                 </Link>
                 <Link to="/services">
-                  <button className="px-6 py-3.5 rounded-xl bg-white border border-[#187D7D]/40 text-[#187D7D] hover:bg-teal-50/50 font-semibold text-sm transition-all duration-300 cursor-pointer">
+                  <button className="px-6 py-3 rounded-full bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 hover:border-teal-200 font-medium text-sm transition-all duration-200 cursor-pointer">
                     Explore Services
                   </button>
                 </Link>
                 <Link to="/about">
-                  <button className="px-6 py-3.5 rounded-xl text-slate-600 hover:text-slate-950 font-medium text-sm transition-all duration-300">
+                  <button className="px-6 py-3 rounded-full text-slate-600 hover:text-slate-950 font-medium text-sm transition-all duration-200">
                     Learn More &rarr;
                   </button>
                 </Link>
