@@ -1,6 +1,7 @@
 import React from 'react';
 import HeroHome from '../components/HomePage/Herohome';
 import AboutHome from '../components/HomePage/AboutHome';
+import MeetYourPsychologist from '../components/HomePage/Meetyourpsychologist';
 import Howdoestherepywork from '../components/Howdoestherepywork';
 import FAQ from '../components/FAQ';
 
@@ -8,6 +9,7 @@ import FAQ from '../components/FAQ';
 const homeSections = [
   Howdoestherepywork,
   AboutHome,
+  MeetYourPsychologist,
   FAQ,
 ];
 
