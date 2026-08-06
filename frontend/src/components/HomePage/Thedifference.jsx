@@ -1,7 +1,7 @@
 import React from 'react';
 import { CheckCircle2, XCircle, Sparkles } from 'lucide-react';
 
-const Thedifference = () => {
+const Thedifference= () => {
   const comparisonPoints = [
     {
       traditional: "Focuses strictly on symptom reduction or quick fixes.",
@@ -72,4 +72,4 @@ const Thedifference = () => {
   );
 };
 
-export default thedifference;
+export default Thedifference;
