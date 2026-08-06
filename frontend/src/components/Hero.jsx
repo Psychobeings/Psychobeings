@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import Psychobeingslogo from '../assets/Psychobeingslogo.png';
+import Psychobeingslogo from '../assets/logo.png';
 
 const Hero = () => {
   return (
