@@ -4,6 +4,7 @@ import AboutHome from '../components/HomePage/AboutHome';
 import MeetYourPsychologist from '../components/HomePage/Meetyourpsychologist';
 import Howdoestherepywork from '../components/Howdoestherepywork';
 import FAQ from '../components/FAQ';
+import founderimage from '../assets/foundersimage.png';
 
 // Defined dynamic sections to map over (excluding HeroHome so it doesn't render twice)
 const homeSections = [
