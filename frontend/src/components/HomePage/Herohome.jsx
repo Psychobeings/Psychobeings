@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowRight, Star, ShieldCheck, Users } from 'lucide-react'; // Optional: icons via lucide-react
+import { ArrowRight, ShieldCheck } from 'lucide-react';
 
 const HeroSection = () => {
   return (
@@ -12,7 +12,7 @@ const HeroSection = () => {
           {/* Top Pill / Badge */}
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#E6F0F0] border border-[#1C7C83]/20 text-[#1C7C83] text-xs md:text-sm font-medium tracking-wide">
             <span className="w-2 h-2 rounded-full bg-[#1C7C83] animate-pulse"></span>
-            Psychobeings • Psychological Wellness & Therapy
+            Evidence-Based Psychological Therapy & Holistic Wellbeing
           </div>
 
           {/* Main Headline */}
@@ -91,7 +91,6 @@ const HeroSection = () => {
               </div>
 
             </div>
-
           </div>
         </div>
 
