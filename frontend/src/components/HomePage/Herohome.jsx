@@ -12,7 +12,7 @@ const HeroSection = () => {
           {/* Top Pill / Badge */}
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#E6F0F0] border border-[#1C7C83]/20 text-[#1C7C83] text-xs md:text-sm font-medium tracking-wide">
             <span className="w-2 h-2 rounded-full bg-[#1C7C83] animate-pulse"></span>
-            Psychobeings • Psychological Wellness & Therapy
+            Evidence-Based • Confidential Care • Holistic Wellbeing
           </div>
 
           {/* Main Headline */}
@@ -23,10 +23,12 @@ const HeroSection = () => {
 
           {/* Subheading / Description */}
           <p className="text-base sm:text-lg text-gray-700 max-w-2xl leading-relaxed font-sans">
-            We offer compassionate, evidence-based psychotherapy, psychological assessments, 
-            and integrative mental wellness support tailored for adults, teens, and families. 
-            Available both online and in-person.
-          </p>
+            At Psychobeings, we believe that every individual deserves a safe space to be heard, understood, and empowered.,
+            Through evidence-based psychological therapy and holistic wellbeing practices, we support you in overcoming life's challenges, strengthening emotional resilience, and creating meaningful, lasting change.,
+            
+            Therapy Sessions available in English and Hindi. Secure online counselling across India and in-person appointments in Faridabad, Haryana, 
+            
+            </p>
 
           {/* Key Metrics / Social Proof Badges */}
           <div className="grid grid-cols-3 gap-4 py-4 w-full max-w-lg border-y border-[#1C7C83]/15">
