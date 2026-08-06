@@ -86,19 +86,6 @@ export default function ReviewsSection() {
           ))}
         </div>
 
-        {/* Bottom CTA Button */}
-        <div className="text-center pt-4">
-          <a
-            href="https://google.com" // Replace with your actual Google Reviews link
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 bg-[#1C7C83] hover:bg-[#135B60] text-white font-medium text-xs sm:text-sm px-8 py-3.5 rounded-full shadow-sm hover:shadow transition-all duration-300"
-          >
-            Read All Reviews on Google
-            <ExternalLink size={14} />
-          </a>
-        </div>
-
       </div>
     </section>
   );
