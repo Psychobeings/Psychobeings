@@ -1,11 +1,13 @@
 import React from 'react';
 import HeroHome from '../components/HomePage/Herohome';
+import AboutHome from '../components/HomePage/AboutHome';
 import Howdoestherepywork from '../components/Howdoestherepywork';
 import FAQ from '../components/FAQ';
 
 // Defined dynamic sections to map over (excluding HeroHome so it doesn't render twice)
 const homeSections = [
   Howdoestherepywork,
+  AboutHome,
   FAQ,
 ];
 
