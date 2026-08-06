@@ -8,7 +8,7 @@ const Home = () => {
   return (
     <div className="min-h-screen bg-[#F2F7F7] text-[#1F3A3D] font-sans selection:bg-[#1C7C83]/20 selection:text-[#1C7C83]">
       {/* Integrated Hero Section */}
-      <Hero1 />
+      <HeroHome/>
 
       {/* Main Content Area mapping through custom sections */}
       <div className="mx-auto max-w-screen-xl px-4 py-12 sm:px-6 lg:px-8">
