@@ -18,7 +18,7 @@ const reviews = [
     quote:
       "Super organized and always prepared, which makes every session feel smooth. Very warm, supportive, and easy to talk to.",
     author: "J.D",
-    rating: 4.5,
+    rating: 4,
   },
   {
     quote:
