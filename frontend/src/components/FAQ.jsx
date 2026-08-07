@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { ChevronDown } from 'lucide-react';
 
 const FAQ = () => {
   const [openIndex, setOpenIndex] = useState(null);
@@ -21,7 +22,7 @@ const FAQ = () => {
     {
       question: 'Do you offer in-person and online sessions?',
       answer:
-        'Yes. Psychobeings offers in-person sessions at Faridabad and Hyderabad, as well as online sessions for clients in India and internationally.',
+        'Yes. Psychobeings offers in-person sessions at Faridabad, as well as online sessions for clients in India and internationally.',
     },
     {
       question: 'What approaches are used at Psychobeings?',
@@ -61,18 +62,18 @@ const FAQ = () => {
   ];
 
   return (
-    <section className="bg-gray-50 text-gray-900 py-16 sm:py-24 min-h-screen">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="bg-[#F2F7F7] text-[#1F3A3D] py-16 sm:py-20 px-6 sm:px-8 lg:px-12 font-sans">
+      <div className="max-w-4xl mx-auto space-y-12">
         
         {/* Header Section */}
-        <div className="text-center max-w-2xl mx-auto mb-12 sm:mb-16">
-          <span className="text-sm font-semibold tracking-wider text-indigo-600 uppercase">
+        <div className="text-center max-w-2xl mx-auto space-y-3">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#E6F0F0] border border-[#1C7C83]/20 text-[#1C7C83] text-xs font-semibold tracking-wider uppercase">
             Got Questions?
-          </span>
-          <h2 className="mt-2 text-3xl sm:text-4xl font-extrabold tracking-tight text-gray-900">
-            Frequently Asked Questions
+          </div>
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold text-[#1F3A3D] tracking-tight">
+            Frequently Asked <span className="italic font-normal text-[#1C7C83]">Questions</span>
           </h2>
-          <p className="mt-4 text-lg text-gray-600">
+          <p className="text-gray-600 text-sm sm:text-base leading-relaxed pt-1">
             Everything you need to know about our counseling process, sessions, and approaches.
           </p>
         </div>
@@ -84,37 +85,28 @@ const FAQ = () => {
             return (
               <div
                 key={index}
-                className="bg-white rounded-2xl border border-gray-200/80 shadow-sm hover:shadow-md transition-all duration-200 overflow-hidden"
+                className="bg-white rounded-[1.5rem] border border-[#1C7C83]/15 shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden"
               >
                 <button
                   type="button"
                   aria-expanded={isOpen}
                   aria-controls={`faq-answer-${index}`}
-                  className="w-full flex justify-between items-center px-6 py-5 text-left text-base sm:text-lg font-semibold text-gray-900 hover:text-indigo-600 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2"
+                  className="w-full flex justify-between items-center px-6 sm:px-8 py-5 text-left text-base sm:text-lg font-serif font-bold text-[#1F3A3D] hover:text-[#1C7C83] transition-colors focus:outline-none"
                   onClick={() => handleToggle(index)}
                 >
-                  <span className="pr-4">{faq.question}</span>
+                  <span className="pr-4 leading-snug">{faq.question}</span>
                   <div
-                    className={`flex-shrink-0 flex items-center justify-center w-8 h-8 rounded-full bg-gray-100 transition-colors duration-200 ${
-                      isOpen ? 'bg-indigo-50 text-indigo-600' : 'text-gray-500'
+                    className={`shrink-0 flex items-center justify-center w-8 h-8 rounded-full transition-colors duration-300 ${
+                      isOpen
+                        ? 'bg-[#1C7C83] text-white'
+                        : 'bg-[#E6F0F0] text-[#1C7C83]'
                     }`}
                   >
-                    <svg
+                    <ChevronDown
                       className={`w-5 h-5 transform transition-transform duration-300 ${
                         isOpen ? 'rotate-180' : ''
                       }`}
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M19 9l-7 7-7-7"
-                      />
-                    </svg>
+                    />
                   </div>
                 </button>
 
@@ -128,7 +120,7 @@ const FAQ = () => {
                   }`}
                 >
                   <div className="overflow-hidden">
-                    <p className="px-6 pb-6 text-sm sm:text-base text-gray-600 leading-relaxed border-t border-gray-100 pt-4">
+                    <p className="px-6 sm:px-8 pb-6 text-sm sm:text-base text-gray-600 leading-relaxed border-t border-[#1C7C83]/10 pt-4">
                       {faq.answer}
                     </p>
                   </div>
@@ -137,6 +129,7 @@ const FAQ = () => {
             );
           })}
         </div>
+
       </div>
     </section>
   );
