@@ -74,7 +74,7 @@ const HeroHome = () => {
             {/* Main Image Frame */}
             <div className="relative overflow-hidden rounded-[2rem] shadow-md border border-[#1C7C83]/15 bg-white">
               <img
-                src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=800"
+                src="https://media.licdn.com/dms/image/v2/D5612AQGwB7uKam41Sw/article-cover_image-shrink_720_1280/article-cover_image-shrink_720_1280/0/1721064179177?e=1787788800&v=beta&t=wizFDs-zEeMqOubyTJc_sO5Mf2Ubf8aRUlQzZ9KuiX0"
                 alt="Therapy and psychological wellness session"
                 className="w-full h-[420px] sm:h-[500px] object-cover hover:scale-105 transition-transform duration-500"
               />
