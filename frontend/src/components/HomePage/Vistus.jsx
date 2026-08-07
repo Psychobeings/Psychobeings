@@ -1,5 +1,5 @@
 import React from "react";
-import { MapPin, Phone, Mail, Clock, ShieldAlert, Sparkles } from "lucide-react";
+import { MapPin, Phone, Mail, ShieldAlert, Sparkles } from "lucide-react";
 
 export default function VisitUs() {
   return (
