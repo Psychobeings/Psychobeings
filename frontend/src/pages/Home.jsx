@@ -8,6 +8,7 @@ import Stepsfortherepy from '../components/HomePage/Stepsfortherepy';
 import Reviewssection from '../components/HomePage/Reviewssection';
 import FAQ from '../components/FAQ';
 import Packageshome from '../components/HomePage/Packageshome';
+import Vistus from '../components/HomePage/Vistus';
 
 // Defined dynamic sections to map over (excluding HeroHome so it doesn't render twice)
 const homeSections = [
@@ -18,7 +19,8 @@ const homeSections = [
   Stepsfortherepy,
   Reviewssection,
   Packageshome,
-  FAQ
+  FAQ,
+  Vistus
 ];
 
 const Home = () => {
