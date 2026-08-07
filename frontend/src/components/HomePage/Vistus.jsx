@@ -51,8 +51,8 @@ export default function VisitUs() {
                   <Phone className="w-5 h-5 text-teal-400 shrink-0" />
                   <div>
                     <p className="font-semibold text-white">Phone</p>
-                    <a href="tel:+918305777371" className="text-xs text-slate-300 hover:text-teal-300 transition-colors">
-                      +91 83057 77371
+                    <a href="tel:+919962452865" className="text-xs text-slate-300 hover:text-teal-300 transition-colors">
+                      +91 9962452865
                     </a>
                   </div>
                 </div>
