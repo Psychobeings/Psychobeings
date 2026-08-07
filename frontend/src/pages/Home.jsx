@@ -11,7 +11,6 @@ import Packageshome from '../components/HomePage/Packageshome';
 
 // Defined dynamic sections to map over (excluding HeroHome so it doesn't render twice)
 const homeSections = [
-  HeroHome,
   AboutHome,
   MeetYourPsychologist,
   Thedifference,
