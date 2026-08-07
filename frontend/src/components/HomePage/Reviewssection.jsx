@@ -1,5 +1,5 @@
 import React from 'react';
-import { Star, ExternalLink } from 'lucide-react';
+import { Star } from 'lucide-react';
 
 const reviews = [
   {
