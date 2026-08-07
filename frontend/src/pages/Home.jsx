@@ -18,6 +18,7 @@ const homeSections = [
   Stepsfortherepy,
   Reviewssection,
   Packageshome,
+  FAQ
 ];
 
 const Home = () => {
