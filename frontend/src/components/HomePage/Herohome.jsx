@@ -78,18 +78,7 @@ const HeroHome = () => {
                 alt="Therapy and psychological wellness session"
                 className="w-full h-[420px] sm:h-[500px] object-cover hover:scale-105 transition-transform duration-500"
               />
-              
-              {/* Overlay Glassmorphism Badge */}
-              <div className="absolute bottom-6 left-6 right-6 bg-white/95 backdrop-blur-md p-4 rounded-2xl border border-[#1C7C83]/15 shadow-sm flex items-center gap-3">
-                <div className="p-2.5 bg-[#E6F0F0] rounded-xl text-[#1C7C83] border border-[#1C7C83]/15">
-                  <ShieldCheck className="w-5 h-5" />
-                </div>
-                <div>
-                  <h4 className="text-sm font-serif font-bold text-[#1F3A3D]">Confidential & Safe</h4>
-                  <p className="text-xs text-gray-600">Certified clinical guidance and support</p>
-                </div>
-              </div>
-
+            
             </div>
           </div>
         </div>
