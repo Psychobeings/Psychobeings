@@ -56,6 +56,7 @@ const Booking = () => {
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [clientEmail, setClientEmail] = useState("");
+  const [consentGiven, setConsentGiven] = useState(false);
 
   const [phqAnswers, setPhqAnswers] = useState({});
   const [gadAnswers, setGadAnswers] = useState({});
@@ -104,6 +105,11 @@ const Booking = () => {
   };
 
   const handleSubmit = async () => {
+    if (!consentGiven) {
+      alert("Please acknowledge and agree to the consent terms before submitting.");
+      return;
+    }
+
     setLoading(true);
 
     const payload = {
@@ -298,6 +304,21 @@ const Booking = () => {
                         </div>
                       </div>
                     ))}
+
+                    {/* MANDATORY INFORMED CONSENT CLAUSE */}
+                    <div className="mt-6 rounded-xl border border-[#d7ecec] bg-[#f7fcfb] p-4">
+                      <label className="flex items-start gap-3 cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={consentGiven}
+                          onChange={(e) => setConsentGiven(e.target.checked)}
+                          className="mt-0.5 h-4 w-4 rounded border-gray-300 text-[#0a7272] focus:ring-[#0a7272]"
+                        />
+                        <span className="text-xs text-[#3f5758] leading-relaxed">
+                          I consent to the collection and processing of my responses for pre-consultation intake. I understand that this screening is for initial exploratory purposes and does not replace a formal clinical evaluation or immediate emergency care.
+                        </span>
+                      </label>
+                    </div>
                   </div>
                 )}
 
@@ -325,7 +346,7 @@ const Booking = () => {
                     <button
                       type="button"
                       onClick={handleSubmit}
-                      disabled={loading}
+                      disabled={loading || !consentGiven}
                       className="rounded-xl bg-[#0a7272] px-6 py-2.5 text-sm font-medium text-white hover:bg-[#085a5a] disabled:opacity-50"
                     >
                       {loading ? "Submitting..." : "Complete & Submit"}
@@ -333,9 +354,13 @@ const Booking = () => {
                   )}
                 </div>
 
-                <p className="mt-4 text-center text-[11px] text-[#718b8c]">
-                  *Note: These tools are strictly for exploratory intake and screening purposes, not clinical diagnosis.
-                </p>
+                {/* CLINICAL & CRISIS DISCLAIMER */}
+                <div className="mt-6 rounded-xl border border-[#f5c6cb] bg-[#fff5f5] p-3 text-center text-[11px] text-[#721c24]">
+                  <p className="font-semibold">Important Clinical Notice & Emergency Contact</p>
+                  <p className="mt-1">
+                    These tools are strictly for initial screening and exploratory intake purposes, not formal clinical diagnosis. If you are experiencing a mental health emergency or thoughts of self-harm, please contact your local emergency services or call a crisis helpline (Tele-MANAS: <strong>14416</strong> or Vandrevala Foundation: <strong>9999 666 555</strong>) immediately.
+                  </p>
+                </div>
               </div>
             ) : (
               /* Confirmation Screen */
