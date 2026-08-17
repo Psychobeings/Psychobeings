@@ -205,20 +205,18 @@ const Services = () => {
 
         <div className="relative mx-auto grid max-w-7xl gap-12 lg:grid-cols-[1.15fr_0.85fr] lg:items-center">
           <div>
-            <div className="flex items-center gap-3">
-              <span className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-teal-50 to-white px-3 py-1 text-xs sm:text-sm font-semibold text-[#0a7272] shadow-sm">
-                <Sparkles size={16} />
-                Evidence-Based Therapy — Modern & Accessible
-              </span>
-              <span className="ml-2 inline-flex items-center gap-2 text-xs text-[#5a8b8a]">Secure teletherapy, progress tracking, and multilingual support</span>
-            </div>
+            <span className="inline-flex items-center gap-2 rounded-full border border-[#bfe1df] bg-white px-4 py-2 text-xs sm:text-sm font-semibold text-[#0a7272] shadow-sm">
+              <Sparkles size={16} />
+              Professional Therapy & Wellbeing Services
+            </span>
 
-            <h1 className="mt-6 max-w-3xl text-4xl font-extrabold leading-tight text-[#0d4f50] sm:text-5xl lg:text-6xl">
-              Compassionate care, measurable progress — tailored for 2026
+            <h1 className="mt-6 max-w-3xl text-4xl font-bold leading-tight text-[#0d4f50] sm:text-5xl lg:text-6xl">
+              Grounded care for healing, clarity, and emotional balance.
             </h1>
 
             <p className="mt-6 max-w-2xl text-lg leading-relaxed text-[#4c6162]">
-              Practical, research-backed psychotherapy paired with modern digital tools. Flexible online sessions, culturally-informed practice, and optional progress summaries to help you track meaningful change.
+              Structured psychological support for individuals, young adults, and organizations.
+              Available locally in Faridabad and virtually across India and worldwide.
             </p>
 
             {/* Currency Filter Bar */}
@@ -337,7 +335,7 @@ const Services = () => {
       {/* Floating CTA */}
       <Link
         to="/booking"
-        className="fixed bottom-6 right-6 z-50 inline-flex items-center gap-3 rounded-full bg-[#0a7272] px-6 py-3.5 text-sm font-semibold text-white shadow-2xl transition hover:scale-105 hover:bg-[#0d5c5e]"
+        className="fixed bottom-6 right-6 z-50 inline-flex items-center gap-3 rounded-full bg-[#0a7272] px-4 py-2.5 text-sm font-semibold text-white shadow-2xl transition hover:scale-105 hover:bg-[#0d5c5e] sm:px-6 sm:py-3.5"
       >
         <MessageCircle size={18} />
         Book Consultation
@@ -358,11 +356,11 @@ const Services = () => {
             </p>
           </div>
 
-          <div className="mt-12 space-y-12">
+          <div className="mt-12 grid gap-12 lg:grid-cols-2">
             {therapyOptions.map((item) => (
               <div
                 key={item.id}
-                className="rounded-[2.5rem] border border-[#d7ecec] bg-white p-6 sm:p-8 lg:p-10 shadow-sm"
+                className="rounded-[2.5rem] border border-[#d7ecec] bg-white p-6 sm:p-8 lg:p-10 shadow-sm h-full flex flex-col justify-between"
               >
                 <div className="grid gap-8 lg:grid-cols-[1fr_1.1fr]">
                   {/* Left Column: Details & Concerns */}
@@ -418,7 +416,7 @@ const Services = () => {
                     {item.sessionCards.map((card) => (
                       <div
                         key={card.title}
-                        className={`relative rounded-[2rem] p-6 transition flex flex-col justify-between ${
+                        className={`relative rounded-[2rem] p-6 transition flex flex-col justify-between min-h-[260px] ${
                           card.isPopular
                             ? 'bg-gradient-to-br from-[#0a7272] to-[#0d5c5e] text-white shadow-xl ring-2 ring-[#0a7272]/30 scale-[1.02]'
                             : 'bg-[#f8fcfc] border border-[#d7ecec] text-[#183436]'
@@ -533,7 +531,7 @@ const Services = () => {
             </p>
           </div>
 
-          <div className="mt-12 grid gap-8 lg:grid-cols-2">
+          <div className="mt-12 grid gap-8 lg:grid-cols-3">
             {programOptions.map((item) => (
               <div
                 key={item.title}
@@ -633,11 +631,11 @@ const Services = () => {
         </div>
       </section>
 
-      {/* Trust & Testimonials (Updated) */}
+      {/* Trust & Testimonials */}
       <section className="px-4 py-16 sm:px-6 lg:px-8">
         <div className="mx-auto grid max-w-7xl gap-8 lg:grid-cols-[0.95fr_1.05fr]">
           {/* Trust Points */}
-          <div className="rounded-[2.5rem] bg-gradient-to-br from-[#0f5f61] to-[#0a7272] p-8 sm:p-10 text-white shadow-md flex flex-col justify-between">
+          <div className="rounded-[2.5rem] bg-[#0f5f61] p-8 sm:p-10 text-white shadow-md flex flex-col justify-between">
             <div>
               <div className="flex items-center gap-3">
                 <div className="rounded-2xl bg-white/10 p-3 text-teal-200">
@@ -650,7 +648,7 @@ const Services = () => {
                 {trustPoints.map((point) => (
                   <div
                     key={point}
-                    className="flex items-start gap-3 rounded-2xl bg-white/8 p-4 text-sm leading-relaxed text-teal-50 border border-white/5 hover:bg-white/10 transition"
+                    className="flex items-start gap-3 rounded-2xl bg-white/10 p-4 text-sm leading-relaxed text-teal-50 border border-white/5"
                   >
                     <CheckCircle2 size={18} className="text-teal-300 shrink-0 mt-0.5" />
                     <span>{point}</span>
@@ -663,25 +661,30 @@ const Services = () => {
           {/* Testimonials */}
           <div className="rounded-[2.5rem] border border-[#d7ecec] bg-white p-8 sm:p-10 shadow-sm flex flex-col justify-between">
             <div>
-              <div className="flex items-center justify-between mb-2">
-                <div className="flex items-center gap-2 text-amber-500">
-                  {Array.from({ length: 5 }).map((_, i) => (
-                    <Star key={i} size={16} className="text-amber-400" />
-                  ))}
-                </div>
-
-                <div>
-                  <a href="/contact" className="text-sm font-semibold text-[#0a7272] underline">Share your feedback</a>
-                </div>
+              <div className="flex items-center gap-2 text-amber-500 mb-2">
+                <Star size={16} fill="currentColor" />
+                <Star size={16} fill="currentColor" />
+                <Star size={16} fill="currentColor" />
+                <Star size={16} fill="currentColor" />
+                <Star size={16} fill="currentColor" />
               </div>
 
-              <h2 className="text-2xl sm:text-3xl font-bold text-[#0d4f50]">Client Experiences</h2>
-              <p className="mt-2 text-sm text-[#4c6162]">Stories from people who experienced meaningful change, delivered with privacy and care.</p>
+              <h2 className="text-2xl sm:text-3xl font-bold text-[#0d4f50]">
+                Client Experiences
+              </h2>
+              <p className="mt-2 text-sm text-[#4c6162]">
+                Reflections from individuals supported across India and internationally.
+              </p>
 
-              <div className="mt-6 grid gap-4">
+              <div className="mt-6 space-y-4">
                 {testimonials.map((item) => (
-                  <div key={item.name} className="rounded-2xl bg-[#f7fcfb] p-5 border border-[#eaf6f6] hover:scale-[1.01] transition-transform">
-                    <p className="text-sm leading-relaxed text-[#2d4749] italic">“{item.quote}”</p>
+                  <div
+                    key={item.name}
+                    className="rounded-2xl bg-[#f7fcfb] p-5 border border-[#eaf6f6]"
+                  >
+                    <p className="text-sm leading-relaxed text-[#2d4749] italic">
+                      “{item.quote}”
+                    </p>
                     <div className="mt-3 flex items-center justify-between text-xs">
                       <span className="font-bold text-[#0a7272]">{item.name}</span>
                       <span className="text-[#6b8283]">{item.location}</span>
