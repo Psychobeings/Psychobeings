@@ -64,3 +64,5 @@ allow="clipboard-read; clipboard-write"
 
 };
 
+export default Booking;
+
