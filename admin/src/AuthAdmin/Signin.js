@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { Mail, Lock, User, KeyRound, Verified, VerifiedIcon } from 'lucide-react';
+import { Mail, Lock, KeyRound } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 const Signin = ({ onLoginSuccess }) => {
@@ -53,7 +53,7 @@ const Signin = ({ onLoginSuccess }) => {
           return;
         }
 
-        const reset = await axios.post(`${process.env.REACT_APP_URL}admin/reset-password`, { 
+        const reset = await axios.post(`${process.env.REACT_APP_URL}/admin/reset-password`, { 
           email, 
           password
         });
