@@ -335,7 +335,7 @@ const Services = () => {
       {/* Floating CTA */}
       <Link
         to="/booking"
-        className="fixed bottom-6 right-6 z-50 inline-flex items-center gap-3 rounded-full bg-[#0a7272] px-4 py-2.5 text-sm font-semibold text-white shadow-2xl transition hover:scale-105 hover:bg-[#0d5c5e] sm:px-6 sm:py-3.5"
+        className="fixed bottom-6 right-6 z-50 inline-flex items-center gap-3 rounded-full bg-[#0a7272] px-6 py-3.5 text-sm font-semibold text-white shadow-2xl transition hover:scale-105 hover:bg-[#0d5c5e]"
       >
         <MessageCircle size={18} />
         Book Consultation
@@ -356,11 +356,11 @@ const Services = () => {
             </p>
           </div>
 
-          <div className="mt-12 grid gap-12 lg:grid-cols-2">
+          <div className="mt-12 space-y-12">
             {therapyOptions.map((item) => (
               <div
                 key={item.id}
-                className="rounded-[2.5rem] border border-[#d7ecec] bg-white p-6 sm:p-8 lg:p-10 shadow-sm h-full flex flex-col justify-between"
+                className="rounded-[2.5rem] border border-[#d7ecec] bg-white p-6 sm:p-8 lg:p-10 shadow-sm"
               >
                 <div className="grid gap-8 lg:grid-cols-[1fr_1.1fr]">
                   {/* Left Column: Details & Concerns */}
@@ -416,7 +416,7 @@ const Services = () => {
                     {item.sessionCards.map((card) => (
                       <div
                         key={card.title}
-                        className={`relative rounded-[2rem] p-6 transition flex flex-col justify-between min-h-[260px] ${
+                        className={`relative rounded-[2rem] p-6 transition flex flex-col justify-between ${
                           card.isPopular
                             ? 'bg-gradient-to-br from-[#0a7272] to-[#0d5c5e] text-white shadow-xl ring-2 ring-[#0a7272]/30 scale-[1.02]'
                             : 'bg-[#f8fcfc] border border-[#d7ecec] text-[#183436]'
@@ -531,7 +531,7 @@ const Services = () => {
             </p>
           </div>
 
-          <div className="mt-12 grid gap-8 lg:grid-cols-3">
+          <div className="mt-12 grid gap-8 lg:grid-cols-2">
             {programOptions.map((item) => (
               <div
                 key={item.title}
