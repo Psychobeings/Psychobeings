@@ -16,116 +16,293 @@ import {
   Star
 } from 'lucide-react';
 
-import { therapyOptions, programOptions, trustPoints, testimonials } from '../data/servicesData';
+const therapyOptions = [
+  {
+    id: 'individual',
+    title: 'Individual Therapy',
+    description:
+      'A confidential, one-on-one space for anxiety, stress, overthinking, grief, burnout, and emotional healing.',
+    concerns: [
+      'Anxiety and emotional overwhelm',
+      'Stress regulation & burnout',
+      'Overthinking and decision paralysis',
+      'Boundary setting and self-worth'
+    ],
+    sessionCards: [
+      {
+        title: 'Single Session',
+        priceINR: '₹1,500',
+        priceUSD: '$45',
+        unit: 'per session (50 mins)',
+        description: 'Ideal for an initial consultation or targeted support on a specific concern.',
+        isPopular: false,
+        buttonLabel: 'Book Single Session',
+        buttonTo: '/contact'
+      },
+      {
+        title: 'Sustained Growth Package',
+        priceINR: '₹8,000',
+        priceUSD: '$220',
+        unit: '6 sessions package',
+        description: 'Recommended for continuous progress, deep emotional work, and skill building.',
+        isPopular: true,
+        popularBadge: 'Most Popular',
+        buttonLabel: 'View Package Details',
+        buttonTo: '/packages'
+      }
+    ],
+    buttonLabel: 'Book Individual Support',
+    buttonTo: '/contact'
+  },
+  {
+    id: 'child-adolescent',
+    title: 'Child & Adolescent Support',
+    description:
+      'Targeted guidance for young individuals navigating emotional, academic, and social developmental challenges.',
+    concerns: [
+      'Emotional regulation & tantrums',
+      'School stress and performance anxiety',
+      'Identity, confidence, and peer dynamics',
+      'Family transitions & communication gaps'
+    ],
+    sessionCards: [
+      {
+        title: 'Initial Assessment',
+        priceINR: '₹1,800',
+        priceUSD: '$55',
+        unit: 'per session (60 mins)',
+        description: 'Includes child interaction and brief parent intake/feedback.',
+        isPopular: false,
+        buttonLabel: 'Book Initial Assessment',
+        buttonTo: '/contact'
+      },
+      {
+        title: 'Developmental Package',
+        priceINR: '₹9,000',
+        priceUSD: '$250',
+        unit: '6 sessions package',
+        description: 'Comprehensive emotional support with regular parent progress updates.',
+        isPopular: true,
+        popularBadge: 'Recommended',
+        buttonLabel: 'View Package Details',
+        buttonTo: '/packages'
+      }
+    ],
+    buttonLabel: 'Book Child & Adolescent Session',
+    buttonTo: '/contact'
+  }
+];
+
+const programOptions = [
+  {
+    title: 'Workshops & Seminars',
+    description:
+      'Interactive, outcome-driven group sessions designed to build emotional intelligence, resilience, and actionable coping skills.',
+    offerings: [
+      'Anxiety management & grounding toolkits',
+      'Mindfulness and nervous system regulation',
+      'Burnout prevention and emotional fatigue',
+      'Self-care and boundary work'
+    ],
+    sessionCards: [
+      {
+        title: 'Single Workshop',
+        priceINR: '₹2,000',
+        priceUSD: '$60',
+        unit: 'per attendee',
+        description: 'Great for single masterclasses or intensive focused learning.',
+        isPopular: false,
+        buttonLabel: 'Book Workshop',
+        buttonTo: '/contact'
+      },
+      {
+        title: 'Workshop Series',
+        priceINR: '₹10,000',
+        priceUSD: '$280',
+        unit: '4-part module',
+        description: 'Ideal for schools, communities, or institutions seeking deep impact.',
+        isPopular: true,
+        popularBadge: 'Top Rated',
+        buttonLabel: 'Explore Series',
+        buttonTo: '/packages'
+      }
+    ],
+    buttonLabel: 'Explore Workshops',
+    buttonTo: '/contact'
+  },
+  {
+    title: 'Corporate Wellbeing',
+    description:
+      'Customized mental health and resilience strategies tailored for forward-thinking organizations and executive teams.',
+    offerings: [
+      'Employee wellbeing & mental health first-aid',
+      'Work-life harmony & stress prevention',
+      'Leadership empathy and communication workshops',
+      'Custom employee assistance (EAP) programs'
+    ],
+    sessionCards: [
+      {
+        title: 'Team Intervention',
+        priceINR: '₹2,500',
+        priceUSD: '$75',
+        unit: 'per hour / session',
+        description: 'Ideal for one-off team wellness sessions or crisis support.',
+        isPopular: false,
+        buttonLabel: 'Book Intervention',
+        buttonTo: '/contact'
+      },
+      {
+        title: 'Quarterly Corporate Program',
+        priceINR: '₹15,000',
+        priceUSD: '$420',
+        unit: 'monthly retainer starting',
+        description: 'Holistic wellness partnership for ongoing team health.',
+        isPopular: true,
+        popularBadge: 'Best Value',
+        buttonLabel: 'Request Corporate Deck',
+        buttonTo: '/contact'
+      }
+    ],
+    buttonLabel: 'Discuss Corporate Wellness',
+    buttonTo: '/contact'
+  }
+];
+
+const trustPoints = [
+  'Compassionate, evidence-informed care grounded in empathy and clinical safety.',
+  'Culturally sensitive, personalized treatment plans tailored to your pace.',
+  'Strict confidentiality and encrypted telehealth platforms.',
+  'Seamless booking and flexible online / offline appointment slots.'
+];
+
+const testimonials = [
+  {
+    quote:
+      'The space felt grounding and entirely non-judgmental. I felt truly understood from the very first session.',
+    name: 'A. Sharma',
+    location: 'Delhi NCR'
+  },
+  {
+    quote:
+      'Practical tools mixed with deep emotional clarity. It helped me regain confidence and balance during a tough transition.',
+    name: 'R. Kapoor',
+    location: 'London, UK'
+  }
+];
 
 const Services = () => {
-  const [currencyRegion, setCurrencyRegion] = useState('ALL');
+  const [currencyRegion, setCurrencyRegion] = useState('ALL'); // 'ALL' | 'INR' | 'USD'
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#f4f9f8] text-[#122a2c] font-sans selection:bg-[#0a7272] selection:text-white pb-24 lg:pb-16">
-      {/* Dynamic Background Accents */}
-      <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
-        <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] rounded-full bg-teal-200/40 blur-[120px]" />
-        <div className="absolute top-[40%] right-[-5%] w-[450px] h-[450px] rounded-full bg-emerald-100/50 blur-[100px]" />
-      </div>
-
+    <div className="min-h-screen bg-[#f6fbfa] text-[#183436] font-sans">
       {/* Hero Section */}
-      <section className="relative z-10 overflow-hidden px-4 pt-16 pb-20 sm:px-6 lg:px-8 lg:pt-24 lg:pb-28">
-        <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[1.15fr_0.85fr] lg:items-center">
-          <div>
-            <span className="inline-flex items-center gap-2 rounded-full border border-teal-500/20 bg-white/80 px-4 py-2 text-xs sm:text-sm font-medium text-[#0a7272] shadow-sm backdrop-blur-md">
-              <Sparkles size={16} className="text-teal-600 animate-pulse" />
-              Professional Therapy & Wellbeing Services
-            </span>
+      <section className="relative overflow-hidden px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,_rgba(10,114,114,0.08),_transparent_35%),radial-gradient(circle_at_bottom_right,_rgba(15,95,97,0.08),_transparent_35%)]" />
 
-            <h1 className="mt-6 max-w-3xl text-4xl font-extrabold tracking-tight text-[#083c3e] sm:text-5xl lg:text-6xl lg:leading-[1.15]">
-              Grounded care for <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0a7272] to-[#0f8b8d]">healing, clarity</span> & emotional balance.
+        <div className="relative mx-auto grid max-w-7xl gap-12 lg:grid-cols-[1.15fr_0.85fr] lg:items-center">
+          <div>
+            <div className="flex items-center gap-3">
+              <span className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-teal-50 to-white px-3 py-1 text-xs sm:text-sm font-semibold text-[#0a7272] shadow-sm">
+                <Sparkles size={16} />
+                Evidence-Based Therapy — Modern & Accessible
+              </span>
+              <span className="ml-2 inline-flex items-center gap-2 text-xs text-[#5a8b8a]">Secure teletherapy, progress tracking, and multilingual support</span>
+            </div>
+
+            <h1 className="mt-6 max-w-3xl text-4xl font-extrabold leading-tight text-[#0d4f50] sm:text-5xl lg:text-6xl">
+              Compassionate care, measurable progress — tailored for 2026
             </h1>
 
-            <p className="mt-6 max-w-2xl text-lg leading-relaxed text-[#455a5c]">
-              Structured psychological support for individuals, young adults, and organizations.
-              Available locally in Faridabad and virtually across India and worldwide.
+            <p className="mt-6 max-w-2xl text-lg leading-relaxed text-[#4c6162]">
+              Practical, research-backed psychotherapy paired with modern digital tools. Flexible online sessions, culturally-informed practice, and optional progress summaries to help you track meaningful change.
             </p>
 
-            {/* Glassmorphic Currency Filter Bar */}
-            <div className="mt-8 rounded-2xl border border-white/60 bg-white/70 p-3 shadow-sm backdrop-blur-xl inline-flex flex-col sm:flex-row items-start sm:items-center gap-3">
+            {/* Currency Filter Bar */}
+            <div className="mt-8 rounded-2xl border border-[#d7ecec] bg-white p-3 shadow-sm inline-flex flex-col sm:flex-row items-start sm:items-center gap-3">
               <span className="text-xs font-bold uppercase tracking-wider text-[#0a7272] px-2">
                 Display Currency:
               </span>
-              <div className="flex bg-[#e8f4f3] p-1 rounded-xl w-full sm:w-auto">
-                {[
-                  { key: 'ALL', label: 'Both (INR & USD)' },
-                  { key: 'INR', label: '🇮🇳 India (INR ₹)' },
-                  { key: 'USD', label: '🌐 International (USD $)' }
-                ].map(({ key, label }) => (
-                  <button
-                    key={key}
-                    onClick={() => setCurrencyRegion(key)}
-                    aria-pressed={currencyRegion === key}
-                    className={`px-3.5 py-2 text-xs sm:text-sm font-semibold rounded-lg transition-all duration-200 ${
-                      currencyRegion === key
-                        ? 'bg-[#0a7272] text-white shadow-md'
-                        : 'text-[#455a5c] hover:text-[#0a7272]'
-                    }`}
-                  >
-                    {label}
-                  </button>
-                ))}
+              <div className="flex bg-[#f0f8f8] p-1 rounded-xl">
+                <button
+                  onClick={() => setCurrencyRegion('ALL')}
+                  className={`px-3 py-1.5 text-xs sm:text-sm font-semibold rounded-lg transition ${
+                    currencyRegion === 'ALL'
+                      ? 'bg-[#0a7272] text-white shadow-sm'
+                      : 'text-[#4c6162] hover:text-[#0a7272]'
+                  }`}
+                >
+                  Both (INR & USD)
+                </button>
+                <button
+                  onClick={() => setCurrencyRegion('INR')}
+                  className={`px-3 py-1.5 text-xs sm:text-sm font-semibold rounded-lg transition ${
+                    currencyRegion === 'INR'
+                      ? 'bg-[#0a7272] text-white shadow-sm'
+                      : 'text-[#4c6162] hover:text-[#0a7272]'
+                  }`}
+                >
+                  🇮🇳 India (INR ₹)
+                </button>
+                <button
+                  onClick={() => setCurrencyRegion('USD')}
+                  className={`px-3 py-1.5 text-xs sm:text-sm font-semibold rounded-lg transition ${
+                    currencyRegion === 'USD'
+                      ? 'bg-[#0a7272] text-white shadow-sm'
+                      : 'text-[#4c6162] hover:text-[#0a7272]'
+                  }`}
+                >
+                  🌐 International (USD $)
+                </button>
               </div>
             </div>
 
             <div className="mt-8 flex flex-wrap gap-4">
               <Link
                 to="/booking"
-                className="inline-flex items-center gap-2.5 rounded-full bg-[#0a7272] px-8 py-4 text-sm font-bold text-white transition-all duration-300 hover:bg-[#075354] hover:shadow-lg hover:shadow-teal-700/20 hover:-translate-y-0.5"
+                className="inline-flex items-center gap-2 rounded-full bg-[#0a7272] px-7 py-3.5 text-sm font-semibold text-white transition hover:bg-[#095f5f] shadow-md hover:shadow-lg"
               >
                 Book Consultation
-                <ArrowRight size={18} />
+                <ArrowRight size={16} />
               </Link>
 
               <a
                 href="#therapy"
-                className="inline-flex items-center gap-2 rounded-full border border-[#0a7272]/30 bg-white/80 px-8 py-4 text-sm font-semibold text-[#0a7272] transition-all duration-300 hover:bg-white hover:border-[#0a7272] backdrop-blur-sm"
+                className="inline-flex items-center gap-2 rounded-full border border-[#0a7272]/20 bg-white px-7 py-3.5 text-sm font-semibold text-[#0a7272] transition hover:bg-[#edf7f5]"
               >
                 Explore Offerings
               </a>
             </div>
           </div>
 
-          {/* Quick Info Glass Card */}
+          {/* Quick Info Feature Box */}
           <div className="grid gap-4">
-            <div className="rounded-[2.5rem] bg-gradient-to-br from-[#0a7272] via-[#096263] to-[#064e4b] p-8 text-white shadow-2xl relative overflow-hidden border border-white/10">
-              <div className="absolute top-0 right-0 -mr-10 -mt-10 w-44 h-44 bg-teal-400/20 rounded-full blur-3xl pointer-events-none" />
-              
-              <p className="text-xs font-bold uppercase tracking-[0.25em] text-teal-200">
+            <div className="rounded-[2rem] bg-[#0a7272] p-8 text-white shadow-xl relative overflow-hidden">
+              <div className="absolute top-0 right-0 -mr-6 -mt-6 w-32 h-32 bg-white/5 rounded-full blur-2xl pointer-events-none" />
+              <p className="text-xs font-semibold uppercase tracking-[0.25em] text-teal-200">
                 Format & Availability
               </p>
 
               <div className="mt-6 space-y-4">
-                <div className="rounded-2xl bg-white/10 p-4 backdrop-blur-md border border-white/10 transition duration-300 hover:bg-white/15">
+                <div className="rounded-2xl bg-white/10 p-4 backdrop-blur-md border border-white/10">
                   <div className="flex items-center gap-3">
-                    <div className="rounded-xl bg-teal-400/20 p-2 text-teal-200">
-                      <Globe2 size={20} />
-                    </div>
+                    <Globe2 size={20} className="text-teal-200" />
                     <p className="font-semibold text-base">International & Pan-India Online</p>
                   </div>
-                  <p className="mt-2 text-xs leading-6 text-white/85">
+                  <p className="mt-1.5 text-sm leading-6 text-white/85">
                     Secure Video Sessions in USD ($) and INR (₹) across time zones.
                   </p>
                 </div>
 
-                <div className="rounded-2xl bg-white/10 p-4 backdrop-blur-md border border-white/10 transition duration-300 hover:bg-white/15">
+                <div className="rounded-2xl bg-white/10 p-4 backdrop-blur-md border border-white/10">
                   <div className="flex items-center gap-3">
-                    <div className="rounded-xl bg-teal-400/20 p-2 text-teal-200">
-                      <MapPin size={20} />
-                    </div>
+                    <MapPin size={20} className="text-teal-200" />
                     <p className="font-semibold text-base">In-Person Practice</p>
                   </div>
-                  <p className="mt-2 text-xs leading-6 text-white/85">
+                  <p className="mt-1.5 text-sm leading-6 text-white/85">
                     Private clinic consultations available in Faridabad, Haryana.
                   </p>
                 </div>
@@ -133,22 +310,22 @@ const Services = () => {
             </div>
 
             <div className="grid gap-4 sm:grid-cols-2">
-              <div className="rounded-3xl border border-white/80 bg-white/80 p-5 shadow-sm backdrop-blur-md">
+              <div className="rounded-[1.5rem] border border-[#d7ecec] bg-white p-5 shadow-sm">
                 <div className="flex items-center gap-2 text-[#0a7272]">
                   <ShieldCheck size={18} />
-                  <p className="text-sm font-bold">Strict Confidentiality</p>
+                  <p className="text-sm font-semibold">Strict Confidentiality</p>
                 </div>
-                <p className="mt-2 text-xs leading-relaxed text-[#586e70]">
+                <p className="mt-2 text-xs leading-5 text-[#4c6162]">
                   Safe, non-judgmental space governed by clinical ethics.
                 </p>
               </div>
 
-              <div className="rounded-3xl border border-white/80 bg-white/80 p-5 shadow-sm backdrop-blur-md">
+              <div className="rounded-[1.5rem] border border-[#d7ecec] bg-white p-5 shadow-sm">
                 <div className="flex items-center gap-2 text-[#0a7272]">
                   <CalendarHeart size={18} />
-                  <p className="text-sm font-bold">Flexible Scheduling</p>
+                  <p className="text-sm font-semibold">Flexible Scheduling</p>
                 </div>
-                <p className="mt-2 text-xs leading-relaxed text-[#586e70]">
+                <p className="mt-2 text-xs leading-5 text-[#4c6162]">
                   Easy reschedule policy and evening/weekend availability.
                 </p>
               </div>
@@ -160,23 +337,23 @@ const Services = () => {
       {/* Floating CTA */}
       <Link
         to="/booking"
-        className="fixed bottom-6 right-6 z-50 inline-flex items-center gap-3 rounded-full bg-gradient-to-r from-[#0a7272] to-[#0d5c5e] px-7 py-4 text-sm font-bold text-white shadow-2xl transition-all duration-300 hover:scale-105 hover:shadow-teal-900/30 ring-4 ring-white/50"
+        className="fixed bottom-6 right-6 z-50 inline-flex items-center gap-3 rounded-full bg-[#0a7272] px-6 py-3.5 text-sm font-semibold text-white shadow-2xl transition hover:scale-105 hover:bg-[#0d5c5e]"
       >
         <MessageCircle size={18} />
         Book Consultation
       </Link>
 
       {/* Therapy Section */}
-      <section id="therapy" className="relative z-10 px-4 py-16 sm:px-6 lg:px-8">
+      <section id="therapy" className="px-4 py-16 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
           <div className="max-w-3xl">
-            <span className="text-xs font-bold uppercase tracking-[0.25em] text-[#0a7272] bg-[#e6f4f3] border border-teal-500/20 px-3.5 py-1.5 rounded-full">
+            <span className="text-xs font-bold uppercase tracking-[0.3em] text-[#0a7272] bg-[#eaf6f6] px-3 py-1 rounded-full">
               Clinical Therapy
             </span>
-            <h2 className="mt-4 text-3xl font-extrabold text-[#083c3e] sm:text-4xl">
+            <h2 className="mt-4 text-3xl font-bold text-[#0d4f50] sm:text-4xl">
               Personalized Therapeutic Support
             </h2>
-            <p className="mt-3 text-lg leading-relaxed text-[#455a5c]">
+            <p className="mt-3 text-lg leading-relaxed text-[#4c6162]">
               Evidence-based modalities designed to meet you where you are, fostering self-awareness, resilience, and emotional equilibrium.
             </p>
           </div>
@@ -185,33 +362,34 @@ const Services = () => {
             {therapyOptions.map((item) => (
               <div
                 key={item.id}
-                className="rounded-[2.5rem] border border-white/80 bg-white/90 p-6 sm:p-8 lg:p-10 shadow-xl shadow-teal-900/5 backdrop-blur-xl transition duration-300"
+                className="rounded-[2.5rem] border border-[#d7ecec] bg-white p-6 sm:p-8 lg:p-10 shadow-sm"
               >
-                <div className="grid gap-8 lg:grid-cols-[1fr_1.15fr]">
+                <div className="grid gap-8 lg:grid-cols-[1fr_1.1fr]">
+                  {/* Left Column: Details & Concerns */}
                   <div className="flex flex-col justify-between">
                     <div>
                       <div className="flex items-center gap-3">
-                        <div className="rounded-2xl bg-[#e6f4f3] p-3.5 text-[#0a7272]">
-                          <HeartHandshake size={26} />
+                        <div className="rounded-2xl bg-[#eaf6f6] p-3 text-[#0a7272]">
+                          <HeartHandshake size={24} />
                         </div>
-                        <h3 className="text-2xl font-bold text-[#083c3e]">
+                        <h3 className="text-2xl font-bold text-[#0d4f50]">
                           {item.title}
                         </h3>
                       </div>
 
-                      <p className="mt-4 text-base leading-relaxed text-[#455a5c]">
+                      <p className="mt-4 text-base leading-relaxed text-[#4c6162]">
                         {item.description}
                       </p>
 
-                      <div className="mt-6 rounded-2xl bg-[#f2f8f7] p-6 border border-teal-500/10">
+                      <div className="mt-6 rounded-2xl bg-[#f7fcfb] p-5 border border-[#e3f2f1]">
                         <h4 className="text-xs font-bold uppercase tracking-[0.2em] text-[#0a7272]">
                           Key Focus Areas & Concerns
                         </h4>
-                        <div className="mt-4 grid gap-3 sm:grid-cols-2">
+                        <div className="mt-4 grid gap-2.5 sm:grid-cols-2">
                           {item.concerns.map((concern) => (
                             <div
                               key={concern}
-                              className="flex items-center gap-2.5 text-sm font-medium text-[#2a4143]"
+                              className="flex items-center gap-2.5 text-sm text-[#3b4f50]"
                             >
                               <CheckCircle2
                                 size={16}
@@ -227,7 +405,7 @@ const Services = () => {
                     <div className="mt-8">
                       <Link
                         to={item.buttonTo}
-                        className="inline-flex items-center gap-2 rounded-full border-2 border-[#0a7272] px-7 py-3 text-sm font-bold text-[#0a7272] transition-all duration-300 hover:bg-[#0a7272] hover:text-white"
+                        className="inline-flex items-center gap-2 rounded-full border-2 border-[#0a7272] px-6 py-3 text-sm font-semibold text-[#0a7272] transition hover:bg-[#0a7272] hover:text-white"
                       >
                         {item.buttonLabel}
                         <ArrowRight size={16} />
@@ -235,34 +413,46 @@ const Services = () => {
                     </div>
                   </div>
 
-                  {/* Dynamic Pricing Cards */}
-                  <div className="grid gap-5 sm:grid-cols-2">
+                  {/* Right Column: Pricing Cards Side-by-Side */}
+                  <div className="grid gap-4 sm:grid-cols-2">
                     {item.sessionCards.map((card) => (
                       <div
                         key={card.title}
-                        className={`relative rounded-[2rem] p-6 transition-all duration-300 flex flex-col justify-between h-full ${
+                        className={`relative rounded-[2rem] p-6 transition flex flex-col justify-between ${
                           card.isPopular
-                            ? 'bg-gradient-to-br from-[#0a7272] via-[#096263] to-[#064e4b] text-white shadow-xl shadow-teal-900/20 ring-2 ring-teal-500/50 scale-[1.02]'
-                            : 'bg-white border border-[#dceeee] text-[#122a2c] hover:border-teal-500/40 hover:shadow-lg'
+                            ? 'bg-gradient-to-br from-[#0a7272] to-[#0d5c5e] text-white shadow-xl ring-2 ring-[#0a7272]/30 scale-[1.02]'
+                            : 'bg-[#f8fcfc] border border-[#d7ecec] text-[#183436]'
                         }`}
                       >
+                        {/* Popular / Recommended Badge */}
                         {card.isPopular && (
-                          <div className="absolute -top-3.5 right-6 inline-flex items-center gap-1.5 rounded-full bg-amber-400 px-3.5 py-1 text-xs font-extrabold text-slate-900 shadow-md">
-                            <Flame size={13} className="text-amber-950 fill-amber-950" />
+                          <div className="absolute -top-3 right-6 inline-flex items-center gap-1 rounded-full bg-amber-400 px-3 py-1 text-xs font-bold text-slate-900 shadow-md">
+                            <Flame size={13} className="text-amber-900 fill-amber-900" />
                             {card.popularBadge}
                           </div>
                         )}
 
                         <div>
-                          <p className={`text-sm font-extrabold tracking-wide uppercase ${card.isPopular ? 'text-teal-200' : 'text-[#0a7272]'}`}>
+                          <p
+                            className={`text-sm font-bold ${
+                              card.isPopular ? 'text-teal-100' : 'text-[#0a7272]'
+                            }`}
+                          >
                             {card.title}
                           </p>
 
+                          {/* Pricing Display */}
                           <div className="mt-4 space-y-1">
                             {(currencyRegion === 'ALL' || currencyRegion === 'INR') && (
                               <div className="flex items-baseline gap-2">
-                                <span className="text-3xl font-black tracking-tight">{card.priceINR}</span>
-                                <span className={`text-xs font-semibold ${card.isPopular ? 'text-teal-200' : 'text-[#668082]'}`}>
+                                <span className="text-3xl font-extrabold tracking-tight">
+                                  {card.priceINR}
+                                </span>
+                                <span
+                                  className={`text-xs font-semibold ${
+                                    card.isPopular ? 'text-teal-200' : 'text-[#5a7273]'
+                                  }`}
+                                >
                                   (India / INR)
                                 </span>
                               </div>
@@ -270,21 +460,37 @@ const Services = () => {
 
                             {(currencyRegion === 'ALL' || currencyRegion === 'USD') && (
                               <div className="flex items-baseline gap-2">
-                                <span className={`text-2xl font-bold ${card.isPopular ? 'text-teal-100' : 'text-[#083c3e]'}`}>
+                                <span
+                                  className={`text-2xl font-bold ${
+                                    card.isPopular ? 'text-teal-100' : 'text-[#0d4f50]'
+                                  }`}
+                                >
                                   {card.priceUSD}
                                 </span>
-                                <span className={`text-xs font-semibold ${card.isPopular ? 'text-teal-200' : 'text-[#668082]'}`}>
+                                <span
+                                  className={`text-xs font-semibold ${
+                                    card.isPopular ? 'text-teal-200' : 'text-[#5a7273]'
+                                  }`}
+                                >
                                   (International / USD)
                                 </span>
                               </div>
                             )}
 
-                            <p className={`text-xs mt-1 font-medium ${card.isPopular ? 'text-teal-100/80' : 'text-[#668082]'}`}>
+                            <p
+                              className={`text-xs mt-1 ${
+                                card.isPopular ? 'text-teal-100/80' : 'text-[#6b8283]'
+                              }`}
+                            >
                               {card.unit}
                             </p>
                           </div>
 
-                          <p className={`mt-4 text-xs leading-relaxed ${card.isPopular ? 'text-teal-50/90' : 'text-[#455a5c]'}`}>
+                          <p
+                            className={`mt-4 text-xs leading-relaxed ${
+                              card.isPopular ? 'text-white/90' : 'text-[#4c6162]'
+                            }`}
+                          >
                             {card.description}
                           </p>
                         </div>
@@ -292,10 +498,10 @@ const Services = () => {
                         <div className="mt-6 pt-4 border-t border-current/10">
                           <Link
                             to={card.buttonTo}
-                            className={`w-full inline-flex items-center justify-center gap-2 rounded-xl px-4 py-3 text-xs font-bold transition-all duration-200 ${
+                            className={`w-full inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-xs font-bold transition ${
                               card.isPopular
-                                ? 'bg-white text-[#0a7272] hover:bg-teal-50 shadow-md'
-                                : 'bg-[#0a7272] text-white hover:bg-[#085a5a]'
+                                ? 'bg-white text-[#0a7272] hover:bg-teal-50'
+                                : 'bg-[#0a7272] text-white hover:bg-[#095f5f]'
                             }`}
                           >
                             {card.buttonLabel}
@@ -312,25 +518,139 @@ const Services = () => {
         </div>
       </section>
 
-      {/* Trust & Testimonials Section */}
-      <section className="relative z-10 px-4 py-16 sm:px-6 lg:px-8">
+      {/* Programs Section */}
+      <section className="px-4 py-16 sm:px-6 lg:px-8 bg-[#f0f8f7]">
+        <div className="mx-auto max-w-7xl">
+          <div className="max-w-3xl">
+            <span className="text-xs font-bold uppercase tracking-[0.3em] text-[#0a7272] bg-white px-3 py-1 rounded-full border border-[#bfe1df]">
+              Workshops & Organizations
+            </span>
+            <h2 className="mt-4 text-3xl font-bold text-[#0d4f50] sm:text-4xl">
+              Wellness Programs & Institutional Care
+            </h2>
+            <p className="mt-3 text-lg leading-relaxed text-[#4c6162]">
+              Tailored group interventions, capacity-building workshops, and organizational wellbeing solutions.
+            </p>
+          </div>
+
+          <div className="mt-12 grid gap-8 lg:grid-cols-2">
+            {programOptions.map((item) => (
+              <div
+                key={item.title}
+                className="rounded-[2.5rem] border border-[#d7ecec] bg-white p-8 shadow-sm flex flex-col justify-between transition hover:shadow-md"
+              >
+                <div>
+                  <div className="flex items-center gap-3">
+                    <div className="rounded-2xl bg-[#eaf6f6] p-3 text-[#0a7272]">
+                      {item.title.includes('Workshops') ? (
+                        <Sparkles size={22} />
+                      ) : (
+                        <Building2 size={22} />
+                      )}
+                    </div>
+                    <h3 className="text-2xl font-bold text-[#0d4f50]">
+                      {item.title}
+                    </h3>
+                  </div>
+
+                  <p className="mt-4 text-sm leading-relaxed text-[#4c6162]">
+                    {item.description}
+                  </p>
+
+                  <div className="mt-6 space-y-2">
+                    {item.offerings.map((offering) => (
+                      <div
+                        key={offering}
+                        className="flex items-center gap-3 rounded-xl bg-[#f7fcfb] p-3 text-xs sm:text-sm text-[#3b4f50]"
+                      >
+                        <Check size={16} className="text-[#0a7272] shrink-0" />
+                        <span>{offering}</span>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Pricing Grid */}
+                  <div className="mt-6 grid gap-4 sm:grid-cols-2">
+                    {item.sessionCards.map((card) => (
+                      <div
+                        key={card.title}
+                        className={`relative rounded-2xl p-5 border ${
+                          card.isPopular
+                            ? 'border-[#0a7272] bg-[#f0f8f8]'
+                            : 'border-[#d7ecec] bg-white'
+                        }`}
+                      >
+                        {card.isPopular && (
+                          <span className="absolute -top-2.5 right-4 bg-[#0a7272] text-white text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full">
+                            {card.popularBadge}
+                          </span>
+                        )}
+
+                        <p className="text-xs font-bold text-[#0d4f50]">
+                          {card.title}
+                        </p>
+
+                        <div className="mt-2">
+                          {(currencyRegion === 'ALL' || currencyRegion === 'INR') && (
+                            <div className="text-lg font-bold text-[#0a7272]">
+                              {card.priceINR}{' '}
+                              <span className="text-[10px] font-normal text-[#5a7273]">
+                                INR
+                              </span>
+                            </div>
+                          )}
+                          {(currencyRegion === 'ALL' || currencyRegion === 'USD') && (
+                            <div className="text-base font-bold text-[#0d4f50]">
+                              {card.priceUSD}{' '}
+                              <span className="text-[10px] font-normal text-[#5a7273]">
+                                USD
+                              </span>
+                            </div>
+                          )}
+                          <p className="text-[11px] text-[#6b8283]">{card.unit}</p>
+                        </div>
+
+                        <p className="mt-2 text-[11px] text-[#4c6162] leading-tight">
+                          {card.description}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="mt-8 pt-4">
+                  <Link
+                    to={item.buttonTo}
+                    className="inline-flex items-center gap-2 rounded-full border border-[#0a7272] px-6 py-3 text-xs sm:text-sm font-semibold text-[#0a7272] transition hover:bg-[#0a7272] hover:text-white"
+                  >
+                    {item.buttonLabel}
+                    <ArrowRight size={14} />
+                  </Link>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Trust & Testimonials (Updated) */}
+      <section className="px-4 py-16 sm:px-6 lg:px-8">
         <div className="mx-auto grid max-w-7xl gap-8 lg:grid-cols-[0.95fr_1.05fr]">
-          <div className="rounded-[2.5rem] bg-gradient-to-br from-[#083c3e] to-[#042728] p-8 sm:p-10 text-white shadow-xl flex flex-col justify-between relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-64 h-64 bg-teal-500/10 rounded-full blur-3xl pointer-events-none" />
-            
+          {/* Trust Points */}
+          <div className="rounded-[2.5rem] bg-gradient-to-br from-[#0f5f61] to-[#0a7272] p-8 sm:p-10 text-white shadow-md flex flex-col justify-between">
             <div>
               <div className="flex items-center gap-3">
-                <div className="rounded-2xl bg-white/10 p-3 text-teal-300 border border-white/10">
-                  <ShieldCheck size={26} />
+                <div className="rounded-2xl bg-white/10 p-3 text-teal-200">
+                  <ShieldCheck size={24} />
                 </div>
-                <h2 className="text-2xl sm:text-3xl font-extrabold">Client-Centered Care</h2>
+                <h2 className="text-2xl sm:text-3xl font-bold">Client-Centered Practice</h2>
               </div>
 
               <div className="mt-8 space-y-4">
                 {trustPoints.map((point) => (
                   <div
                     key={point}
-                    className="flex items-start gap-3.5 rounded-2xl bg-white/5 p-4.5 text-sm leading-relaxed text-teal-50 border border-white/10 backdrop-blur-sm"
+                    className="flex items-start gap-3 rounded-2xl bg-white/8 p-4 text-sm leading-relaxed text-teal-50 border border-white/5 hover:bg-white/10 transition"
                   >
                     <CheckCircle2 size={18} className="text-teal-300 shrink-0 mt-0.5" />
                     <span>{point}</span>
@@ -340,36 +660,86 @@ const Services = () => {
             </div>
           </div>
 
-          <div className="rounded-[2.5rem] border border-white/80 bg-white/90 p-8 sm:p-10 shadow-xl shadow-teal-900/5 backdrop-blur-xl flex flex-col justify-between">
+          {/* Testimonials */}
+          <div className="rounded-[2.5rem] border border-[#d7ecec] bg-white p-8 sm:p-10 shadow-sm flex flex-col justify-between">
             <div>
-              <div className="flex items-center gap-1.5 text-amber-400 mb-3">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} size={18} fill="currentColor" />
-                ))}
+              <div className="flex items-center justify-between mb-2">
+                <div className="flex items-center gap-2 text-amber-500">
+                  {Array.from({ length: 5 }).map((_, i) => (
+                    <Star key={i} size={16} className="text-amber-400" />
+                  ))}
+                </div>
+
+                <div>
+                  <a href="/contact" className="text-sm font-semibold text-[#0a7272] underline">Share your feedback</a>
+                </div>
               </div>
 
-              <h2 className="text-2xl sm:text-3xl font-extrabold text-[#083c3e]">
-                Client Experiences
-              </h2>
-              <p className="mt-1 text-sm text-[#586e70]">
-                Reflections from individuals supported across India and internationally.
-              </p>
+              <h2 className="text-2xl sm:text-3xl font-bold text-[#0d4f50]">Client Experiences</h2>
+              <p className="mt-2 text-sm text-[#4c6162]">Stories from people who experienced meaningful change, delivered with privacy and care.</p>
 
-              <div className="mt-6 space-y-4">
+              <div className="mt-6 grid gap-4">
                 {testimonials.map((item) => (
-                  <div
-                    key={item.name}
-                    className="rounded-2xl bg-[#f2f8f7] p-5 border border-teal-500/10"
-                  >
-                    <p className="text-sm leading-relaxed text-[#2a4143] italic font-medium">
-                      “{item.quote}”
-                    </p>
+                  <div key={item.name} className="rounded-2xl bg-[#f7fcfb] p-5 border border-[#eaf6f6] hover:scale-[1.01] transition-transform">
+                    <p className="text-sm leading-relaxed text-[#2d4749] italic">“{item.quote}”</p>
                     <div className="mt-3 flex items-center justify-between text-xs">
-                      <span className="font-extrabold text-[#0a7272]">{item.name}</span>
-                      <span className="text-[#668082] font-semibold">{item.location}</span>
+                      <span className="font-bold text-[#0a7272]">{item.name}</span>
+                      <span className="text-[#6b8283]">{item.location}</span>
                     </div>
                   </div>
                 ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Location / Booking Bar */}
+      <section className="px-4 pb-16 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-7xl overflow-hidden rounded-[2.5rem] bg-gradient-to-r from-[#eaf6f6] via-white to-[#eef8f7] p-8 sm:p-10 border border-[#d7ecec] shadow-sm">
+          <div className="grid gap-8 lg:grid-cols-[1fr_auto] lg:items-center">
+            <div className="max-w-2xl">
+              <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#0a7272]">
+                Location & Accessibility
+              </span>
+              <h2 className="mt-2 text-2xl sm:text-3xl font-bold text-[#0d4f50]">
+                In-person in Faridabad, virtual globally.
+              </h2>
+              <p className="mt-3 text-sm sm:text-base leading-relaxed text-[#4c6162]">
+                Schedule in-person consultations in Faridabad or seamlessly connect via encrypted video calls from anywhere globally.
+              </p>
+            </div>
+
+            <div className="rounded-2xl border border-[#d7ecec] bg-white p-6 shadow-sm">
+              <div className="flex items-start gap-3">
+                <div className="rounded-xl bg-[#0a7272] p-2.5 text-white">
+                  <MapPin size={20} />
+                </div>
+                <div>
+                  <p className="font-bold text-[#0d4f50]">Faridabad, Haryana</p>
+                  <p className="text-xs text-[#4c6162] mt-0.5">
+                    Near Sector 15 / Central Location
+                  </p>
+                </div>
+              </div>
+
+              <div className="mt-5 flex flex-wrap gap-3">
+                <a
+                  href="https://booking.myndspace.app/amanp"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="rounded-full bg-[#0a7272] px-5 py-2.5 text-xs font-bold text-white transition hover:bg-[#0d5c5e]"
+                >
+                  Book Slot Online
+                </a>
+                <a
+                  href="https://maps.google.com/?q=Faridabad"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="rounded-full border border-[#0a7272] px-5 py-2.5 text-xs font-bold text-[#0a7272] transition hover:bg-[#f7fcfb]"
+                >
+                  Open Map
+                </a>
               </div>
             </div>
           </div>
