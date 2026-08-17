@@ -1,15 +1,14 @@
 import React from 'react';
-import { Star } from 'lucide-react'; // Fixed: Import the Star component
+import { Star, Quote, CheckCircle2 } from 'lucide-react';
 
 const TESTIMONIALS = [
   {
     id: 1,
     rating: 5,
     comment:
-      "This is a sample testimonial just to see how everything looks on the actual site and nothing else. I just want to see how things are moving around.",
-    avatar:
-      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=200",
-    clientName: "Ananya Sharma",
+      "As one of her early clients, I can confidently say she truly embodies the qualities she brings to her profession. She has consistently offered me an empathetic ear, helping me navigate my challenges one step at a time at my own pace. Her patience and expertise create a space that feels both safe and constructive.",
+    initials: "RR",
+    clientName: "R.R.",
     role: "Verified Client",
     serviceUsed: "Individual Therapy",
   },
@@ -17,21 +16,19 @@ const TESTIMONIALS = [
     id: 2,
     rating: 5,
     comment:
-      "The support and guidance I received have been incredible. Psychobeings truly cares about mental well-being, and I felt that in every session I attended.",
-    avatar:
-      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=200",
-    clientName: "Rohan Mehta",
+      "Working with Amanpreet has been truly transformative. She provided a grounded, compassionate space for me when I was dealing with severe intrusive suicidal thoughts, giving me actionable coping tools that actually worked. Her approach is versatile, thoughtful, and deeply supportive.",
+    initials: "LA",
+    clientName: "L.A.",
     role: "Verified Client",
-    serviceUsed: "Online Counselling",
+    serviceUsed: "Crisis Support & Coping",
   },
   {
     id: 3,
-    rating: 5,
+    rating: 4,
     comment:
-      "I've found a safe space at Psychobeings. Every session helps me to understand myself better, and I am beyond grateful for this experience.",
-    avatar:
-      "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=200",
-    clientName: "Priya Nair",
+      "Super organized and always prepared, which makes every session feel smooth. Very warm, supportive, and easy to talk to.",
+    initials: "JD",
+    clientName: "J.D.",
     role: "Verified Client",
     serviceUsed: "Personal Growth",
   },
@@ -39,66 +36,89 @@ const TESTIMONIALS = [
     id: 4,
     rating: 5,
     comment:
-      "Psychobeings has changed my outlook. They genuinely care about each individual, and that compassion shines through in their approach and support.",
-    avatar:
-      "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=200",
-    clientName: "Vikram Malhotra",
+      "I had some challenges with stress and communication, and therapy helped me work through them with clarity. She provided so much validation and helped me realise healthier ways to navigate my relationships.",
+    initials: "PS",
+    clientName: "P. Singh",
     role: "Verified Client",
-    serviceUsed: "Stress & Burnout",
+    serviceUsed: "Stress & Relationships",
   },
 ];
 
-const Testimonials = () => {
+export default function Testimonials() {
   return (
-    <section className="py-20 bg-slate-50 border-t border-slate-200/80">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="relative overflow-hidden bg-slate-50/60 py-20 border-t border-slate-200/60">
+      {/* Soft Ambient Glow Background */}
+      <div className="pointer-events-none absolute -top-40 left-1/2 -z-10 h-96 w-96 -translate-x-1/2 rounded-full bg-[#0a7272]/5 blur-3xl" />
+
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         
         {/* Header Section */}
-        <div className="text-center max-w-2xl mx-auto mb-12">
-          <h2 className="text-xs font-bold uppercase tracking-widest text-[#0a7272] mb-2">
-            Real Transformations
+        <div className="mx-auto max-w-2xl text-center mb-14">
+          <div className="inline-flex items-center gap-2 rounded-full bg-[#0a7272]/10 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-[#0a7272] mb-4">
+            <CheckCircle2 className="w-3.5 h-3.5" />
+            <span>Real Transformations</span>
+          </div>
+
+          <h2 className="text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl lg:text-5xl">
+            What clients say about <span className="text-[#0a7272]">Psychobeings</span>
           </h2>
-          <p className="text-2xl sm:text-3xl font-bold text-slate-900">
-            What our clients share about their journey
+
+          <p className="mt-4 text-base text-slate-600 sm:text-lg">
+            Read authentic experiences from individuals who took the first step toward personal growth and emotional healing.
           </p>
+
+          {/* Social Proof Badge */}
+          <div className="mt-6 inline-flex items-center gap-2 rounded-2xl bg-white px-4 py-2 shadow-xs border border-slate-200/80">
+            <div className="flex text-amber-400">
+              {[...Array(5)].map((_, i) => (
+                <Star key={i} className="w-4 h-4 fill-amber-400" />
+              ))}
+            </div>
+            <span className="text-xs font-semibold text-slate-800">5.0 Google Rating</span>
+          </div>
         </div>
 
-        {/* Testimonials Grid */}
+        {/* Dynamic Card Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {TESTIMONIALS.map((item) => (
             <div
               key={item.id}
-              className="bg-white p-6 rounded-2xl border border-slate-200 shadow-2xs flex flex-col justify-between"
+              className="group relative flex flex-col justify-between rounded-3xl bg-white p-7 shadow-xs border border-slate-200/80 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl hover:shadow-[#0a7272]/5 hover:border-[#0a7272]/30"
             >
+              {/* Decorative Quote Mark */}
+              <Quote className="absolute right-6 top-6 h-10 w-10 text-slate-100 transition-colors group-hover:text-[#0a7272]/10 pointer-events-none" />
+
               <div>
-                {/* Star Rating */}
-                <div className="flex items-center gap-1 text-amber-400 mb-3">
+                {/* Categorized Service Tag */}
+                <span className="inline-block rounded-lg bg-[#0a7272]/10 px-3 py-1 text-[11px] font-semibold text-[#0a7272] mb-4">
+                  {item.serviceUsed}
+                </span>
+
+                {/* Rating */}
+                <div className="flex items-center gap-1 text-amber-400 mb-4">
                   {[...Array(item.rating)].map((_, i) => (
-                    <Star key={i} className="w-4 h-4 fill-amber-400" />
+                    <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />
                   ))}
                 </div>
 
-                {/* Testimonial Quote */}
-                <p className="text-sm text-slate-700 italic leading-relaxed mb-4">
-                  "{item.comment}"
+                {/* Review Quote */}
+                <p className="text-xs sm:text-sm font-normal leading-relaxed text-slate-600 mb-6">
+                  “{item.comment}”
                 </p>
               </div>
 
-              {/* Client Info Footer */}
-              <div className="flex items-center gap-3 pt-4 border-t border-slate-100">
-                <img
-                  src={item.avatar}
-                  alt={item.clientName}
-                  className="w-10 h-10 rounded-full object-cover"
-                />
+              {/* Author Details with Initials Avatar */}
+              <div className="flex items-center gap-3 pt-5 border-t border-slate-100 mt-auto">
+                <div className="h-10 w-10 rounded-full bg-[#0a7272]/10 text-[#0a7272] font-bold text-xs flex items-center justify-center ring-2 ring-slate-100 group-hover:ring-[#0a7272]/20 transition-all shrink-0">
+                  {item.initials}
+                </div>
                 <div>
-                  <h4 className="text-xs font-bold text-slate-900">
+                  <h3 className="text-sm font-bold text-slate-900 leading-snug">
                     {item.clientName}
-                  </h4>
-                  <p className="text-[11px] text-slate-500">
-                    {item.role} •{" "}
-                    <span className="text-[#0a7272]">{item.serviceUsed}</span>
-                  </p>
+                  </h3>
+                  <span className="text-xs font-medium text-slate-500">
+                    {item.role}
+                  </span>
                 </div>
               </div>
             </div>
@@ -108,6 +128,4 @@ const Testimonials = () => {
       </div>
     </section>
   );
-};
-
-export default Testimonials;
+}
