@@ -252,14 +252,14 @@ const Contact = () => {
                 <div className="w-full h-44 rounded-xl overflow-hidden border border-slate-200">
                   <iframe
                     title="Psychobeings location"
-                    src="https://www.google.com/maps?q=RPS%20Palms%20Sector%2088%20Faridabad&z=17&output=embed"
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d28076.2060174367!2d77.33622655499245!3d28.403388650564068!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390cdd8c1cbcd9ad%3A0xcb81de111c2746f0!2sPsychobeings%20%E2%80%93%20Psychological%20Wellness%20%26%20Therapy!5e0!3m2!1sen!2sin!4v1787038689039!5m2!1sen!2sin"
                     className="w-full h-full border-0"
                     loading="lazy"
                     referrerPolicy="no-referrer-when-downgrade"
                   />
                 </div>
                 <a
-                  href="https://maps.google.com/?q=RPS+Palms+Sector+88+Faridabad"
+                  href="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d28076.2060174367!2d77.33622655499245!3d28.403388650564068!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390cdd8c1cbcd9ad%3A0xcb81de111c2746f0!2sPsychobeings%20%E2%80%93%20Psychological%20Wellness%20%26%20Therapy!5e0!3m2!1sen!2sin!4v1787038689039!5m2!1sen!2sin"
                   target="_blank"
                   rel="noreferrer"
                   className="mt-3 block text-center text-xs font-bold text-[#0a7272] hover:underline"
