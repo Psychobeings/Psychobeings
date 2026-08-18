@@ -37,7 +37,7 @@ const therapyOptions = [
         description: 'Ideal for an initial consultation or targeted support on a specific concern.',
         isPopular: false,
         buttonLabel: 'Book Single Session',
-        buttonTo: '/contact'
+        buttonTo: '/booking'
       },
       {
         title: 'Sustained Growth Package',
@@ -52,7 +52,7 @@ const therapyOptions = [
       }
     ],
     buttonLabel: 'Book Individual Support',
-    buttonTo: '/contact'
+    buttonTo: '/booking'
   },
   {
     id: 'child-adolescent',
@@ -74,7 +74,7 @@ const therapyOptions = [
         description: 'Includes child interaction and brief parent intake/feedback.',
         isPopular: false,
         buttonLabel: 'Book Initial Assessment',
-        buttonTo: '/contact'
+        buttonTo: '/booking'
       },
       {
         title: 'Developmental Package',
@@ -89,7 +89,7 @@ const therapyOptions = [
       }
     ],
     buttonLabel: 'Book Child & Adolescent Session',
-    buttonTo: '/contact'
+    buttonTo: '/booking'
   }
 ];
 
