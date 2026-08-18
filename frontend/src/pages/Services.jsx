@@ -721,7 +721,7 @@ const Services = () => {
                 <div>
                   <p className="font-bold text-[#0d4f50]">Faridabad, Haryana</p>
                   <p className="text-xs text-[#4c6162] mt-0.5">
-                    Near Sector 15 / Central Location
+                    Sector 88,Kheri Road
                   </p>
                 </div>
               </div>
