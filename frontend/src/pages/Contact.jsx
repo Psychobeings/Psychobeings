@@ -163,7 +163,9 @@ const Contact = () => {
                         className="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#0a7272] bg-white"
                       >
                         <option value="General Inquiry">General Inquiry</option>
-                        <option value="Therapist Matching">Therapist Matching</option>
+                        <option value="Workshops & Seminars">Workshops & Seminars</option>
+                        <option value="Corporate Wellness Programs">Corporate Wellness Programs</option>
+                        <option value= "Packages & Booking">Packages & Booking</option>
                         <option value="Online Counselling">Online Counselling</option>
                         <option value="In-Person Counselling">In-Person Counselling</option>
                       </select>
@@ -210,21 +212,21 @@ const Contact = () => {
             {/* Info Sidebar */}
             <div className="lg:col-span-5 space-y-6">
               <div className="bg-slate-900 text-white rounded-3xl p-8 space-y-6">
-                <h3 className="text-xl font-bold font-serif">Contact Information</h3>
+                <h3 className="text-xl font-bold font-serif">Connect With Us/Visit</h3>
 
                 <div className="space-y-4 text-sm text-slate-300">
                   <div className="flex items-start gap-3">
                     <MapPin className="w-5 h-5 text-teal-400 shrink-0 mt-0.5" />
                     <div>
                       <p className="font-semibold text-white">Visit Us In Person</p>
-                      <p className="text-xs text-slate-400">RPS Palms, Sector 88, Faridabad, Haryana</p>
+                      <p className="text-xs text-slate-400"> 10:00 Am - 8:00 PM </p>
                     </div>
                   </div>
 
                   <div className="flex items-center gap-3">
                     <Mail className="w-5 h-5 text-teal-400 shrink-0" />
                     <div>
-                      <p className="font-semibold text-white">General Email</p>
+                      <p className="font-semibold text-white">Email ID </p>
                       <p className="text-xs text-slate-400">info.psychobeings@gmail.com</p>
                     </div>
                   </div>
