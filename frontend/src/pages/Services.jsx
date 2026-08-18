@@ -175,15 +175,20 @@ const trustPoints = [
   'Seamless booking and flexible online / offline appointment slots.'
 ];
 
-const testimonialsEmbed = `
-<div class="embedsocial-hashtag" data-ref="5a9e4df14a5acc6ab06abed6ad66a848d96b1b8d"> 
-  <a class="feed-powered-by-es feed-powered-by-es-feed-img es-widget-branding" href="https://embedsocial.com/google-reviews-widget/" target="_blank" title="Embed Google reviews" >
-    <img src="https://embedsocial.com/cdn/icon/embedsocial-logo.webp" alt="EmbedSocial" />
-    <div class="es-widget-branding-text">Embed Google reviews</div>
-  </a>
-</div>
-<script>(function(d, s, id) { var js; if (d.getElementById(id)) {return;} js = d.createElement(s); js.id = id; js.src = "https://embedsocial.com/cdn/ht.js"; d.getElementsByTagName('head')[0].appendChild(js); }(document, "script", "EmbedSocialHashtagScript"));</script>
-`;
+const testimonials = [
+  {
+    quote:
+      'The space felt grounding and entirely non-judgmental. I felt truly understood from the very first session.',
+    name: 'A. Sharma',
+    location: 'Delhi NCR'
+  },
+  {
+    quote:
+      'Practical tools mixed with deep emotional clarity. It helped me regain confidence and balance during a tough transition.',
+    name: 'R. Kapoor',
+    location: 'London, UK'
+  }
+];
 
 const Services = () => {
   const [currencyRegion, setCurrencyRegion] = useState('ALL'); // 'ALL' | 'INR' | 'USD'
@@ -671,8 +676,21 @@ const Services = () => {
                 Reflections from individuals supported across India and internationally.
               </p>
 
-              <div className="mt-6">
-                <div dangerouslySetInnerHTML={{ __html: testimonialsEmbed }} />
+              <div className="mt-6 space-y-4">
+                {testimonials.map((item) => (
+                  <div
+                    key={item.name}
+                    className="rounded-2xl bg-[#f7fcfb] p-5 border border-[#eaf6f6]"
+                  >
+                    <p className="text-sm leading-relaxed text-[#2d4749] italic">
+                      “{item.quote}”
+                    </p>
+                    <div className="mt-3 flex items-center justify-between text-xs">
+                      <span className="font-bold text-[#0a7272]">{item.name}</span>
+                      <span className="text-[#6b8283]">{item.location}</span>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
