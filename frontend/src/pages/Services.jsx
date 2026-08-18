@@ -728,7 +728,7 @@ const Services = () => {
 
               <div className="mt-5 flex flex-wrap gap-3">
                 <a
-                  href="https://booking.myndspace.app/amanp"
+                  href="https://psychobeings.com/booking"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="rounded-full bg-[#0a7272] px-5 py-2.5 text-xs font-bold text-white transition hover:bg-[#0d5c5e]"
