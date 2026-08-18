@@ -736,7 +736,7 @@ const Services = () => {
                   Book Slot Online
                 </a>
                 <a
-                  href="https://maps.google.com/?q=Faridabad"
+                  href="https://maps.app.goo.gl/oqDJRvWrNSt5ULPBA"
                   target="_blank"
                   rel="noreferrer"
                   className="rounded-full border border-[#0a7272] px-5 py-2.5 text-xs font-bold text-[#0a7272] transition hover:bg-[#f7fcfb]"
