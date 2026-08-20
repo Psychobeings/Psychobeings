@@ -117,7 +117,7 @@ const Footer = () => {
 
         {/* Bottom Bar */}
         <div className="pt-6 border-t border-gray-200 flex flex-col sm:flex-row items-center justify-between text-xs text-gray-400 gap-4">
-          <p>© {currentYear} Psychobeings. All rights reserved.</p>
+          <p>© {2023} Psychobeings. All rights reserved.</p>
           <div className="flex space-x-6">
             <a href="/privacy" className="hover:text-gray-600">Privacy</a>
             <a href="/terms" className="hover:text-gray-600">Terms</a>
