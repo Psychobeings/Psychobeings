@@ -1,5 +1,5 @@
 import React from 'react';
-import logo2 from '../assets/logo2.png'; 
+import logo2 from '../assets/PSYCHOBEINGS website logo.jpg'; 
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
