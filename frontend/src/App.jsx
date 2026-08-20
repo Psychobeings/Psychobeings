@@ -12,6 +12,7 @@ import ComingSoon from './components/ComingSoon';
 import { Toaster } from 'react-hot-toast';
 import TherapyDetails from './pages/TherapyDetails';
 import Booking from './pages/Booking';
+import PrivacyPolicy from './pages/Privacy';
 
 function App() {
   return (
@@ -32,7 +33,7 @@ function App() {
             <Route path="/couples-therapy" element={<SessionBookingForm />} />
             <Route path="/family-therapy" element={<ComingSoon />} />
             <Route path="/group-therapy" element={<ComingSoon />} />
-            <Route path="/privacy" element={<privacyPolicy />} />
+            <Route path="/privacy" element={<PrivacyPolicy />} />
           </Routes>
         </main>
       </div>

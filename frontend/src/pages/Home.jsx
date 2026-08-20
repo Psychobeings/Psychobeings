@@ -9,7 +9,6 @@ import Reviewssection from '../components/HomePage/Reviewssection';
 import FAQ from '../components/FAQ';
 import Packageshome from '../components/HomePage/Packageshome';
 import Vistus from '../components/HomePage/Vistus';
-import privacyPolicy from './Privacy';
 
 // Defined dynamic sections to map over (excluding HeroHome so it doesn't render twice)
 const homeSections = [
