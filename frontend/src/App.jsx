@@ -36,6 +36,7 @@ function App() {
             <Route path="/group-therapy" element={<ComingSoon />} />
             <Route path="/privacy" element={<PrivacyPolicy />} />
             <Route path="/cancellation-policy" element={<CancellationPolicy />} />
+            <Route path="/terms&conditions" element={<TermsAndConditions />} />
           </Routes>
         </main>
       </div>
