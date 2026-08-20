@@ -83,6 +83,7 @@ const Footer = () => {
             <h3 className="text-xs font-bold tracking-widest text-teal-400 uppercase">Support & Legal</h3>
             <ul className="mt-4 space-y-3 text-sm">
               <li><a href="/privacy" className="text-slate-400 hover:text-white transition-colors duration-200">Privacy Policy</a></li>
+              <li><a href="/cancellation-policy" className="text-slate-400 hover:text-white transition-colors duration-200">Cancellation Policy</a></li>
               <li><a href="/terms" className="text-slate-400 hover:text-white transition-colors duration-200">Terms & Conditions</a></li>
               <li><a href="/refund-policy" className="text-slate-400 hover:text-white transition-colors duration-200">Cancellation & Refund</a></li>
               <li><a href="/contact" className="text-slate-400 hover:text-white transition-colors duration-200">Contact Us</a></li>
