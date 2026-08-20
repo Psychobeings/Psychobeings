@@ -13,6 +13,7 @@ import { Toaster } from 'react-hot-toast';
 import TherapyDetails from './pages/TherapyDetails';
 import Booking from './pages/Booking';
 import PrivacyPolicy from './pages/Privacy';
+import TermsAndConditions from './pages/Terms&Conditions';
 import CancellationPolicy from './pages/CancellationPolicy';
 
 function App() {
@@ -35,8 +36,10 @@ function App() {
             <Route path="/family-therapy" element={<ComingSoon />} />
             <Route path="/group-therapy" element={<ComingSoon />} />
             <Route path="/privacy" element={<PrivacyPolicy />} />
-            <Route path="/cancellation-policy" element={<CancellationPolicy />} />
+            <Route path="/terms" element={<TermsAndConditions />} />
             <Route path="/terms&conditions" element={<TermsAndConditions />} />
+            <Route path="/cancellation-policy" element={<CancellationPolicy />} />
+            <Route path="/refund-policy" element={<CancellationPolicy />} />
           </Routes>
         </main>
       </div>
