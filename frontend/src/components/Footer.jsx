@@ -35,84 +35,96 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="bg-slate-950 text-slate-300 relative overflow-hidden border-t border-slate-800">
-      {/* Subtle ambient background glow */}
-      <div className="absolute top-0 left-1/4 w-96 h-96 bg-teal-500/5 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-blue-500/5 rounded-full blur-3xl pointer-events-none" />
+    <footer className="bg-gray-50 text-gray-600 border-t border-gray-200 pt-12 pb-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+        
+        {/* Top Banner Card */}
+        <div className="bg-white border border-gray-200 rounded-2xl p-8 shadow-sm flex flex-col lg:flex-row items-center justify-between gap-6">
+          <div className="space-y-2 text-center lg:text-left">
+            <h3 className="text-xl font-bold text-gray-900">Ready to prioritize your mental wellbeing?</h3>
+            <p className="text-sm text-gray-500 max-w-xl">
+              Connect with our professionals for personalized therapy and wellness guidance tailored to your journey.
+            </p>
+          </div>
+          <a
+            href="/contact"
+            className="px-6 py-3 bg-teal-600 hover:bg-teal-700 text-white text-sm font-semibold rounded-xl transition-all shadow-sm hover:shadow whitespace-nowrap"
+          >
+            Book a Session Today
+          </a>
+        </div>
 
-      <div className="relative px-6 pt-16 pb-12 mx-auto max-w-7xl lg:px-8">
-        <div className="grid grid-cols-1 gap-12 lg:grid-cols-12">
+        {/* Main 4-Column Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           
           {/* Column 1: Brand Info */}
-          <div className="lg:col-span-4 space-y-6">
-            <div className="flex items-center space-x-3">
-              <img className="h-10 w-auto object-contain brightness-110" src={logo2} alt="Psychobeings Logo" />
-            </div>
-            <p className="text-sm leading-relaxed text-slate-400 max-w-sm">
-              Every step of your mental health journey counts. We provide a safe, compassionate space where you are free to heal, thrive, and grow.
+          <div className="space-y-4">
+            <img className="h-9 w-auto object-contain" src={logo2} alt="Psychobeings Logo" />
+            <p className="text-sm text-gray-500 leading-relaxed">
+              Providing a safe, compassionate, and non-judgmental space where you are free to heal and grow.
             </p>
-            <div className="flex space-x-3 pt-2">
+            <p className="text-xs italic text-teal-700 font-medium">
+              "Empowering minds, one step at a time."
+            </p>
+          </div>
+
+          {/* Column 2: Quick Links */}
+          <div className="space-y-3">
+            <h4 className="text-xs font-bold tracking-wider text-gray-900 uppercase">Navigation</h4>
+            <ul className="space-y-2.5 text-sm">
+              <li><a href="/" className="hover:text-teal-600 transition-colors">Home</a></li>
+              <li><a href="/about" className="hover:text-teal-600 transition-colors">About Us</a></li>
+              <li><a href="/services" className="hover:text-teal-600 transition-colors">Services</a></li>
+              <li><a href="/blog" className="hover:text-teal-600 transition-colors">Resources</a></li>
+            </ul>
+          </div>
+
+          {/* Column 3: Policies & Support */}
+          <div className="space-y-3">
+            <h4 className="text-xs font-bold tracking-wider text-gray-900 uppercase">Support & Policies</h4>
+            <ul className="space-y-2.5 text-sm">
+              <li><a href="/privacy" className="hover:text-teal-600 transition-colors">Privacy Policy</a></li>
+              <li><a href="/cancellation-policy" className="hover:text-teal-600 transition-colors">Cancellation Policy</a></li>
+              <li><a href="/terms" className="hover:text-teal-600 transition-colors">Terms & Conditions</a></li>
+              <li><a href="/contact" className="hover:text-teal-600 transition-colors">Contact Us</a></li>
+            </ul>
+          </div>
+
+          {/* Column 4: Social Connect & Help */}
+          <div className="space-y-4">
+            <h4 className="text-xs font-bold tracking-wider text-gray-900 uppercase">Connect With Us</h4>
+            <div className="flex space-x-3">
               {socialLinks.map((item) => (
                 <a
                   key={item.name}
                   href={item.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-10 h-10 flex items-center justify-center rounded-full bg-slate-900 border border-slate-800 text-slate-400 hover:text-teal-400 hover:border-teal-500/40 hover:bg-slate-800/80 transition-all duration-300 shadow-sm"
+                  className="w-9 h-9 flex items-center justify-center rounded-lg bg-white border border-gray-200 text-gray-500 hover:text-teal-600 hover:border-teal-500 transition-all shadow-sm"
                   aria-label={item.name}
                 >
                   {item.icon}
                 </a>
               ))}
             </div>
-          </div>
-
-          {/* Column 2: Navigation Links */}
-          <div className="lg:col-span-2 md:col-span-4">
-            <h3 className="text-xs font-bold tracking-widest text-teal-400 uppercase">Explore</h3>
-            <ul className="mt-4 space-y-3 text-sm">
-              <li><a href="/" className="text-slate-400 hover:text-white transition-colors duration-200">Home</a></li>
-              <li><a href="/about" className="text-slate-400 hover:text-white transition-colors duration-200">About Us</a></li>
-              <li><a href="/services" className="text-slate-400 hover:text-white transition-colors duration-200">Services</a></li>
-              <li><a href="/blog" className="text-slate-400 hover:text-white transition-colors duration-200">Resources</a></li>
-            </ul>
-          </div>
-
-          {/* Column 3: Legal & Support Links */}
-          <div className="lg:col-span-3 md:col-span-4">
-            <h3 className="text-xs font-bold tracking-widest text-teal-400 uppercase">Support & Legal</h3>
-            <ul className="mt-4 space-y-3 text-sm">
-              <li><a href="/privacy" className="text-slate-400 hover:text-white transition-colors duration-200">Privacy Policy</a></li>
-              <li><a href="/cancellation-policy" className="text-slate-400 hover:text-white transition-colors duration-200">Cancellation Policy</a></li>
-              <li><a href="/terms" className="text-slate-400 hover:text-white transition-colors duration-200">Terms & Conditions</a></li>
-              <li><a href="/refund-policy" className="text-slate-400 hover:text-white transition-colors duration-200">Cancellation & Refund</a></li>
-              <li><a href="/contact" className="text-slate-400 hover:text-white transition-colors duration-200">Contact Us</a></li>
-            </ul>
-          </div>
-
-          {/* Column 4: Trust Badge & Contact */}
-          <div className="lg:col-span-3 md:col-span-4 space-y-4">
-            <h3 className="text-xs font-bold tracking-widest text-teal-400 uppercase">Need Support?</h3>
-            <p className="text-sm text-slate-400">
-              Reach out to our care team for inquiries and appointments.
-            </p>
-            <div className="pt-2">
-              <a 
-                href="/contact" 
-                className="inline-flex items-center justify-center w-full px-4 py-2.5 text-sm font-medium text-slate-900 bg-teal-400 rounded-lg hover:bg-teal-300 transition-colors duration-200 shadow-md shadow-teal-500/10"
-              >
-                Book a Session
-              </a>
+            <div className="pt-2 text-xs text-gray-500 space-y-1">
+              <p className="font-semibold text-gray-700">Need direct assistance?</p>
+              <p>Email our care team via the contact form anytime.</p>
             </div>
           </div>
 
         </div>
 
         {/* Bottom Bar */}
-        <div className="pt-8 mt-12 border-t border-slate-800/80 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-4">
-          <p className="italic text-slate-400">"Empowering minds, one step at a time."</p>
+        <div className="pt-6 border-t border-gray-200 flex flex-col sm:flex-row items-center justify-between text-xs text-gray-400 gap-4">
           <p>© {currentYear} Psychobeings. All rights reserved.</p>
+          <div className="flex space-x-6">
+            <a href="/privacy" className="hover:text-gray-600">Privacy</a>
+            <a href="/terms" className="hover:text-gray-600">Terms</a>
+            <a href="/contact" className="hover:text-gray-600">Support</a>
+          </div>
         </div>
+
       </div>
     </footer>
   );
