@@ -1,161 +1,119 @@
 import React from 'react';
-import { ShieldCheck, Lock, Eye, FileText, UserCheck, Heart, AlertCircle, Mail, MapPin } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
-export default function PrivacyPolicy() {
-  const lastUpdated = "August 20, 2026";
-
-  const sections = [
-    {
-      id: "collection",
-      icon: Eye,
-      title: "1. Information We Collect",
-      content: (
-        <div className="space-y-3">
-          <p>We collect information necessary to deliver ethical, safe, and personalized psychological support:</p>
-          <ul className="list-disc pl-5 space-y-2 text-slate-600">
-            <li><strong className="text-slate-800">Personal Information:</strong> Name, age, email, phone number, location, and emergency contact details.</li>
-            <li><strong className="text-slate-800">Clinical & Intake Data:</strong> General mental health background, intake responses, and progress notes strictly stored separately from contact info.</li>
-            <li><strong className="text-slate-800">Payment Information:</strong> Handled securely via PCI-DSS compliant third-party gateways. <em className="text-[#1C7C83] font-medium">Psychobeings does not store card details or banking PINs.</em></li>
-            <li><strong className="text-slate-800">Session Security:</strong> Telehealth sessions are hosted over encrypted platforms. <strong className="text-slate-800">We never record audio or video</strong> from live sessions.</li>
-          </ul>
-        </div>
-      ),
-    },
-    {
-      id: "usage",
-      icon: FileText,
-      title: "2. How We Use Your Data",
-      content: (
-        <p className="text-slate-600 leading-relaxed">
-          Your information is used strictly to tailor therapeutic roadmaps, manage session schedules, process transactions, and fulfill critical emergency protocols when required. We do not sell, trade, or rent personal data to marketers or external brokers.
-        </p>
-      ),
-    },
-    {
-      id: "confidentiality",
-      icon: Lock,
-      title: "3. Therapeutic Confidentiality & Exceptions",
-      content: (
-        <div className="space-y-3">
-          <p className="text-slate-600 leading-relaxed">
-            Confidentiality is a fundamental right in therapy. Information shared during counseling remains private and protected within Psychobeings.
-          </p>
-          <div className="p-4 rounded-xl bg-amber-50/70 border border-amber-200/80 text-amber-900 text-sm space-y-2">
-            <div className="flex items-center gap-2 font-bold text-amber-950">
-              <AlertCircle className="w-4 h-4 text-amber-600 shrink-0" />
-              <span>Ethical & Legal Exceptions to Confidentiality:</span>
-            </div>
-            <ul className="list-disc pl-5 space-y-1 text-amber-900/90">
-              <li>Immediate, serious danger of self-harm or harm to others.</li>
-              <li>Reportable situations involving child or elder abuse/neglect.</li>
-              <li>Direct statutory directives or valid court orders under law.</li>
-            </ul>
-          </div>
-        </div>
-      ),
-    },
-    {
-      id: "youth",
-      icon: Heart,
-      title: "4. Child & Adolescent Privacy",
-      content: (
-        <p className="text-slate-600 leading-relaxed">
-          Clients under 18 years of age require verifiable consent from a parent or legal guardian prior to initiating services. While guardians receive general status updates, specific session conversations remain confidential between the minor and therapist to foster a safe therapeutic space, except when immediate safety risks arise.
-        </p>
-      ),
-    },
-    {
-      id: "rights",
-      icon: UserCheck,
-      title: "5. Your Privacy Rights",
-      content: (
-        <div className="space-y-3 text-slate-600">
-          <p>Subject to clinical record retention standards, you have the right to:</p>
-          <ul className="list-disc pl-5 space-y-1">
-            <li>Request access to your personal account data.</li>
-            <li>Update or correct outdated personal information.</li>
-            <li>Withdraw consent for ongoing administrative communications.</li>
-            <li>Request deletion of non-essential profile data.</li>
-          </ul>
-        </div>
-      ),
-    },
-  ];
-
+const PrivacyPolicy = () => {
   return (
-    <div className="bg-[#F2F7F7] min-h-screen text-[#1F3A3D] font-sans antialiased py-12 sm:py-20">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+    <div className="min-h-screen bg-slate-50 text-slate-700 py-16 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-4xl mx-auto space-y-10">
         
         {/* Page Header */}
-        <div className="bg-white rounded-3xl p-8 sm:p-10 border border-[#1C7C83]/15 shadow-sm text-center space-y-4">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#1C7C83]/10 text-[#1C7C83] text-xs sm:text-sm font-semibold">
-            <ShieldCheck className="w-4 h-4" />
-            <span>Ethical Care & Data Security</span>
-          </div>
-          
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold text-[#1F3A3D] tracking-tight">
+        <div className="text-center space-y-3 border-b border-slate-200 pb-8">
+          <span className="text-xs font-bold tracking-widest text-teal-700 uppercase">
+            Psychobeings Governance
+          </span>
+          <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
             Privacy Policy
           </h1>
-          
           <p className="text-slate-600 text-sm sm:text-base max-w-2xl mx-auto leading-relaxed">
-            Your trust, therapeutic confidentiality, and personal security are central to everything we do at <strong className="text-[#1F3A3D]">Psychobeings</strong>.
-          </p>
-
-          <p className="text-xs font-medium text-slate-400 pt-2 border-t border-slate-100">
-            Effective Date: {lastUpdated} • Domain: psychobeings.com
+            At Psychobeings – Psychological Wellness & Therapy, we respect your privacy and are committed to protecting the confidentiality and security of your personal information.
           </p>
         </div>
 
-        {/* Content Sections */}
-        <div className="space-y-6">
-          {sections.map((sec) => {
-            const Icon = sec.icon;
-            return (
-              <div 
-                key={sec.id}
-                className="bg-white rounded-2xl p-6 sm:p-8 border border-[#1C7C83]/15 shadow-xs transition-all duration-200 hover:border-[#1C7C83]/30"
-              >
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="p-2.5 rounded-xl bg-[#1C7C83]/10 text-[#1C7C83]">
-                    <Icon className="w-5 h-5" />
-                  </div>
-                  <h2 className="text-xl sm:text-2xl font-bold text-[#1F3A3D]">
-                    {sec.title}
-                  </h2>
-                </div>
-                
-                <div className="text-sm sm:text-base leading-relaxed text-slate-700">
-                  {sec.content}
-                </div>
-              </div>
-            );
-          })}
-        </div>
-
-        {/* Contact Footer Card */}
-        <div className="bg-[#1F3A3D] text-white rounded-3xl p-8 sm:p-10 shadow-md space-y-6">
-          <div>
-            <h2 className="text-2xl font-serif font-bold text-white mb-2">
-              Have Questions About Privacy?
-            </h2>
-            <p className="text-slate-300 text-sm sm:text-base">
-              If you have any queries regarding your clinical confidentiality or personal data handling, reach out directly to our support team.
+        {/* Policy Content Sections */}
+        <div className="space-y-6 text-sm sm:text-base leading-relaxed">
+          
+          <section className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+            <h2 className="text-lg font-bold text-slate-900 mb-3 text-teal-700">1. Information We Collect</h2>
+            <p className="text-slate-600 mb-3">
+              Depending on the services you access, we collect information reasonably necessary for managing and delivering care:
             </p>
-          </div>
+            <ul className="list-disc pl-5 space-y-1 text-slate-600">
+              <li>Identity & Contact details (Name, age, gender, email address, phone number, emergency contact).</li>
+              <li>Clinical & Intake details (Information provided in consent/assessment forms, session notes, progress records, treatment plans).</li>
+              <li>Administrative data (Appointment history, transaction records, communications via WhatsApp/Email/forms).</li>
+              <li>Technical usage data (Browser/device info collected through our website).</li>
+            </ul>
+          </section>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2 border-t border-white/10 text-sm text-slate-200">
-            <div className="flex items-center gap-3">
-              <Mail className="w-5 h-5 text-[#1C7C83] shrink-0" />
-              <span>contact@psychobeings.com</span>
+          <section className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+            <h2 className="text-lg font-bold text-slate-900 mb-3 text-teal-700">2. How We Use Your Information</h2>
+            <ul className="list-disc pl-5 space-y-1.5 text-slate-600">
+              <li>Deliver psychological counseling, therapy, and customized wellness support.</li>
+              <li>Schedule, confirm, or modify appointments and handle financial transactions.</li>
+              <li>Maintain accurate clinical records in compliance with professional standards.</li>
+              <li>Meet legal, administrative, and regulatory requirements.</li>
+            </ul>
+          </section>
+
+          <section className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+            <h2 className="text-lg font-bold text-slate-900 mb-3 text-teal-700">3. Confidentiality & Safeguarding</h2>
+            <p className="text-slate-600 mb-3">
+              Information shared during sessions is kept strictly confidential and will not be disclosed to third parties without consent, except where required by law or under the following conditions:
+            </p>
+            <div className="p-4 bg-amber-50 border-l-4 border-amber-500 rounded-r-lg text-amber-900 text-xs sm:text-sm space-y-1">
+              <p><strong>Exceptions to Confidentiality:</strong></p>
+              <ul className="list-disc pl-4 space-y-1">
+                <li>Immediate and serious risk of harm to yourself or another person.</li>
+                <li>Safeguarding requirements involving the protection of a child or vulnerable individual.</li>
+                <li>Compliance with valid court orders or legal requirements.</li>
+              </ul>
             </div>
-            <div className="flex items-center gap-3">
-              <MapPin className="w-5 h-5 text-[#1C7C83] shrink-0" />
-              <span>Faridabad, Haryana, India</span>
+          </section>
+
+          <section className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+            <h2 className="text-lg font-bold text-slate-900 mb-3 text-teal-700">4. Children & Adolescents</h2>
+            <p className="text-slate-600">
+              For minor clients, specific consent protocols, parental/guardian involvement, and safeguarding rules apply based on age and governing law. Confidentiality boundaries are clearly discussed before therapeutic work begins.
+            </p>
+          </section>
+
+          <section className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+            <h2 className="text-lg font-bold text-slate-900 mb-3 text-teal-700">5. Session Records & Digital Security</h2>
+            <p className="text-slate-600">
+              Clinical notes and assessments are stored securely with restricted access. While online sessions and communication channels (Email, WhatsApp, Video tools) utilize reputable encryption measures, clients are advised to join online appointments from private, secure environments.
+            </p>
+          </section>
+
+          <section className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+            <h2 className="text-lg font-bold text-slate-900 mb-3 text-teal-700">6. Payments & Data Retention</h2>
+            <p className="text-slate-600">
+              Payments are processed via trusted gateway partners. Psychobeings does not store full credit/debit card numbers or sensitive credentials. Personal and clinical data is retained only as long as necessary for clinical, legal, or administrative compliance.
+            </p>
+          </section>
+
+          <section className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+            <h2 className="text-lg font-bold text-slate-900 mb-3 text-teal-700">7. Social Media & External Platforms</h2>
+            <p className="text-slate-600">
+              Social media profiles are strictly for educational and awareness purposes. Interacting with Psychobeings on social media or direct messaging does not establish a formal therapist-client relationship. Please avoid posting sensitive medical information publicly.
+            </p>
+          </section>
+
+          <section className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-3">
+            <h2 className="text-lg font-bold text-slate-900 text-teal-700">8. Contact Us</h2>
+            <p className="text-slate-600">
+              If you have questions, concerns, or requests regarding this Privacy Policy or your data, please reach out to us:
+            </p>
+            <div className="text-xs sm:text-sm text-slate-700 space-y-1 bg-slate-50 p-4 rounded-lg border border-slate-100">
+              <p><strong>Psychobeings – Psychological Wellness & Therapy</strong></p>
+              <p>Email: <a href="mailto:info.psychobeings@gmail.com" className="text-teal-700 font-semibold underline">info.psychobeings@gmail.com</a></p>
+              <p>Website: <a href="https://www.psychobeings.com" target="_blank" rel="noopener noreferrer" className="text-teal-700 font-semibold underline">www.psychobeings.com</a></p>
+              <p>Location: <a href="https://maps.app.goo.gl/3q4ZYfFjshyr1SeW6" target="_blank" rel="noopener noreferrer" className="text-teal-700 font-semibold underline">Find us on Google Maps</a></p>
             </div>
-          </div>
+          </section>
+
+        </div>
+
+        {/* Footer Link Notice */}
+        <div className="pt-6 border-t border-slate-200 text-center text-xs sm:text-sm text-slate-500">
+          By using our platform or booking a service, you acknowledge acceptance of our Privacy Policy and{' '}
+          <Link to="/terms" className="text-teal-700 font-semibold underline">
+            Terms & Conditions
+          </Link>.
         </div>
 
       </div>
     </div>
   );
-}
+};
+
+export default PrivacyPolicy;
