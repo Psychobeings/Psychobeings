@@ -32,6 +32,7 @@ function App() {
             <Route path="/couples-therapy" element={<SessionBookingForm />} />
             <Route path="/family-therapy" element={<ComingSoon />} />
             <Route path="/group-therapy" element={<ComingSoon />} />
+            <Route path="/privacy" element={<privacyPolicy />} />
           </Routes>
         </main>
       </div>
