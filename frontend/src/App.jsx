@@ -15,6 +15,7 @@ import Booking from './pages/Booking';
 import PrivacyPolicy from './pages/Privacy';
 import TermsAndConditions from './pages/Terms&Conditions';
 import CancellationPolicy from './pages/CancellationPolicy';
+import PrivateScreening from './components/PrivateScreening';
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
             <Route path="/packages" element={<Packages />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/booking" element={<Booking />} />
+            <Route path="/screening" element={<PrivateScreening />} />
             <Route path="/individual-therapy" element={<SessionBookingForm />} />
             <Route path="/couples-therapy" element={<SessionBookingForm />} />
             <Route path="/family-therapy" element={<ComingSoon />} />
