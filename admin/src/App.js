@@ -42,17 +42,6 @@ function App() {
             } 
           />
 
-          <Route 
-            path="/screening-login" 
-            element={
-              !isAuthenticated ? (
-                <Signin onLoginSuccess={handleLoginSuccess} redirectPath="/screening" />
-              ) : (
-                <Navigate to="/screening" replace />
-              )
-            } 
-          />
-
           {/* Protected Routes */}
           <Route 
             path="/sessions" 
@@ -77,7 +66,7 @@ function App() {
                   <PrivateScreening />
                 </>
               ) : (
-                <Navigate to="/screening-login" replace />
+                <Navigate to="/signin" replace />
               )
             } 
           />
