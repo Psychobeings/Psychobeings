@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 
 const API_BASE_URL = process.env.REACT_APP_URL || 'https://psychobeings.onrender.com';
 
-const Signin = ({ onLoginSuccess }) => {
+const Signin = ({ onLoginSuccess, redirectPath = '/sessions' }) => {
   const [mode, setMode] = useState('signin');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -40,7 +40,7 @@ const Signin = ({ onLoginSuccess }) => {
 
       localStorage.setItem('authToken', response.data.token);
       onLoginSuccess();
-      navigate('/sessions');
+      navigate(redirectPath);
     } catch (err) {
       setError(err.response?.data?.message || 'Sign in failed. Please check your credentials.');
       console.error("Sign-in error:", err);

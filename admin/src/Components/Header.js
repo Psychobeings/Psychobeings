@@ -148,6 +148,12 @@ const Header = () => {
         >
           <h6>Approved </h6>  { <VerifiedIcon size={20} color='green'/>}
         </button>
+        <button
+          onClick={() => navigate('/screening')}
+          className="px-4 py-2 border-b-2 border-transparent text-gray-600 hover:text-blue-500"
+        >
+          Screening
+        </button>
       </div>
 
       {/* Side Menu for small screens */}
