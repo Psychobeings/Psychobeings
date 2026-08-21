@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { Mail, Lock, KeyRound } from 'lucide-react';
+import { Mail, Lock, KeyRound, UserPlus } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 const Signin = ({ onLoginSuccess }) => {
@@ -10,12 +10,25 @@ const Signin = ({ onLoginSuccess }) => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [otp, setOtp] = useState('');
   const [error, setError] = useState('');
+  const [successMsg, setSuccessMsg] = useState('');
 
   const navigate = useNavigate();
 
+  const resetMessages = () => {
+    setError('');
+    setSuccessMsg('');
+  };
+
+  const clearForm = () => {
+    setEmail('');
+    setPassword('');
+    setConfirmPassword('');
+    setOtp('');
+  };
+
   const handleSignIn = async (e) => {
     e.preventDefault();
-    setError('');
+    resetMessages();
 
     try {
       const response = await axios.post(`${process.env.REACT_APP_URL}/admin/signin`, {
@@ -27,27 +40,49 @@ const Signin = ({ onLoginSuccess }) => {
       onLoginSuccess();
       navigate('/sessions');
     } catch (err) {
-      setError( 'Sign in failed');
-      console.log("Error:" , err)
+      setError(err.response?.data?.message || 'Sign in failed. Please check your credentials.');
+      console.error("Sign-in error:", err);
+    }
+  };
+
+  const handleSignUp = async (e) => {
+    e.preventDefault();
+    resetMessages();
+
+    if (password !== confirmPassword) {
+      setError('Passwords do not match');
+      return;
+    }
+
+    try {
+      await axios.post(`${process.env.REACT_APP_URL}/admin/signup`, {
+        email,
+        password
+      });
+
+      setSuccessMsg('Account created successfully! Please sign in.');
+      clearForm();
+      setMode('signin');
+    } catch (err) {
+      setError(err.response?.data?.message || 'Failed to create account. Try again.');
+      console.error("Sign-up error:", err);
     }
   };
 
   const handlePasswordReset = async (e) => {
     e.preventDefault();
-    setError('');
+    resetMessages();
 
     try {
       if (mode === 'requestReset') {
-        // Request OTP
         await axios.post(`${process.env.REACT_APP_URL}/admin/email/send`, { email });
+        setSuccessMsg('OTP sent to your email.');
         setMode('verifyOtp');
       } else if (mode === 'verifyOtp') {
-        // Verify OTP
-        const verify = await axios.post(`${process.env.REACT_APP_URL}/admin/email/verify`, { email, otp });
+        await axios.post(`${process.env.REACT_APP_URL}/admin/email/verify`, { email, otp });
+        setSuccessMsg('OTP verified successfully.');
         setMode('resetPassword');
- 
       } else if (mode === 'resetPassword') {
-        // Reset Password
         if (password !== confirmPassword) {
           setError('Passwords do not match');
           return;
@@ -55,21 +90,18 @@ const Signin = ({ onLoginSuccess }) => {
 
         const reset = await axios.post(`${process.env.REACT_APP_URL}/admin/reset-password`, { 
           email, 
-          password
+          password 
         });
-        
 
-        if(reset.status === 200 )
-        {
-
+        if (reset.status === 200) {
+          clearForm();
+          setSuccessMsg('Password reset successful! Please sign in with your new password.');
           setMode('signin');
-          setError('Password reset successful');
-
         }
       }
     } catch (err) {
-      setError(err.response?.data?.message || 'Operation failed');
-      console.log(err)
+      setError(err.response?.data?.message || 'Operation failed. Please try again.');
+      console.error("Reset error:", err);
     }
   };
 
@@ -102,17 +134,17 @@ const Signin = ({ onLoginSuccess }) => {
               />
             </div>
             
-            <div className="flex justify-between items-center">
+            <div className="flex justify-between items-center text-sm">
               <button 
                 type="button"
-                onClick={() => setMode('signup')}
+                onClick={() => { resetMessages(); clearForm(); setMode('signup'); }}
                 className="text-blue-500 hover:underline"
               >
                 Create Account
               </button>
               <button 
                 type="button"
-                onClick={() => setMode('requestReset')}
+                onClick={() => { resetMessages(); clearForm(); setMode('requestReset'); }}
                 className="text-blue-500 hover:underline"
               >
                 Forgot Password?
@@ -127,8 +159,64 @@ const Signin = ({ onLoginSuccess }) => {
             </button>
           </form>
         );
+
+      case 'signup':
+        return (
+          <form onSubmit={handleSignUp} className="space-y-4">
+            <div className="relative">
+              <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Email"
+                required
+                className="w-full pl-10 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+            
+            <div className="relative">
+              <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Password"
+                required
+                className="w-full pl-10 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+
+            <div className="relative">
+              <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
+              <input
+                type="password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                placeholder="Confirm Password"
+                required
+                className="w-full pl-10 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+            
+            <button 
+              type="submit" 
+              className="w-full bg-indigo-600 text-white py-2 rounded-md hover:bg-indigo-700 transition-colors flex items-center justify-center gap-2"
+            >
+              <UserPlus size={18} />
+              Register Account
+            </button>
+
+            <button 
+              type="button"
+              onClick={() => { resetMessages(); clearForm(); setMode('signin'); }}
+              className="w-full text-center text-sm text-blue-500 hover:underline block"
+            >
+              Already have an account? Sign In
+            </button>
+          </form>
+        );
       
-    
       case 'requestReset':
         return (
           <form onSubmit={handlePasswordReset} className="space-y-4">
@@ -153,8 +241,8 @@ const Signin = ({ onLoginSuccess }) => {
             
             <button 
               type="button"
-              onClick={() => setMode('signin')}
-              className="text-blue-500 hover:underline"
+              onClick={() => { resetMessages(); clearForm(); setMode('signin'); }}
+              className="w-full text-center text-sm text-blue-500 hover:underline block"
             >
               Back to Sign In
             </button>
@@ -181,6 +269,14 @@ const Signin = ({ onLoginSuccess }) => {
               className="w-full bg-purple-500 text-white py-2 rounded-md hover:bg-purple-600 transition-colors"
             >
               Verify OTP
+            </button>
+
+            <button 
+              type="button"
+              onClick={() => { resetMessages(); clearForm(); setMode('signin'); }}
+              className="w-full text-center text-sm text-blue-500 hover:underline block"
+            >
+              Cancel
             </button>
           </form>
         );
@@ -218,6 +314,14 @@ const Signin = ({ onLoginSuccess }) => {
             >
               Reset Password
             </button>
+
+            <button 
+              type="button"
+              onClick={() => { resetMessages(); clearForm(); setMode('signin'); }}
+              className="w-full text-center text-sm text-blue-500 hover:underline block"
+            >
+              Cancel
+            </button>
           </form>
         );
       
@@ -240,12 +344,15 @@ const Signin = ({ onLoginSuccess }) => {
         {error && (
           <p className="text-red-500 text-sm text-center mb-4">{error}</p>
         )}
+
+        {successMsg && (
+          <p className="text-green-600 text-sm text-center mb-4">{successMsg}</p>
+        )}
         
         {renderForm()}
       </div>
     </div>
   );
-  // comment added
 };
 
 export default Signin;

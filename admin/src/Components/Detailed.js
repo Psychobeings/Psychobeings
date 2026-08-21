@@ -1,8 +1,7 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState } from 'react';
 import { X, Calendar, Clock, Phone, User, CheckCircle2, XCircle, AlertTriangle, KanbanSquare, Mail } from 'lucide-react';
-import ConfirmDelete from './ConfirmDelete'
+import ConfirmDelete from './ConfirmDelete';
 import { BookSession } from './BookSession';
-import { Kanban } from 'lucide-react';
 
 
 
@@ -12,6 +11,7 @@ const Detailed = ({ isOpen, onCloseDetailed, details }) => {
   const [isAnimating, setIsAnimating] = useState(false);
   const [error, setError] = useState(null);
   const [showConfirmDelete, setShowConfirmDelete] = useState(false);
+  const booked = Boolean(details?.booked);
 
   // Time slots
   const timeSlots = {
@@ -221,10 +221,10 @@ const Detailed = ({ isOpen, onCloseDetailed, details }) => {
       {/* Confirm Delete Popup */}
       <ConfirmDelete
         isOpen={showConfirmDelete}
-        onClose={() =>{ setShowConfirmDelete(false); }}
-        sessionId={details._id}
-        sessionName={details.name}
-        
+        onClose={() => setShowConfirmDelete(false)}
+        sessionId={details?._id}
+        sessionName={details?.name}
+        session={details}
       />
     </>
   );
