@@ -3,6 +3,8 @@ import axios from 'axios';
 import { Mail, Lock, KeyRound, UserPlus } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
+const API_BASE_URL = process.env.REACT_APP_URL || 'https://psychobeings.onrender.com';
+
 const Signin = ({ onLoginSuccess }) => {
   const [mode, setMode] = useState('signin');
   const [email, setEmail] = useState('');
@@ -31,7 +33,7 @@ const Signin = ({ onLoginSuccess }) => {
     resetMessages();
 
     try {
-      const response = await axios.post(`${process.env.REACT_APP_URL}/admin/signin`, {
+      const response = await axios.post(`${API_BASE_URL}/admin/signin`, {
         email,
         password
       });
@@ -55,7 +57,7 @@ const Signin = ({ onLoginSuccess }) => {
     }
 
     try {
-      await axios.post(`${process.env.REACT_APP_URL}/admin/signup`, {
+      await axios.post(`${API_BASE_URL}/admin/signup`, {
         email,
         password
       });
@@ -75,11 +77,11 @@ const Signin = ({ onLoginSuccess }) => {
 
     try {
       if (mode === 'requestReset') {
-        await axios.post(`${process.env.REACT_APP_URL}/admin/email/send`, { email });
+        await axios.post(`${API_BASE_URL}/admin/email/send`, { email });
         setSuccessMsg('OTP sent to your email.');
         setMode('verifyOtp');
       } else if (mode === 'verifyOtp') {
-        await axios.post(`${process.env.REACT_APP_URL}/admin/email/verify`, { email, otp });
+        await axios.post(`${API_BASE_URL}/admin/email/verify`, { email, otp });
         setSuccessMsg('OTP verified successfully.');
         setMode('resetPassword');
       } else if (mode === 'resetPassword') {
@@ -88,7 +90,7 @@ const Signin = ({ onLoginSuccess }) => {
           return;
         }
 
-        const reset = await axios.post(`${process.env.REACT_APP_URL}/admin/reset-password`, { 
+        const reset = await axios.post(`${API_BASE_URL}/admin/reset-password`, { 
           email, 
           password 
         });

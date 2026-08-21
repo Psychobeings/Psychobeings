@@ -3,6 +3,8 @@ import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 import Detailed from './Detailed';
 
+const API_BASE_URL = process.env.REACT_APP_URL || 'https://psychobeings.onrender.com';
+
 const modifyDate = (e) => {
   const date = new Date(e);
   const day = String(date.getDate()).padStart(2, '0');
@@ -52,7 +54,7 @@ const Sessions = () => {
       setLoading(true);
       try {
         const response = await axios.get(
-          `${process.env.REACT_APP_URL}session-form/details?${queryString}`
+          `${API_BASE_URL}/session-form/details?${queryString}`
         );
         setData(response.data.result || []);
         // console.log(response.data)

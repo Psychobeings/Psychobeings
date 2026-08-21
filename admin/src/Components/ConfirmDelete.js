@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { X, AlertTriangle } from 'lucide-react';
 import axios from 'axios';
 
+const API_BASE_URL = process.env.REACT_APP_URL || 'https://psychobeings.onrender.com';
+
 const deleteReasons = ['Reason 1', 'Reason 2', 'Reason 3', 'Reason 4'];
 
 const ConfirmDelete = ({ isOpen, onClose, sessionId, sessionName, session }) => {
@@ -22,7 +24,7 @@ const ConfirmDelete = ({ isOpen, onClose, sessionId, sessionName, session }) => 
     }
 
     try {
-      await axios.delete(`${process.env.REACT_APP_URL}/${sessionId}`);
+      await axios.delete(`${API_BASE_URL}/${sessionId}`);
       onClose();
     } catch (err) {
       setError('Error deleting session');
