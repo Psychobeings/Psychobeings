@@ -1,4 +1,5 @@
 import Session from "../models/session_model.js";
+import { SendConfirmSlotMessage, SendDeleteMessage } from './Email.js'
 
 // Create a session (registerSession)
 export const registerSession = async (req, res) => {
@@ -77,8 +78,9 @@ export const getSessionDetails = async (req, res) => {
       ...(req.query.date && { date: req.query.date }),
       ...(req.query.phone && { phone: { $regex: new RegExp(req.query.phone, 'i') } }),
       ...(req.query._id && { _id: req.query._id }),
-      ...(req.query.status && { status: req.query.status || 1 }),
-     ...(req.query.concern && { concern: req.query.concern }),
+      ...(req.query.status && { status: req.query.status }),
+      ...(req.query.concern && { concern: req.query.concern }),
+      ... (req.query.status == false && { createdTime: { $gt: Date.now() } })
     })
       .sort({ date: -1 })
       .skip(startIndex)
@@ -99,13 +101,15 @@ export const getSessionDetails = async (req, res) => {
 
 export const bookSession = async (req, res) => {
   try {
-    const { id } = req.params;
+    const id = req.body.id;
+    const sessionTime = req.body.sessionTime
     console.log(id)
-    const changeState = await Session.findByIdAndUpdate(id, {$set: {status : 1}});
+    const changeState = await Session.findByIdAndUpdate(id, { $set: { status: true, sessionTime } }, { new: true });
     if (!changeState) {
       return res.status(404).json({ error: "Session not found" });
     }
-    res.status(200).json({ message: "Session updated successfully", session: changeState });
+    await SendConfirmSlotMessage(changeState)
+    res.status(200).json({ message: "Session Booked successfully", session: changeState });
   } catch (error) {
     res.status(500).json({ error: "Failed to update session", details: error.message });
   }

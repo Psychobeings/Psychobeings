@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
-import Detailed from './Detailed';
-
-const API_BASE_URL = process.env.REACT_APP_URL || 'https://psychobeings.onrender.com';
+import Detailed from './Detailed'; // Import the Popup component
+import {VerifiedIcon} from 'lucide-react'
 
 const modifyDate = (e) => {
   const date = new Date(e);
@@ -25,6 +24,10 @@ const Sessions = () => {
   const [selectedSession, setSelectedSession] = useState(null); // Store selected session
 
   const location = useLocation();
+
+  useEffect(() => {
+    const queryParams = new URLSearchParams(location.search);
+  }, [location.search]);
 
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
@@ -54,7 +57,7 @@ const Sessions = () => {
       setLoading(true);
       try {
         const response = await axios.get(
-          `${API_BASE_URL}/session-form/details?${queryString}`
+          `${process.env.REACT_APP_URL}session-form/details?${queryString}`
         );
         setData(response.data.result || []);
         // console.log(response.data)
@@ -120,7 +123,7 @@ const Sessions = () => {
                         <td className="p-4 border-b">{session.name}</td>
                         <td className="p-4 border-b">{session.phone}</td>
                         <td className="p-4 border-b">{modifyDate(session.date)}</td>
-                        <td className="p-4 border-b">{session.timeSlot.toUpperCase()}</td>
+                        <td className={`p-4 border-b `}>{ !currentStatus ?  session.timeSlot.toUpperCase() :  session.sessionTime }  </td>
                         <td className="p-4 border-b">
                           <button
                           className={`px-2 py-1 text-sm text-white rounded  transition ${ currentStatus ? "bg-green-600 hover:bg-green-700 " : "bg-blue-500 hover:bg-blue-600"}`}
