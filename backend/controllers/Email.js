@@ -1,5 +1,6 @@
 import nodemailer from "nodemailer";
 import Session from "../models/session_model.js";
+import Contact from "../models/contact_model.js";
 import dotenv from 'dotenv';
 
 const modifyDate = (e) => {
@@ -35,7 +36,7 @@ const transporter = nodemailer.createTransport({
 //..............................Send Message.....................................
 export const SendMessage = async (req, res) => {
 
-  const { name, email, message } = req.body;
+  const { name, email, phone, subject, message } = req.body;
   console.log(req.body );
 
   const mailToUser = {
@@ -87,6 +88,7 @@ export const SendMessage = async (req, res) => {
   };
 
   try {
+    await Contact.create({ name, email, phone, subject, message });
     const info = await transporter.sendMail(mailToUser);
     console.log("Email sent: ", info.response);
     res.status(200).send("Thanks for contacting us.");

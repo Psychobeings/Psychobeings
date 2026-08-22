@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import { 
     ArrowRight, 
     CheckCircle2, 
@@ -59,10 +60,18 @@ export default function PremiumCareAssessment() {
 
     const handleOptionSelect = (optionLabel) => {
         const currentKey = currentQuestion.key;
+        const nextAnswers = {
+            ...answers,
+            [currentKey]: optionLabel,
+        };
         setAnswers((prev) => ({
             ...prev,
             [currentKey]: optionLabel,
         }));
+        if (assessmentStep === assessmentQuestions.length - 1) {
+            axios.post(`${process.env.REACT_APP_URL || 'https://psychobeings.onrender.com'}/admin-inbox/assessments`, nextAnswers)
+                .catch((error) => console.error('Assessment save error:', error));
+        }
         setAssessmentStep((prev) => prev + 1);
     };
 

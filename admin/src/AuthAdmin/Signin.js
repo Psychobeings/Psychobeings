@@ -8,6 +8,7 @@ const API_BASE_URL = process.env.REACT_APP_URL || 'https://psychobeings.onrender
 const Signin = ({ onLoginSuccess, redirectPath = '/sessions' }) => {
   const [mode, setMode] = useState('signin');
   const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [otp, setOtp] = useState('');
@@ -23,6 +24,7 @@ const Signin = ({ onLoginSuccess, redirectPath = '/sessions' }) => {
 
   const clearForm = () => {
     setEmail('');
+    setPhone('');
     setPassword('');
     setConfirmPassword('');
     setOtp('');
@@ -59,6 +61,7 @@ const Signin = ({ onLoginSuccess, redirectPath = '/sessions' }) => {
     try {
       await axios.post(`${API_BASE_URL}/admin/signup`, {
         email,
+        phone,
         password
       });
 
@@ -166,6 +169,16 @@ const Signin = ({ onLoginSuccess, redirectPath = '/sessions' }) => {
         return (
           <form onSubmit={handleSignUp} className="space-y-4">
             <div className="relative">
+              <input
+                type="tel"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                placeholder="Mobile number (optional, with country code)"
+                className="w-full py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+
+            <div className="relative">
               <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
               <input
                 type="email"
@@ -240,6 +253,10 @@ const Signin = ({ onLoginSuccess, redirectPath = '/sessions' }) => {
             >
               Request Reset
             </button>
+
+            <button type="button" className="w-full text-center text-sm text-blue-500 hover:underline block" onClick={() => { resetMessages(); clearForm(); setMode('requestMobileOtp'); }}>
+              Use mobile OTP instead
+            </button>
             
             <button 
               type="button"
@@ -248,6 +265,24 @@ const Signin = ({ onLoginSuccess, redirectPath = '/sessions' }) => {
             >
               Back to Sign In
             </button>
+          </form>
+        );
+
+      case 'requestMobileOtp':
+        return (
+          <form onSubmit={async (e) => { e.preventDefault(); resetMessages(); try { await axios.post(`${API_BASE_URL}/admin/mobile/send`, { phone }); setSuccessMsg('OTP sent to your mobile.'); setMode('verifyMobileOtp'); } catch (err) { setError(err.response?.data?.message || 'Mobile OTP could not be sent.'); } }} className="space-y-4">
+            <div className="relative"><input type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="Mobile number with country code" required className="w-full py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" /></div>
+            <button type="submit" className="w-full bg-orange-500 text-white py-2 rounded-md hover:bg-orange-600 transition-colors">Send mobile OTP</button>
+            <button type="button" onClick={() => { resetMessages(); clearForm(); setMode('signin'); }} className="w-full text-center text-sm text-blue-500 hover:underline block">Back to Sign In</button>
+          </form>
+        );
+
+      case 'verifyMobileOtp':
+        return (
+          <form onSubmit={async (e) => { e.preventDefault(); resetMessages(); try { const response = await axios.post(`${API_BASE_URL}/admin/mobile/verify`, { phone, otp }); setEmail(response.data.email); setSuccessMsg('OTP verified successfully.'); setMode('resetPassword'); } catch (err) { setError(err.response?.data?.message || 'OTP verification failed.'); } }} className="space-y-4">
+            <div className="relative"><KeyRound className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} /><input type="text" inputMode="numeric" value={otp} onChange={(e) => setOtp(e.target.value)} placeholder="Enter mobile OTP" required className="w-full pl-10 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" /></div>
+            <button type="submit" className="w-full bg-purple-500 text-white py-2 rounded-md hover:bg-purple-600 transition-colors">Verify mobile OTP</button>
+            <button type="button" onClick={() => { resetMessages(); clearForm(); setMode('signin'); }} className="w-full text-center text-sm text-blue-500 hover:underline block">Cancel</button>
           </form>
         );
       
@@ -333,8 +368,9 @@ const Signin = ({ onLoginSuccess, redirectPath = '/sessions' }) => {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-50">
-      <div className="w-full max-w-md p-6 bg-white shadow-md rounded-lg">
+    <div className="auth-page">
+      <div className="auth-card">
+        <div className="auth-brand"><img src={require('../Assets/logo.png')} alt="Psychobeings" /><span>care operations</span></div>
         <h2 className="text-2xl font-bold text-center mb-6">
           {mode === 'signin' ? 'Sign In' : 
            mode === 'signup' ? 'Create Account' : 

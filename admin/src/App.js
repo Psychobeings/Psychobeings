@@ -1,85 +1,40 @@
-import React, { useState, useEffect } from 'react';
-import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { BrowserRouter, Navigate, NavLink, Route, Routes, useLocation } from 'react-router-dom';
+import axios from 'axios';
+import { Activity, CalendarDays, ChevronRight, ClipboardCheck, Clock3, LayoutDashboard, LogOut, Mail, Menu, MessageSquareText, Search, ShieldCheck, Sparkles, Users } from 'lucide-react';
+import logo from './Assets/logo.png';
 import Signin from './AuthAdmin/Signin';
-import Header from './Components/Header';
-import Sessions from './Components/Sessions';
-import PrivateScreening from './Components/PrivateScreening';
 
-function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+const API = process.env.REACT_APP_URL || 'https://psychobeings.onrender.com';
+const navItems = [
+  { path: '/dashboard', label: 'Overview', icon: LayoutDashboard },
+  { path: '/sessions', label: 'Sessions', icon: CalendarDays },
+  { path: '/messages', label: 'Contact messages', icon: MessageSquareText },
+  { path: '/assessments', label: 'Assessments', icon: ClipboardCheck },
+  { path: '/screening', label: 'Screening room', icon: ShieldCheck },
+];
+const formatDate = (value) => value ? new Date(value).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }) : '—';
 
-  // Check local storage for token on app load
-  useEffect(() => {
-    const token = localStorage.getItem('authToken');
-    if (token) {
-      setIsAuthenticated(true); // Set user as authenticated
-    }
-  }, []);
-
-  const handleLoginSuccess = () => {
-    setIsAuthenticated(true);
-  };
-
-  const handleLogout = () => {
-    // Clear authentication token and update state
-    localStorage.removeItem('authToken');
-    setIsAuthenticated(false);
-  };
-
-  return (
-    <div className="App">
-      <BrowserRouter>
-        <Routes>
-          {/* Default route - Signin page */}
-          <Route 
-            path="/signin" 
-            element={
-              !isAuthenticated ? (
-                <Signin onLoginSuccess={handleLoginSuccess} redirectPath="/sessions" />
-              ) : (
-                <Navigate to="/sessions" replace />
-              )
-            } 
-          />
-
-          {/* Protected Routes */}
-          <Route 
-            path="/sessions" 
-            element={
-              isAuthenticated ? (
-                <>
-                  <Header onLogout={handleLogout} />
-                  <Sessions />
-                </>
-              ) : (
-                <Navigate to="/signin" replace />
-              )
-            } 
-          />
-
-          <Route 
-            path="/screening" 
-            element={
-              isAuthenticated ? (
-                <>
-                  <Header onLogout={handleLogout} />
-                  <PrivateScreening />
-                </>
-              ) : (
-                <Navigate to="/signin" replace />
-              )
-            } 
-          />
-
-          {/* Redirect to signin by default */}
-          <Route 
-            path="/" 
-            element={<Navigate to="/signin" replace />} 
-          />
-        </Routes>
-      </BrowserRouter>
-    </div>
-  );
+function useFetch(path) {
+  const [state, setState] = useState({ data: [], loading: true });
+  useEffect(() => { let mounted = true; axios.get(`${API}${path}`).then(({ data }) => mounted && setState({ data: data.result || [], loading: false })).catch(() => mounted && setState({ data: [], loading: false })); return () => { mounted = false; }; }, [path]);
+  return state;
 }
-
+function Shell({ onLogout }) {
+  const [open, setOpen] = useState(false);
+  const location = useLocation();
+  const page = navItems.find((item) => location.pathname.startsWith(item.path)) || navItems[0];
+  const PageIcon = page.icon;
+  return <div className="admin-shell"><aside className={`admin-sidebar ${open ? 'is-open' : ''}`}><div className="brand-lockup"><img src={logo} alt="Psychobeings" /><span>care operations</span></div><div className="sidebar-label">Workspace</div><nav>{navItems.map(({ path, label, icon: Icon }) => <NavLink key={path} to={path} onClick={() => setOpen(false)} className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}><Icon size={18} /><span>{label}</span>{label === 'Contact messages' && <span className="nav-dot" />}</NavLink>)}</nav><div className="sidebar-note"><Sparkles size={16} /><div><strong>Care, with clarity.</strong><span>Keep every client touchpoint close.</span></div></div><button className="logout-link" onClick={onLogout}><LogOut size={17} /> Sign out</button></aside>{open && <button className="sidebar-backdrop" aria-label="Close navigation" onClick={() => setOpen(false)} />}<main className="admin-main"><header className="topbar"><button className="mobile-menu" onClick={() => setOpen(true)} aria-label="Open navigation"><Menu size={21} /></button><div className="crumb"><PageIcon size={17} /><span>Workspace</span><ChevronRight size={15} /><strong>{page.label}</strong></div><div className="topbar-user"><span className="status-pulse" /> Live workspace <button onClick={onLogout} aria-label="Sign out"><LogOut size={17} /></button></div></header><div className="page-content"><Routes><Route path="/dashboard" element={<Dashboard />} /><Route path="/sessions" element={<Sessions />} /><Route path="/messages" element={<Messages />} /><Route path="/assessments" element={<Assessments />} /><Route path="/screening" element={<Screening />} /><Route path="*" element={<Navigate to="/dashboard" replace />} /></Routes></div></main></div>;
+}
+function SectionHeading({ eyebrow, title, description, action }) { return <div className="section-heading"><div><div className="eyebrow">{eyebrow}</div><h1>{title}</h1><p>{description}</p></div>{action}</div>; }
+function Dashboard() { const sessions = useFetch('/session-form/details?status=false&startIndex=0&limit=100'); const messages = useFetch('/admin-inbox/contacts'); const assessments = useFetch('/admin-inbox/assessments'); const stats = [{ label: 'Awaiting care', value: sessions.data.length, detail: 'pending sessions', icon: Clock3, tone: 'gold' }, { label: 'New conversations', value: messages.data.filter((item) => item.status === 'new').length, detail: 'contact messages', icon: Mail, tone: 'mint' }, { label: 'Assessment paths', value: assessments.data.length, detail: 'completed journeys', icon: Activity, tone: 'teal' }, { label: 'Total touchpoints', value: sessions.data.length + messages.data.length + assessments.data.length, detail: 'across your workspace', icon: Users, tone: 'ink' }]; return <><SectionHeading eyebrow="Good morning, care team" title="A clearer view of care." description="Your intake, conversations, and client pathways in one calm workspace." action={<button className="quiet-button"><Activity size={16} /> Updated just now</button>} /><div className="stats-grid">{stats.map(({ label, value, detail, icon: Icon, tone }) => <div className={`stat-card ${tone}`} key={label}><div className="stat-icon"><Icon size={19} /></div><div className="stat-value">{value}</div><div className="stat-label">{label}</div><div className="stat-detail">{detail}</div></div>)}</div><div className="dashboard-grid"><div className="panel attention-panel"><div className="panel-head"><div><div className="eyebrow">Needs a response</div><h2>Recent conversations</h2></div><NavLink to="/messages" className="text-link">View inbox <ChevronRight size={15} /></NavLink></div>{messages.loading ? <Loading /> : messages.data.slice(0, 4).map((item) => <div className="list-row" key={item._id}><div className="avatar">{item.name?.[0] || '?'}</div><div className="list-copy"><strong>{item.name}</strong><span>{item.subject || 'General inquiry'}</span></div><time>{formatDate(item.createdAt)}</time></div>)}{!messages.loading && !messages.data.length && <Empty text="No contact messages yet" />}</div><div className="panel pathway-panel"><div className="eyebrow">Care pathways</div><h2>Where people are arriving from</h2><div className="pathway"><span className="pathway-bar mint-bar" /><div><strong>{assessments.data.filter((x) => x.primary_concern?.includes('Stress')).length}</strong><span>Stress & anxiety</span></div></div><div className="pathway"><span className="pathway-bar teal-bar" /><div><strong>{assessments.data.filter((x) => x.primary_concern?.includes('Relationship')).length}</strong><span>Relationships</span></div></div><div className="pathway"><span className="pathway-bar gold-bar" /><div><strong>{sessions.data.length}</strong><span>Direct bookings</span></div></div></div></div></>; }
+function Sessions() { const { data, loading } = useFetch('/session-form/details?status=false&startIndex=0&limit=100'); return <><SectionHeading eyebrow="Session pipeline" title="Upcoming care" description="Review new booking requests and keep the next step visible." /><div className="panel table-panel"><div className="table-tools"><div className="search-box"><Search size={16} /><input placeholder="Search by client name" /></div><span className="result-count">{data.length} pending requests</span></div>{loading ? <Loading /> : <div className="table-wrap"><table><thead><tr><th>Client</th><th>Requested date</th><th>Format</th><th>Concern</th><th>Status</th></tr></thead><tbody>{data.map((item) => <tr key={item._id}><td><div className="client-cell"><div className="avatar">{item.name?.[0]}</div><div><strong>{item.name}</strong><span>{item.email}</span></div></div></td><td>{formatDate(item.date)}</td><td><span className="capitalize">{item.timeSlot}</span></td><td>{item.concern}</td><td><span className="badge pending">Pending</span></td></tr>)}</tbody></table>{!data.length && <Empty text="No pending sessions" />}</div>}</div></>; }
+function Messages() { const { data, loading } = useFetch('/admin-inbox/contacts'); return <><SectionHeading eyebrow="Contact inbox" title="Messages that need care." description="Every note from the public site, ready for a thoughtful follow-up." action={<span className="soft-count"><Mail size={16} /> {data.length} total</span>} /><div className="message-grid">{loading ? <Loading /> : data.map((item) => <article className="message-card" key={item._id}><div className="message-card-head"><div className="avatar large">{item.name?.[0]}</div><div><h2>{item.name}</h2><a href={`mailto:${item.email}`}>{item.email}</a></div><span className={`badge ${item.status === 'new' ? 'new' : 'read'}`}>{item.status}</span></div><div className="message-meta"><span><MessageSquareText size={14} /> {item.subject || 'General inquiry'}</span><span><CalendarDays size={14} /> {formatDate(item.createdAt)}</span></div><p>{item.message}</p>{item.phone && <a className="text-link" href={`tel:${item.phone}`}>Call {item.phone} <ChevronRight size={15} /></a>}</article>)}{!loading && !data.length && <Empty text="Your inbox is clear" />}</div></>; }
+function Assessments() { const { data, loading } = useFetch('/admin-inbox/assessments'); return <><SectionHeading eyebrow="Interactive matchmaker" title="Assessment paths." description="See what kind of support people are looking for before the first conversation." action={<span className="soft-count"><ClipboardCheck size={16} /> {data.length} completed</span>} /><div className="panel table-panel">{loading ? <Loading /> : <div className="table-wrap"><table><thead><tr><th>Received</th><th>Primary focus</th><th>Preferred support</th><th>Start timeline</th><th>Status</th></tr></thead><tbody>{data.map((item) => <tr key={item._id}><td>{formatDate(item.createdAt)}</td><td><strong>{item.primary_concern}</strong></td><td>{item.preferred_format}</td><td>{item.urgency}</td><td><span className={`badge ${item.status === 'new' ? 'new' : 'read'}`}>{item.status}</span></td></tr>)}</tbody></table>{!data.length && <Empty text="No assessments have been completed yet" />}</div>}</div></>; }
+function Screening() { const [client, setClient] = useState(''); const [scores, setScores] = useState({ phq: '', gad: '', rses: '' }); const update = (key, value) => setScores((prev) => ({ ...prev, [key]: value })); return <><SectionHeading eyebrow="Private screening room" title="A focused reading of wellbeing." description="Record screening scores for a client conversation. This workspace is not a diagnosis." /><div className="screening-layout"><div className="panel screening-form"><div className="eyebrow">New screening note</div><label>Client identifier<input value={client} onChange={(e) => setClient(e.target.value)} placeholder="Name or internal reference" /></label><div className="score-fields"><label>PHQ-9 score<input type="number" min="0" max="27" value={scores.phq} onChange={(e) => update('phq', e.target.value)} placeholder="0 - 27" /></label><label>GAD-7 score<input type="number" min="0" max="21" value={scores.gad} onChange={(e) => update('gad', e.target.value)} placeholder="0 - 21" /></label><label>RSES score<input type="number" min="0" max="30" value={scores.rses} onChange={(e) => update('rses', e.target.value)} placeholder="0 - 30" /></label></div><button className="primary-button" onClick={() => window.print()}><ClipboardCheck size={17} /> Print screening note</button></div><div className="panel screening-summary"><div className="eyebrow">At a glance</div><h2>{client || 'Your client'}</h2><div className="score-summary"><Score label="PHQ-9" value={scores.phq} max={27} /><Score label="GAD-7" value={scores.gad} max={21} /><Score label="RSES" value={scores.rses} max={30} /></div><div className="screening-note"><ShieldCheck size={18} /><span>Use these scores as a conversation starter alongside clinical judgment and client context.</span></div></div></div></>; }
+function Score({ label, value, max }) { const percent = value ? Math.min((Number(value) / max) * 100, 100) : 0; return <div className="score-row"><div><strong>{label}</strong><span>{value || 'n/a'} / {max}</span></div><div className="score-track"><i style={{ width: percent + '%' }} /></div></div>; }
+function Loading() { return <div className="loading"><span /> Loading workspace data</div>; }
+function Empty({ text }) { return <div className="empty-state"><Sparkles size={20} /><span>{text}</span></div>; }
+function App() { const [isAuthenticated, setIsAuthenticated] = useState(Boolean(localStorage.getItem('authToken'))); const logout = () => { localStorage.removeItem('authToken'); setIsAuthenticated(false); }; return <BrowserRouter>{isAuthenticated ? <Shell onLogout={logout} /> : <Routes><Route path="*" element={<Signin onLoginSuccess={() => setIsAuthenticated(true)} redirectPath="/dashboard" />} /></Routes>}</BrowserRouter>; }
 export default App;
