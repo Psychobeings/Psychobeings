@@ -4,7 +4,7 @@ import User from '../models/admin_users.js'
 
 export const Signup = async (req, res) => {
   try {
-    const { email, phone, password } = req.body;
+    const { email, password } = req.body;
 
     // Check if user already exists
     const existingUser = await User.findOne({ email });
@@ -19,7 +19,6 @@ export const Signup = async (req, res) => {
     // Create new user
     const newUser = new User({
       email,
-      phone: phone || (email === process.env.ADMIN_OTP_EMAIL ? process.env.ADMIN_OTP_PHONE : undefined),
       password: hashedPassword
     });
 

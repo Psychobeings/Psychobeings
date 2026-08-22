@@ -11,24 +11,6 @@ const generateOTP = () => {
 // const otp = generateOTP();
 let otps = {}
 
-const sendSms = async (phone, otp) => {
-  if (!process.env.TWILIO_ACCOUNT_SID || !process.env.TWILIO_AUTH_TOKEN || !process.env.TWILIO_PHONE_NUMBER) {
-    throw new Error('Mobile OTP is not configured. Add the Twilio environment variables first.');
-  }
-  const body = new URLSearchParams({
-    From: process.env.TWILIO_PHONE_NUMBER,
-    To: phone,
-    Body: `Your Psychobeings admin verification code is ${otp}. It expires in 10 minutes.`,
-  });
-  const credentials = Buffer.from(`${process.env.TWILIO_ACCOUNT_SID}:${process.env.TWILIO_AUTH_TOKEN}`).toString('base64');
-  const response = await fetch(`https://api.twilio.com/2010-04-01/Accounts/${process.env.TWILIO_ACCOUNT_SID}/Messages.json`, {
-    method: 'POST',
-    headers: { Authorization: `Basic ${credentials}`, 'Content-Type': 'application/x-www-form-urlencoded' },
-    body,
-  });
-  if (!response.ok) throw new Error('The mobile OTP could not be sent.');
-};
-
 
 
 dotenv.config();
@@ -133,34 +115,6 @@ export const Verify=  (req, res) => {
   } else {
       return res.status(400).json({message:"Invalid OTP."});
   }
-};
-
-export const SendMobile = async (req, res) => {
-  const phone = req.body.phone?.trim();
-  if (!phone) return res.status(400).json({ message: 'Mobile number is required.' });
-  try {
-    const user = await User.findOne({ phone });
-    if (!user) return res.status(404).json({ message: 'No admin account is linked to this mobile number.' });
-    const otp = generateOTP();
-    otps[`mobile:${phone}`] = { otp, expirationTime: Date.now() + 10 * 60 * 1000, email: user.email };
-    await sendSms(phone, otp);
-    res.status(200).json({ message: 'OTP sent to your mobile.' });
-  } catch (error) {
-    res.status(503).json({ message: error.message || 'Mobile OTP service is unavailable.' });
-  }
-};
-
-export const VerifyMobile = (req, res) => {
-  const phone = req.body.phone?.trim();
-  const record = otps[`mobile:${phone}`];
-  if (!record) return res.status(400).json({ message: 'No OTP found for this mobile number.' });
-  if (Date.now() > record.expirationTime) {
-    delete otps[`mobile:${phone}`];
-    return res.status(400).json({ message: 'OTP has expired.' });
-  }
-  if (record.otp !== req.body.otp) return res.status(400).json({ message: 'Invalid OTP.' });
-  delete otps[`mobile:${phone}`];
-  res.status(200).json({ message: 'OTP verified successfully.', email: record.email });
 };
 
 
