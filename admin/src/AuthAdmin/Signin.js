@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { Mail, Lock, User, KeyRound, Verified, VerifiedIcon } from 'lucide-react';
+import { ArrowRight, KeyRound, Lock, Mail, ShieldCheck } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import logo from '../Assets/logo.png';
 
 const API_BASE_URL = (process.env.REACT_APP_URL || 'http://localhost:8080/').replace(/\/?$/, '/');
 
@@ -45,7 +46,7 @@ const Signin = ({ onLoginSuccess }) => {
         setMode('verifyOtp');
       } else if (mode === 'verifyOtp') {
         // Verify OTP
-        const verify = await axios.post(`${process.env.REACT_APP_URL}admin/email/verify`, { email, otp });
+        await axios.post(`${process.env.REACT_APP_URL}admin/email/verify`, { email, otp });
         setPassword('')
         setMode('resetPassword');
  
@@ -80,53 +81,46 @@ const Signin = ({ onLoginSuccess }) => {
     switch(mode) {
       case 'signin':
         return (
-          <form onSubmit={handleSignIn} className="space-y-4">
-            <div className="relative">
-              <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
+          <form onSubmit={handleSignIn} className="space-y-5">
+            <label className="block">
+              <span className="mb-2 block text-sm font-semibold text-slate-700">Work email</span>
               <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="Email"
+                placeholder="you@psychobeings.com"
                 required
-                className="w-full pl-10 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3.5 text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-teal-500 focus:bg-white focus:ring-4 focus:ring-teal-500/10"
               />
-            </div>
+            </label>
             
-            <div className="relative">
-              <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
+            <label className="block">
+              <span className="mb-2 block text-sm font-semibold text-slate-700">Password</span>
               <input
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder="Password"
+                placeholder="Enter your password"
                 required
-                className="w-full pl-10 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3.5 text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-teal-500 focus:bg-white focus:ring-4 focus:ring-teal-500/10"
               />
-            </div>
+            </label>
             
-            <div className="flex justify-between items-center">
-              <button 
-                type="button"
-                onClick={() => setMode('signup')}
-                className="text-blue-500 hover:underline"
-              >
-                Create Account
-              </button>
+            <div className="flex items-center justify-end">
               <button 
                 type="button"
                 onClick={() => setMode('requestReset')}
-                className="text-blue-500 hover:underline"
+                className="text-sm font-semibold text-teal-700 transition hover:text-teal-900"
               >
-                Forgot Password?
+                Forgot password?
               </button>
             </div>
             
             <button 
               type="submit" 
-              className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition-colors"
+              className="group flex w-full items-center justify-center gap-2 rounded-xl bg-slate-900 py-3.5 font-semibold text-white shadow-lg shadow-slate-900/15 transition hover:bg-teal-700 focus:outline-none focus:ring-4 focus:ring-teal-500/20"
             >
-              Sign In
+              Enter workspace <ArrowRight size={18} className="transition-transform group-hover:translate-x-1" />
             </button>
           </form>
         );
@@ -134,92 +128,92 @@ const Signin = ({ onLoginSuccess }) => {
     
       case 'requestReset':
         return (
-          <form onSubmit={handlePasswordReset} className="space-y-4">
-            <div className="relative">
-              <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
+          <form onSubmit={handlePasswordReset} className="space-y-5">
+            <label className="block">
+              <span className="mb-2 block text-sm font-semibold text-slate-700">Work email</span>
               <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="Email"
+                placeholder="you@psychobeings.com"
                 required
-                className="w-full pl-10 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3.5 outline-none transition placeholder:text-slate-400 focus:border-teal-500 focus:bg-white focus:ring-4 focus:ring-teal-500/10"
               />
-            </div>
+            </label>
             
             <button 
               type="submit" 
-              className="w-full bg-orange-500 text-white py-2 rounded-md hover:bg-orange-600 transition-colors"
+              className="w-full rounded-xl bg-slate-900 py-3.5 font-semibold text-white transition hover:bg-teal-700 focus:outline-none focus:ring-4 focus:ring-teal-500/20"
             >
-              Request Reset
+              Send reset code
             </button>
             
             <button 
               type="button"
               onClick={() => setMode('signin')}
-              className="text-blue-500 hover:underline"
+              className="w-full text-sm font-semibold text-slate-500 transition hover:text-slate-900"
             >
-              Back to Sign In
+              Back to sign in
             </button>
           </form>
         );
       
       case 'verifyOtp':
         return (
-          <form onSubmit={handlePasswordReset} className="space-y-4">
-            <div className="relative">
-              <KeyRound className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
+          <form onSubmit={handlePasswordReset} className="space-y-5">
+            <label className="block">
+              <span className="mb-2 block text-sm font-semibold text-slate-700">Verification code</span>
               <input
                 type="text"
                 value={otp}
                 onChange={(e) => setOtp(e.target.value)}
-                placeholder="Enter OTP"
+                placeholder="Enter the 6-digit code"
                 required
-                className="w-full pl-10 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3.5 tracking-[0.3em] outline-none transition placeholder:tracking-normal placeholder:text-slate-400 focus:border-teal-500 focus:bg-white focus:ring-4 focus:ring-teal-500/10"
               />
-            </div>
+            </label>
             
             <button 
               type="submit" 
-              className="w-full bg-purple-500 text-white py-2 rounded-md hover:bg-purple-600 transition-colors"
+              className="w-full rounded-xl bg-slate-900 py-3.5 font-semibold text-white transition hover:bg-teal-700 focus:outline-none focus:ring-4 focus:ring-teal-500/20"
             >
-              Verify OTP
+              Verify code
             </button>
           </form>
         );
       
       case 'resetPassword':
         return (
-          <form onSubmit={handlePasswordReset} className="space-y-4">
-            <div className="relative">
-              <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
+          <form onSubmit={handlePasswordReset} className="space-y-5">
+            <label className="block">
+              <span className="mb-2 block text-sm font-semibold text-slate-700">New password</span>
               <input
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder="New Password"
+                placeholder="Choose a strong password"
                 required
-                className="w-full pl-10 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3.5 outline-none transition placeholder:text-slate-400 focus:border-teal-500 focus:bg-white focus:ring-4 focus:ring-teal-500/10"
               />
-            </div>
+            </label>
             
-            <div className="relative">
-              <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
+            <label className="block">
+              <span className="mb-2 block text-sm font-semibold text-slate-700">Confirm password</span>
               <input
                 type="password"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
-                placeholder="Confirm New Password"
+                placeholder="Repeat your new password"
                 required
-                className="w-full pl-10 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3.5 outline-none transition placeholder:text-slate-400 focus:border-teal-500 focus:bg-white focus:ring-4 focus:ring-teal-500/10"
               />
-            </div>
+            </label>
             
             <button 
               type="submit" 
-              className="w-full bg-green-500 text-white py-2 rounded-md hover:bg-green-600 transition-colors"
+              className="w-full rounded-xl bg-slate-900 py-3.5 font-semibold text-white transition hover:bg-teal-700 focus:outline-none focus:ring-4 focus:ring-teal-500/20"
             >
-              Reset Password
+              Update password
             </button>
           </form>
         );
@@ -230,25 +224,55 @@ const Signin = ({ onLoginSuccess }) => {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-50">
-      <div className="w-full max-w-md p-6 bg-white shadow-md rounded-lg">
-        <h2 className="text-2xl font-bold text-center mb-6">
+    <main className="min-h-screen bg-[#f4f7f5] p-4 text-slate-900 sm:p-6 lg:p-10">
+      <div className="mx-auto grid min-h-[calc(100vh-5rem)] max-w-6xl overflow-hidden rounded-[2rem] bg-white shadow-2xl shadow-slate-900/10 lg:grid-cols-[0.9fr_1.1fr]">
+        <section className="relative hidden overflow-hidden bg-[#123b3b] p-12 text-white lg:flex lg:flex-col lg:justify-between">
+          <div className="absolute -right-24 -top-24 h-72 w-72 rounded-full border-[42px] border-teal-300/10" />
+          <div className="absolute -bottom-20 -left-20 h-64 w-64 rounded-full border-[28px] border-amber-200/10" />
+          <div className="relative">
+            <img src={logo} alt="Psychobeings" className="mb-16 h-12 w-auto object-contain brightness-0 invert" />
+            <p className="mb-5 text-sm font-semibold uppercase tracking-[0.22em] text-teal-200">Admin workspace</p>
+            <h1 className="max-w-sm text-5xl font-bold leading-[1.05] tracking-tight">Care starts with the people behind it.</h1>
+            <p className="mt-6 max-w-sm text-base leading-7 text-teal-50/75">A quiet place to coordinate sessions, support practitioners, and keep every client journey moving.</p>
+          </div>
+          <div className="relative flex items-center gap-3 text-sm text-teal-50/75">
+            <ShieldCheck size={20} className="text-amber-200" />
+            <span>Private workspace for the Psychobeings team</span>
+          </div>
+        </section>
+
+        <section className="flex items-center justify-center px-6 py-12 sm:px-12 lg:px-20">
+          <div className="w-full max-w-md">
+            <div className="mb-10 lg:hidden">
+              <img src={logo} alt="Psychobeings" className="h-10 w-auto object-contain" />
+            </div>
+            <div className="mb-8">
+              <div className="mb-5 flex h-11 w-11 items-center justify-center rounded-2xl bg-teal-50 text-teal-700">
+                {mode === 'signin' ? <Lock size={21} /> : mode === 'verifyOtp' ? <KeyRound size={21} /> : <Mail size={21} />}
+              </div>
+              <p className="mb-2 text-sm font-semibold uppercase tracking-[0.18em] text-teal-700">Welcome back</p>
+              <h2 className="text-3xl font-bold tracking-tight text-slate-950">
           {mode === 'signin' ? 'Sign In' : 
-           mode === 'signup' ? 'Create Account' : 
            mode === 'requestReset' ? 'Reset Password' :
            mode === 'verifyOtp' ? 'Verify OTP' : 
            'Set New Password'}
-        </h2>
+              </h2>
+              <p className="mt-3 text-sm leading-6 text-slate-500">
+                {mode === 'signin' ? 'Use your team account to access today’s sessions.' : 'We will help you get back into your workspace.'}
+              </p>
+            </div>
         
-        {error && (
-          <p className="text-red-500 text-sm text-center mb-4">{error}</p>
-        )}
+            {error && (
+              <p className="mb-5 rounded-xl border border-red-100 bg-red-50 px-4 py-3 text-sm font-medium text-red-700">{error}</p>
+            )}
         
-        {renderForm()}
+            {renderForm()}
+            <p className="mt-10 text-center text-xs text-slate-400">Psychobeings · People-first mental healthcare</p>
+          </div>
+        </section>
       </div>
-    </div>
+    </main>
   );
-  // comment added
 };
 
 export default Signin;
