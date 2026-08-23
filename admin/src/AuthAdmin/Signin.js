@@ -3,6 +3,8 @@ import axios from 'axios';
 import { Mail, Lock, User, KeyRound, Verified, VerifiedIcon } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
+const API_BASE_URL = (process.env.REACT_APP_URL || 'http://localhost:8080/').replace(/\/?$/, '/');
+
 const Signin = ({ onLoginSuccess }) => {
   const [mode, setMode] = useState('signin');
   const [email, setEmail] = useState('');
@@ -18,8 +20,7 @@ const Signin = ({ onLoginSuccess }) => {
     setError('');
 
     try {
-      console.log(process.env.REACT_APP_URL)
-      const response = await axios.post(`${process.env.REACT_APP_URL}admin/signin`, {
+      const response = await axios.post(`${API_BASE_URL}admin/signin`, {
         email,
         password
       });
