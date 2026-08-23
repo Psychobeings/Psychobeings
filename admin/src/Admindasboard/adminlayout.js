@@ -8,14 +8,6 @@ import {
   BookOpen,
   CreditCard,
   Settings,
-  Bell,
-  Phone,
-  MessageSquare,
-  Plus,
-  CheckCircle,
-  TrendingUp,
-  Clock,
-  Sparkles,
 } from 'lucide-react';
 
 import DashboardView from './DashboardView';

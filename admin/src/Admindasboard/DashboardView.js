@@ -4,8 +4,6 @@ import {
   Phone,
   MessageSquare,
   Sparkles,
-  ArrowRight,
-  TrendingUp,
 } from 'lucide-react';
 
 const DashboardView = ({ onNavigate }) => {

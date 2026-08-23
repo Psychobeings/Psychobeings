@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { BookOpen, ClipboardList, Plus } from 'lucide-react';
+import { Plus } from 'lucide-react';
 
 const worksheetLibrary = [
   { title: 'Box Breathing Technique', description: 'Inhale slowly through your nose for 4 seconds, hold for 4 seconds, exhale for 4 seconds.' },
