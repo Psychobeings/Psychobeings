@@ -5,7 +5,7 @@ import {
 } from 'lucide-react';
 
 // Import sub-views
-import OverviewTab from './Overviewtab';
+import OverviewTab from './OverviewTab';
 import ClientsTab from './ClientsView';
 import NotesTab from './NotesTab.';
 import NewAppointmentModal from './NewAppointmentModal';
