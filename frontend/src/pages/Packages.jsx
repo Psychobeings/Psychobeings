@@ -77,15 +77,15 @@ const internationalPackages = [
     sessions: [
       {
         name: '3 Sessions Pack',
-        price: '$180',
-        perSession: '$60 / session',
+        price: '$100',
+        perSession: '$33.33 / session',
         description: 'Focused international support for acute stress or life transitions.',
         isPopular: false
       },
       {
         name: '6 Sessions Pack',
-        price: '$340',
-        perSession: '$56.60 / session',
+        price: '$180',
+        perSession: '$30 / session',
         description: 'Sustained international therapy for deep emotional transformation.',
         isPopular: true,
         badge: 'Best Value'
@@ -101,15 +101,15 @@ const internationalPackages = [
     sessions: [
       {
         name: '3 Sessions Pack',
-        price: '$150',
-        perSession: '$50 / session',
+        price: '$125',
+        perSession: '$41.67 / session',
         description: 'Targeted support for young adults navigating academic or social stress.',
         isPopular: false
       },
       {
         name: '6 Sessions Pack',
-        price: '$285',
-        perSession: '$47.50 / session',
+        price: '$225',
+        perSession: '$37.50 / session',
         description: 'Continued developmental and emotional care for international families.',
         isPopular: true,
         badge: 'Recommended'

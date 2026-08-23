@@ -32,7 +32,7 @@ const therapyOptions = [
       {
         title: 'Single Session',
         priceINR: '₹1,500',
-        priceUSD: '$45',
+        priceUSD: '$35',
         unit: 'per session (50 mins)',
         description: 'Ideal for an initial consultation or targeted support on a specific concern.',
         isPopular: false,
@@ -42,7 +42,7 @@ const therapyOptions = [
       {
         title: 'Sustained Growth Package',
         priceINR: '₹8,000',
-        priceUSD: '$220',
+        priceUSD: '$180',
         unit: '6 sessions package',
         description: 'Recommended for continuous progress, deep emotional work, and skill building.',
         isPopular: true,
@@ -67,19 +67,19 @@ const therapyOptions = [
     ],
     sessionCards: [
       {
-        title: 'Initial Assessment',
-        priceINR: '₹1,800',
-        priceUSD: '$55',
+        title: 'Single Assessment Session',
+        priceINR: '₹900',
+        priceUSD: '$45',
         unit: 'per session (60 mins)',
         description: 'Includes child interaction and brief parent intake/feedback.',
         isPopular: false,
-        buttonLabel: 'Book Initial Assessment',
+        buttonLabel: 'Book Single Assessment Session',
         buttonTo: '/booking'
       },
       {
-        title: 'Developmental Package',
+        title: 'Child & Adolescent Package',
         priceINR: '₹9,000',
-        priceUSD: '$250',
+        priceUSD: '$225',
         unit: '6 sessions package',
         description: 'Comprehensive emotional support with regular parent progress updates.',
         isPopular: true,

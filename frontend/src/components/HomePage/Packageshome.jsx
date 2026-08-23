@@ -98,7 +98,7 @@ export default function PackagesHome() {
 
             <div className="pt-4 border-t border-[#1C7C83]/10">
               <p className="font-semibold text-sm text-[#1C7C83]">
-                Packages from $150
+                Packages from $100
               </p>
             </div>
           </div>
