@@ -8,6 +8,7 @@ import {
   BookOpen,
   CreditCard,
   Settings,
+  X,
 } from 'lucide-react';
 
 import DashboardView from './DashboardView';
@@ -114,14 +115,26 @@ const AdminLayout = ({ onLogout }) => {
 
 /* Additional Sub-Views matching Ease App */
 
-const ScheduleView = () => (
+const ScheduleView = () => {
+  const [showBooking, setShowBooking] = useState(false);
+  const [booking, setBooking] = useState({ name: '', time: '', type: 'Individual therapy' });
+  const [appointments, setAppointments] = useState([]);
+
+  const addBooking = (event) => {
+    event.preventDefault();
+    setAppointments((current) => [...current, booking]);
+    setBooking({ name: '', time: '', type: 'Individual therapy' });
+    setShowBooking(false);
+  };
+
+  return (
   <div className="space-y-6">
     <div className="flex items-center justify-between">
       <div>
         <h1 className="text-2xl font-bold text-slate-900">Your Schedule (beta)</h1>
       </div>
       <div className="flex gap-2">
-        <button className="rounded-xl bg-[#7c24a6] px-4 py-2 text-xs font-bold text-white shadow-sm hover:bg-[#681d8c]">
+        <button onClick={() => setShowBooking(true)} className="rounded-xl bg-[#7c24a6] px-4 py-2 text-xs font-bold text-white shadow-sm hover:bg-[#681d8c]">
           + New Booking
         </button>
         <button className="rounded-xl bg-purple-100 text-[#7c24a6] px-4 py-2 text-xs font-bold">
@@ -144,18 +157,21 @@ const ScheduleView = () => (
       <div className="grid grid-cols-7 gap-2 pt-4 h-96">
         {[...Array(7)].map((_, i) => (
           <div key={i} className="flex flex-col gap-2">
-            <div className="rounded-xl bg-blue-50 border border-blue-200/60 p-2 text-[10px] text-blue-900 font-bold text-center">
-              11:00 AM - 12:00 PM<br/><span className="text-[9px] text-blue-600 font-medium">ONLINE ONLY</span>
+            <div className="rounded-xl bg-purple-50 border border-purple-200/60 p-2 text-[10px] text-[#3b1254] font-bold text-center">
+              11:00 AM - 12:00 PM<br/><span className="text-[9px] text-[#7c24a6] font-medium">ONLINE ONLY</span>
             </div>
-            <div className="rounded-xl bg-blue-50 border border-blue-200/60 p-2 text-[10px] text-blue-900 font-bold text-center">
-              9:00 PM - 10:00 PM<br/><span className="text-[9px] text-blue-600 font-medium">ONLINE ONLY</span>
+            <div className="rounded-xl bg-purple-50 border border-purple-200/60 p-2 text-[10px] text-[#3b1254] font-bold text-center">
+              9:00 PM - 10:00 PM<br/><span className="text-[9px] text-[#7c24a6] font-medium">ONLINE ONLY</span>
             </div>
           </div>
         ))}
       </div>
     </div>
+    {appointments.length > 0 && <div className="rounded-3xl border border-slate-200/80 bg-white p-6 shadow-sm"><h2 className="text-sm font-bold text-slate-900">New bookings</h2><div className="mt-4 space-y-2">{appointments.map((item, index) => <div key={`${item.name}-${index}`} className="flex items-center justify-between rounded-xl bg-purple-50 p-3 text-xs"><span className="font-bold text-slate-800">{item.name}</span><span className="text-slate-500">{item.time} · {item.type}</span></div>)}</div></div>}
+    {showBooking && <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/30 p-4"><form onSubmit={addBooking} className="w-full max-w-md rounded-3xl bg-white p-6 shadow-2xl"><div className="flex items-start justify-between"><div><p className="text-[10px] font-bold uppercase tracking-wider text-[#7c24a6]">Schedule</p><h2 className="mt-2 text-xl font-bold">New appointment</h2></div><button type="button" onClick={() => setShowBooking(false)} className="text-slate-400 hover:text-slate-900"><X size={19} /></button></div><div className="mt-6 space-y-4"><input required value={booking.name} onChange={(event) => setBooking({ ...booking, name: event.target.value })} placeholder="Client name" className="w-full rounded-xl border border-slate-200 bg-slate-50 p-3 text-sm outline-none focus:border-[#7c24a6]" /><input required value={booking.time} onChange={(event) => setBooking({ ...booking, time: event.target.value })} placeholder="Time, e.g. 5:30 PM" className="w-full rounded-xl border border-slate-200 bg-slate-50 p-3 text-sm outline-none focus:border-[#7c24a6]" /><select value={booking.type} onChange={(event) => setBooking({ ...booking, type: event.target.value })} className="w-full rounded-xl border border-slate-200 bg-slate-50 p-3 text-sm outline-none focus:border-[#7c24a6]"><option>Individual therapy</option><option>Initial consultation</option><option>Follow-up session</option></select></div><button type="submit" className="mt-6 w-full rounded-xl bg-[#7c24a6] py-3 text-xs font-bold text-white hover:bg-[#681d8c]">Add to schedule</button></form></div>}
   </div>
-);
+  );
+};
 
 const SessionsView = () => (
   <div className="space-y-6">
@@ -177,24 +193,31 @@ const SessionsView = () => (
   </div>
 );
 
-const FollowUpsView = () => (
+const FollowUpsView = () => {
+  const [done, setDone] = useState([]);
+  const clients = ['DIKSHA BHARTI', 'LOKESH ACHARYA', 'GARIMA'];
+  return (
   <div className="space-y-6">
     <h1 className="text-2xl font-bold text-slate-900">Client Follow-ups</h1>
     <div className="grid gap-4 sm:grid-cols-3">
-      {['DIKSHA BHARTI', 'LOKESH ACHARYA', 'GARIMA'].map((name, idx) => (
-        <div key={idx} className="rounded-2xl border border-slate-200 bg-white p-5 space-y-3">
+      {clients.map((name, idx) => (
+        <div key={idx} className={`rounded-2xl border border-slate-200 bg-white p-5 space-y-3 ${done.includes(name) ? 'opacity-60' : ''}`}>
           <div className="flex justify-between items-center">
             <span className="text-xs font-bold text-slate-900">{name}</span>
             <span className="rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-bold text-emerald-800">In Progress</span>
           </div>
           <p className="text-[11px] text-slate-400">1st Follow Up • 18 Aug 2026</p>
+          <button onClick={() => setDone((current) => current.includes(name) ? current.filter((item) => item !== name) : [...current, name])} className="text-xs font-bold text-[#7c24a6]">{done.includes(name) ? 'Mark as pending' : 'Mark complete'}</button>
         </div>
       ))}
     </div>
   </div>
-);
+  );
+};
 
-const ProfileSettingsView = ({ onLogout }) => (
+const ProfileSettingsView = ({ onLogout }) => {
+  const [saved, setSaved] = useState(false);
+  return (
   <div className="max-w-4xl space-y-6">
     <div className="flex items-center justify-between">
       <h1 className="text-2xl font-bold text-slate-900">Settings — Profile</h1>
@@ -224,8 +247,10 @@ const ProfileSettingsView = ({ onLogout }) => (
           <input className="w-full rounded-xl border border-slate-200 bg-slate-50 p-3 text-xs" defaultValue="info.psychobeings@gmail.com" />
         </div>
       </div>
+      <button onClick={() => setSaved(true)} className="rounded-xl bg-[#7c24a6] px-4 py-3 text-xs font-bold text-white hover:bg-[#681d8c]">{saved ? 'Profile saved' : 'Save profile changes'}</button>
     </div>
   </div>
-);
+  );
+};
 
 export default AdminLayout;
