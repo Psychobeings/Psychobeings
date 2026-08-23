@@ -3,8 +3,6 @@ import {
   BarChart3,
   Check,
   CheckCircle2,
-  ChevronRight,
-  ClipboardCheck,
   FileText,
   Filter,
   LogOut,
@@ -14,8 +12,6 @@ import {
   Search,
   Send,
   ShieldCheck,
-  Sparkles,
-  User,
   UserPlus,
 } from 'lucide-react';
 
