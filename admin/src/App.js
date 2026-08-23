@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
 import Signin from './AuthAdmin/Signin';
-import AdminLayout from './Admindasboard/adminlayout';
+import AdminLayout from './Admindasboard/Dashboard';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
