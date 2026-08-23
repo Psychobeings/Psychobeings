@@ -32,7 +32,7 @@ const Signin = ({ onLoginSuccess }) => {
 
       localStorage.setItem('authToken', response.data.token);
       onLoginSuccess();
-      navigate('/portal');
+      navigate('/admin');
     } catch (err) {
       setError(err.response?.data?.message || 'Invalid credentials. Please try again.');
       console.log("Error:", err);
