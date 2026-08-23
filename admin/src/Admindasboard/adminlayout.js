@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import { 
   Users, Calendar, FileText, CreditCard, Shield, 
-  Plus, Search, Lock, UserCheck, Clock, AlertCircle, CheckCircle2 
+  Plus, Lock
 } from 'lucide-react';
 
 // Import sub-views
-import OverviewTab from './components/OverviewTab';
-import ClientsTab from './components/ClientsTab';
-import NotesTab from './components/NotesTab';
-import NewAppointmentModal from './components/NewAppointmentModal';
+import OverviewTab from './Overviewtab';
+import ClientsTab from './ClientsView';
+import NotesTab from './NotesTab.';
+import NewAppointmentModal from './NewAppointmentModal';
 
 export default function CounselingApp() {
   const [activeTab, setActiveTab] = useState('overview');

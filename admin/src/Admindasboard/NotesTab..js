@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Save, CheckCircle, FileCode } from 'lucide-react';
+import { CheckCircle } from 'lucide-react';
 
 export default function NotesTab({ privacyMode }) {
   const [noteType, setNoteType] = useState('SOAP');
