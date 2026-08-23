@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import {
-  ArrowUpRight,
   BarChart3,
   Check,
+  CheckCircle2,
+  ChevronRight,
   ClipboardCheck,
   FileText,
   LogOut,
@@ -12,10 +13,8 @@ import {
   Send,
   ShieldCheck,
   SlidersHorizontal,
-  UserPlus,
   Sparkles,
-  ChevronRight,
-  CheckCircle2
+  UserPlus,
 } from 'lucide-react';
 
 const assessments = [
@@ -30,7 +29,7 @@ const initialReports = [
   { id: 3, name: 'Kabir Rao', email: 'kabir.rao@email.com', completed: '18 Aug 2026', status: 'Shared', scores: { gad7: 'Severe', phq9: 'Moderate', rosenberg: 'Low' } },
 ];
 
-const Portal = ({ onLogout }) => {
+const AssessmentPortal = ({ onLogout }) => {
   const [view, setView] = useState('invite');
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [client, setClient] = useState({ name: '', email: '' });
@@ -70,7 +69,6 @@ const Portal = ({ onLogout }) => {
 
   return (
     <div className="min-h-screen bg-[#f8faf9] text-slate-900 font-sans antialiased">
-      {/* Header Bar */}
       <header className="sticky top-0 z-20 flex h-20 items-center justify-between border-b border-slate-200/80 bg-white/80 px-6 backdrop-blur-md sm:px-8 lg:px-12">
         <div className="flex items-center gap-3.5">
           <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br from-[#0e2a2a] to-[#123b3b] text-teal-200 shadow-md shadow-teal-900/10">
@@ -99,7 +97,6 @@ const Portal = ({ onLogout }) => {
       </header>
 
       <div className="mx-auto flex max-w-[1440px]">
-        {/* Sidebar */}
         <aside className={`${mobileNavOpen ? 'block' : 'hidden'} absolute z-10 w-full border-b border-slate-200 bg-white p-4 sm:relative sm:block sm:min-h-[calc(100vh-5rem)] sm:w-72 sm:border-b-0 sm:border-r sm:border-slate-200/80 sm:bg-white/50 sm:p-6 backdrop-blur-sm`}>
           <nav className="space-y-1.5">
             <p className="mb-4 px-3 text-[10px] font-extrabold uppercase tracking-[0.22em] text-slate-500">Workspace</p>
@@ -135,7 +132,6 @@ const Portal = ({ onLogout }) => {
           </button>
         </aside>
 
-        {/* Main Content Area */}
         <main className="w-full px-6 py-8 sm:px-10 lg:px-12 lg:py-10">
           {view === 'invite' ? (
             <div className="mx-auto max-w-5xl">
@@ -146,7 +142,6 @@ const Portal = ({ onLogout }) => {
               </div>
 
               <form onSubmit={sendInvite} className="grid gap-8 lg:grid-cols-[1.15fr_0.85fr]">
-                {/* Client Details Section */}
                 <section className="rounded-3xl border border-slate-200/80 bg-white p-6 shadow-sm transition-all sm:p-8 hover:shadow-md">
                   <div className="mb-8 flex items-start justify-between">
                     <div>
@@ -185,7 +180,6 @@ const Portal = ({ onLogout }) => {
                   </div>
                 </section>
 
-                {/* Screening Bundle Selection */}
                 <section className="rounded-3xl border border-slate-200/80 bg-white p-6 shadow-sm transition-all sm:p-8 hover:shadow-md">
                   <div className="mb-6 flex items-start justify-between">
                     <div>
@@ -262,7 +256,6 @@ const Portal = ({ onLogout }) => {
               </div>
 
               <div className="grid gap-8 xl:grid-cols-[1fr_0.85fr]">
-                {/* Reports List */}
                 <section className="overflow-hidden rounded-3xl border border-slate-200/80 bg-white shadow-sm">
                   <div className="flex items-center justify-between border-b border-slate-100 px-6 py-4 bg-slate-50/50">
                     <p className="text-xs font-bold uppercase tracking-wider text-slate-500">
@@ -301,7 +294,6 @@ const Portal = ({ onLogout }) => {
                   </div>
                 </section>
 
-                {/* Report Detail Inspector */}
                 <section className="rounded-3xl border border-slate-200/80 bg-white p-6 shadow-sm sm:p-8">
                   <div className="flex items-start justify-between border-b border-slate-100 pb-6">
                     <div>
@@ -367,4 +359,4 @@ const Portal = ({ onLogout }) => {
   );
 };
 
-export default Portal;
+export default AssessmentPortal;
