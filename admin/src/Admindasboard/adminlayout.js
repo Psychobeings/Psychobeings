@@ -1,16 +1,21 @@
 import React, { useState } from 'react';
 import {
-  BarChart3,
-  Calendar,
-  ChevronDown,
-  CreditCard,
-  FileText,
   Home,
-  LogOut,
-  Megaphone,
-  Settings,
-  Star,
+  Calendar,
+  Layers,
   Users,
+  UserCheck,
+  BookOpen,
+  CreditCard,
+  Settings,
+  Bell,
+  Phone,
+  MessageSquare,
+  Plus,
+  CheckCircle,
+  TrendingUp,
+  Clock,
+  Sparkles,
 } from 'lucide-react';
 
 import DashboardView from './DashboardView';
@@ -19,207 +24,216 @@ import ClinicalView from './ClinicalView';
 import PaymentsView from './PaymentsView';
 
 const AdminLayout = ({ onLogout }) => {
-  const [activeTab, setActiveTab] = useState('dashboard');
-  const [clientsExpanded, setClientsExpanded] = useState(true);
-  const [appointmentsExpanded, setAppointmentsExpanded] = useState(false);
-  const [clinicalExpanded, setClinicalExpanded] = useState(false);
-  const [paymentsExpanded, setPaymentsExpanded] = useState(false);
+  const [activeTab, setActiveTab] = useState('home');
+
+  const navItems = [
+    { id: 'home', label: 'Home', icon: Home },
+    { id: 'schedule', label: 'Schedule', icon: Calendar },
+    { id: 'sessions', label: 'Sessions', icon: Layers },
+    { id: 'clients', label: 'Clients', icon: Users },
+    { id: 'followups', label: 'Follow Ups', icon: UserCheck },
+    { id: 'tasks', label: 'Tasks & Worksheets', icon: BookOpen },
+    { id: 'billing', label: 'Billing', icon: CreditCard },
+    { id: 'settings', label: 'Profile', icon: Settings },
+  ];
 
   return (
-    <div className="flex h-screen w-full bg-slate-100 text-slate-900 font-sans overflow-hidden antialiased">
-      {/* Sidebar */}
-      <aside className="flex w-64 flex-col bg-[#0b2222] text-white">
-        <div className="flex flex-col border-b border-teal-900/40 p-5">
-          <span className="text-base font-extrabold tracking-tight text-white">PSYCHOBEINGS</span>
-          <span className="text-[10px] font-semibold text-teal-300/80">Psychological Wellness & Therapy</span>
+    <div className="flex h-screen w-full bg-[#f8f6f9] text-slate-900 font-sans overflow-hidden antialiased">
+      {/* Icon-Based Sidebar Navigation */}
+      <aside className="flex w-20 flex-col items-center justify-between border-r border-slate-200/80 bg-white py-6 shadow-sm">
+        <div className="flex flex-col items-center gap-8 w-full">
+          {/* Brand Logo */}
+          <div className="flex items-center gap-1 font-black text-xl tracking-tight text-[#3b1254]">
+            <span className="text-2xl font-extrabold text-[#7c24a6]">psychobeings</span>
+          </div>
+
+          {/* Navigation Links */}
+          <nav className="flex flex-col gap-2 w-full px-3">
+            {navItems.map((item) => {
+              const Icon = item.icon;
+              const isActive = activeTab === item.id;
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => setActiveTab(item.id)}
+                  title={item.label}
+                  className={`group relative flex h-12 w-full items-center justify-center rounded-2xl transition-all ${
+                    isActive
+                      ? 'bg-[#f3e8f9] text-[#7c24a6] font-bold'
+                      : 'text-slate-400 hover:bg-slate-100 hover:text-slate-700'
+                  }`}
+                >
+                  <Icon size={20} strokeWidth={isActive ? 2.5 : 1.8} />
+                </button>
+              );
+            })}
+          </nav>
         </div>
 
-        <nav className="flex-1 space-y-1 overflow-y-auto px-3 py-4 text-xs font-medium">
-          {/* Dashboard */}
-          <button
-            onClick={() => setActiveTab('dashboard')}
-            className={`flex w-full items-center gap-3 rounded-xl px-3 py-2.5 transition ${
-              activeTab === 'dashboard' ? 'bg-teal-950/80 text-teal-200 border border-teal-800/40' : 'text-teal-100/70 hover:bg-teal-900/30'
-            }`}
+        {/* Profile Avatar in Sidebar */}
+        <div className="flex flex-col items-center gap-3">
+          <button 
+            onClick={() => setActiveTab('settings')}
+            className="flex h-10 w-10 items-center justify-center rounded-full bg-[#7c24a6] text-white font-bold text-xs ring-4 ring-purple-100"
           >
-            <Home size={16} /> <span>Dashboard</span>
+            AK
           </button>
-
-          {/* Clients */}
-          <div>
-            <button
-              onClick={() => setClientsExpanded(!clientsExpanded)}
-              className="flex w-full items-center justify-between rounded-xl px-3 py-2.5 text-teal-100/70 hover:bg-teal-900/30"
-            >
-              <div className="flex items-center gap-3">
-                <Users size={16} /> <span>Clients</span>
-              </div>
-              <ChevronDown size={14} className={`transition-transform ${clientsExpanded ? 'rotate-180' : ''}`} />
-            </button>
-            {clientsExpanded && (
-              <div className="ml-7 mt-1 space-y-1 border-l border-teal-900/50 pl-3">
-                {['all', 'active', 'followup', 'closed'].map((sub) => (
-                  <button
-                    key={sub}
-                    onClick={() => setActiveTab(`clients-${sub}`)}
-                    className={`block w-full py-1 text-left capitalize ${
-                      activeTab === `clients-${sub}` ? 'font-bold text-teal-300' : 'text-teal-200/60 hover:text-white'
-                    }`}
-                  >
-                    {sub === 'closed' ? '└─' : '├─'} {sub === 'followup' ? 'Follow-up' : sub}
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
-
-          {/* Appointments */}
-          <div>
-            <button
-              onClick={() => setAppointmentsExpanded(!appointmentsExpanded)}
-              className="flex w-full items-center justify-between rounded-xl px-3 py-2.5 text-teal-100/70 hover:bg-teal-900/30"
-            >
-              <div className="flex items-center gap-3">
-                <Calendar size={16} /> <span>Appointments</span>
-              </div>
-              <ChevronDown size={14} className={`transition-transform ${appointmentsExpanded ? 'rotate-180' : ''}`} />
-            </button>
-            {appointmentsExpanded && (
-              <div className="ml-7 mt-1 space-y-1 border-l border-teal-900/50 pl-3">
-                <button
-                  onClick={() => setActiveTab('appointments-calendar')}
-                  className={`block w-full py-1 text-left ${activeTab === 'appointments-calendar' ? 'font-bold text-teal-300' : 'text-teal-200/60 hover:text-white'}`}
-                >
-                  ├─ Calendar
-                </button>
-                <button
-                  onClick={() => setActiveTab('appointments-availability')}
-                  className={`block w-full py-1 text-left ${activeTab === 'appointments-availability' ? 'font-bold text-teal-300' : 'text-teal-200/60 hover:text-white'}`}
-                >
-                  └─ Availability
-                </button>
-              </div>
-            )}
-          </div>
-
-          {/* Clinical */}
-          <div>
-            <button
-              onClick={() => setClinicalExpanded(!clinicalExpanded)}
-              className="flex w-full items-center justify-between rounded-xl px-3 py-2.5 text-teal-100/70 hover:bg-teal-900/30"
-            >
-              <div className="flex items-center gap-3">
-                <FileText size={16} /> <span>Clinical</span>
-              </div>
-              <ChevronDown size={14} className={`transition-transform ${clinicalExpanded ? 'rotate-180' : ''}`} />
-            </button>
-            {clinicalExpanded && (
-              <div className="ml-7 mt-1 space-y-1 border-l border-teal-900/50 pl-3">
-                {[
-                  { id: 'notes', label: 'Session Notes', prefix: '├─' },
-                  { id: 'plans', label: 'Treatment Plans', prefix: '├─' },
-                  { id: 'assessments', label: 'Assessments', prefix: '├─' },
-                  { id: 'homework', label: 'Homework', prefix: '└─' },
-                ].map((item) => (
-                  <button
-                    key={item.id}
-                    onClick={() => setActiveTab(`clinical-${item.id}`)}
-                    className={`block w-full py-1 text-left ${
-                      activeTab === `clinical-${item.id}` ? 'font-bold text-teal-300' : 'text-teal-200/60 hover:text-white'
-                    }`}
-                  >
-                    {item.prefix} {item.label}
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
-
-          {/* Payments */}
-          <div>
-            <button
-              onClick={() => setPaymentsExpanded(!paymentsExpanded)}
-              className="flex w-full items-center justify-between rounded-xl px-3 py-2.5 text-teal-100/70 hover:bg-teal-900/30"
-            >
-              <div className="flex items-center gap-3">
-                <CreditCard size={16} /> <span>Payments</span>
-              </div>
-              <ChevronDown size={14} className={`transition-transform ${paymentsExpanded ? 'rotate-180' : ''}`} />
-            </button>
-            {paymentsExpanded && (
-              <div className="ml-7 mt-1 space-y-1 border-l border-teal-900/50 pl-3">
-                {[
-                  { id: 'transactions', label: 'Transactions', prefix: '├─' },
-                  { id: 'packages', label: 'Packages', prefix: '├─' },
-                  { id: 'pending', label: 'Pending', prefix: '└─' },
-                ].map((item) => (
-                  <button
-                    key={item.id}
-                    onClick={() => setActiveTab(`payments-${item.id}`)}
-                    className={`block w-full py-1 text-left ${
-                      activeTab === `payments-${item.id}` ? 'font-bold text-teal-300' : 'text-teal-200/60 hover:text-white'
-                    }`}
-                  >
-                    {item.prefix} {item.label}
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
-
-          {/* Standalone Items */}
-          {[
-            { id: 'analytics', label: 'Analytics', icon: BarChart3 },
-            { id: 'marketing', label: 'Marketing', icon: Megaphone },
-            { id: 'reviews', label: 'Reviews', icon: Star },
-            { id: 'settings', label: 'Settings', icon: Settings },
-          ].map((item) => {
-            const Icon = item.icon;
-            return (
-              <button
-                key={item.id}
-                onClick={() => setActiveTab(item.id)}
-                className={`flex w-full items-center gap-3 rounded-xl px-3 py-2.5 transition ${
-                  activeTab === item.id ? 'bg-teal-950/80 text-teal-200 border border-teal-800/40' : 'text-teal-100/70 hover:bg-teal-900/30'
-                }`}
-              >
-                <Icon size={16} /> <span>{item.label}</span>
-              </button>
-            );
-          })}
-        </nav>
-
-        <div className="border-t border-teal-900/40 p-4">
-          <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold">Admin Panel</span>
-            <button onClick={onLogout} title="Log Out" className="text-teal-200/50 hover:text-white">
-              <LogOut size={16} />
-            </button>
-          </div>
         </div>
       </aside>
 
-      {/* Dynamic View Loader */}
-      <main className="flex-1 overflow-y-auto bg-slate-50 p-8">
-        {activeTab === 'dashboard' && <DashboardView />}
-        {activeTab.startsWith('clients') && <ClientsView tab={activeTab} />}
-        {activeTab.startsWith('clinical') && <ClinicalView tab={activeTab} />}
-        {activeTab.startsWith('payments') && <PaymentsView tab={activeTab} />}
-        {activeTab.startsWith('appointments') && (
-          <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-            <h1 className="text-2xl font-bold capitalize">Appointments — {activeTab.replace('appointments-', '')}</h1>
-            <p className="mt-2 text-xs text-slate-500">Manage therapy calendar and weekly availability slots.</p>
+      {/* Dynamic View Header & Body */}
+      <div className="flex flex-1 flex-col overflow-hidden">
+        {/* Top Navbar */}
+        <header className="flex h-16 items-center justify-between border-b border-slate-200/80 bg-white px-8">
+          <div className="flex items-center gap-3">
+            <span className="text-lg font-black tracking-tight text-[#3b1254]">
+              psychobeings
+            </span>
           </div>
-        )}
-        {['analytics', 'marketing', 'reviews', 'settings'].includes(activeTab) && (
-          <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-            <h1 className="text-2xl font-bold capitalize">{activeTab}</h1>
-            <p className="mt-2 text-xs text-slate-500">Configured module for {activeTab}.</p>
+
+          <div className="flex items-center gap-4">
+            <div className="flex items-center gap-3 rounded-full bg-slate-50 border border-slate-200/80 px-3.5 py-1.5">
+              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#7c24a6] text-white font-bold text-xs">
+                AK
+              </div>
+              <div className="text-left">
+                <p className="text-xs font-bold text-slate-800 leading-tight">Amanpreet Kaur</p>
+                <p className="text-[10px] text-slate-500 font-medium">Therapy with Psychobeings</p>
+              </div>
+            </div>
           </div>
-        )}
-      </main>
+        </header>
+
+        {/* Page Content */}
+        <main className="flex-1 overflow-y-auto p-8">
+          {activeTab === 'home' && <DashboardView onNavigate={(tab) => setActiveTab(tab)} />}
+          {activeTab === 'schedule' && <ScheduleView />}
+          {activeTab === 'sessions' && <SessionsView />}
+          {activeTab === 'clients' && <ClientsView tab="clients-all" />}
+          {activeTab === 'followups' && <FollowUpsView />}
+          {activeTab === 'tasks' && <ClinicalView tab="clinical-assessments" />}
+          {activeTab === 'billing' && <PaymentsView tab="payments-transactions" />}
+          {activeTab === 'settings' && <ProfileSettingsView onLogout={onLogout} />}
+        </main>
+      </div>
     </div>
   );
 };
+
+/* Additional Sub-Views matching Ease App */
+
+const ScheduleView = () => (
+  <div className="space-y-6">
+    <div className="flex items-center justify-between">
+      <div>
+        <h1 className="text-2xl font-bold text-slate-900">Your Schedule (beta)</h1>
+      </div>
+      <div className="flex gap-2">
+        <button className="rounded-xl bg-[#7c24a6] px-4 py-2 text-xs font-bold text-white shadow-sm hover:bg-[#681d8c]">
+          + New Booking
+        </button>
+        <button className="rounded-xl bg-purple-100 text-[#7c24a6] px-4 py-2 text-xs font-bold">
+          Open slots
+        </button>
+      </div>
+    </div>
+
+    {/* Calendar Matrix Mockup */}
+    <div className="rounded-3xl border border-slate-200/80 bg-white p-6 shadow-sm">
+      <div className="grid grid-cols-7 gap-2 border-b border-slate-100 pb-4 text-center text-xs font-bold text-slate-600">
+        <div>23 SUN</div>
+        <div>24 MON</div>
+        <div>25 TUE</div>
+        <div>26 WED</div>
+        <div>27 THU</div>
+        <div>28 FRI</div>
+        <div>29 SAT</div>
+      </div>
+      <div className="grid grid-cols-7 gap-2 pt-4 h-96">
+        {[...Array(7)].map((_, i) => (
+          <div key={i} className="flex flex-col gap-2">
+            <div className="rounded-xl bg-blue-50 border border-blue-200/60 p-2 text-[10px] text-blue-900 font-bold text-center">
+              11:00 AM - 12:00 PM<br/><span className="text-[9px] text-blue-600 font-medium">ONLINE ONLY</span>
+            </div>
+            <div className="rounded-xl bg-blue-50 border border-blue-200/60 p-2 text-[10px] text-blue-900 font-bold text-center">
+              9:00 PM - 10:00 PM<br/><span className="text-[9px] text-blue-600 font-medium">ONLINE ONLY</span>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+);
+
+const SessionsView = () => (
+  <div className="space-y-6">
+    <h1 className="text-2xl font-bold text-slate-900">Your Sessions</h1>
+    <div className="grid gap-4 sm:grid-cols-3">
+      <div className="rounded-2xl border border-slate-200 bg-white p-5">
+        <span className="text-xs text-slate-400 font-bold">RETENTION</span>
+        <p className="text-3xl font-bold text-[#7c24a6] mt-1">76%</p>
+      </div>
+      <div className="rounded-2xl border border-slate-200 bg-white p-5">
+        <span className="text-xs text-slate-400 font-bold">ACTIVE CLIENTS</span>
+        <p className="text-3xl font-bold text-slate-900 mt-1">13</p>
+      </div>
+      <div className="rounded-2xl border border-slate-200 bg-white p-5">
+        <span className="text-xs text-slate-400 font-bold">SESSIONS</span>
+        <p className="text-3xl font-bold text-slate-900 mt-1">48</p>
+      </div>
+    </div>
+  </div>
+);
+
+const FollowUpsView = () => (
+  <div className="space-y-6">
+    <h1 className="text-2xl font-bold text-slate-900">Client Follow-ups</h1>
+    <div className="grid gap-4 sm:grid-cols-3">
+      {['DIKSHA BHARTI', 'LOKESH ACHARYA', 'GARIMA'].map((name, idx) => (
+        <div key={idx} className="rounded-2xl border border-slate-200 bg-white p-5 space-y-3">
+          <div className="flex justify-between items-center">
+            <span className="text-xs font-bold text-slate-900">{name}</span>
+            <span className="rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-bold text-emerald-800">In Progress</span>
+          </div>
+          <p className="text-[11px] text-slate-400">1st Follow Up • 18 Aug 2026</p>
+        </div>
+      ))}
+    </div>
+  </div>
+);
+
+const ProfileSettingsView = ({ onLogout }) => (
+  <div className="max-w-4xl space-y-6">
+    <div className="flex items-center justify-between">
+      <h1 className="text-2xl font-bold text-slate-900">Settings — Profile</h1>
+      <button onClick={onLogout} className="rounded-xl bg-rose-50 border border-rose-200 px-4 py-2 text-xs font-bold text-rose-700 hover:bg-rose-100">
+        Log Out
+      </button>
+    </div>
+
+    <div className="rounded-3xl border border-slate-200 bg-white p-8 shadow-sm space-y-6">
+      <div className="flex items-center gap-6">
+        <div className="h-20 w-20 rounded-2xl bg-[#7c24a6] text-white flex items-center justify-center text-xl font-bold">
+          AK
+        </div>
+        <div>
+          <h2 className="text-lg font-bold text-slate-900">Amanpreet Kaur</h2>
+          <p className="text-xs text-slate-500">A Counselling Psychologist (M.Sc. Clinical Psychology) with 2+ years experience.</p>
+        </div>
+      </div>
+      
+      <div className="grid gap-4 sm:grid-cols-2">
+        <div>
+          <label className="block text-xs font-bold text-slate-500 mb-1">My Name</label>
+          <input className="w-full rounded-xl border border-slate-200 bg-slate-50 p-3 text-xs" defaultValue="Amanpreet Kaur" />
+        </div>
+        <div>
+          <label className="block text-xs font-bold text-slate-500 mb-1">Email</label>
+          <input className="w-full rounded-xl border border-slate-200 bg-slate-50 p-3 text-xs" defaultValue="info.psychobeings@gmail.com" />
+        </div>
+      </div>
+    </div>
+  </div>
+);
 
 export default AdminLayout;
