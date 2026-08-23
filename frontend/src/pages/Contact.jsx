@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { Mail, MapPin, Clock, Send, CheckCircle2, ShieldAlert, Phone, ExternalLink } from 'lucide-react';
+import { Mail, MapPin, Clock, Send, CheckCircle2, ShieldAlert, ExternalLink } from 'lucide-react';
 
 const Contact = () => {
   const [submitted, setSubmitted] = useState(false);
@@ -268,7 +268,7 @@ const Contact = () => {
                 <ShieldAlert className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
                 <div className="text-xs leading-relaxed">
                   <p className="font-bold text-amber-950 mb-0.5">Emergency Assistance Notice</p>
-                  If you or someone you care for is experiencing acute psychological distress or a emergency, please contact local emergency services immediately.
+                  If you or someone you care for is experiencing acute psychological distress or an emergency, please contact local emergency services immediately.
                 </div>
               </div>
 
