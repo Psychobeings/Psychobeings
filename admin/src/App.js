@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
+import { BrowserRouter, Route, Routes, Navigate } from 'react_router-dom';
 import Signin from './AuthAdmin/Signin';
-import AssessmentPortal from './Components/AssessmentPortal';
+import AdminLayout from './Admin/AdminLayout';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -10,7 +10,7 @@ function App() {
   useEffect(() => {
     const token = localStorage.getItem('authToken');
     if (token) {
-      setIsAuthenticated(true); // Set user as authenticated
+      setIsAuthenticated(true);
     }
   }, []);
 
@@ -19,7 +19,6 @@ function App() {
   };
 
   const handleLogout = () => {
-    // Clear authentication token and update state
     localStorage.removeItem('authToken');
     setIsAuthenticated(false);
   };
@@ -28,37 +27,35 @@ function App() {
     <div className="App">
       <BrowserRouter>
         <Routes>
-          {/* Default route - Signin page */}
-          <Route 
-            path="/signin" 
+          {/* Default Route - Signin page */}
+          <Route
+            path="/signin"
             element={
               !isAuthenticated ? (
                 <Signin onLoginSuccess={handleLoginSuccess} />
               ) : (
-                <Navigate to="/portal" replace />
+                <Navigate to="/admin" replace />
               )
-            } 
+            }
           />
 
-          {/* Protected Routes */}
-          <Route 
-            path="/portal"
+          {/* Protected Admin Route */}
+          <Route
+            path="/admin"
             element={
               isAuthenticated ? (
-                <AssessmentPortal onLogout={handleLogout} />
+                <AdminLayout onLogout={handleLogout} />
               ) : (
                 <Navigate to="/signin" replace />
               )
-            } 
+            }
           />
 
-          <Route path="/sessions" element={<Navigate to="/portal" replace />} />
-
-          {/* Redirect to signin by default */}
-          <Route 
-            path="/" 
-            element={<Navigate to="/signin" replace />} 
-          />
+          {/* Fallback & legacy route redirects */}
+          <Route path="/portal" element={<Navigate to="/admin" replace />} />
+          <Route path="/sessions" element={<Navigate to="/admin" replace />} />
+          <Route path="/" element={<Navigate to="/signin" replace />} />
+          <Route path="*" element={<Navigate to="/signin" replace />} />
         </Routes>
       </BrowserRouter>
     </div>
