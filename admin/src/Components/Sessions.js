@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 import Detailed from './Detailed'; // Import the Popup component
-import {VerifiedIcon} from 'lucide-react'
 
 const modifyDate = (e) => {
   const date = new Date(e);
@@ -24,10 +23,6 @@ const Sessions = () => {
   const [selectedSession, setSelectedSession] = useState(null); // Store selected session
 
   const location = useLocation();
-
-  useEffect(() => {
-    const queryParams = new URLSearchParams(location.search);
-  }, [location.search]);
 
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
