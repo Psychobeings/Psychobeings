@@ -10,38 +10,42 @@ import FAQ from '../components/FAQ';
 import Packageshome from '../components/HomePage/Packageshome';
 import Vistus from '../components/HomePage/Vistus';
 
-// Defined dynamic sections to map over (excluding HeroHome so it doesn't render twice)
+// Section registry mapping components to alternating background styles
 const homeSections = [
-  AboutHome,
-  MeetYourPsychologist,
-  Thedifference,
-  Serviceshome,
-  Stepsfortherepy,
-  Reviewssection,
-  Packageshome,
-  FAQ,
-  Vistus
+  { component: AboutHome, bg: 'bg-[#fbfdfd]' },
+  { component: MeetYourPsychologist, bg: 'bg-[#edf7f7]/60 border-y border-[#d8ecec]' },
+  { component: Thedifference, bg: 'bg-[#fbfdfd]' },
+  { component: Serviceshome, bg: 'bg-[#f7fbfb]' },
+  { component: Stepsfortherepy, bg: 'bg-[#fbfdfd]' },
+  { component: Packageshome, bg: 'bg-[#edf7f7]/40' },
+  { component: Reviewssection, bg: 'bg-[#fbfdfd]' },
+  { component: FAQ, bg: 'bg-[#f7fbfb]' },
+  { component: Vistus, bg: 'bg-[#fbfdfd]' },
 ];
 
 const Home = () => {
   return (
-    <div className="min-h-screen bg-[#F2F7F7] text-[#1F3A3D] font-sans selection:bg-[#1C7C83]/20 selection:text-[#1C7C83]">
-      {/* Primary Hero Section */}
-      <HeroHome />
+    <div className="min-h-screen bg-[#fbfdfd] text-[#111827] font-sans antialiased selection:bg-[#036b75]/15 selection:text-[#036b75]">
+      
+      {/* Hero Section */}
+      <section className="relative overflow-hidden">
+        <HeroHome />
+      </section>
 
-      {/* Main Content Area mapping through custom sections */}
-      <div className="mx-auto max-w-screen-xl px-4 py-12 sm:px-6 lg:px-8">
-        <div className="space-y-10 lg:space-y-14">
-          {homeSections.map((Section, index) => (
-            <section
-              key={index}
-              className="overflow-hidden rounded-[28px] bg-white p-6 sm:p-8 lg:p-10 shadow-md border border-[#1C7C83]/10 transition-all hover:shadow-lg"
-            >
-              <Section />
-            </section>
-          ))}
-        </div>
-      </div>
+      {/* Main Content Sections */}
+      <main>
+        {homeSections.map(({ component: SectionComponent, bg }, index) => (
+          <section
+            key={index}
+            className={`py-12 sm:py-16 lg:py-20 transition-colors ${bg}`}
+          >
+            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+              <SectionComponent />
+            </div>
+          </section>
+        ))}
+      </main>
+
     </div>
   );
 };
