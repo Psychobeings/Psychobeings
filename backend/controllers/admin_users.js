@@ -5,9 +5,10 @@ import User from '../models/admin_users.js'
 export const Signup = async (req, res) => {
   try {
     const { email, password } = req.body;
+    const normalizedEmail = email?.trim().toLowerCase();
 
     // Check if user already exists
-    const existingUser = await User.findOne({ email });
+    const existingUser = await User.findOne({ email: normalizedEmail });
     if (existingUser) {
       return res.status(400).json({ message: 'User already exists' });
     }
@@ -18,7 +19,7 @@ export const Signup = async (req, res) => {
 
     // Create new user
     const newUser = new User({
-      email,
+      email: normalizedEmail,
       password: hashedPassword
     });
 
@@ -45,10 +46,11 @@ export const Signup = async (req, res) => {
 export const Signin = async (req, res) => {
   try {
     const { email, password } = req.body;
+    const normalizedEmail = email?.trim().toLowerCase();
     console.log(email, password )
 
     // Find user by email
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email: normalizedEmail });
     if (!user) {
       return res.status(401).json({ message: 'Invalid credentials' });
     }

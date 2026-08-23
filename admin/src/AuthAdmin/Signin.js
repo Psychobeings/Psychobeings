@@ -23,10 +23,11 @@ const Signin = ({ onLoginSuccess }) => {
     e.preventDefault();
     setError('');
     setLoading(true);
+    const normalizedEmail = email.trim().toLowerCase();
 
     try {
       const response = await axios.post(`${API_BASE_URL}admin/signin`, {
-        email,
+        email: normalizedEmail,
         password
       });
 
@@ -49,11 +50,11 @@ const Signin = ({ onLoginSuccess }) => {
 
     try {
       if (mode === 'requestReset') {
-        await axios.post(`${process.env.REACT_APP_URL}admin/email/send`, { email });
+        await axios.post(`${API_BASE_URL}admin/email/send`, { email: email.trim().toLowerCase() });
         setMode('verifyOtp');
         setSuccessMsg('Verification code sent to your email.');
       } else if (mode === 'verifyOtp') {
-        await axios.post(`${process.env.REACT_APP_URL}admin/email/verify`, { email, otp });
+        await axios.post(`${API_BASE_URL}admin/email/verify`, { email: email.trim().toLowerCase(), otp });
         setPassword('');
         setMode('resetPassword');
         setSuccessMsg('');
@@ -64,8 +65,8 @@ const Signin = ({ onLoginSuccess }) => {
           return;
         }
 
-        const reset = await axios.post(`${process.env.REACT_APP_URL}admin/reset-password`, { 
-          email, 
+        const reset = await axios.post(`${API_BASE_URL}admin/reset-password`, { 
+          email: email.trim().toLowerCase(), 
           password
         });
 
