@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import {
   ArrowRight,
-  HeartHandshake,
+  Heart,
   ShieldCheck,
   Sparkles,
   Building2,
@@ -12,742 +12,479 @@ import {
   Globe2,
   CalendarHeart,
   Flame,
-  Check,
-  Star
+  User,
+  Baby,
+  Clock
 } from 'lucide-react';
 
-const therapyOptions = [
+const serviceData = [
   {
     id: 'individual',
-    title: 'Individual Therapy',
-    description:
-      'A confidential, one-on-one space for anxiety, stress, overthinking, grief, burnout, and emotional healing.',
-    concerns: [
-      'Anxiety and emotional overwhelm',
-      'Stress regulation & burnout',
-      'Overthinking and decision paralysis',
-      'Boundary setting and self-worth'
+    label: 'Individual Therapy',
+    icon: User,
+    badge: '1-on-1 Support',
+    headline: 'A safe, gentle space to catch your breath and heal.',
+    subheadline: 'Designed for adults looking to navigate internal stress, break unhealthy patterns, or process life transitions at their own pace.',
+    relatableConcerns: [
+      'Feeling constantly anxious or on edge',
+      'Overthinking every single decision',
+      'Burnout, fatigue, and emotional drain',
+      'Struggling to set boundaries or say "no"'
     ],
-    sessionCards: [
+    cards: [
       {
-        title: 'Single Session',
+        title: 'Single Exploration Session',
+        badge: 'Initial Consultation',
+        isPopular: false,
         priceINR: '₹1,500',
         priceUSD: '$35',
-        unit: 'per session (50 mins)',
-        description: 'Ideal for an initial consultation or targeted support on a specific concern.',
-        isPopular: false,
-        buttonLabel: 'Book Single Session',
+        unit: '50 mins session',
+        description: 'Ideal for a first step to discuss what you are navigating and map out a gentle path forward.',
+        buttonText: 'Book Initial Session',
         buttonTo: '/booking'
       },
       {
-        title: 'Sustained Growth Package',
+        title: 'Sustained Growth Journey',
+        badge: 'Most Popular',
+        isPopular: true,
         priceINR: '₹8,000',
         priceUSD: '$180',
         unit: '6 sessions package',
-        description: 'Recommended for continuous progress, deep emotional work, and skill building.',
-        isPopular: true,
-        popularBadge: 'Most Popular',
-        buttonLabel: 'View Package Details',
+        description: 'Recommended for steady progress, continuous support, deep coping strategies, and meaningful healing.',
+        buttonText: 'Start Growth Package',
         buttonTo: '/packages'
       }
-    ],
-    buttonLabel: 'Book Individual Support',
-    buttonTo: '/booking'
+    ]
   },
   {
     id: 'child-adolescent',
-    title: 'Child & Adolescent Support',
-    description:
-      'Targeted guidance for young individuals navigating emotional, academic, and social developmental challenges.',
-    concerns: [
-      'Emotional regulation & tantrums',
-      'School stress and performance anxiety',
-      'Identity, confidence, and peer dynamics',
-      'Family transitions & communication gaps'
+    label: 'Child & Teen Support',
+    icon: Baby,
+    badge: 'Young Minds & Families',
+    headline: 'Nurturing young minds through growth and change.',
+    subheadline: 'Specialized therapeutic guidance tailored to children and teens facing emotional, academic, or social hurdles.',
+    relatableConcerns: [
+      'Frequent emotional regulation challenges',
+      'School-related anxiety & academic stress',
+      'Confidence, peer pressure & self-identity',
+      'Parent-child communication disconnects'
     ],
-    sessionCards: [
+    cards: [
       {
-        title: 'Single Assessment Session',
+        title: 'Initial Youth Assessment',
+        badge: 'Includes Parent Intake',
+        isPopular: false,
         priceINR: '₹900',
         priceUSD: '$45',
-        unit: 'per session (60 mins)',
-        description: 'Includes child interaction and brief parent intake/feedback.',
-        isPopular: false,
-        buttonLabel: 'Book Single Assessment Session',
+        unit: '60 mins session',
+        description: 'Includes interactive child time followed by a structured parent feedback session.',
+        buttonText: 'Schedule Assessment',
         buttonTo: '/booking'
       },
       {
-        title: 'Child & Adolescent Package',
+        title: 'Complete Care Package',
+        badge: 'Comprehensive',
+        isPopular: true,
         priceINR: '₹9,000',
         priceUSD: '$225',
-        unit: '6 sessions package',
-        description: 'Comprehensive emotional support with regular parent progress updates.',
-        isPopular: true,
-        popularBadge: 'Recommended',
-        buttonLabel: 'View Package Details',
+        unit: '6 sessions + parent updates',
+        description: 'Holistic emotional care for your child, paired with regular parent updates and home strategies.',
+        buttonText: 'Explore Care Package',
         buttonTo: '/packages'
       }
-    ],
-    buttonLabel: 'Book Child & Adolescent Session',
-    buttonTo: '/booking'
-  }
-];
-
-const programOptions = [
+    ]
+  },
   {
-    title: 'Workshops & Seminars',
-    description:
-      'Interactive, outcome-driven group sessions designed to build emotional intelligence, resilience, and actionable coping skills.',
-    offerings: [
-      'Anxiety management & grounding toolkits',
-      'Mindfulness and nervous system regulation',
-      'Burnout prevention and emotional fatigue',
-      'Self-care and boundary work'
+    id: 'workshops',
+    label: 'Workshops & Groups',
+    icon: Sparkles,
+    badge: 'Interactive Learning',
+    headline: 'Practical toolkits for emotional intelligence & resilience.',
+    subheadline: 'Engaging, evidence-based group learning sessions for institutions, schools, and self-growth communities.',
+    relatableConcerns: [
+      'Nervous system regulation techniques',
+      'Mindfulness & grounding toolkits',
+      'Preventing compassion fatigue & burnout',
+      'Building healthy self-care systems'
     ],
-    sessionCards: [
+    cards: [
       {
-        title: 'Single Workshop',
+        title: 'Single Masterclass',
+        badge: 'Focused Deep-Dive',
+        isPopular: false,
         priceINR: '₹2,000',
         priceUSD: '$60',
         unit: 'per attendee',
-        description: 'Great for single masterclasses or intensive focused learning.',
-        isPopular: false,
-        buttonLabel: 'Book Workshop',
+        description: 'Ideal for single topic mastery like stress management or boundary setting.',
+        buttonText: 'Reserve Workshop Seat',
         buttonTo: '/contact'
       },
       {
-        title: 'Workshop Series',
+        title: '4-Part Workshop Series',
+        badge: 'Recommended for Groups',
+        isPopular: true,
         priceINR: '₹10,000',
         priceUSD: '$280',
-        unit: '4-part module',
-        description: 'Ideal for schools, communities, or institutions seeking deep impact.',
-        isPopular: true,
-        popularBadge: 'Top Rated',
-        buttonLabel: 'Explore Series',
+        unit: '4 modular modules',
+        description: 'Curated module-based program designed to build long-term wellness culture.',
+        buttonText: 'Inquire for Your Group',
         buttonTo: '/packages'
       }
-    ],
-    buttonLabel: 'Explore Workshops',
-    buttonTo: '/contact'
+    ]
   },
   {
-    title: 'Corporate Wellbeing',
-    description:
-      'Customized mental health and resilience strategies tailored for forward-thinking organizations and executive teams.',
-    offerings: [
-      'Employee wellbeing & mental health first-aid',
-      'Work-life harmony & stress prevention',
-      'Leadership empathy and communication workshops',
-      'Custom employee assistance (EAP) programs'
+    id: 'corporate',
+    label: 'Corporate Wellbeing',
+    icon: Building2,
+    badge: 'Organizations & Teams',
+    headline: 'Human-centered mental health solutions for workplace wellness.',
+    subheadline: 'Customized stress-prevention strategies and empathetic leadership training for forward-thinking teams.',
+    relatableConcerns: [
+      'Employee burnout & workplace stress',
+      'Empathetic leadership & communication',
+      'Work-life harmony & boundary setting',
+      'Custom Employee Assistance (EAP)'
     ],
-    sessionCards: [
+    cards: [
       {
-        title: 'Team Intervention',
+        title: 'Team Wellness Intervention',
+        badge: 'Single Intervention',
+        isPopular: false,
         priceINR: '₹2,500',
         priceUSD: '$75',
-        unit: 'per hour / session',
-        description: 'Ideal for one-off team wellness sessions or crisis support.',
-        isPopular: false,
-        buttonLabel: 'Book Intervention',
+        unit: 'per hour / team session',
+        description: 'Tailored for team stress resets, crisis processing, or workplace wellness days.',
+        buttonText: 'Book Team Session',
         buttonTo: '/contact'
       },
       {
-        title: 'Quarterly Corporate Program',
+        title: 'Quarterly Corporate Partnership',
+        badge: 'Best Value Partnership',
+        isPopular: true,
         priceINR: '₹15,000',
         priceUSD: '$420',
         unit: 'monthly retainer starting',
-        description: 'Holistic wellness partnership for ongoing team health.',
-        isPopular: true,
-        popularBadge: 'Best Value',
-        buttonLabel: 'Request Corporate Deck',
+        description: 'Ongoing strategic partnership including workshops and team counseling credits.',
+        buttonText: 'Request Corporate Deck',
         buttonTo: '/contact'
       }
-    ],
-    buttonLabel: 'Discuss Corporate Wellness',
-    buttonTo: '/contact'
+    ]
   }
 ];
 
-const trustPoints = [
-  'Compassionate, evidence-informed care grounded in empathy and clinical safety.',
-  'Culturally sensitive, personalized treatment plans tailored to your pace.',
-  'Strict confidentiality and encrypted telehealth platforms.',
-  'Seamless booking and flexible online / offline appointment slots.'
-];
-
-const testimonials = [
+const faqItems = [
   {
-    quote:
-      'The space felt grounding and entirely non-judgmental. I felt truly understood from the very first session.',
-    name: 'A. Sharma',
-    location: 'Delhi NCR'
+    question: 'How do I know if therapy is right for me?',
+    answer: 'If you feel overwhelmed, stuck, constantly anxious, or simply need a safe, confidential space to process life without judgment, therapy can be immensely beneficial.'
   },
   {
-    quote:
-      'Practical tools mixed with deep emotional clarity. It helped me regain confidence and balance during a tough transition.',
-    name: 'R. Kapoor',
-    location: 'London, UK'
+    question: 'Are sessions online or in-person?',
+    answer: 'Both! We offer secure, encrypted video sessions worldwide (in USD and INR) as well as private, calm in-person consultations in Sector 88, Faridabad.'
+  },
+  {
+    question: 'What happens in our very first session?',
+    answer: 'Our first meeting is a gentle intake. We go at your comfort level—discussing what brings you in, what you hope to achieve, and mapping out a personalized plan together.'
   }
 ];
 
 const Services = () => {
-  const [currencyRegion, setCurrencyRegion] = useState('ALL'); // 'ALL' | 'INR' | 'USD'
+  const [activeTab, setActiveTab] = useState('individual');
+  const [currency, setCurrency] = useState('INR'); // 'INR' | 'USD'
+  const [openFaq, setOpenFaq] = useState(null);
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
+  const currentService = serviceData.find((s) => s.id === activeTab) || serviceData[0];
+
   return (
-    <div className="min-h-screen bg-[#f6fbfa] text-[#183436] font-sans">
-      {/* Hero Section */}
-      <section className="relative overflow-hidden px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,_rgba(10,114,114,0.08),_transparent_35%),radial-gradient(circle_at_bottom_right,_rgba(15,95,97,0.08),_transparent_35%)]" />
-
-        <div className="relative mx-auto grid max-w-7xl gap-12 lg:grid-cols-[1.15fr_0.85fr] lg:items-center">
-          <div>
-            <span className="inline-flex items-center gap-2 rounded-full border border-[#bfe1df] bg-white px-4 py-2 text-xs sm:text-sm font-semibold text-[#0a7272] shadow-sm">
-              <Sparkles size={16} />
-              Professional Therapy & Wellbeing Services
-            </span>
-
-            <h1 className="mt-6 max-w-3xl text-4xl font-bold leading-tight text-[#0d4f50] sm:text-5xl lg:text-6xl">
-              Grounded care for healing, clarity, and emotional balance.
-            </h1>
-
-            <p className="mt-6 max-w-2xl text-lg leading-relaxed text-[#4c6162]">
-              Structured psychological support for individuals, young adults, and organizations.
-              Available locally in Faridabad and virtually across India and worldwide.
-            </p>
-
-            {/* Currency Filter Bar */}
-            <div className="mt-8 rounded-2xl border border-[#d7ecec] bg-white p-3 shadow-sm inline-flex flex-col sm:flex-row items-start sm:items-center gap-3">
-              <span className="text-xs font-bold uppercase tracking-wider text-[#0a7272] px-2">
-                Display Currency:
-              </span>
-              <div className="flex bg-[#f0f8f8] p-1 rounded-xl">
-                <button
-                  onClick={() => setCurrencyRegion('ALL')}
-                  className={`px-3 py-1.5 text-xs sm:text-sm font-semibold rounded-lg transition ${
-                    currencyRegion === 'ALL'
-                      ? 'bg-[#0a7272] text-white shadow-sm'
-                      : 'text-[#4c6162] hover:text-[#0a7272]'
-                  }`}
-                >
-                  Both (INR & USD)
-                </button>
-                <button
-                  onClick={() => setCurrencyRegion('INR')}
-                  className={`px-3 py-1.5 text-xs sm:text-sm font-semibold rounded-lg transition ${
-                    currencyRegion === 'INR'
-                      ? 'bg-[#0a7272] text-white shadow-sm'
-                      : 'text-[#4c6162] hover:text-[#0a7272]'
-                  }`}
-                >
-                  🇮🇳 India (INR ₹)
-                </button>
-                <button
-                  onClick={() => setCurrencyRegion('USD')}
-                  className={`px-3 py-1.5 text-xs sm:text-sm font-semibold rounded-lg transition ${
-                    currencyRegion === 'USD'
-                      ? 'bg-[#0a7272] text-white shadow-sm'
-                      : 'text-[#4c6162] hover:text-[#0a7272]'
-                  }`}
-                >
-                  🌐 International (USD $)
-                </button>
-              </div>
-            </div>
-
-            <div className="mt-8 flex flex-wrap gap-4">
-              <Link
-                to="/booking"
-                className="inline-flex items-center gap-2 rounded-full bg-[#0a7272] px-7 py-3.5 text-sm font-semibold text-white transition hover:bg-[#095f5f] shadow-md hover:shadow-lg"
-              >
-                Book Consultation
-                <ArrowRight size={16} />
-              </Link>
-
-              <a
-                href="#therapy"
-                className="inline-flex items-center gap-2 rounded-full border border-[#0a7272]/20 bg-white px-7 py-3.5 text-sm font-semibold text-[#0a7272] transition hover:bg-[#edf7f5]"
-              >
-                Explore Offerings
-              </a>
-            </div>
+    <div className="min-h-screen bg-[#fbfdfd] text-[#111827] font-sans antialiased">
+      {/* Hero Section styled with Psychobeings Teal */}
+      <section className="relative overflow-hidden bg-gradient-to-b from-[#edf7f7] via-[#f7fbfb] to-[#fbfdfd] px-4 pt-16 pb-20 sm:px-6 lg:px-8 lg:pt-20">
+        <div className="mx-auto max-w-5xl text-center">
+          <div className="inline-flex items-center gap-2 rounded-full border border-[#b8e1e1] bg-white px-4 py-2 text-xs sm:text-sm font-semibold text-[#036b75] shadow-sm">
+            <Heart size={16} className="fill-[#036b75] text-[#036b75]" />
+            Empowering Minds. Transforming Lives.
           </div>
 
-          {/* Quick Info Feature Box */}
-          <div className="grid gap-4">
-            <div className="rounded-[2rem] bg-[#0a7272] p-8 text-white shadow-xl relative overflow-hidden">
-              <div className="absolute top-0 right-0 -mr-6 -mt-6 w-32 h-32 bg-white/5 rounded-full blur-2xl pointer-events-none" />
-              <p className="text-xs font-semibold uppercase tracking-[0.25em] text-teal-200">
-                Format & Availability
-              </p>
+          <h1 className="mt-6 text-4xl font-extrabold tracking-tight text-[#111827] sm:text-5xl lg:text-6xl">
+            Grounded psychological care for <br className="hidden sm:inline" />
+            <span className="text-[#036b75]">healing & personal clarity.</span>
+          </h1>
 
-              <div className="mt-6 space-y-4">
-                <div className="rounded-2xl bg-white/10 p-4 backdrop-blur-md border border-white/10">
-                  <div className="flex items-center gap-3">
-                    <Globe2 size={20} className="text-teal-200" />
-                    <p className="font-semibold text-base">International & Pan-India Online</p>
-                  </div>
-                  <p className="mt-1.5 text-sm leading-6 text-white/85">
-                    Secure Video Sessions in USD ($) and INR (₹) across time zones.
-                  </p>
-                </div>
+          <p className="mx-auto mt-6 max-w-2xl text-base sm:text-lg leading-relaxed text-[#4b5563]">
+            Confidential, structured therapeutic support for individuals, adolescents, and organizations. Available locally in Faridabad and virtually worldwide.
+          </p>
 
-                <div className="rounded-2xl bg-white/10 p-4 backdrop-blur-md border border-white/10">
-                  <div className="flex items-center gap-3">
-                    <MapPin size={20} className="text-teal-200" />
-                    <p className="font-semibold text-base">In-Person Practice</p>
-                  </div>
-                  <p className="mt-1.5 text-sm leading-6 text-white/85">
-                    Private clinic consultations available in Faridabad, Haryana.
-                  </p>
-                </div>
-              </div>
+          <div className="mt-8 flex flex-wrap justify-center items-center gap-4 text-xs sm:text-sm font-medium text-[#1f2937]">
+            <div className="flex items-center gap-2 bg-white px-4 py-2 rounded-full border border-[#d8ecec] shadow-xs">
+              <MapPin size={16} className="text-[#036b75]" />
+              <span>In-Person: Sector 88, Faridabad</span>
             </div>
-
-            <div className="grid gap-4 sm:grid-cols-2">
-              <div className="rounded-[1.5rem] border border-[#d7ecec] bg-white p-5 shadow-sm">
-                <div className="flex items-center gap-2 text-[#0a7272]">
-                  <ShieldCheck size={18} />
-                  <p className="text-sm font-semibold">Strict Confidentiality</p>
-                </div>
-                <p className="mt-2 text-xs leading-5 text-[#4c6162]">
-                  Safe, non-judgmental space governed by clinical ethics.
-                </p>
-              </div>
-
-              <div className="rounded-[1.5rem] border border-[#d7ecec] bg-white p-5 shadow-sm">
-                <div className="flex items-center gap-2 text-[#0a7272]">
-                  <CalendarHeart size={18} />
-                  <p className="text-sm font-semibold">Flexible Scheduling</p>
-                </div>
-                <p className="mt-2 text-xs leading-5 text-[#4c6162]">
-                  Easy reschedule policy and evening/weekend availability.
-                </p>
-              </div>
+            <div className="flex items-center gap-2 bg-white px-4 py-2 rounded-full border border-[#d8ecec] shadow-xs">
+              <Globe2 size={16} className="text-[#036b75]" />
+              <span>Online Telehealth (Global)</span>
+            </div>
+            <div className="flex items-center gap-2 bg-white px-4 py-2 rounded-full border border-[#d8ecec] shadow-xs">
+              <ShieldCheck size={16} className="text-[#036b75]" />
+              <span>100% Confidential Care</span>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Floating CTA */}
-      <Link
-        to="/booking"
-        className="fixed bottom-6 right-6 z-50 inline-flex items-center gap-3 rounded-full bg-[#0a7272] px-6 py-3.5 text-sm font-semibold text-white shadow-2xl transition hover:scale-105 hover:bg-[#0d5c5e]"
-      >
-        <MessageCircle size={18} />
-        Book Consultation
-      </Link>
-
-      {/* Therapy Section */}
-      <section id="therapy" className="px-4 py-16 sm:px-6 lg:px-8">
+      {/* Main Interactive Service Tab Browser */}
+      <section className="px-4 py-8 sm:px-6 lg:px-8 -mt-8">
         <div className="mx-auto max-w-7xl">
-          <div className="max-w-3xl">
-            <span className="text-xs font-bold uppercase tracking-[0.3em] text-[#0a7272] bg-[#eaf6f6] px-3 py-1 rounded-full">
-              Clinical Therapy
-            </span>
-            <h2 className="mt-4 text-3xl font-bold text-[#0d4f50] sm:text-4xl">
-              Personalized Therapeutic Support
-            </h2>
-            <p className="mt-3 text-lg leading-relaxed text-[#4c6162]">
-              Evidence-based modalities designed to meet you where you are, fostering self-awareness, resilience, and emotional equilibrium.
-            </p>
+          {/* Navigation Category Selector */}
+          <div className="flex justify-center">
+            <div className="inline-flex flex-wrap justify-center gap-2 rounded-2xl bg-white p-2 border border-[#d8ecec] shadow-md">
+              {serviceData.map((tab) => {
+                const Icon = tab.icon;
+                const isActive = activeTab === tab.id;
+                return (
+                  <button
+                    key={tab.id}
+                    onClick={() => setActiveTab(tab.id)}
+                    className={`inline-flex items-center gap-2 rounded-xl px-5 py-3 text-xs sm:text-sm font-bold transition-all ${
+                      isActive
+                        ? 'bg-[#036b75] text-white shadow-sm scale-[1.02]'
+                        : 'text-[#4b5563] hover:bg-[#edf7f7] hover:text-[#036b75]'
+                    }`}
+                  >
+                    <Icon size={18} />
+                    <span>{tab.label}</span>
+                  </button>
+                );
+              })}
+            </div>
           </div>
 
-          <div className="mt-12 space-y-12">
-            {therapyOptions.map((item) => (
-              <div
-                key={item.id}
-                className="rounded-[2.5rem] border border-[#d7ecec] bg-white p-6 sm:p-8 lg:p-10 shadow-sm"
+          {/* Currency Toggle Banner */}
+          <div className="mt-8 flex flex-col sm:flex-row items-center justify-between gap-4 rounded-2xl bg-[#edf7f7] p-4 border border-[#d8ecec]">
+            <div className="flex items-center gap-2 text-xs sm:text-sm text-[#111827] font-semibold">
+              <Sparkles size={18} className="text-[#036b75]" />
+              <span>Display pricing for your location:</span>
+            </div>
+
+            <div className="flex bg-white p-1 rounded-xl border border-[#d8ecec]">
+              <button
+                onClick={() => setCurrency('INR')}
+                className={`px-4 py-1.5 text-xs font-bold rounded-lg transition ${
+                  currency === 'INR'
+                    ? 'bg-[#036b75] text-white shadow-xs'
+                    : 'text-[#4b5563] hover:text-[#036b75]'
+                }`}
               >
-                <div className="grid gap-8 lg:grid-cols-[1fr_1.1fr]">
-                  {/* Left Column: Details & Concerns */}
-                  <div className="flex flex-col justify-between">
+                🇮🇳 India (INR ₹)
+              </button>
+              <button
+                onClick={() => setCurrency('USD')}
+                className={`px-4 py-1.5 text-xs font-bold rounded-lg transition ${
+                  currency === 'USD'
+                    ? 'bg-[#036b75] text-white shadow-xs'
+                    : 'text-[#4b5563] hover:text-[#036b75]'
+                }`}
+              >
+                🌐 International (USD $)
+              </button>
+            </div>
+          </div>
+
+          {/* Active Service Details Box */}
+          <div className="mt-8 rounded-[2.5rem] border border-[#d8ecec] bg-white p-6 sm:p-10 shadow-sm">
+            <div className="grid gap-10 lg:grid-cols-[1fr_1.15fr] items-start">
+              
+              {/* Left Column: Concerns & Target Client Profile */}
+              <div>
+                <span className="inline-block rounded-full bg-[#edf7f7] px-3.5 py-1 text-xs font-bold uppercase tracking-wider text-[#036b75]">
+                  {currentService.badge}
+                </span>
+
+                <h2 className="mt-4 text-3xl font-extrabold text-[#111827]">
+                  {currentService.headline}
+                </h2>
+
+                <p className="mt-3 text-base leading-relaxed text-[#4b5563]">
+                  {currentService.subheadline}
+                </p>
+
+                <div className="mt-8 rounded-2xl bg-[#f7fbfb] p-6 border border-[#d8ecec]">
+                  <p className="text-xs font-bold uppercase tracking-widest text-[#036b75]">
+                    Key Focus Areas & Concerns:
+                  </p>
+
+                  <div className="mt-4 space-y-3">
+                    {currentService.relatableConcerns.map((concern) => (
+                      <div key={concern} className="flex items-start gap-3 text-sm text-[#111827]">
+                        <CheckCircle2 size={18} className="text-[#036b75] shrink-0 mt-0.5" />
+                        <span className="font-medium">{concern}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="mt-8 flex items-center gap-3 text-xs text-[#6b7280]">
+                  <Clock size={16} className="text-[#036b75]" />
+                  <span>Flexible online booking with easy rescheduling options.</span>
+                </div>
+              </div>
+
+              {/* Right Column: Clear Pricing Cards */}
+              <div className="grid gap-6 sm:grid-cols-2">
+                {currentService.cards.map((card) => (
+                  <div
+                    key={card.title}
+                    className={`relative rounded-[2rem] p-6 transition flex flex-col justify-between ${
+                      card.isPopular
+                        ? 'bg-[#036b75] text-white shadow-xl scale-[1.01]'
+                        : 'bg-[#fbfdfd] border border-[#d8ecec] text-[#111827]'
+                    }`}
+                  >
+                    {card.isPopular && (
+                      <div className="absolute -top-3 right-6 inline-flex items-center gap-1 rounded-full bg-amber-300 px-3 py-0.5 text-[11px] font-extrabold text-slate-900 shadow-xs">
+                        <Flame size={12} className="fill-amber-900 text-amber-900" />
+                        {card.badge}
+                      </div>
+                    )}
+
                     <div>
-                      <div className="flex items-center gap-3">
-                        <div className="rounded-2xl bg-[#eaf6f6] p-3 text-[#0a7272]">
-                          <HeartHandshake size={24} />
+                      {!card.isPopular && (
+                        <span className="text-[11px] font-bold uppercase tracking-wider text-[#036b75]">
+                          {card.badge}
+                        </span>
+                      )}
+
+                      <h3 className={`mt-1 text-lg font-bold ${card.isPopular ? 'text-white' : 'text-[#111827]'}`}>
+                        {card.title}
+                      </h3>
+
+                      <div className="mt-4">
+                        <div className="flex items-baseline gap-1">
+                          <span className="text-3xl font-extrabold tracking-tight">
+                            {currency === 'INR' ? card.priceINR : card.priceUSD}
+                          </span>
+                          <span className={`text-xs ${card.isPopular ? 'text-teal-100' : 'text-[#6b7280]'}`}>
+                            / {currency}
+                          </span>
                         </div>
-                        <h3 className="text-2xl font-bold text-[#0d4f50]">
-                          {item.title}
-                        </h3>
+                        <p className={`mt-1 text-xs font-medium ${card.isPopular ? 'text-teal-100/90' : 'text-[#4b5563]'}`}>
+                          {card.unit}
+                        </p>
                       </div>
 
-                      <p className="mt-4 text-base leading-relaxed text-[#4c6162]">
-                        {item.description}
+                      <p className={`mt-4 text-xs leading-relaxed ${card.isPopular ? 'text-white/90' : 'text-[#4b5563]'}`}>
+                        {card.description}
                       </p>
-
-                      <div className="mt-6 rounded-2xl bg-[#f7fcfb] p-5 border border-[#e3f2f1]">
-                        <h4 className="text-xs font-bold uppercase tracking-[0.2em] text-[#0a7272]">
-                          Key Focus Areas & Concerns
-                        </h4>
-                        <div className="mt-4 grid gap-2.5 sm:grid-cols-2">
-                          {item.concerns.map((concern) => (
-                            <div
-                              key={concern}
-                              className="flex items-center gap-2.5 text-sm text-[#3b4f50]"
-                            >
-                              <CheckCircle2
-                                size={16}
-                                className="shrink-0 text-[#0a7272]"
-                              />
-                              <span>{concern}</span>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
                     </div>
 
-                    <div className="mt-8">
+                    <div className="mt-8 pt-4 border-t border-current/10">
                       <Link
-                        to={item.buttonTo}
-                        className="inline-flex items-center gap-2 rounded-full border-2 border-[#0a7272] px-6 py-3 text-sm font-semibold text-[#0a7272] transition hover:bg-[#0a7272] hover:text-white"
+                        to={card.buttonTo}
+                        className={`w-full inline-flex items-center justify-center gap-2 rounded-xl px-4 py-3 text-xs font-bold transition shadow-xs ${
+                          card.isPopular
+                            ? 'bg-white text-[#036b75] hover:bg-teal-50'
+                            : 'bg-[#036b75] text-white hover:bg-[#02565e]'
+                        }`}
                       >
-                        {item.buttonLabel}
-                        <ArrowRight size={16} />
+                        {card.buttonText}
+                        <ArrowRight size={14} />
                       </Link>
                     </div>
                   </div>
-
-                  {/* Right Column: Pricing Cards Side-by-Side */}
-                  <div className="grid gap-4 sm:grid-cols-2">
-                    {item.sessionCards.map((card) => (
-                      <div
-                        key={card.title}
-                        className={`relative rounded-[2rem] p-6 transition flex flex-col justify-between ${
-                          card.isPopular
-                            ? 'bg-gradient-to-br from-[#0a7272] to-[#0d5c5e] text-white shadow-xl ring-2 ring-[#0a7272]/30 scale-[1.02]'
-                            : 'bg-[#f8fcfc] border border-[#d7ecec] text-[#183436]'
-                        }`}
-                      >
-                        {/* Popular / Recommended Badge */}
-                        {card.isPopular && (
-                          <div className="absolute -top-3 right-6 inline-flex items-center gap-1 rounded-full bg-amber-400 px-3 py-1 text-xs font-bold text-slate-900 shadow-md">
-                            <Flame size={13} className="text-amber-900 fill-amber-900" />
-                            {card.popularBadge}
-                          </div>
-                        )}
-
-                        <div>
-                          <p
-                            className={`text-sm font-bold ${
-                              card.isPopular ? 'text-teal-100' : 'text-[#0a7272]'
-                            }`}
-                          >
-                            {card.title}
-                          </p>
-
-                          {/* Pricing Display */}
-                          <div className="mt-4 space-y-1">
-                            {(currencyRegion === 'ALL' || currencyRegion === 'INR') && (
-                              <div className="flex items-baseline gap-2">
-                                <span className="text-3xl font-extrabold tracking-tight">
-                                  {card.priceINR}
-                                </span>
-                                <span
-                                  className={`text-xs font-semibold ${
-                                    card.isPopular ? 'text-teal-200' : 'text-[#5a7273]'
-                                  }`}
-                                >
-                                  (India / INR)
-                                </span>
-                              </div>
-                            )}
-
-                            {(currencyRegion === 'ALL' || currencyRegion === 'USD') && (
-                              <div className="flex items-baseline gap-2">
-                                <span
-                                  className={`text-2xl font-bold ${
-                                    card.isPopular ? 'text-teal-100' : 'text-[#0d4f50]'
-                                  }`}
-                                >
-                                  {card.priceUSD}
-                                </span>
-                                <span
-                                  className={`text-xs font-semibold ${
-                                    card.isPopular ? 'text-teal-200' : 'text-[#5a7273]'
-                                  }`}
-                                >
-                                  (International / USD)
-                                </span>
-                              </div>
-                            )}
-
-                            <p
-                              className={`text-xs mt-1 ${
-                                card.isPopular ? 'text-teal-100/80' : 'text-[#6b8283]'
-                              }`}
-                            >
-                              {card.unit}
-                            </p>
-                          </div>
-
-                          <p
-                            className={`mt-4 text-xs leading-relaxed ${
-                              card.isPopular ? 'text-white/90' : 'text-[#4c6162]'
-                            }`}
-                          >
-                            {card.description}
-                          </p>
-                        </div>
-
-                        <div className="mt-6 pt-4 border-t border-current/10">
-                          <Link
-                            to={card.buttonTo}
-                            className={`w-full inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-xs font-bold transition ${
-                              card.isPopular
-                                ? 'bg-white text-[#0a7272] hover:bg-teal-50'
-                                : 'bg-[#0a7272] text-white hover:bg-[#095f5f]'
-                            }`}
-                          >
-                            {card.buttonLabel}
-                            <ArrowRight size={14} />
-                          </Link>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Programs Section */}
-      <section className="px-4 py-16 sm:px-6 lg:px-8 bg-[#f0f8f7]">
-        <div className="mx-auto max-w-7xl">
-          <div className="max-w-3xl">
-            <span className="text-xs font-bold uppercase tracking-[0.3em] text-[#0a7272] bg-white px-3 py-1 rounded-full border border-[#bfe1df]">
-              Workshops & Organizations
-            </span>
-            <h2 className="mt-4 text-3xl font-bold text-[#0d4f50] sm:text-4xl">
-              Wellness Programs & Institutional Care
-            </h2>
-            <p className="mt-3 text-lg leading-relaxed text-[#4c6162]">
-              Tailored group interventions, capacity-building workshops, and organizational wellbeing solutions.
-            </p>
-          </div>
-
-          <div className="mt-12 grid gap-8 lg:grid-cols-2">
-            {programOptions.map((item) => (
-              <div
-                key={item.title}
-                className="rounded-[2.5rem] border border-[#d7ecec] bg-white p-8 shadow-sm flex flex-col justify-between transition hover:shadow-md"
-              >
-                <div>
-                  <div className="flex items-center gap-3">
-                    <div className="rounded-2xl bg-[#eaf6f6] p-3 text-[#0a7272]">
-                      {item.title.includes('Workshops') ? (
-                        <Sparkles size={22} />
-                      ) : (
-                        <Building2 size={22} />
-                      )}
-                    </div>
-                    <h3 className="text-2xl font-bold text-[#0d4f50]">
-                      {item.title}
-                    </h3>
-                  </div>
-
-                  <p className="mt-4 text-sm leading-relaxed text-[#4c6162]">
-                    {item.description}
-                  </p>
-
-                  <div className="mt-6 space-y-2">
-                    {item.offerings.map((offering) => (
-                      <div
-                        key={offering}
-                        className="flex items-center gap-3 rounded-xl bg-[#f7fcfb] p-3 text-xs sm:text-sm text-[#3b4f50]"
-                      >
-                        <Check size={16} className="text-[#0a7272] shrink-0" />
-                        <span>{offering}</span>
-                      </div>
-                    ))}
-                  </div>
-
-                  {/* Pricing Grid */}
-                  <div className="mt-6 grid gap-4 sm:grid-cols-2">
-                    {item.sessionCards.map((card) => (
-                      <div
-                        key={card.title}
-                        className={`relative rounded-2xl p-5 border ${
-                          card.isPopular
-                            ? 'border-[#0a7272] bg-[#f0f8f8]'
-                            : 'border-[#d7ecec] bg-white'
-                        }`}
-                      >
-                        {card.isPopular && (
-                          <span className="absolute -top-2.5 right-4 bg-[#0a7272] text-white text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full">
-                            {card.popularBadge}
-                          </span>
-                        )}
-
-                        <p className="text-xs font-bold text-[#0d4f50]">
-                          {card.title}
-                        </p>
-
-                        <div className="mt-2">
-                          {(currencyRegion === 'ALL' || currencyRegion === 'INR') && (
-                            <div className="text-lg font-bold text-[#0a7272]">
-                              {card.priceINR}{' '}
-                              <span className="text-[10px] font-normal text-[#5a7273]">
-                                INR
-                              </span>
-                            </div>
-                          )}
-                          {(currencyRegion === 'ALL' || currencyRegion === 'USD') && (
-                            <div className="text-base font-bold text-[#0d4f50]">
-                              {card.priceUSD}{' '}
-                              <span className="text-[10px] font-normal text-[#5a7273]">
-                                USD
-                              </span>
-                            </div>
-                          )}
-                          <p className="text-[11px] text-[#6b8283]">{card.unit}</p>
-                        </div>
-
-                        <p className="mt-2 text-[11px] text-[#4c6162] leading-tight">
-                          {card.description}
-                        </p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="mt-8 pt-4">
-                  <Link
-                    to={item.buttonTo}
-                    className="inline-flex items-center gap-2 rounded-full border border-[#0a7272] px-6 py-3 text-xs sm:text-sm font-semibold text-[#0a7272] transition hover:bg-[#0a7272] hover:text-white"
-                  >
-                    {item.buttonLabel}
-                    <ArrowRight size={14} />
-                  </Link>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Trust & Testimonials */}
-      <section className="px-4 py-16 sm:px-6 lg:px-8">
-        <div className="mx-auto grid max-w-7xl gap-8 lg:grid-cols-[0.95fr_1.05fr]">
-          {/* Trust Points */}
-          <div className="rounded-[2.5rem] bg-[#0f5f61] p-8 sm:p-10 text-white shadow-md flex flex-col justify-between">
-            <div>
-              <div className="flex items-center gap-3">
-                <div className="rounded-2xl bg-white/10 p-3 text-teal-200">
-                  <ShieldCheck size={24} />
-                </div>
-                <h2 className="text-2xl sm:text-3xl font-bold">Client-Centered Practice</h2>
-              </div>
-
-              <div className="mt-8 space-y-4">
-                {trustPoints.map((point) => (
-                  <div
-                    key={point}
-                    className="flex items-start gap-3 rounded-2xl bg-white/10 p-4 text-sm leading-relaxed text-teal-50 border border-white/5"
-                  >
-                    <CheckCircle2 size={18} className="text-teal-300 shrink-0 mt-0.5" />
-                    <span>{point}</span>
-                  </div>
                 ))}
               </div>
-            </div>
-          </div>
 
-          {/* Testimonials */}
-          <div className="rounded-[2.5rem] border border-[#d7ecec] bg-white p-8 sm:p-10 shadow-sm flex flex-col justify-between">
-            <div>
-              <div className="flex items-center gap-2 text-amber-500 mb-2">
-                <Star size={16} fill="currentColor" />
-                <Star size={16} fill="currentColor" />
-                <Star size={16} fill="currentColor" />
-                <Star size={16} fill="currentColor" />
-                <Star size={16} fill="currentColor" />
-              </div>
-
-              <h2 className="text-2xl sm:text-3xl font-bold text-[#0d4f50]">
-                Client Experiences
-              </h2>
-              <p className="mt-2 text-sm text-[#4c6162]">
-                Reflections from individuals supported across India and internationally.
-              </p>
-
-              <div className="mt-6 space-y-4">
-                {testimonials.map((item) => (
-                  <div
-                    key={item.name}
-                    className="rounded-2xl bg-[#f7fcfb] p-5 border border-[#eaf6f6]"
-                  >
-                    <p className="text-sm leading-relaxed text-[#2d4749] italic">
-                      “{item.quote}”
-                    </p>
-                    <div className="mt-3 flex items-center justify-between text-xs">
-                      <span className="font-bold text-[#0a7272]">{item.name}</span>
-                      <span className="text-[#6b8283]">{item.location}</span>
-                    </div>
-                  </div>
-                ))}
-              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Location / Booking Bar */}
-      <section className="px-4 pb-16 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-7xl overflow-hidden rounded-[2.5rem] bg-gradient-to-r from-[#eaf6f6] via-white to-[#eef8f7] p-8 sm:p-10 border border-[#d7ecec] shadow-sm">
-          <div className="grid gap-8 lg:grid-cols-[1fr_auto] lg:items-center">
-            <div className="max-w-2xl">
-              <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#0a7272]">
-                Location & Accessibility
+      {/* CTA Box */}
+      <section className="px-4 py-12 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-5xl rounded-[2.5rem] bg-[#036b75] p-8 sm:p-12 text-white shadow-xl">
+          <div className="grid gap-8 lg:grid-cols-[1.2fr_0.8fr] lg:items-center">
+            <div>
+              <span className="text-xs font-bold uppercase tracking-widest text-teal-200">
+                Ready to Start Your Journey?
               </span>
-              <h2 className="mt-2 text-2xl sm:text-3xl font-bold text-[#0d4f50]">
-                In-person in Faridabad, virtual globally.
+              <h2 className="mt-2 text-2xl sm:text-3xl font-bold">
+                Taking the first step is often the most important one.
               </h2>
-              <p className="mt-3 text-sm sm:text-base leading-relaxed text-[#4c6162]">
-                Schedule in-person consultations in Faridabad or seamlessly connect via encrypted video calls from anywhere globally.
+              <p className="mt-3 text-sm leading-relaxed text-teal-100/90">
+                Connect with our team to discuss your goals, schedule an intake session, or ask any questions about our practice.
               </p>
             </div>
 
-            <div className="rounded-2xl border border-[#d7ecec] bg-white p-6 shadow-sm">
-              <div className="flex items-start gap-3">
-                <div className="rounded-xl bg-[#0a7272] p-2.5 text-white">
-                  <MapPin size={20} />
-                </div>
-                <div>
-                  <p className="font-bold text-[#0d4f50]">Faridabad, Haryana</p>
-                  <p className="text-xs text-[#4c6162] mt-0.5">
-                    Sector 88,Kheri Road
-                  </p>
-                </div>
-              </div>
-
-              <div className="mt-5 flex flex-wrap gap-3">
-                <a
-                  href="https://psychobeings.com/booking"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="rounded-full bg-[#0a7272] px-5 py-2.5 text-xs font-bold text-white transition hover:bg-[#0d5c5e]"
-                >
-                  Book Slot Online
-                </a>
-                <a
-                  href="https://maps.app.goo.gl/oqDJRvWrNSt5ULPBA"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="rounded-full border border-[#0a7272] px-5 py-2.5 text-xs font-bold text-[#0a7272] transition hover:bg-[#f7fcfb]"
-                >
-                  Open Map
-                </a>
-              </div>
+            <div className="flex flex-col sm:flex-row lg:flex-col gap-3">
+              <Link
+                to="/booking"
+                className="inline-flex items-center justify-center gap-2 rounded-xl bg-white px-6 py-3.5 text-xs sm:text-sm font-bold text-[#036b75] transition hover:bg-teal-50 shadow-sm"
+              >
+                <CalendarHeart size={16} />
+                Book Initial Consultation
+              </Link>
+              <Link
+                to="/contact"
+                className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/30 bg-white/10 px-6 py-3.5 text-xs sm:text-sm font-bold text-white transition hover:bg-white/20 backdrop-blur-xs"
+              >
+                <MessageCircle size={16} />
+                Get in Touch
+              </Link>
             </div>
           </div>
         </div>
       </section>
+
+      {/* FAQ Section */}
+      <section className="px-4 py-12 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-3xl">
+          <div className="text-center">
+            <span className="text-xs font-bold uppercase tracking-widest text-[#036b75] bg-[#edf7f7] px-3 py-1 rounded-full">
+              Frequently Asked Questions
+            </span>
+            <h2 className="mt-3 text-2xl sm:text-3xl font-bold text-[#111827]">
+              Everything you need to know
+            </h2>
+          </div>
+
+          <div className="mt-8 space-y-4">
+            {faqItems.map((faq, index) => {
+              const isOpen = openFaq === index;
+              return (
+                <div
+                  key={faq.question}
+                  className="rounded-2xl border border-[#d8ecec] bg-white overflow-hidden transition"
+                >
+                  <button
+                    onClick={() => setOpenFaq(isOpen ? null : index)}
+                    className="w-full p-5 text-left flex justify-between items-center gap-4 text-sm font-bold text-[#111827] hover:text-[#036b75]"
+                  >
+                    <span>{faq.question}</span>
+                    <span className="text-lg text-[#036b75]">{isOpen ? '−' : '+'}</span>
+                  </button>
+
+                  {isOpen && (
+                    <div className="px-5 pb-5 text-xs sm:text-sm leading-relaxed text-[#4b5563] border-t border-[#edf7f7] pt-3">
+                      {faq.answer}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* Floating CTA Button */}
+      <Link
+        to="/booking"
+        className="fixed bottom-6 right-6 z-50 inline-flex items-center gap-2.5 rounded-full bg-[#036b75] px-6 py-3.5 text-xs sm:text-sm font-bold text-white shadow-2xl transition hover:scale-105 hover:bg-[#02565e]"
+      >
+        <MessageCircle size={18} />
+        <span>Book Consultation</span>
+      </Link>
     </div>
   );
 };
