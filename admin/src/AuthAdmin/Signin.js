@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { ArrowRight, KeyRound, Lock, Mail, ShieldCheck } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import logo from '../Assets/psychobeings.png';
+import logo from '../Assets/Psychobeings.png';
 
 const API_BASE_URL = (process.env.REACT_APP_URL || 'http://localhost:8080/').replace(/\/?$/, '/');
 
