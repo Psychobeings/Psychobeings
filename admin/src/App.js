@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
 import Signin from './AuthAdmin/Signin';
-import Header from './Components/Header';
-import Sessions from './Components/Sessions';
+import AssessmentPortal from './Components/AssessmentPortal';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -36,25 +35,24 @@ function App() {
               !isAuthenticated ? (
                 <Signin onLoginSuccess={handleLoginSuccess} />
               ) : (
-                <Navigate to="/sessions" replace />
+                <Navigate to="/portal" replace />
               )
             } 
           />
 
           {/* Protected Routes */}
           <Route 
-            path="/sessions" 
+            path="/portal"
             element={
               isAuthenticated ? (
-                <>
-                  <Header onLogout={handleLogout} />
-                  <Sessions />
-                </>
+                <AssessmentPortal onLogout={handleLogout} />
               ) : (
                 <Navigate to="/signin" replace />
               )
             } 
           />
+
+          <Route path="/sessions" element={<Navigate to="/portal" replace />} />
 
           {/* Redirect to signin by default */}
           <Route 
