@@ -21,7 +21,6 @@ import {
   MoreHorizontal,
   FileText,
   CheckCircle2,
-  AlertCircle,
   Circle,
   ArrowUpRight,
   Heart,
