@@ -12,15 +12,9 @@ import {
   ChevronDown,
   ChevronRight,
   LogOut,
-  Plus,
-  Search,
   Sparkles,
-  Clock,
   IndianRupee,
-  AlertCircle,
-  FileText,
-  CheckCircle2,
-  Lock
+  AlertCircle
 } from 'lucide-react';
 
 export default function Dashboard({ onLogout }) {
