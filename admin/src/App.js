@@ -6,7 +6,8 @@ import Signin from './Admindasboard/Signin';
 
 // Dashboard Components
 import AdminLayout from './Admindasboard/AdminLayout';
-import ClientManagement from './Admindasboard /ClientManagement';
+import OverviewAdmin from './Admindasboard/OverviewAdmin'; // <-- Added missing import
+import ClientManagement from './Admindasboard/ClientManagement';
 import ScheduleManager from './Admindasboard/ScheduleManager';
 import SessionLogs from './Admindasboard/SessionLogs';
 import RetentionEngine from './Admindasboard/FollowUps';
