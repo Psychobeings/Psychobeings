@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
-import Signin from './AuthAdmin/Signin';
+import Signin from './Admindasboard/Signin';
 import Dashboard from './Admindasboard/Dashboard';
 
 function App() {
