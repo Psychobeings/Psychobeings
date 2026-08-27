@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Signin from './Admindasboard/Signin';
-import Dashboard from './Components/DashboardHome';
+import DashboardHome from './Components/DashboardHome';
 
 // Protected Route Guard
 const ProtectedRoute = ({ children }) => {
@@ -12,49 +12,49 @@ const ProtectedRoute = ({ children }) => {
   return children;
 };
 
+// Public Route Guard (prevents logged-in users from viewing Signin)
+const PublicRoute = ({ children }) => {
+  const token = localStorage.getItem('authToken');
+  if (token) {
+    return <Navigate to="/dashboard" replace />;
+  }
+  return children;
+};
+
 export default function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-
-  useEffect(() => {
-    const token = localStorage.getItem('authToken');
-    setIsAuthenticated(!!token);
-  }, []);
-
-  const handleLoginSuccess = () => {
-    setIsAuthenticated(true);
-  };
-
   return (
     <BrowserRouter>
       <Routes>
+        {/* Root Redirect */}
         <Route 
           path="/" 
-          element={<Navigate to={isAuthenticated ? "/dashboard" : "/signin"} replace />} 
+          element={<Navigate to="/dashboard" replace />} 
         />
 
+        {/* Sign In Route */}
         <Route 
           path="/signin" 
           element={
-            isAuthenticated ? (
-              <Navigate to="/dashboard" replace />
-            ) : (
-              <Signin onLoginSuccess={handleLoginSuccess} />
-            )
+            <PublicRoute>
+              <Signin />
+            </PublicRoute>
           } 
         />
 
+        {/* Protected Dashboard Route */}
         <Route 
-          path="/dashboard/*" 
+          path="/dashboard" 
           element={
             <ProtectedRoute>
-              <Dashboard />
+              <DashboardHome />
             </ProtectedRoute>
           } 
         />
 
+        {/* Catch-all Fallback */}
         <Route 
           path="*" 
-          element={<Navigate to={isAuthenticated ? "/dashboard" : "/signin"} replace />} 
+          element={<Navigate to="/dashboard" replace />} 
         />
       </Routes>
     </BrowserRouter>
