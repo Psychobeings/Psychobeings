@@ -5,6 +5,7 @@ import {
   Users, 
   Calendar, 
   FileText, 
+  CheckSquare, 
   Settings, 
   Plus, 
   LogOut, 
@@ -27,6 +28,7 @@ export default function Layout() {
     { label: 'Client Roster', path: '/clients', icon: Users },
     { label: 'Session Calendar', path: '/calendar', icon: Calendar },
     { label: 'Case History', path: '/case-history', icon: FileText },
+    { label: 'Tasks & Worksheets', path: '/tasks-worksheets', icon: CheckSquare },
     { label: 'Settings', path: '/settings', icon: Settings },
   ];
 
