@@ -1,7 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Signin from '../../admin/src/Admindasboard/Signin';
-// Import your other components here...
+import Signin from './Admindasboard/Signin';
 
 function App() {
   return (
