@@ -174,7 +174,6 @@ export default function DashboardHome() {
                   </div>
 
                   <div className="flex items-center gap-3">
-                    {/* Status Badges */}
                     {session.status === 'Completed' && (
                       <span className="px-2.5 py-1 text-xs font-medium rounded-full bg-stone-100 text-stone-600">
                         Completed

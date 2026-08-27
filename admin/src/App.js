@@ -1,40 +1,61 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-
-// Auth Route Component
 import Signin from './Admindasboard/Signin';
+import Dashboard from './Components/DashboardHome';
 
-// App Layout Shell
-import Layout from './Components/Layout';
-
-// Active View Components
-import DashboardHome from './Components/DashboardHome';
-import SessionCalendar from './Components/SessionCalendar';
-import CaseHistory from './Components/CaseHistory';
-
-// Remaining Placeholder Components
-const Clients = () => <h1 className="text-2xl font-bold text-stone-900">Client Roster</h1>;
-const SettingsView = () => <h1 className="text-2xl font-bold text-stone-900">Settings</h1>;
+// Protected Route Guard
+const ProtectedRoute = ({ children }) => {
+  const token = localStorage.getItem('authToken');
+  if (!token) {
+    return <Navigate to="/signin" replace />;
+  }
+  return children;
+};
 
 export default function App() {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  useEffect(() => {
+    const token = localStorage.getItem('authToken');
+    setIsAuthenticated(!!token);
+  }, []);
+
+  const handleLoginSuccess = () => {
+    setIsAuthenticated(true);
+  };
+
   return (
     <BrowserRouter>
       <Routes>
-        {/* Auth Route */}
-        <Route path="/" element={<Navigate to="/dashboard" replace />} />
-        <Route path="/signin" element={<Signin />} />
+        <Route 
+          path="/" 
+          element={<Navigate to={isAuthenticated ? "/dashboard" : "/signin"} replace />} 
+        />
 
-        {/* Protected Dashboard Shell */}
-        <Route element={<Layout />}>
-          <Route path="/dashboard" element={<DashboardHome />} />
-          <Route path="/clients" element={<Clients />} />
-          <Route path="/calendar" element={<SessionCalendar />} />
-          <Route path="/case-history" element={<CaseHistory />} />
-          <Route path="/settings" element={<SettingsView />} />
-        </Route>
+        <Route 
+          path="/signin" 
+          element={
+            isAuthenticated ? (
+              <Navigate to="/dashboard" replace />
+            ) : (
+              <Signin onLoginSuccess={handleLoginSuccess} />
+            )
+          } 
+        />
 
-        {/* Fallback Catch-all Route */}
-        <Route path="*" element={<Navigate to="/" replace />} />
+        <Route 
+          path="/dashboard/*" 
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          } 
+        />
+
+        <Route 
+          path="*" 
+          element={<Navigate to={isAuthenticated ? "/dashboard" : "/signin"} replace />} 
+        />
       </Routes>
     </BrowserRouter>
   );
