@@ -1,203 +1,259 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { 
-  Calendar as CalendarIcon, 
   ChevronLeft, 
   ChevronRight, 
-  Clock, 
   Plus, 
+  Clock, 
+  User, 
   Video, 
   MapPin, 
-  CheckCircle2 
+  Sparkles
 } from 'lucide-react';
 
-export default function SessionCalendar() {
-  const navigate = useNavigate();
-  const [selectedDate] = useState('Aug 27, 2026');
+const INITIAL_SESSIONS = [
+  {
+    id: 1,
+    clientName: 'Aarav Sharma',
+    date: '2026-08-28',
+    time: '10:00 AM - 11:00 AM',
+    type: 'In-Person',
+    modality: 'CBT',
+    status: 'Confirmed'
+  },
+  {
+    id: 2,
+    clientName: 'Ananya Verma',
+    date: '2026-08-28',
+    time: '02:30 PM - 03:30 PM',
+    type: 'Video Call',
+    modality: 'Narrative Therapy',
+    status: 'Confirmed'
+  },
+  {
+    id: 3,
+    clientName: 'Rohan Mehta',
+    date: '2026-08-28',
+    time: '04:00 PM - 05:00 PM',
+    type: 'In-Person',
+    modality: 'Intake Assessment',
+    status: 'Pending'
+  },
+  {
+    id: 4,
+    clientName: 'Priya Nair',
+    date: '2026-08-31',
+    time: '11:00 AM - 12:00 PM',
+    type: 'Video Call',
+    modality: 'Mindfulness / Stress',
+    status: 'Confirmed'
+  }
+];
 
-  // Mock sessions for the day
-  const sessions = [
-    {
-      id: 1,
-      clientName: "Sarah Jenkins",
-      time: "09:00 AM - 09:50 AM",
-      type: "Telehealth",
-      status: "Completed",
-      modality: "CBT Session",
-      link: "https://meet.jit.si/psychobeings-sarah"
-    },
-    {
-      id: 2,
-      clientName: "Michael Chen",
-      time: "11:00 AM - 11:50 AM",
-      type: "In-Person",
-      location: "Office 2B",
-      status: "In Progress",
-      modality: "Psychotherapy"
-    },
-    {
-      id: 3,
-      clientName: "Emma Watson",
-      time: "02:00 PM - 02:50 PM",
-      type: "Telehealth",
-      status: "Upcoming",
-      modality: "EMDR Protocol",
-      link: "https://meet.jit.si/psychobeings-emma"
-    },
-    {
-      id: 4,
-      clientName: "David Miller",
-      time: "04:00 PM - 04:50 PM",
-      type: "In-Person",
-      location: "Office 2B",
-      status: "Upcoming",
-      modality: "Intake Evaluation"
-    }
-  ];
+export default function SessionCalendar() {
+  const [sessions] = useState(INITIAL_SESSIONS);
+  const [selectedDate, setSelectedDate] = useState('2026-08-28');
+  const [viewMode, setViewMode] = useState('Month');
+
+  // Days mock grid for late August 2026
+  const daysInMonth = Array.from({ length: 31 }, (_, i) => i + 1);
+
+  const todaysSessions = sessions.filter(s => s.date === selectedDate);
 
   return (
-    <div className="space-y-6 max-w-7xl mx-auto">
+    <div className="max-w-6xl mx-auto space-y-6 pb-16 font-sans text-stone-800">
+      
       {/* Page Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-2 border-b border-stone-200">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-semibold text-stone-900">Session Calendar</h1>
-          <p className="text-sm text-stone-500 mt-0.5">
-            Manage your daily appointment schedule, telehealth links, and session status.
-          </p>
+          <div className="flex items-center gap-2 mb-1">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#237A88]/10 text-[#237A88] text-xs font-semibold">
+              <Sparkles size={13} />
+              <span>Practice Schedule</span>
+            </span>
+          </div>
+          <h1 className="text-2xl font-bold tracking-tight text-stone-900">Session Calendar</h1>
+          <p className="text-xs text-stone-500">Manage client appointments, intakes, and clinical availability</p>
         </div>
 
         <div className="flex items-center gap-3">
-          <div className="flex items-center bg-white border border-stone-200 rounded-lg p-1 shadow-sm">
-            <button className="px-3 py-1.5 text-xs font-medium bg-stone-100 text-stone-800 rounded-md">Day</button>
-            <button className="px-3 py-1.5 text-xs font-medium text-stone-500 hover:text-stone-800">Week</button>
-            <button className="px-3 py-1.5 text-xs font-medium text-stone-500 hover:text-stone-800">Month</button>
+          {/* View Toggle */}
+          <div className="bg-stone-100 p-1 rounded-2xl flex items-center gap-1 text-xs font-semibold text-stone-600">
+            {['Month', 'Week'].map((mode) => (
+              <button
+                key={mode}
+                onClick={() => setViewMode(mode)}
+                className={`px-3 py-1.5 rounded-xl transition-all ${
+                  viewMode === mode ? 'bg-white text-stone-900 shadow-sm' : 'hover:text-stone-900'
+                }`}
+              >
+                {mode}
+              </button>
+            ))}
           </div>
 
-          <button className="px-4 py-2 bg-emerald-900 text-white rounded-lg text-sm font-medium hover:bg-emerald-800 transition-colors flex items-center gap-2">
-            <Plus className="h-4 w-4" />
-            Book Session
+          <button 
+            className="flex items-center justify-center gap-2 bg-[#237A88] hover:bg-[#1C646F] text-white px-4 py-2.5 rounded-2xl text-xs font-semibold transition-all shadow-md shadow-[#237A88]/20"
+          >
+            <Plus size={16} />
+            <span>Schedule Session</span>
           </button>
         </div>
       </div>
 
-      {/* Date Control Toolbar */}
-      <div className="bg-white p-4 rounded-xl border border-stone-200 shadow-sm flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <div className="flex items-center gap-1">
-            <button className="p-1.5 rounded-lg border border-stone-200 text-stone-600 hover:bg-stone-50">
-              <ChevronLeft className="h-4 w-4" />
-            </button>
-            <button className="p-1.5 rounded-lg border border-stone-200 text-stone-600 hover:bg-stone-50">
-              <ChevronRight className="h-4 w-4" />
-            </button>
-          </div>
-          <h2 className="text-base font-semibold text-stone-900 flex items-center gap-2">
-            <CalendarIcon className="h-4 w-4 text-emerald-900" />
-            {selectedDate}
-          </h2>
-        </div>
-
-        <button className="text-xs font-medium text-emerald-900 hover:underline">
-          Jump to Today
-        </button>
-      </div>
-
-      {/* Schedule Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-        {/* Main Timeline (8 Cols) */}
-        <div className="lg:col-span-8 space-y-4">
-          <div className="bg-white rounded-xl border border-stone-200 shadow-sm overflow-hidden divide-y divide-stone-100">
-            {sessions.map((session) => (
-              <div key={session.id} className="p-6 hover:bg-stone-50/50 transition-colors flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                <div className="flex items-start gap-4">
-                  <div className="mt-1">
-                    {session.type === 'Telehealth' ? (
-                      <span className="h-10 w-10 rounded-xl bg-emerald-50 text-emerald-900 flex items-center justify-center border border-emerald-100">
-                        <Video className="h-5 w-5" />
-                      </span>
-                    ) : (
-                      <span className="h-10 w-10 rounded-xl bg-amber-50 text-amber-800 flex items-center justify-center border border-amber-100">
-                        <MapPin className="h-5 w-5" />
-                      </span>
-                    )}
-                  </div>
-
-                  <div>
-                    <div className="flex items-center gap-2">
-                      <h3 className="font-semibold text-stone-900 text-base">{session.clientName}</h3>
-                      <span className="text-xs px-2 py-0.5 rounded bg-stone-100 text-stone-600 font-medium">
-                        {session.modality}
-                      </span>
-                    </div>
-
-                    <div className="flex flex-wrap items-center gap-3 mt-1.5 text-xs text-stone-500">
-                      <span className="flex items-center gap-1 font-medium text-stone-700">
-                        <Clock className="h-3.5 w-3.5 text-stone-400" />
-                        {session.time}
-                      </span>
-                      <span>•</span>
-                      <span>{session.type}</span>
-                      {session.location && (
-                        <>
-                          <span>•</span>
-                          <span>{session.location}</span>
-                        </>
-                      )}
-                    </div>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-3 pt-2 sm:pt-0 border-t sm:border-t-0 border-stone-100 justify-between sm:justify-end">
-                  {session.status === 'Completed' && (
-                    <span className="px-3 py-1 text-xs font-medium rounded-full bg-stone-100 text-stone-600 flex items-center gap-1">
-                      <CheckCircle2 className="h-3 w-3 text-emerald-700" />
-                      Completed
-                    </span>
-                  )}
-                  {session.status === 'In Progress' && (
-                    <span className="px-3 py-1 text-xs font-medium rounded-full bg-amber-100 text-amber-800 animate-pulse">
-                      In Progress
-                    </span>
-                  )}
-                  {session.status === 'Upcoming' && (
-                    <span className="px-3 py-1 text-xs font-medium rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200">
-                      Upcoming
-                    </span>
-                  )}
-
-                  <button
-                    onClick={() => navigate('/case-history')}
-                    className="px-3 py-1.5 text-xs font-medium rounded-lg border border-stone-200 text-stone-700 hover:bg-white hover:border-stone-300 transition-colors"
-                  >
-                    View Case
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Sidebar Summary (4 Cols) */}
-        <div className="lg:col-span-4 space-y-6">
-          <div className="bg-white p-5 rounded-xl border border-stone-200 shadow-sm space-y-4">
-            <h3 className="text-sm font-semibold text-stone-900">Daily Summary</h3>
-            <div className="space-y-3 text-xs">
-              <div className="flex justify-between py-2 border-b border-stone-100">
-                <span className="text-stone-500">Total Scheduled</span>
-                <span className="font-semibold text-stone-900">4 Sessions</span>
-              </div>
-              <div className="flex justify-between py-2 border-b border-stone-100">
-                <span className="text-stone-500">Telehealth Sessions</span>
-                <span className="font-semibold text-emerald-900">2 Sessions</span>
-              </div>
-              <div className="flex justify-between py-2 border-b border-stone-100">
-                <span className="text-stone-500">In-Person Sessions</span>
-                <span className="font-semibold text-amber-800">2 Sessions</span>
-              </div>
+      {/* Main Grid: Calendar Left, Today's Schedule Right */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        
+        {/* Calendar Grid (2 Cols) */}
+        <div className="lg:col-span-2 bg-white p-6 rounded-3xl border border-stone-100 shadow-sm space-y-4">
+          
+          {/* Calendar Header Controls */}
+          <div className="flex items-center justify-between pb-2">
+            <h2 className="text-base font-bold text-stone-900">August 2026</h2>
+            <div className="flex items-center gap-2">
+              <button className="p-2 hover:bg-stone-100 rounded-xl text-stone-600 transition-colors">
+                <ChevronLeft size={18} />
+              </button>
+              <button className="px-3 py-1 bg-stone-50 hover:bg-stone-100 text-stone-700 text-xs font-bold rounded-xl">
+                Today
+              </button>
+              <button className="p-2 hover:bg-stone-100 rounded-xl text-stone-600 transition-colors">
+                <ChevronRight size={18} />
+              </button>
             </div>
           </div>
+
+          {/* Days of Week Header */}
+          <div className="grid grid-cols-7 text-center text-[11px] font-bold text-stone-400 py-1">
+            <span>SUN</span>
+            <span>MON</span>
+            <span>TUE</span>
+            <span>WED</span>
+            <span>THU</span>
+            <span>FRI</span>
+            <span>SAT</span>
+          </div>
+
+          {/* Days Grid */}
+          <div className="grid grid-cols-7 gap-1.5 text-xs">
+            {/* Offset blank days for Aug 1, 2026 (Starts Saturday) */}
+            {Array.from({ length: 6 }).map((_, i) => (
+              <div key={`blank-${i}`} className="h-20 bg-stone-50/50 rounded-2xl" />
+            ))}
+
+            {daysInMonth.map((day) => {
+              const dateStr = `2026-08-${day < 10 ? `0${day}` : day}`;
+              const isSelected = selectedDate === dateStr;
+              const daySessions = sessions.filter(s => s.date === dateStr);
+
+              return (
+                <button
+                  key={day}
+                  onClick={() => setSelectedDate(dateStr)}
+                  className={`h-20 p-2 rounded-2xl text-left border transition-all flex flex-col justify-between ${
+                    isSelected 
+                      ? 'border-[#237A88] bg-[#237A88]/5 ring-2 ring-[#237A88]/20' 
+                      : 'border-stone-100 hover:border-stone-200 bg-white'
+                  }`}
+                >
+                  <span className={`font-semibold text-xs ${isSelected ? 'text-[#237A88]' : 'text-stone-700'}`}>
+                    {day}
+                  </span>
+
+                  {daySessions.length > 0 && (
+                    <div className="space-y-1">
+                      {daySessions.slice(0, 1).map((s) => (
+                        <div 
+                          key={s.id} 
+                          className="bg-[#237A88] text-white text-[9px] font-medium px-1.5 py-0.5 rounded-lg truncate"
+                        >
+                          {s.clientName.split(' ')[0]}
+                        </div>
+                      ))}
+                      {daySessions.length > 1 && (
+                        <span className="text-[9px] font-semibold text-stone-400 block px-1">
+                          +{daySessions.length - 1} more
+                        </span>
+                      )}
+                    </div>
+                  )}
+                </button>
+              );
+            })}
+          </div>
         </div>
+
+        {/* Selected Day Agenda Right Panel */}
+        <div className="bg-white p-6 rounded-3xl border border-stone-100 shadow-sm space-y-4 flex flex-col justify-between">
+          <div className="space-y-4">
+            <div className="flex items-center justify-between border-b border-stone-100 pb-3">
+              <div>
+                <h3 className="font-bold text-stone-900 text-sm">Appointments</h3>
+                <p className="text-xs text-stone-400 font-medium">{selectedDate}</p>
+              </div>
+              <span className="px-2.5 py-1 bg-stone-100 text-stone-700 rounded-full text-xs font-bold">
+                {todaysSessions.length} Scheduled
+              </span>
+            </div>
+
+            {/* List of Sessions */}
+            <div className="space-y-3">
+              {todaysSessions.length > 0 ? (
+                todaysSessions.map((session) => (
+                  <div 
+                    key={session.id}
+                    className="p-3.5 bg-stone-50 rounded-2xl border border-stone-100 space-y-2 hover:border-stone-200 transition-all"
+                  >
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <User size={14} className="text-[#237A88]" />
+                        <span className="font-bold text-xs text-stone-900">{session.clientName}</span>
+                      </div>
+                      <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
+                        session.status === 'Confirmed' 
+                          ? 'bg-emerald-50 text-emerald-700' 
+                          : 'bg-amber-50 text-amber-700'
+                      }`}>
+                        {session.status}
+                      </span>
+                    </div>
+
+                    <div className="flex items-center gap-1.5 text-[11px] text-stone-500">
+                      <Clock size={12} className="text-stone-400" />
+                      <span>{session.time}</span>
+                    </div>
+
+                    <div className="flex items-center justify-between pt-1 border-t border-stone-200/50 text-[10px] text-stone-600 font-medium">
+                      <span className="truncate max-w-[130px]">{session.modality}</span>
+                      <span className="flex items-center gap-1 text-[#237A88]">
+                        {session.type === 'Video Call' ? <Video size={11} /> : <MapPin size={11} />}
+                        {session.type}
+                      </span>
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <div className="text-center py-10 space-y-2">
+                  <Clock size={28} className="mx-auto text-stone-300" />
+                  <p className="text-xs font-bold text-stone-600">No sessions scheduled</p>
+                  <p className="text-[11px] text-stone-400">Select another date or click Schedule Session above.</p>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Bottom Quick Help Card */}
+          <div className="bg-[#237A88]/5 p-3.5 rounded-2xl border border-[#237A88]/10 flex items-start gap-2.5">
+            <Sparkles size={16} className="text-[#237A88] flex-shrink-0 mt-0.5" />
+            <div className="text-[11px] text-stone-600 space-y-0.5">
+              <p className="font-bold text-[#237A88]">Clinical Reminder</p>
+              <p>Progress notes should be submitted within 24 hours of session completion.</p>
+            </div>
+          </div>
+
+        </div>
+
       </div>
+
     </div>
   );
 }

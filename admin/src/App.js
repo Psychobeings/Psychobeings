@@ -5,6 +5,7 @@ import Layout from './Components/Layout';
 import DashboardHome from './Components/DashboardHome';
 import CaseHistory from './Components/CaseHistory';
 import ClientsRoster from './Components/ClientsRoster';
+import SessionCalendar from './Components/SessionCalendar'; // 1. Add import
 
 const ProtectedRoute = ({ children }) => {
   const token = localStorage.getItem('authToken');
@@ -44,7 +45,10 @@ export default function App() {
         >
           <Route path="dashboard" element={<DashboardHome />} />
           <Route path="clients" element={<ClientsRoster />} />
-          <Route path="calendar" element={<div>Calendar Page</div>} />
+          
+          {/* 2. Replace placeholder div with <SessionCalendar /> */}
+          <Route path="calendar" element={<SessionCalendar />} />
+          
           <Route path="case-history" element={<CaseHistory />} />
           <Route path="settings" element={<div>Settings Page</div>} />
         </Route>
