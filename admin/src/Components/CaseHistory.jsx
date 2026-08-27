@@ -1,231 +1,683 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
-  Search, 
-  Plus, 
-  Calendar, 
-  ShieldAlert, 
+  Save, 
+  RotateCcw, 
+  CheckCircle2, 
+  Sparkles, 
+  FileText, 
+  User, 
+  AlertCircle, 
+  Activity, 
+  Heart, 
   Brain, 
-  ChevronRight,
-  ClipboardList
+  ShieldAlert, 
+  Eye, 
+  FileSearch, 
+  Stethoscope 
 } from 'lucide-react';
 
+const INITIAL_FORM_DATA = {
+  // 1. Demographic & Identifying Data
+  clientNameId: '',
+  ageGender: '',
+  contactInfo: '',
+  maritalFamilyStatus: '',
+  educationOccupation: '',
+  referralSource: '',
+
+  // 2. Chief Complaint & Presenting Problem
+  coreIssue: '',
+  timeline: '',
+  precipitatingFactors: '',
+
+  // 3. History of Presenting Illness (HPI)
+  symptomProfile: '',
+  impactOnFunctioning: '',
+  previousCoping: '',
+
+  // 4. Biological Functions & Somatic History
+  sleepPattern: '',
+  appetiteWeight: '',
+  libido: '',
+  menstrualCycle: '',
+
+  // 5. Personal History & Developmental Background
+  earlyChildhood: '',
+  schoolAcademicHistory: '',
+  employmentHistory: '',
+  romanticMaritalHistory: '',
+
+  // 6. Family & Psychosocial Dynamics
+  familyStructure: '',
+  familyEnvironment: '',
+  socialSupport: '',
+
+  // 7. Medical, Psychiatric, & Substance History
+  physicalHealth: '',
+  psychiatricHistory: '',
+  substanceUse: '',
+
+  // 8. Behavioral Observations & MSE
+  appearanceHygiene: '',
+  attitudeRapport: '',
+  affectMood: '',
+  thoughtContentProcess: '',
+  insightJudgment: '',
+
+  // 9. Diagnostic Impression & Formulations
+  provisionalDiagnosis: '',
+  psychologicalFormulation: '',
+
+  // 10. Counselling & Treatment Plan
+  therapeuticGoals: '',
+  modalities: '',
+  sessionPlan: ''
+};
+
 export default function CaseHistory() {
-  const [selectedClientId, setSelectedClientId] = useState(1);
+  const [formData, setFormData] = useState(() => {
+    const savedDraft = localStorage.getItem('psychobeings_case_history_draft');
+    return savedDraft ? JSON.parse(savedDraft) : INITIAL_FORM_DATA;
+  });
 
-  // Mock list of client case records
-  const caseRecords = [
-    {
-      id: 1,
-      name: "Sarah Jenkins",
-      age: 29,
-      gender: "Female",
-      primaryDiagnosis: "Generalized Anxiety Disorder (300.02)",
-      secondaryDiagnosis: "Mild Major Depressive Episode",
-      startDate: "Oct 12, 2025",
-      totalSessions: 14,
-      status: "Active",
-      riskLevel: "Low",
-      formulation: "Client presents with persistent worry, physiological tension, and sleep disturbances linked to perfectionistic expectations in corporate environment.",
-      historyNotes: [
-        {
-          id: 101,
-          date: "Aug 20, 2026",
-          type: "Session Summary",
-          title: "Cognitive Restructuring & Sleep Hygiene",
-          content: "Reviewed thought record sheets targeting catastrophic interpretations of work feedback. Patient demonstrated effective identification of cognitive distortions.",
-          author: "Dr. Alex Morgan"
-        },
-        {
-          id: 102,
-          date: "May 14, 2026",
-          type: "Progress Review",
-          title: "Mid-Treatment Outcome Evaluation",
-          content: "GAD-7 score reduced from 16 (Severe) at intake to 8 (Mild). Client reports improved coping tools during acute stressors.",
-          author: "Dr. Alex Morgan"
-        },
-        {
-          id: 103,
-          date: "Oct 12, 2025",
-          type: "Intake Assessment",
-          title: "Comprehensive Clinical Evaluation",
-          content: "Initial clinical interview completed. Mental Status Examination intact with anxious affect. Established initial treatment plan around CBT framework.",
-          author: "Dr. Alex Morgan"
-        }
-      ]
-    },
-    {
-      id: 2,
-      name: "Michael Chen",
-      age: 34,
-      gender: "Male",
-      primaryDiagnosis: "Adjustment Disorder with Anxious Mood",
-      secondaryDiagnosis: "None",
-      startDate: "Jan 08, 2026",
-      totalSessions: 8,
-      status: "Active",
-      riskLevel: "None",
-      formulation: "Adjusting to recent career transition and severe work-life imbalance.",
-      historyNotes: [
-        {
-          id: 201,
-          date: "Aug 15, 2026",
-          type: "Session Summary",
-          title: "Boundary Setting & Stress Management",
-          content: "Explored interpersonal boundary setting with manager. Role-played assertiveness techniques.",
-          author: "Dr. Alex Morgan"
-        }
-      ]
+  const [saveStatus, setSaveStatus] = useState('saved'); // 'saved', 'saving', 'unsaved'
+  const [lastSavedTime, setLastSavedTime] = useState(null);
+
+  // Auto-Save Effect
+  useEffect(() => {
+    setSaveStatus('unsaved');
+    const timer = setTimeout(() => {
+      setSaveStatus('saving');
+      localStorage.setItem('psychobeings_case_history_draft', JSON.stringify(formData));
+      setTimeout(() => {
+        setSaveStatus('saved');
+        setLastSavedTime(new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
+      }, 500);
+    }, 1500);
+
+    return () => clearTimeout(timer);
+  }, [formData]);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleManualSave = () => {
+    setSaveStatus('saving');
+    localStorage.setItem('psychobeings_case_history_draft', JSON.stringify(formData));
+    setTimeout(() => {
+      setSaveStatus('saved');
+      setLastSavedTime(new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
+    }, 400);
+  };
+
+  const handleResetForm = () => {
+    if (window.confirm('Are you sure you want to clear this entire intake form? Unsaved text will be erased.')) {
+      setFormData(INITIAL_FORM_DATA);
+      localStorage.removeItem('psychobeings_case_history_draft');
+      setSaveStatus('saved');
     }
-  ];
-
-  const activeClient = caseRecords.find((c) => c.id === selectedClientId) || caseRecords[0];
+  };
 
   return (
-    <div className="space-y-6 max-w-7xl mx-auto">
-      {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-2 border-b border-stone-200">
+    <div className="max-w-6xl mx-auto space-y-8 pb-16 font-sans text-stone-800">
+      {/* Header Bar */}
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 sticky top-0 bg-[#F4F7F6]/90 backdrop-blur-md py-4 z-20 border-b border-stone-200/60">
         <div>
-          <h1 className="text-2xl font-semibold text-stone-900">Case History Records</h1>
-          <p className="text-sm text-stone-500 mt-0.5">
-            Clinical formulations, longitudinal notes, and diagnostic histories.
-          </p>
+          <div className="flex items-center gap-2 mb-1">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#237A88]/10 text-[#237A88] text-xs font-semibold">
+              <Sparkles size={13} />
+              <span>Clinical Intake & Profiling</span>
+            </span>
+          </div>
+          <h1 className="text-2xl font-bold tracking-tight text-stone-900">Clinical Case History</h1>
+          <p className="text-xs text-stone-500">Structured assessment format for counselling psychology</p>
         </div>
-        <button className="px-4 py-2 bg-emerald-900 text-white rounded-lg text-sm font-medium hover:bg-emerald-800 transition-colors flex items-center gap-2">
-          <Plus className="h-4 w-4" />
-          Add Case Entry
-        </button>
+
+        {/* Action Controls & Auto-Save Indicator */}
+        <div className="flex items-center gap-3">
+          <div className="text-xs text-stone-500 font-medium px-3 py-1.5 rounded-xl bg-white border border-stone-200/80 shadow-sm flex items-center gap-2">
+            {saveStatus === 'saving' && (
+              <>
+                <span className="h-2 w-2 rounded-full bg-amber-500 animate-ping" />
+                <span>Auto-saving...</span>
+              </>
+            )}
+            {saveStatus === 'unsaved' && (
+              <>
+                <span className="h-2 w-2 rounded-full bg-amber-500" />
+                <span>Unsaved changes</span>
+              </>
+            )}
+            {saveStatus === 'saved' && (
+              <>
+                <CheckCircle2 size={14} className="text-emerald-600" />
+                <span>Draft Saved {lastSavedTime ? `at ${lastSavedTime}` : ''}</span>
+              </>
+            )}
+          </div>
+
+          <button
+            onClick={handleResetForm}
+            className="p-2.5 text-stone-500 hover:text-rose-600 hover:bg-rose-50 border border-stone-200 rounded-2xl transition-colors shadow-sm"
+            title="Reset Form"
+          >
+            <RotateCcw size={16} />
+          </button>
+
+          <button
+            onClick={handleManualSave}
+            className="flex items-center gap-2 bg-[#237A88] hover:bg-[#1C646F] text-white px-5 py-2.5 rounded-2xl text-xs font-semibold transition-all shadow-md shadow-[#237A88]/20"
+          >
+            <Save size={15} />
+            <span>Save Case Record</span>
+          </button>
+        </div>
       </div>
 
-      {/* Main Grid: Client List (Left) + Detail Workspace (Right) */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-        
-        {/* Left: Case Directory (4 Columns) */}
-        <div className="lg:col-span-4 space-y-4">
-          <div className="relative">
-            <Search className="h-4 w-4 absolute left-3 top-3 text-stone-400" />
-            <input
-              type="text"
-              placeholder="Search case files..."
-              className="w-full pl-9 pr-3 py-2 text-sm bg-white border border-stone-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-900 transition-all"
-            />
+      {/* Form Grid Sections */}
+      <form onSubmit={(e) => e.preventDefault()} className="space-y-6">
+
+        {/* Section 1: Demographic & Identifying Data */}
+        <section className="bg-white p-6 rounded-3xl border border-stone-100 shadow-xl shadow-stone-200/40 space-y-4">
+          <div className="flex items-center gap-2.5 border-b border-stone-100 pb-3 text-[#237A88]">
+            <User size={18} />
+            <h2 className="text-sm font-bold tracking-tight text-stone-900">1. Demographic & Identifying Data</h2>
           </div>
-
-          <div className="bg-white border border-stone-200 rounded-xl shadow-sm divide-y divide-stone-100 overflow-hidden">
-            {caseRecords.map((client) => (
-              <div
-                key={client.id}
-                onClick={() => setSelectedClientId(client.id)}
-                className={`p-4 cursor-pointer transition-colors flex items-center justify-between ${
-                  selectedClientId === client.id
-                    ? 'bg-emerald-50/70 border-l-4 border-emerald-900'
-                    : 'hover:bg-stone-50'
-                }`}
-              >
-                <div>
-                  <h3 className="font-medium text-stone-900 text-sm">{client.name}</h3>
-                  <p className="text-xs text-stone-500 mt-0.5">{client.primaryDiagnosis}</p>
-                  <div className="flex items-center gap-2 mt-2 text-[11px] text-stone-400">
-                    <span>{client.totalSessions} Sessions</span>
-                    <span>•</span>
-                    <span>Started {client.startDate}</span>
-                  </div>
-                </div>
-                <ChevronRight className={`h-4 w-4 ${selectedClientId === client.id ? 'text-emerald-900' : 'text-stone-300'}`} />
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Right: Detailed Case Record (8 Columns) */}
-        <div className="lg:col-span-8 space-y-6">
-          
-          {/* Client Summary Banner */}
-          <div className="bg-white p-6 rounded-xl border border-stone-200 shadow-sm space-y-4">
-            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-stone-100 pb-4">
-              <div className="flex items-center gap-3">
-                <div className="h-12 w-12 rounded-full bg-emerald-900/10 text-emerald-900 flex items-center justify-center font-bold text-lg">
-                  {activeClient.name.charAt(0)}
-                </div>
-                <div>
-                  <h2 className="text-xl font-bold text-stone-900">{activeClient.name}</h2>
-                  <p className="text-xs text-stone-500">{activeClient.age} Y/O • {activeClient.gender}</p>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-2">
-                <span className="px-3 py-1 text-xs font-medium rounded-full bg-emerald-50 text-emerald-900 border border-emerald-200">
-                  {activeClient.status}
-                </span>
-                <span className="px-3 py-1 text-xs font-medium rounded-full bg-stone-100 text-stone-700 flex items-center gap-1">
-                  <ShieldAlert className="h-3 w-3 text-amber-600" />
-                  Risk: {activeClient.riskLevel}
-                </span>
-              </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div>
+              <label className="block text-xs font-bold text-stone-700 mb-1">Client Name / ID</label>
+              <input
+                type="text"
+                name="clientNameId"
+                value={formData.clientNameId}
+                onChange={handleChange}
+                placeholder="Full name or confidential code..."
+                className="w-full px-3.5 py-2.5 text-xs bg-stone-50/70 border border-stone-200 rounded-2xl outline-none focus:border-[#237A88] focus:bg-white focus:ring-4 focus:ring-[#237A88]/10"
+              />
             </div>
-
-            {/* Diagnostic Details */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
-              <div className="p-3 rounded-lg bg-stone-50 border border-stone-100">
-                <span className="font-semibold text-stone-700 uppercase tracking-wider text-[10px] block mb-1">
-                  Primary Diagnostic Impression
-                </span>
-                <p className="text-stone-900 font-medium">{activeClient.primaryDiagnosis}</p>
-              </div>
-
-              <div className="p-3 rounded-lg bg-stone-50 border border-stone-100">
-                <span className="font-semibold text-stone-700 uppercase tracking-wider text-[10px] block mb-1">
-                  Secondary / Differential
-                </span>
-                <p className="text-stone-900 font-medium">{activeClient.secondaryDiagnosis}</p>
-              </div>
+            <div>
+              <label className="block text-xs font-bold text-stone-700 mb-1">Age & Gender</label>
+              <input
+                type="text"
+                name="ageGender"
+                value={formData.ageGender}
+                onChange={handleChange}
+                placeholder="e.g. 28, Female"
+                className="w-full px-3.5 py-2.5 text-xs bg-stone-50/70 border border-stone-200 rounded-2xl outline-none focus:border-[#237A88] focus:bg-white focus:ring-4 focus:ring-[#237A88]/10"
+              />
             </div>
-
-            {/* Case Formulation */}
-            <div className="pt-2">
-              <div className="flex items-center gap-2 text-xs font-semibold uppercase text-stone-500 tracking-wider mb-1">
-                <Brain className="h-3.5 w-3.5 text-emerald-900" />
-                Case Formulation Summary
-              </div>
-              <p className="text-sm text-stone-700 bg-stone-50/70 p-3.5 rounded-lg border border-stone-100 leading-relaxed">
-                {activeClient.formulation}
-              </p>
+            <div>
+              <label className="block text-xs font-bold text-stone-700 mb-1">Contact Information</label>
+              <input
+                type="text"
+                name="contactInfo"
+                value={formData.contactInfo}
+                onChange={handleChange}
+                placeholder="Phone, emergency contact, email..."
+                className="w-full px-3.5 py-2.5 text-xs bg-stone-50/70 border border-stone-200 rounded-2xl outline-none focus:border-[#237A88] focus:bg-white focus:ring-4 focus:ring-[#237A88]/10"
+              />
+            </div>
+            <div>
+              <label className="block text-xs font-bold text-stone-700 mb-1">Marital & Family Status</label>
+              <input
+                type="text"
+                name="maritalFamilyStatus"
+                value={formData.maritalFamilyStatus}
+                onChange={handleChange}
+                placeholder="Relationship status, living arrangements..."
+                className="w-full px-3.5 py-2.5 text-xs bg-stone-50/70 border border-stone-200 rounded-2xl outline-none focus:border-[#237A88] focus:bg-white focus:ring-4 focus:ring-[#237A88]/10"
+              />
+            </div>
+            <div>
+              <label className="block text-xs font-bold text-stone-700 mb-1">Education & Occupation</label>
+              <input
+                type="text"
+                name="educationOccupation"
+                value={formData.educationOccupation}
+                onChange={handleChange}
+                placeholder="Academic level, job role..."
+                className="w-full px-3.5 py-2.5 text-xs bg-stone-50/70 border border-stone-200 rounded-2xl outline-none focus:border-[#237A88] focus:bg-white focus:ring-4 focus:ring-[#237A88]/10"
+              />
+            </div>
+            <div>
+              <label className="block text-xs font-bold text-stone-700 mb-1">Referral Source</label>
+              <input
+                type="text"
+                name="referralSource"
+                value={formData.referralSource}
+                onChange={handleChange}
+                placeholder="Self, doctor, workplace counselor..."
+                className="w-full px-3.5 py-2.5 text-xs bg-stone-50/70 border border-stone-200 rounded-2xl outline-none focus:border-[#237A88] focus:bg-white focus:ring-4 focus:ring-[#237A88]/10"
+              />
             </div>
           </div>
+        </section>
 
-          {/* Chronological Case History Notes */}
+        {/* Section 2: Chief Complaint & Presenting Problem */}
+        <section className="bg-white p-6 rounded-3xl border border-stone-100 shadow-xl shadow-stone-200/40 space-y-4">
+          <div className="flex items-center gap-2.5 border-b border-stone-100 pb-3 text-[#237A88]">
+            <AlertCircle size={18} />
+            <h2 className="text-sm font-bold tracking-tight text-stone-900">2. Chief Complaint & Presenting Problem</h2>
+          </div>
           <div className="space-y-4">
-            <h3 className="text-base font-semibold text-stone-900 flex items-center gap-2">
-              <ClipboardList className="h-4 w-4 text-stone-600" />
-              Chronological Case History & Milestones
-            </h3>
-
-            <div className="space-y-4">
-              {activeClient.historyNotes.map((note) => (
-                <div key={note.id} className="bg-white p-5 rounded-xl border border-stone-200 shadow-sm space-y-2">
-                  <div className="flex items-center justify-between text-xs">
-                    <span className="px-2.5 py-0.5 rounded-md font-medium bg-stone-100 text-stone-700">
-                      {note.type}
-                    </span>
-                    <span className="text-stone-400 flex items-center gap-1">
-                      <Calendar className="h-3 w-3" />
-                      {note.date}
-                    </span>
-                  </div>
-
-                  <h4 className="text-sm font-semibold text-stone-900">{note.title}</h4>
-                  <p className="text-xs text-stone-600 leading-relaxed">{note.content}</p>
-
-                  <div className="pt-2 flex justify-between items-center text-[11px] text-stone-400 border-t border-stone-100 mt-3">
-                    <span>Recorded by: {note.author}</span>
-                    <button className="text-emerald-900 font-medium hover:underline">View Full Record</button>
-                  </div>
-                </div>
-              ))}
+            <div>
+              <label className="block text-xs font-bold text-stone-700 mb-1">Core Issue (Client's Own Words)</label>
+              <textarea
+                name="coreIssue"
+                rows={2}
+                value={formData.coreIssue}
+                onChange={handleChange}
+                placeholder="Primary reason for seeking therapy..."
+                className="w-full px-3.5 py-2.5 text-xs bg-stone-50/70 border border-stone-200 rounded-2xl outline-none focus:border-[#237A88] focus:bg-white focus:ring-4 focus:ring-[#237A88]/10"
+              />
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-xs font-bold text-stone-700 mb-1">Timeline</label>
+                <input
+                  type="text"
+                  name="timeline"
+                  value={formData.timeline}
+                  onChange={handleChange}
+                  placeholder="Duration, onset date, frequency..."
+                  className="w-full px-3.5 py-2.5 text-xs bg-stone-50/70 border border-stone-200 rounded-2xl outline-none focus:border-[#237A88] focus:bg-white focus:ring-4 focus:ring-[#237A88]/10"
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-bold text-stone-700 mb-1">Precipitating Factors</label>
+                <input
+                  type="text"
+                  name="precipitatingFactors"
+                  value={formData.precipitatingFactors}
+                  onChange={handleChange}
+                  placeholder="Recent events, stressors, triggers..."
+                  className="w-full px-3.5 py-2.5 text-xs bg-stone-50/70 border border-stone-200 rounded-2xl outline-none focus:border-[#237A88] focus:bg-white focus:ring-4 focus:ring-[#237A88]/10"
+                />
+              </div>
             </div>
           </div>
+        </section>
 
-        </div>
-      </div>
+        {/* Section 3: History of Presenting Illness (HPI) */}
+        <section className="bg-white p-6 rounded-3xl border border-stone-100 shadow-xl shadow-stone-200/40 space-y-4">
+          <div className="flex items-center gap-2.5 border-b border-stone-100 pb-3 text-[#237A88]">
+            <Activity size={18} />
+            <h2 className="text-sm font-bold tracking-tight text-stone-900">3. History of Presenting Illness (HPI) / Problem History</h2>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div>
+              <label className="block text-xs font-bold text-stone-700 mb-1">Symptom Profile</label>
+              <textarea
+                name="symptomProfile"
+                rows={3}
+                value={formData.symptomProfile}
+                onChange={handleChange}
+                placeholder="Emotional, cognitive, behavioral indicators..."
+                className="w-full px-3.5 py-2.5 text-xs bg-stone-50/70 border border-stone-200 rounded-2xl outline-none focus:border-[#237A88] focus:bg-white focus:ring-4 focus:ring-[#237A88]/10"
+              />
+            </div>
+            <div>
+              <label className="block text-xs font-bold text-stone-700 mb-1">Impact on Functioning</label>
+              <textarea
+                name="impactOnFunctioning"
+                rows={3}
+                value={formData.impactOnFunctioning}
+                onChange={handleChange}
+                placeholder="Effects on work, academics, family..."
+                className="w-full px-3.5 py-2.5 text-xs bg-stone-50/70 border border-stone-200 rounded-2xl outline-none focus:border-[#237A88] focus:bg-white focus:ring-4 focus:ring-[#237A88]/10"
+              />
+            </div>
+            <div>
+              <label className="block text-xs font-bold text-stone-700 mb-1">Previous Coping Mechanisms</label>
+              <textarea
+                name="previousCoping"
+                rows={3}
+                value={formData.previousCoping}
+                onChange={handleChange}
+                placeholder="Self-help, strategies tried, outcomes..."
+                className="w-full px-3.5 py-2.5 text-xs bg-stone-50/70 border border-stone-200 rounded-2xl outline-none focus:border-[#237A88] focus:bg-white focus:ring-4 focus:ring-[#237A88]/10"
+              />
+            </div>
+          </div>
+        </section>
+
+        {/* Section 4: Biological Functions & Somatic History */}
+        <section className="bg-white p-6 rounded-3xl border border-stone-100 shadow-xl shadow-stone-200/40 space-y-4">
+          <div className="flex items-center gap-2.5 border-b border-stone-100 pb-3 text-[#237A88]">
+            <Heart size={18} />
+            <h2 className="text-sm font-bold tracking-tight text-stone-900">4. Biological Functions & Somatic History</h2>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-xs font-bold text-stone-700 mb-1">Sleep Pattern</label>
+              <textarea
+                name="sleepPattern"
+                rows={2}
+                value={formData.sleepPattern}
+                onChange={handleChange}
+                placeholder="Initial/middle/terminal insomnia, hypersomnia, quality..."
+                className="w-full px-3.5 py-2.5 text-xs bg-stone-50/70 border border-stone-200 rounded-2xl outline-none focus:border-[#237A88] focus:bg-white focus:ring-4 focus:ring-[#237A88]/10"
+              />
+            </div>
+            <div>
+              <label className="block text-xs font-bold text-stone-700 mb-1">Appetite & Weight</label>
+              <textarea
+                name="appetiteWeight"
+                rows={2}
+                value={formData.appetiteWeight}
+                onChange={handleChange}
+                placeholder="Loss of appetite, emotional eating, weight changes..."
+                className="w-full px-3.5 py-2.5 text-xs bg-stone-50/70 border border-stone-200 rounded-2xl outline-none focus:border-[#237A88] focus:bg-white focus:ring-4 focus:ring-[#237A88]/10"
+              />
+            </div>
+            <div>
+              <label className="block text-xs font-bold text-stone-700 mb-1">Libido (Sexual Desire)</label>
+              <textarea
+                name="libido"
+                rows={2}
+                value={formData.libido}
+                onChange={handleChange}
+                placeholder="Changes in baseline, situational dysfunction..."
+                className="w-full px-3.5 py-2.5 text-xs bg-stone-50/70 border border-stone-200 rounded-2xl outline-none focus:border-[#237A88] focus:bg-white focus:ring-4 focus:ring-[#237A88]/10"
+              />
+            </div>
+            <div>
+              <label className="block text-xs font-bold text-stone-700 mb-1">Menstrual Cycle</label>
+              <textarea
+                name="menstrualCycle"
+                rows={2}
+                value={formData.menstrualCycle}
+                onChange={handleChange}
+                placeholder="Regularity, amenorrhea, PMDD, emotional shifts..."
+                className="w-full px-3.5 py-2.5 text-xs bg-stone-50/70 border border-stone-200 rounded-2xl outline-none focus:border-[#237A88] focus:bg-white focus:ring-4 focus:ring-[#237A88]/10"
+              />
+            </div>
+          </div>
+        </section>
+
+        {/* Section 5: Personal History & Developmental Background */}
+        <section className="bg-white p-6 rounded-3xl border border-stone-100 shadow-xl shadow-stone-200/40 space-y-4">
+          <div className="flex items-center gap-2.5 border-b border-stone-100 pb-3 text-[#237A88]">
+            <Brain size={18} />
+            <h2 className="text-sm font-bold tracking-tight text-stone-900">5. Personal History & Developmental Background</h2>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-xs font-bold text-stone-700 mb-1">Early Childhood</label>
+              <textarea
+                name="earlyChildhood"
+                rows={2}
+                value={formData.earlyChildhood}
+                onChange={handleChange}
+                placeholder="Milestones, complications, early temperament..."
+                className="w-full px-3.5 py-2.5 text-xs bg-stone-50/70 border border-stone-200 rounded-2xl outline-none focus:border-[#237A88] focus:bg-white focus:ring-4 focus:ring-[#237A88]/10"
+              />
+            </div>
+            <div>
+              <label className="block text-xs font-bold text-stone-700 mb-1">School & Academic History</label>
+              <textarea
+                name="schoolAcademicHistory"
+                rows={2}
+                value={formData.schoolAcademicHistory}
+                onChange={handleChange}
+                placeholder="Performance, peer relationships, bullying..."
+                className="w-full px-3.5 py-2.5 text-xs bg-stone-50/70 border border-stone-200 rounded-2xl outline-none focus:border-[#237A88] focus:bg-white focus:ring-4 focus:ring-[#237A88]/10"
+              />
+            </div>
+            <div>
+              <label className="block text-xs font-bold text-stone-700 mb-1">Employment History</label>
+              <textarea
+                name="employmentHistory"
+                rows={2}
+                value={formData.employmentHistory}
+                onChange={handleChange}
+                placeholder="Job stability, workplace stress, goals..."
+                className="w-full px-3.5 py-2.5 text-xs bg-stone-50/70 border border-stone-200 rounded-2xl outline-none focus:border-[#237A88] focus:bg-white focus:ring-4 focus:ring-[#237A88]/10"
+              />
+            </div>
+            <div>
+              <label className="block text-xs font-bold text-stone-700 mb-1">Romantic & Marital History</label>
+              <textarea
+                name="romanticMaritalHistory"
+                rows={2}
+                value={formData.romanticMaritalHistory}
+                onChange={handleChange}
+                placeholder="Past relationships, current dynamics..."
+                className="w-full px-3.5 py-2.5 text-xs bg-stone-50/70 border border-stone-200 rounded-2xl outline-none focus:border-[#237A88] focus:bg-white focus:ring-4 focus:ring-[#237A88]/10"
+              />
+            </div>
+          </div>
+        </section>
+
+        {/* Section 6: Family & Psychosocial Dynamics */}
+        <section className="bg-white p-6 rounded-3xl border border-stone-100 shadow-xl shadow-stone-200/40 space-y-4">
+          <div className="flex items-center gap-2.5 border-b border-stone-100 pb-3 text-[#237A88]">
+            <Users size={18} />
+            <h2 className="text-sm font-bold tracking-tight text-stone-900">6. Family & Psychosocial Dynamics</h2>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div>
+              <label className="block text-xs font-bold text-stone-700 mb-1">Family Structure</label>
+              <textarea
+                name="familyStructure"
+                rows={2}
+                value={formData.familyStructure}
+                onChange={handleChange}
+                placeholder="Parents, siblings, key caregivers..."
+                className="w-full px-3.5 py-2.5 text-xs bg-stone-50/70 border border-stone-200 rounded-2xl outline-none focus:border-[#237A88] focus:bg-white focus:ring-4 focus:ring-[#237A88]/10"
+              />
+            </div>
+            <div>
+              <label className="block text-xs font-bold text-stone-700 mb-1">Family Environment</label>
+              <textarea
+                name="familyEnvironment"
+                rows={2}
+                value={formData.familyEnvironment}
+                onChange={handleChange}
+                placeholder="Communication, conflicts, trauma..."
+                className="w-full px-3.5 py-2.5 text-xs bg-stone-50/70 border border-stone-200 rounded-2xl outline-none focus:border-[#237A88] focus:bg-white focus:ring-4 focus:ring-[#237A88]/10"
+              />
+            </div>
+            <div>
+              <label className="block text-xs font-bold text-stone-700 mb-1">Social Support</label>
+              <textarea
+                name="socialSupport"
+                rows={2}
+                value={formData.socialSupport}
+                onChange={handleChange}
+                placeholder="Friends, community, social life quality..."
+                className="w-full px-3.5 py-2.5 text-xs bg-stone-50/70 border border-stone-200 rounded-2xl outline-none focus:border-[#237A88] focus:bg-white focus:ring-4 focus:ring-[#237A88]/10"
+              />
+            </div>
+          </div>
+        </section>
+
+        {/* Section 7: Medical, Psychiatric, & Substance History */}
+        <section className="bg-white p-6 rounded-3xl border border-stone-100 shadow-xl shadow-stone-200/40 space-y-4">
+          <div className="flex items-center gap-2.5 border-b border-stone-100 pb-3 text-[#237A88]">
+            <ShieldAlert size={18} />
+            <h2 className="text-sm font-bold tracking-tight text-stone-900">7. Medical, Psychiatric, & Substance History</h2>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div>
+              <label className="block text-xs font-bold text-stone-700 mb-1">Physical Health</label>
+              <textarea
+                name="physicalHealth"
+                rows={2}
+                value={formData.physicalHealth}
+                onChange={handleChange}
+                placeholder="Chronic conditions, illnesses, neuro..."
+                className="w-full px-3.5 py-2.5 text-xs bg-stone-50/70 border border-stone-200 rounded-2xl outline-none focus:border-[#237A88] focus:bg-white focus:ring-4 focus:ring-[#237A88]/10"
+              />
+            </div>
+            <div>
+              <label className="block text-xs font-bold text-stone-700 mb-1">Psychiatric History</label>
+              <textarea
+                name="psychiatricHistory"
+                rows={2}
+                value={formData.psychiatricHistory}
+                onChange={handleChange}
+                placeholder="Past diagnoses, therapy, hospitalizations..."
+                className="w-full px-3.5 py-2.5 text-xs bg-stone-50/70 border border-stone-200 rounded-2xl outline-none focus:border-[#237A88] focus:bg-white focus:ring-4 focus:ring-[#237A88]/10"
+              />
+            </div>
+            <div>
+              <label className="block text-xs font-bold text-stone-700 mb-1">Substance Use</label>
+              <textarea
+                name="substanceUse"
+                rows={2}
+                value={formData.substanceUse}
+                onChange={handleChange}
+                placeholder="Alcohol, nicotine, prescription, recreational..."
+                className="w-full px-3.5 py-2.5 text-xs bg-stone-50/70 border border-stone-200 rounded-2xl outline-none focus:border-[#237A88] focus:bg-white focus:ring-4 focus:ring-[#237A88]/10"
+              />
+            </div>
+          </div>
+        </section>
+
+        {/* Section 8: Behavioral Observations & Mental Status Examination */}
+        <section className="bg-white p-6 rounded-3xl border border-stone-100 shadow-xl shadow-stone-200/40 space-y-4">
+          <div className="flex items-center gap-2.5 border-b border-stone-100 pb-3 text-[#237A88]">
+            <Eye size={18} />
+            <h2 className="text-sm font-bold tracking-tight text-stone-900">8. Behavioral Observations & Mental Status Examination (MSE)</h2>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div>
+              <label className="block text-xs font-bold text-stone-700 mb-1">Appearance & Hygiene</label>
+              <input
+                type="text"
+                name="appearanceHygiene"
+                value={formData.appearanceHygiene}
+                onChange={handleChange}
+                placeholder="Neatness, grooming, posture..."
+                className="w-full px-3.5 py-2.5 text-xs bg-stone-50/70 border border-stone-200 rounded-2xl outline-none focus:border-[#237A88] focus:bg-white focus:ring-4 focus:ring-[#237A88]/10"
+              />
+            </div>
+            <div>
+              <label className="block text-xs font-bold text-stone-700 mb-1">Attitude & Rapport</label>
+              <input
+                type="text"
+                name="attitudeRapport"
+                value={formData.attitudeRapport}
+                onChange={handleChange}
+                placeholder="Cooperative, guarded, anxious..."
+                className="w-full px-3.5 py-2.5 text-xs bg-stone-50/70 border border-stone-200 rounded-2xl outline-none focus:border-[#237A88] focus:bg-white focus:ring-4 focus:ring-[#237A88]/10"
+              />
+            </div>
+            <div>
+              <label className="block text-xs font-bold text-stone-700 mb-1">Affect & Mood</label>
+              <input
+                type="text"
+                name="affectMood"
+                value={formData.affectMood}
+                onChange={handleChange}
+                placeholder="Depressed, anxious, flat, expansive..."
+                className="w-full px-3.5 py-2.5 text-xs bg-stone-50/70 border border-stone-200 rounded-2xl outline-none focus:border-[#237A88] focus:bg-white focus:ring-4 focus:ring-[#237A88]/10"
+              />
+            </div>
+            <div>
+              <label className="block text-xs font-bold text-stone-700 mb-1">Thought Content & Process</label>
+              <input
+                type="text"
+                name="thoughtContentProcess"
+                value={formData.thoughtContentProcess}
+                onChange={handleChange}
+                placeholder="Logical vs tangential, obsessions..."
+                className="w-full px-3.5 py-2.5 text-xs bg-stone-50/70 border border-stone-200 rounded-2xl outline-none focus:border-[#237A88] focus:bg-white focus:ring-4 focus:ring-[#237A88]/10"
+              />
+            </div>
+            <div className="md:col-span-2 lg:col-span-2">
+              <label className="block text-xs font-bold text-stone-700 mb-1">Insight & Judgment</label>
+              <input
+                type="text"
+                name="insightJudgment"
+                value={formData.insightJudgment}
+                onChange={handleChange}
+                placeholder="Awareness level & decision-making capacity..."
+                className="w-full px-3.5 py-2.5 text-xs bg-stone-50/70 border border-stone-200 rounded-2xl outline-none focus:border-[#237A88] focus:bg-white focus:ring-4 focus:ring-[#237A88]/10"
+              />
+            </div>
+          </div>
+        </section>
+
+        {/* Section 9: Diagnostic Impression & Formulations */}
+        <section className="bg-white p-6 rounded-3xl border border-stone-100 shadow-xl shadow-stone-200/40 space-y-4">
+          <div className="flex items-center gap-2.5 border-b border-stone-100 pb-3 text-[#237A88]">
+            <FileSearch size={18} />
+            <h2 className="text-sm font-bold tracking-tight text-stone-900">9. Diagnostic Impression & Formulations</h2>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-xs font-bold text-stone-700 mb-1">Provisional Diagnosis (DSM-5-TR / ICD-11)</label>
+              <textarea
+                name="provisionalDiagnosis"
+                rows={3}
+                value={formData.provisionalDiagnosis}
+                onChange={handleChange}
+                placeholder="Provisional diagnostic codes & clinical impressions..."
+                className="w-full px-3.5 py-2.5 text-xs bg-stone-50/70 border border-stone-200 rounded-2xl outline-none focus:border-[#237A88] focus:bg-white focus:ring-4 focus:ring-[#237A88]/10"
+              />
+            </div>
+            <div>
+              <label className="block text-xs font-bold text-stone-700 mb-1">Psychological Formulation (4 P's Framework)</label>
+              <textarea
+                name="psychologicalFormulation"
+                rows={3}
+                value={formData.psychologicalFormulation}
+                onChange={handleChange}
+                placeholder="Predisposing, precipitating, perpetuating, and protective factors..."
+                className="w-full px-3.5 py-2.5 text-xs bg-stone-50/70 border border-stone-200 rounded-2xl outline-none focus:border-[#237A88] focus:bg-white focus:ring-4 focus:ring-[#237A88]/10"
+              />
+            </div>
+          </div>
+        </section>
+
+        {/* Section 10: Counselling & Treatment Plan */}
+        <section className="bg-white p-6 rounded-3xl border border-stone-100 shadow-xl shadow-stone-200/40 space-y-4">
+          <div className="flex items-center gap-2.5 border-b border-stone-100 pb-3 text-[#237A88]">
+            <Stethoscope size={18} />
+            <h2 className="text-sm font-bold tracking-tight text-stone-900">10. Counselling & Treatment Plan</h2>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div>
+              <label className="block text-xs font-bold text-stone-700 mb-1">Therapeutic Goals (SMART)</label>
+              <textarea
+                name="therapeuticGoals"
+                rows={3}
+                value={formData.therapeuticGoals}
+                onChange={handleChange}
+                placeholder="Short-term & long-term measurable goals..."
+                className="w-full px-3.5 py-2.5 text-xs bg-stone-50/70 border border-stone-200 rounded-2xl outline-none focus:border-[#237A88] focus:bg-white focus:ring-4 focus:ring-[#237A88]/10"
+              />
+            </div>
+            <div>
+              <label className="block text-xs font-bold text-stone-700 mb-1">Modalities</label>
+              <textarea
+                name="modalities"
+                rows={3}
+                value={formData.modalities}
+                onChange={handleChange}
+                placeholder="CBT, ACT, Narrative Therapy, Psychodynamic..."
+                className="w-full px-3.5 py-2.5 text-xs bg-stone-50/70 border border-stone-200 rounded-2xl outline-none focus:border-[#237A88] focus:bg-white focus:ring-4 focus:ring-[#237A88]/10"
+              />
+            </div>
+            <div>
+              <label className="block text-xs font-bold text-stone-700 mb-1">Session Plan</label>
+              <textarea
+                name="sessionPlan"
+                rows={3}
+                value={formData.sessionPlan}
+                onChange={handleChange}
+                placeholder="Recommended frequency & proposed reassessment schedule..."
+                className="w-full px-3.5 py-2.5 text-xs bg-stone-50/70 border border-stone-200 rounded-2xl outline-none focus:border-[#237A88] focus:bg-white focus:ring-4 focus:ring-[#237A88]/10"
+              />
+            </div>
+          </div>
+        </section>
+
+      </form>
     </div>
   );
 }
