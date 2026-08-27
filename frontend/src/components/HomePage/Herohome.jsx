@@ -1,5 +1,6 @@
 import React from 'react';
 import { ArrowRight } from 'lucide-react';
+import heroImg from '../assets/coupletherapy1.svg'; // Update filename and relative path as needed
 
 const HeroHome = () => {
   return (
@@ -74,11 +75,10 @@ const HeroHome = () => {
             {/* Main Image Frame */}
             <div className="relative overflow-hidden rounded-[2rem] shadow-md border border-[#1C7C83]/15 bg-white">
               <img
-                src="https://www.saybrook.edu/unbound/5-different-types-of-therapy-in-psychology/"
+                src={heroImg}
                 alt="Therapy and psychological wellness session"
                 className="w-full h-[420px] sm:h-[500px] object-cover hover:scale-105 transition-transform duration-500"
               />
-            
             </div>
           </div>
         </div>
