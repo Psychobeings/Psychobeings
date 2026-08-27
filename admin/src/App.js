@@ -4,6 +4,8 @@ import Signin from './Admindasboard/Signin';
 import Layout from './Components/Layout';
 import DashboardHome from './Components/DashboardHome';
 import CaseHistory from './Components/CaseHistory'; // 1. Import your new component
+import ClientsRoster from './Components/ClientsRoster'; // Add import
+
 
 const ProtectedRoute = ({ children }) => {
   const token = localStorage.getItem('authToken');
@@ -47,6 +49,7 @@ export default function App() {
           
           {/* 2. Replace the static div with <CaseHistory /> */}
           <Route path="case-history" element={<CaseHistory />} />
+          <Route path="clients" element={<ClientsRoster />} />
           
           <Route path="settings" element={<div>Settings Page</div>} />
         </Route>
