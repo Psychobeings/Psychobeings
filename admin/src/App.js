@@ -6,7 +6,7 @@ import DashboardHome from './Components/DashboardHome';
 import CaseHistory from './Components/CaseHistory';
 import ClientsRoster from './Components/ClientsRoster';
 import SessionCalendar from './Components/SessionCalendar';
-import TasksAndWorksheets from './Components/TasksAndWorksheets'; // 1. Import your new page
+import TasksAndWorksheets from './Components/TasksAndWorksheets';
 
 const ProtectedRoute = ({ children }) => {
   const token = localStorage.getItem('authToken');
@@ -49,7 +49,7 @@ export default function App() {
           <Route path="calendar" element={<SessionCalendar />} />
           <Route path="case-history" element={<CaseHistory />} />
           
-          {/* 2. Add the Tasks & Worksheets route here */}
+          {/* Tasks & Worksheets primary admin dashboard view */}
           <Route path="tasks-worksheets" element={<TasksAndWorksheets />} />
           
           <Route path="settings" element={<div>Settings Page</div>} />
