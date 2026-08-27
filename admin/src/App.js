@@ -3,9 +3,8 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Signin from './Admindasboard/Signin';
 import Layout from './Components/Layout';
 import DashboardHome from './Components/DashboardHome';
-import CaseHistory from './Components/CaseHistory'; // 1. Import your new component
-import ClientsRoster from './Components/ClientsRoster'; // Add import
-
+import CaseHistory from './Components/CaseHistory';
+import ClientsRoster from './Components/ClientsRoster';
 
 const ProtectedRoute = ({ children }) => {
   const token = localStorage.getItem('authToken');
@@ -44,13 +43,9 @@ export default function App() {
           }
         >
           <Route path="dashboard" element={<DashboardHome />} />
-          <Route path="clients" element={<div>Client Roster Page</div>} />
-          <Route path="calendar" element={<div>Calendar Page</div>} />
-          
-          {/* 2. Replace the static div with <CaseHistory /> */}
-          <Route path="case-history" element={<CaseHistory />} />
           <Route path="clients" element={<ClientsRoster />} />
-          
+          <Route path="calendar" element={<div>Calendar Page</div>} />
+          <Route path="case-history" element={<CaseHistory />} />
           <Route path="settings" element={<div>Settings Page</div>} />
         </Route>
 
