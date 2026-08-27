@@ -15,7 +15,8 @@ import {
   Send,
   Download,
   AlertCircle,
-  UserPlus
+  UserPlus,
+  PlusCircle
 } from 'lucide-react';
 
 const INITIAL_CLIENTS = [
@@ -139,8 +140,12 @@ export default function ClientsRoster() {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   
   // Modal Navigation States
-  const [modalStep, setModalStep] = useState('choice'); // 'choice' | 'addForm' | 'newBooking'
+  const [modalStep, setModalStep] = useState(null); // null | 'addForm' | 'newBooking'
   const [activeSessionNote, setActiveSessionNote] = useState(null);
+
+  // New session form state for an existing profile
+  const [isAddingSession, setIsAddingSession] = useState(false);
+  const [newSessionData, setNewSessionData] = useState({ date: '', time: '', summary: '' });
 
   const [editFormData, setEditFormData] = useState({ name: '', email: '', phone: '', gender: 'Male', dob: '' });
   const [addFormData, setAddFormData] = useState({ name: '', email: '', phone: '', gender: 'Male', dob: '', caseSummary: '' });
@@ -155,6 +160,7 @@ export default function ClientsRoster() {
   const handleOpenProfile = (client) => {
     setSelectedClient(client);
     setActiveTab('Therapy Journey');
+    setIsAddingSession(false);
   };
 
   const handleOpenEdit = (client) => {
@@ -206,7 +212,7 @@ export default function ClientsRoster() {
 
     setClients([newClientObj, ...clients]);
     setAddFormData({ name: '', email: '', phone: '', gender: 'Male', dob: '', caseSummary: '' });
-    setModalStep('choice');
+    setModalStep(null);
   };
 
   const handleAddClientAndBooking = (e) => {
@@ -240,7 +246,39 @@ export default function ClientsRoster() {
     setClients([newClientObj, ...clients]);
     setAddFormData({ name: '', email: '', phone: '', gender: 'Male', dob: '', caseSummary: '' });
     setBookingFormData({ date: '', time: '', notes: '' });
-    setModalStep('choice');
+    setModalStep(null);
+  };
+
+  const handleSaveNewSession = (e) => {
+    e.preventDefault();
+    if (!selectedClient) return;
+
+    const nextNum = selectedClient.sessionHistory.length + 1;
+    const sessionObj = {
+      id: `s-${Date.now().toString().slice(-4)}`,
+      num: nextNum,
+      date: newSessionData.date || 'Today',
+      time: newSessionData.time || '00:00',
+      summary: newSessionData.summary || 'Session conducted.'
+    };
+
+    const updatedHistory = [sessionObj, ...selectedClient.sessionHistory];
+    const updatedStats = {
+      ...selectedClient.stats,
+      completed: selectedClient.stats.completed + 1,
+      total: selectedClient.stats.total + 1
+    };
+
+    const updatedClient = {
+      ...selectedClient,
+      sessionHistory: updatedHistory,
+      stats: updatedStats
+    };
+
+    setClients(clients.map(c => c.id === selectedClient.id ? updatedClient : c));
+    setSelectedClient(updatedClient);
+    setNewSessionData({ date: '', time: '', summary: '' });
+    setIsAddingSession(false);
   };
 
   const handleDeleteClient = (id) => {
@@ -268,7 +306,7 @@ export default function ClientsRoster() {
 
         <div className="flex items-center gap-2">
           <button
-            onClick={() => setModalStep('choice')}
+            onClick={() => setModalStep('addForm')}
             className="flex items-center gap-1.5 px-4 py-2 bg-[#237A88] hover:bg-[#1C646F] text-white rounded-2xl text-xs font-semibold shadow-sm transition-all"
           >
             <UserPlus size={14} />
@@ -461,9 +499,73 @@ export default function ClientsRoster() {
                       <Calendar size={14} className="text-[#237A88]" />
                       Session Tracker
                     </span>
+                    <button
+                      onClick={() => setIsAddingSession(!isAddingSession)}
+                      className="flex items-center gap-1 px-3 py-1 bg-[#237A88] text-white rounded-xl text-xs font-semibold hover:bg-[#1C646F] transition-all"
+                    >
+                      <PlusCircle size={13} />
+                      <span>{isAddingSession ? 'Cancel' : 'Add Session'}</span>
+                    </button>
                   </div>
 
-                  <div className="grid grid-cols-4 gap-2 text-center">
+                  {/* Add Session Form Drawer */}
+                  {isAddingSession && (
+                    <form onSubmit={handleSaveNewSession} className="bg-white p-4 rounded-2xl border border-[#237A88]/30 space-y-3 text-xs mt-3">
+                      <p className="font-bold text-[#237A88]">Record New Session Notes</p>
+                      <div className="grid grid-cols-2 gap-2">
+                        <div className="space-y-1">
+                          <label className="font-semibold text-stone-700">Date</label>
+                          <input
+                            type="text"
+                            required
+                            placeholder="e.g. Feb 25"
+                            value={newSessionData.date}
+                            onChange={(e) => setNewSessionData({ ...newSessionData, date: e.target.value })}
+                            className="w-full px-3 py-1.5 bg-stone-50 border border-stone-200 rounded-xl outline-none focus:border-[#237A88]"
+                          />
+                        </div>
+                        <div className="space-y-1">
+                          <label className="font-semibold text-stone-700">Time</label>
+                          <input
+                            type="text"
+                            required
+                            placeholder="e.g. 16:00"
+                            value={newSessionData.time}
+                            onChange={(e) => setNewSessionData({ ...newSessionData, time: e.target.value })}
+                            className="w-full px-3 py-1.5 bg-stone-50 border border-stone-200 rounded-xl outline-none focus:border-[#237A88]"
+                          />
+                        </div>
+                      </div>
+                      <div className="space-y-1">
+                        <label className="font-semibold text-stone-700">Session Summary / Notes</label>
+                        <textarea
+                          rows="2"
+                          required
+                          placeholder="Discussed coping mechanisms..."
+                          value={newSessionData.summary}
+                          onChange={(e) => setNewSessionData({ ...newSessionData, summary: e.target.value })}
+                          className="w-full px-3 py-1.5 bg-stone-50 border border-stone-200 rounded-xl outline-none focus:border-[#237A88] resize-none"
+                        />
+                      </div>
+                      <div className="flex justify-end gap-2 pt-1">
+                        <button
+                          type="button"
+                          onClick={() => setIsAddingSession(false)}
+                          className="px-3 py-1.5 bg-stone-100 text-stone-600 rounded-xl font-semibold"
+                        >
+                          Cancel
+                        </button>
+                        <button
+                          type="submit"
+                          className="px-3 py-1.5 bg-[#237A88] text-white rounded-xl font-semibold shadow-sm hover:bg-[#1C646F]"
+                        >
+                          Save Session
+                        </button>
+                      </div>
+                    </form>
+                  )}
+
+                  <div className="grid grid-cols-4 gap-2 text-center pt-2">
                     <div className="bg-white p-2.5 rounded-xl border border-stone-200/80">
                       <div className="w-5 h-5 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center mx-auto mb-1 text-[10px] font-bold">✓</div>
                       <p className="text-base font-bold text-stone-900">{selectedClient.stats.completed}</p>
@@ -580,460 +682,356 @@ export default function ClientsRoster() {
                   <div className="flex items-center justify-between text-xs font-bold text-stone-700">
                     <span>Individual Sessions ({selectedClient.billing.sessions})</span>
                   </div>
-                  <div className="flex items-center justify-between bg-white p-3 rounded-xl border border-stone-200 text-xs">
-                    <div className="flex items-center gap-2">
-                      <span className="px-2 py-0.5 bg-emerald-100 text-emerald-800 rounded-md text-[10px] font-bold">Settled</span>
+                  {selectedClient.sessionHistory.length === 0 ? (
+                    <p className="text-xs text-stone-400 text-center py-4">No billing records linked to sessions yet.</p>
+                  ) : (
+                    <div className="space-y-2">
+                      {selectedClient.sessionHistory.map(sess => (
+                        <div key={sess.id} className="flex items-center justify-between bg-white p-3 rounded-xl border border-stone-200/80 text-xs">
+                          <div>
+                            <p className="font-bold text-stone-900">Session {sess.num} ({sess.date})</p>
+                            <p className="text-[10px] text-stone-400">Standard Consultation Fee</p>
+                          </div>
+                          <div className="text-right">
+                            <p className="font-bold text-emerald-700">₹1500</p>
+                            <span className="text-[10px] bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full font-semibold">Paid</span>
+                          </div>
+                        </div>
+                      ))}
                     </div>
-                    <div className="flex items-center gap-3">
-                      <span className="font-bold text-emerald-600">₹{selectedClient.billing.totalEarned}</span>
-                      <span className="text-[10px] font-semibold bg-stone-100 px-2 py-0.5 rounded text-stone-600">UPI</span>
-                    </div>
-                  </div>
+                  )}
                 </div>
               </div>
             )}
 
             {/* TAB 3: FOLLOW UPS */}
             {activeTab === 'Follow Ups' && (
-              <div className="space-y-5">
-                <div className="bg-stone-50 p-4 rounded-2xl border border-stone-200/80 space-y-3">
+              <div className="space-y-4 py-2">
+                <div className="bg-stone-50 p-4 rounded-2xl border border-stone-200/60 space-y-3">
                   <div className="flex items-center justify-between">
-                    <div>
-                      <h4 className="font-bold text-stone-900 text-xs">Automatic follow-ups</h4>
-                      <p className="text-[11px] text-stone-500">When on, WhatsApp follow-up reminders are sent for this client.</p>
+                    <div className="flex items-center gap-2 text-xs font-bold text-stone-900">
+                      <MessageSquare size={14} className="text-[#237A88]" />
+                      <span>Quick Follow-up Message</span>
                     </div>
-                    <input type="checkbox" defaultChecked className="toggle accent-[#237A88] h-4 w-4" />
+                    <span className="text-[10px] text-stone-400 font-semibold">Direct WhatsApp / Email Integration</span>
                   </div>
-
-                  <div className="pt-2 border-t border-stone-200 flex items-center justify-between text-xs">
-                    <div>
-                      <p className="font-semibold text-stone-700">Default target date</p>
-                      <p className="text-[10px] text-stone-400">Used to suggest the next session date after each session.</p>
-                    </div>
-                    <select className="bg-white border border-stone-200 rounded-xl px-2.5 py-1 text-xs font-semibold text-stone-700">
-                      <option>1 week</option>
-                      <option>2 weeks</option>
-                    </select>
-                  </div>
-                </div>
-
-                <div className="bg-[#237A88]/5 p-4 rounded-2xl border border-[#237A88]/15 space-y-3">
-                  <div className="flex items-center gap-2 text-xs font-bold text-[#237A88]">
-                    <MessageSquare size={16} />
-                    <span>Send a Follow-up</span>
-                  </div>
-                  <p className="text-xs text-stone-600">Send an instant WhatsApp follow-up message to this client with a recommended appointment date.</p>
-                  
-                  <button className="flex items-center gap-2 px-4 py-2 bg-[#237A88] hover:bg-[#1C646F] text-white rounded-xl text-xs font-semibold transition-all shadow-md shadow-[#237A88]/20">
-                    <Send size={14} />
-                    <span>Send Instant Follow Up</span>
-                  </button>
-                </div>
-              </div>
-            )}
-
-          </div>
-        </div>
-      )}
-
-      {/* ADD CLIENT / BOOKING WORKFLOW MODAL */}
-      {modalStep !== 'choice' && (
-        <div className="fixed inset-0 bg-stone-900/40 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-3xl p-6 max-w-md w-full space-y-5 shadow-2xl border border-stone-100 max-h-[90vh] overflow-y-auto">
-            
-            {/* STEP 2A: ADD CLIENT + CREATE BOOKING */}
-            {modalStep === 'newBooking' && (
-              <form onSubmit={handleAddClientAndBooking} className="space-y-4 text-xs">
-                <div className="flex items-center justify-between border-b border-stone-100 pb-3">
-                  <div>
-                    <h3 className="font-bold text-stone-900 text-sm">New Booking & Client</h3>
-                    <p className="text-[10px] text-stone-400">Step 1: Enter client & initial appointment details</p>
-                  </div>
-                  <button 
-                    type="button"
-                    onClick={() => setModalStep('choice')}
-                    className="p-1 hover:bg-stone-100 rounded-xl text-stone-400"
-                  >
-                    <X size={16} />
-                  </button>
-                </div>
-
-                <div className="space-y-1">
-                  <label className="font-semibold text-stone-700">Full Name</label>
-                  <input
-                    type="text"
-                    required
-                    placeholder="e.g. Jordan Miller"
-                    value={addFormData.name}
-                    onChange={(e) => setAddFormData({ ...addFormData, name: e.target.value })}
-                    className="w-full px-3 py-2 bg-stone-50 border border-stone-200 rounded-xl outline-none focus:border-[#237A88]"
-                  />
-                </div>
-
-                <div className="grid grid-cols-2 gap-2">
-                  <div className="space-y-1">
-                    <label className="font-semibold text-stone-700">Email Address</label>
-                    <input
-                      type="email"
-                      required
-                      placeholder="e.g. jordan@example.com"
-                      value={addFormData.email}
-                      onChange={(e) => setAddFormData({ ...addFormData, email: e.target.value })}
-                      className="w-full px-3 py-2 bg-stone-50 border border-stone-200 rounded-xl outline-none focus:border-[#237A88]"
-                    />
-                  </div>
-                  <div className="space-y-1">
-                    <label className="font-semibold text-stone-700">Phone Number</label>
+                  <p className="text-xs text-stone-600">
+                    Send automated check-ins or session reminders directly to {selectedClient.name} via their registered phone or email address.
+                  </p>
+                  <div className="flex gap-2 pt-1">
                     <input
                       type="text"
-                      required
-                      placeholder="+91 9876543210"
-                      value={addFormData.phone}
-                      onChange={(e) => setAddFormData({ ...addFormData, phone: e.target.value })}
-                      className="w-full px-3 py-2 bg-stone-50 border border-stone-200 rounded-xl outline-none focus:border-[#237A88]"
+                      placeholder="Type a quick check-in message..."
+                      className="flex-1 px-3 py-2 bg-white border border-stone-200 rounded-xl text-xs outline-none focus:border-[#237A88]"
                     />
+                    <button className="flex items-center gap-1.5 px-4 py-2 bg-[#237A88] text-white rounded-xl text-xs font-bold hover:bg-[#1C646F] transition-all">
+                      <Send size={13} />
+                      <span>Send</span>
+                    </button>
                   </div>
                 </div>
-
-                <div className="bg-sky-50/70 border border-sky-100 p-3.5 rounded-2xl space-y-3">
-                  <p className="font-bold text-sky-900 text-[11px] uppercase tracking-wider">Initial Booking Slot</p>
-                  <div className="grid grid-cols-2 gap-2">
-                    <div className="space-y-1">
-                      <label className="font-semibold text-stone-700">Session Date</label>
-                      <input
-                        type="text"
-                        required
-                        placeholder="e.g. Mar 02"
-                        value={bookingFormData.date}
-                        onChange={(e) => setBookingFormData({ ...bookingFormData, date: e.target.value })}
-                        className="w-full px-3 py-2 bg-white border border-stone-200 rounded-xl outline-none focus:border-[#237A88]"
-                      />
-                    </div>
-                    <div className="space-y-1">
-                      <label className="font-semibold text-stone-700">Time</label>
-                      <input
-                        type="text"
-                        required
-                        placeholder="e.g. 14:00"
-                        value={bookingFormData.time}
-                        onChange={(e) => setBookingFormData({ ...bookingFormData, time: e.target.value })}
-                        className="w-full px-3 py-2 bg-white border border-stone-200 rounded-xl outline-none focus:border-[#237A88]"
-                      />
-                    </div>
-                  </div>
-                  <div className="space-y-1">
-                    <label className="font-semibold text-stone-700">Booking / Session Notes</label>
-                    <textarea
-                      rows="2"
-                      placeholder="Initial goals or intake details..."
-                      value={bookingFormData.notes}
-                      onChange={(e) => setBookingFormData({ ...bookingFormData, notes: e.target.value })}
-                      className="w-full px-3 py-2 bg-white border border-stone-200 rounded-xl outline-none focus:border-[#237A88] resize-none"
-                    />
-                  </div>
-                </div>
-
-                <div className="pt-3 border-t border-stone-100 flex items-center justify-end gap-2">
-                  <button
-                    type="button"
-                    onClick={() => setModalStep('choice')}
-                    className="px-4 py-2 bg-stone-100 hover:bg-stone-200 text-stone-700 rounded-xl font-semibold"
-                  >
-                    Back
-                  </button>
-                  <button
-                    type="submit"
-                    className="px-4 py-2 bg-[#237A88] hover:bg-[#1C646F] text-white rounded-xl font-semibold shadow-md shadow-[#237A88]/20"
-                  >
-                    Save & Create Booking
-                  </button>
-                </div>
-              </form>
-            )}
-
-            {/* STEP 2B: ONLY ADD CLIENT FORM */}
-            {modalStep === 'addForm' && (
-              <form onSubmit={handleAddClientOnly} className="space-y-4 text-xs">
-                <div className="flex items-center justify-between border-b border-stone-100 pb-3">
-                  <h3 className="font-bold text-stone-900 text-sm">Add New Client in System</h3>
-                  <button 
-                    type="button"
-                    onClick={() => setModalStep('choice')}
-                    className="p-1 hover:bg-stone-100 rounded-xl text-stone-400"
-                  >
-                    <X size={16} />
-                  </button>
-                </div>
-
-                <div className="space-y-1">
-                  <label className="font-semibold text-stone-700">Full Name</label>
-                  <input
-                    type="text"
-                    required
-                    placeholder="e.g. Jordan Miller"
-                    value={addFormData.name}
-                    onChange={(e) => setAddFormData({ ...addFormData, name: e.target.value })}
-                    className="w-full px-3 py-2 bg-stone-50 border border-stone-200 rounded-xl outline-none focus:border-[#237A88]"
-                  />
-                </div>
-
-                <div className="space-y-1">
-                  <label className="font-semibold text-stone-700">Email Address</label>
-                  <input
-                    type="email"
-                    required
-                    placeholder="e.g. jordan@example.com"
-                    value={addFormData.email}
-                    onChange={(e) => setAddFormData({ ...addFormData, email: e.target.value })}
-                    className="w-full px-3 py-2 bg-stone-50 border border-stone-200 rounded-xl outline-none focus:border-[#237A88]"
-                  />
-                </div>
-
-                <div className="space-y-1">
-                  <label className="font-semibold text-stone-700">Gender</label>
-                  <select
-                    value={addFormData.gender}
-                    onChange={(e) => setAddFormData({ ...addFormData, gender: e.target.value })}
-                    className="w-full px-3 py-2 bg-stone-50 border border-stone-200 rounded-xl outline-none focus:border-[#237A88]"
-                  >
-                    <option value="Male">Male</option>
-                    <option value="Female">Female</option>
-                    <option value="Non-binary">Non-binary</option>
-                    <option value="Other">Other</option>
-                  </select>
-                </div>
-
-                <div className="space-y-1">
-                  <label className="font-semibold text-stone-700">Phone Number</label>
-                  <input
-                    type="text"
-                    required
-                    placeholder="+91 9876543210"
-                    value={addFormData.phone}
-                    onChange={(e) => setAddFormData({ ...addFormData, phone: e.target.value })}
-                    className="w-full px-3 py-2 bg-stone-50 border border-stone-200 rounded-xl outline-none focus:border-[#237A88]"
-                  />
-                </div>
-
-                <div className="space-y-1">
-                  <label className="font-semibold text-stone-700">Date of Birth (optional)</label>
-                  <input
-                    type="text"
-                    placeholder="e.g. 15 Jun 1996"
-                    value={addFormData.dob}
-                    onChange={(e) => setAddFormData({ ...addFormData, dob: e.target.value })}
-                    className="w-full px-3 py-2 bg-stone-50 border border-stone-200 rounded-xl outline-none focus:border-[#237A88]"
-                  />
-                </div>
-
-                <div className="space-y-1">
-                  <label className="font-semibold text-stone-700">Initial Case Summary / Notes</label>
-                  <textarea
-                    rows="2"
-                    placeholder="Briefly describe presenting concerns..."
-                    value={addFormData.caseSummary}
-                    onChange={(e) => setAddFormData({ ...addFormData, caseSummary: e.target.value })}
-                    className="w-full px-3 py-2 bg-stone-50 border border-stone-200 rounded-xl outline-none focus:border-[#237A88] resize-none"
-                  />
-                </div>
-
-                <div className="pt-3 border-t border-stone-100 flex items-center justify-end gap-2">
-                  <button
-                    type="button"
-                    onClick={() => setModalStep('choice')}
-                    className="px-4 py-2 bg-stone-100 hover:bg-stone-200 text-stone-700 rounded-xl font-semibold"
-                  >
-                    Back
-                  </button>
-                  <button
-                    type="submit"
-                    className="px-4 py-2 bg-[#237A88] hover:bg-[#1C646F] text-white rounded-xl font-semibold shadow-md shadow-[#237A88]/20"
-                  >
-                    Add Client
-                  </button>
-                </div>
-              </form>
-            )}
-
-          </div>
-        </div>
-      )}
-
-      {/* INITIAL CHOICE MODAL */}
-      {modalStep === 'choice' && (
-        <div className="fixed inset-0 bg-stone-900/40 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-3xl p-6 max-w-lg w-full space-y-6 shadow-2xl border border-stone-100 relative">
-            <div className="flex items-start justify-between border-b border-stone-100 pb-4">
-              <div>
-                <h3 className="font-bold text-stone-900 text-base">Add Client</h3>
-                <p className="text-xs text-stone-500 mt-0.5">What would you like to do? Choose an option to continue.</p>
               </div>
-              <button 
-                onClick={() => setModalStep(null)}
-                className="p-1 hover:bg-stone-100 rounded-xl text-stone-400 transition-all"
-              >
-                <X size={18} />
-              </button>
-            </div>
+            )}
 
-            <div className="space-y-3">
-              <button
-                onClick={() => setModalStep('newBooking')}
-                className="w-full py-3.5 px-4 bg-blue-600 hover:bg-blue-700 text-white rounded-2xl text-xs font-bold transition-all shadow-sm text-center"
-              >
-                I want to add a client and create a booking for them
-              </button>
-
-              <button
-                onClick={() => setModalStep('addForm')}
-                className="w-full py-3.5 px-4 bg-white border border-stone-300 hover:bg-stone-50 text-stone-700 rounded-2xl text-xs font-bold transition-all shadow-sm text-center"
-              >
-                I only want to add a client in the system
-              </button>
-            </div>
-
-            <div className="pt-2 border-t border-stone-100 flex justify-end">
-              <button
-                onClick={() => setModalStep(null)}
-                className="px-5 py-2 border border-stone-200 hover:bg-stone-50 text-stone-700 rounded-2xl text-xs font-semibold transition-all"
-              >
-                Cancel
-              </button>
-            </div>
           </div>
         </div>
       )}
 
-      {/* EDIT CLIENT MODAL */}
-      {isEditModalOpen && (
+      {/* SESSION NOTE / FORM MODAL */}
+      {activeSessionNote && (
         <div className="fixed inset-0 bg-stone-900/40 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-3xl p-6 max-w-md w-full space-y-5 shadow-2xl border border-stone-100">
+          <div className="bg-white rounded-3xl p-6 max-w-lg w-full space-y-4 shadow-2xl border border-stone-100">
             <div className="flex items-center justify-between border-b border-stone-100 pb-3">
-              <h3 className="font-bold text-stone-900 text-sm">Edit Client</h3>
-              <button 
-                onClick={() => setIsEditModalOpen(false)}
-                className="p-1 hover:bg-stone-100 rounded-xl text-stone-400"
-              >
+              <div className="flex items-center gap-2">
+                <FileText size={18} className="text-[#237A88]" />
+                <h3 className="font-bold text-stone-900 text-sm">
+                  {activeSessionNote.num ? `Session ${activeSessionNote.num} Notes` : 'Intake & Consent Form Details'}
+                </h3>
+              </div>
+              <button onClick={() => setActiveSessionNote(null)} className="p-1 hover:bg-stone-100 rounded-lg text-stone-400">
                 <X size={16} />
               </button>
             </div>
 
-            <form onSubmit={handleSaveEdit} className="space-y-4 text-xs">
-              <div className="space-y-1">
-                <label className="font-semibold text-stone-700">Name</label>
+            <div className="space-y-3 text-xs text-stone-700">
+              {activeSessionNote.num ? (
+                <>
+                  <div className="flex justify-between bg-stone-50 p-3 rounded-xl">
+                    <span><strong>Date:</strong> {activeSessionNote.date}</span>
+                    <span><strong>Time:</strong> {activeSessionNote.time}</span>
+                  </div>
+                  <div className="space-y-1 bg-stone-50 p-3 rounded-xl">
+                    <p className="font-bold text-stone-900">Summary & Observations:</p>
+                    <p className="text-stone-600 leading-relaxed">{activeSessionNote.summary}</p>
+                  </div>
+                </>
+              ) : (
+                <div className="space-y-2 bg-stone-50 p-3 rounded-xl">
+                  <p className="font-bold text-stone-900">Verified Client Documentation</p>
+                  <p className="text-stone-600">Client has successfully filled out all mandatory intake questionnaires and digital therapy consent forms prior to commencement of sessions.</p>
+                </div>
+              )}
+            </div>
+
+            <div className="flex justify-end pt-2">
+              <button
+                onClick={() => setActiveSessionNote(null)}
+                className="px-4 py-2 bg-stone-100 hover:bg-stone-200 text-stone-700 rounded-xl text-xs font-bold transition-all"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* EDIT PROFILE MODAL */}
+      {isEditModalOpen && (
+        <div className="fixed inset-0 bg-stone-900/40 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+          <form onSubmit={handleSaveEdit} className="bg-white rounded-3xl p-6 max-w-md w-full space-y-4 shadow-2xl border border-stone-100 text-xs">
+            <div className="flex items-center justify-between border-b border-stone-100 pb-3">
+              <h3 className="font-bold text-stone-900 text-sm">Edit Client Profile</h3>
+              <button type="button" onClick={() => setIsEditModalOpen(false)} className="text-stone-400 hover:text-stone-600">
+                <X size={16} />
+              </button>
+            </div>
+
+            <div className="space-y-3">
+              <div>
+                <label className="font-semibold text-stone-700">Full Name</label>
                 <input
                   type="text"
                   required
                   value={editFormData.name}
                   onChange={(e) => setEditFormData({ ...editFormData, name: e.target.value })}
-                  className="w-full px-3 py-2 bg-stone-50 border border-stone-200 rounded-xl outline-none focus:border-[#237A88]"
+                  className="w-full mt-1 px-3 py-2 bg-stone-50 border border-stone-200 rounded-xl outline-none focus:border-[#237A88]"
                 />
               </div>
-
-              <div className="space-y-1">
-                <label className="font-semibold text-stone-700">Email</label>
+              <div>
+                <label className="font-semibold text-stone-700">Email Address</label>
                 <input
                   type="email"
                   required
                   value={editFormData.email}
                   onChange={(e) => setEditFormData({ ...editFormData, email: e.target.value })}
-                  className="w-full px-3 py-2 bg-stone-50 border border-stone-200 rounded-xl outline-none focus:border-[#237A88]"
+                  className="w-full mt-1 px-3 py-2 bg-stone-50 border border-stone-200 rounded-xl outline-none focus:border-[#237A88]"
                 />
               </div>
-
-              <div className="space-y-1">
-                <label className="font-semibold text-stone-700">Gender</label>
-                <select
-                  value={editFormData.gender}
-                  onChange={(e) => setEditFormData({ ...editFormData, gender: e.target.value })}
-                  className="w-full px-3 py-2 bg-stone-50 border border-stone-200 rounded-xl outline-none focus:border-[#237A88]"
-                >
-                  <option value="Male">Male</option>
-                  <option value="Female">Female</option>
-                  <option value="Non-binary">Non-binary</option>
-                  <option value="Other">Other</option>
-                </select>
-              </div>
-
-              <div className="space-y-1">
+              <div>
                 <label className="font-semibold text-stone-700">Phone Number</label>
                 <input
                   type="text"
+                  required
                   value={editFormData.phone}
                   onChange={(e) => setEditFormData({ ...editFormData, phone: e.target.value })}
-                  className="w-full px-3 py-2 bg-stone-50 border border-stone-200 rounded-xl outline-none focus:border-[#237A88]"
+                  className="w-full mt-1 px-3 py-2 bg-stone-50 border border-stone-200 rounded-xl outline-none focus:border-[#237A88]"
                 />
               </div>
-
-              <div className="space-y-1">
-                <label className="font-semibold text-stone-700">Date of Birth (optional)</label>
-                <input
-                  type="text"
-                  placeholder="yyyy-mm-dd"
-                  value={editFormData.dob}
-                  onChange={(e) => setEditFormData({ ...editFormData, dob: e.target.value })}
-                  className="w-full px-3 py-2 bg-stone-50 border border-stone-200 rounded-xl outline-none focus:border-[#237A88]"
-                />
+              <div className="grid grid-cols-2 gap-2">
+                <div>
+                  <label className="font-semibold text-stone-700">Gender</label>
+                  <select
+                    value={editFormData.gender}
+                    onChange={(e) => setEditFormData({ ...editFormData, gender: e.target.value })}
+                    className="w-full mt-1 px-3 py-2 bg-stone-50 border border-stone-200 rounded-xl outline-none focus:border-[#237A88]"
+                  >
+                    <option>Male</option>
+                    <option>Female</option>
+                    <option>Non-binary</option>
+                    <option>Other</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="font-semibold text-stone-700">Date of Birth</label>
+                  <input
+                    type="text"
+                    placeholder="e.g. 12 May 1995"
+                    value={editFormData.dob}
+                    onChange={(e) => setEditFormData({ ...editFormData, dob: e.target.value })}
+                    className="w-full mt-1 px-3 py-2 bg-stone-50 border border-stone-200 rounded-xl outline-none focus:border-[#237A88]"
+                  />
+                </div>
               </div>
+            </div>
 
-              <div className="pt-3 border-t border-stone-100 flex items-center justify-end gap-2">
-                <button
-                  type="button"
-                  onClick={() => setIsEditModalOpen(false)}
-                  className="px-4 py-2 bg-stone-100 hover:bg-stone-200 text-stone-700 rounded-xl font-semibold"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="px-4 py-2 bg-[#237A88] hover:bg-[#1C646F] text-white rounded-xl font-semibold shadow-md shadow-[#237A88]/20"
-                >
-                  Save Changes
-                </button>
-              </div>
-            </form>
-          </div>
+            <div className="flex justify-end gap-2 pt-3">
+              <button
+                type="button"
+                onClick={() => setIsEditModalOpen(false)}
+                className="px-4 py-2 bg-stone-100 text-stone-600 rounded-xl font-semibold hover:bg-stone-200"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                className="px-4 py-2 bg-[#237A88] text-white rounded-xl font-bold shadow-sm hover:bg-[#1C646F]"
+              >
+                Save Changes
+              </button>
+            </div>
+          </form>
         </div>
       )}
 
-      {/* DETAILED SESSION NOTES OVERLAY DRAWER */}
-      {activeSessionNote && (
-        <div className="fixed inset-0 bg-stone-900/40 backdrop-blur-sm flex items-center justify-center p-4 z-[60]">
-          <div className="bg-white rounded-3xl p-6 max-w-lg w-full space-y-4 shadow-2xl border border-stone-100 relative">
+      {/* ADD CLIENT WORKFLOW MODAL */}
+      {modalStep !== null && (
+        <div className="fixed inset-0 bg-stone-900/40 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-3xl p-6 max-w-md w-full space-y-4 shadow-2xl border border-stone-100 text-xs">
             <div className="flex items-center justify-between border-b border-stone-100 pb-3">
-              <div>
-                <h3 className="font-bold text-stone-900 text-sm">
-                  Session {activeSessionNote.num} Notes
-                </h3>
-                <p className="text-[10px] text-stone-400 font-medium">
-                  {activeSessionNote.date} • {activeSessionNote.time}
-                </p>
-              </div>
-              <button 
-                onClick={() => setActiveSessionNote(null)}
-                className="p-1 hover:bg-stone-100 rounded-xl text-stone-400"
-              >
+              <h3 className="font-bold text-stone-900 text-sm">
+                {modalStep === 'addForm' ? 'Add Client Details' : 'Schedule Initial Booking'}
+              </h3>
+              <button onClick={() => setModalStep(null)} className="text-stone-400 hover:text-stone-600">
                 <X size={16} />
               </button>
             </div>
 
-            <div className="bg-stone-50 p-4 rounded-2xl border border-stone-200/80 max-h-96 overflow-y-auto">
-              <p className="text-xs text-stone-700 leading-relaxed font-normal whitespace-pre-wrap">
-                {activeSessionNote.summary}
-              </p>
-            </div>
+            {modalStep === 'addForm' ? (
+              <form onSubmit={(e) => { e.preventDefault(); setModalStep('newBooking'); }} className="space-y-3">
+                <div>
+                  <label className="font-semibold text-stone-700">Full Name</label>
+                  <input
+                    type="text"
+                    required
+                    placeholder="Enter client name"
+                    value={addFormData.name}
+                    onChange={(e) => setAddFormData({ ...addFormData, name: e.target.value })}
+                    className="w-full mt-1 px-3 py-2 bg-stone-50 border border-stone-200 rounded-xl outline-none focus:border-[#237A88]"
+                  />
+                </div>
+                <div>
+                  <label className="font-semibold text-stone-700">Email Address</label>
+                  <input
+                    type="email"
+                    required
+                    placeholder="client@example.com"
+                    value={addFormData.email}
+                    onChange={(e) => setAddFormData({ ...addFormData, email: e.target.value })}
+                    className="w-full mt-1 px-3 py-2 bg-stone-50 border border-stone-200 rounded-xl outline-none focus:border-[#237A88]"
+                  />
+                </div>
+                <div>
+                  <label className="font-semibold text-stone-700">Phone Number</label>
+                  <input
+                    type="text"
+                    required
+                    placeholder="+91 XXXXXXXXXX"
+                    value={addFormData.phone}
+                    onChange={(e) => setAddFormData({ ...addFormData, phone: e.target.value })}
+                    className="w-full mt-1 px-3 py-2 bg-stone-50 border border-stone-200 rounded-xl outline-none focus:border-[#237A88]"
+                  />
+                </div>
+                <div className="grid grid-cols-2 gap-2">
+                  <div>
+                    <label className="font-semibold text-stone-700">Gender</label>
+                    <select
+                      value={addFormData.gender}
+                      onChange={(e) => setAddFormData({ ...addFormData, gender: e.target.value })}
+                      className="w-full mt-1 px-3 py-2 bg-stone-50 border border-stone-200 rounded-xl outline-none focus:border-[#237A88]"
+                    >
+                      <option>Male</option>
+                      <option>Female</option>
+                      <option>Non-binary</option>
+                      <option>Other</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="font-semibold text-stone-700">Date of Birth</label>
+                    <input
+                      type="text"
+                      placeholder="e.g. 15 Aug 1996"
+                      value={addFormData.dob}
+                      onChange={(e) => setAddFormData({ ...addFormData, dob: e.target.value })}
+                      className="w-full mt-1 px-3 py-2 bg-stone-50 border border-stone-200 rounded-xl outline-none focus:border-[#237A88]"
+                    />
+                  </div>
+                </div>
+                <div>
+                  <label className="font-semibold text-stone-700">Case Summary / Initial Notes</label>
+                  <textarea
+                    rows="2"
+                    placeholder="Primary concerns or presentation..."
+                    value={addFormData.caseSummary}
+                    onChange={(e) => setAddFormData({ ...addFormData, caseSummary: e.target.value })}
+                    className="w-full mt-1 px-3 py-2 bg-stone-50 border border-stone-200 rounded-xl outline-none focus:border-[#237A88] resize-none"
+                  />
+                </div>
 
-            <div className="pt-2 flex justify-end">
-              <button
-                onClick={() => setActiveSessionNote(null)}
-                className="px-4 py-2 bg-stone-100 hover:bg-stone-200 text-stone-700 rounded-xl text-xs font-semibold"
-              >
-                Close Notes
-              </button>
-            </div>
+                <div className="flex justify-end gap-2 pt-2">
+                  <button
+                    type="button"
+                    onClick={() => setModalStep(null)}
+                    className="px-4 py-2 bg-stone-100 text-stone-600 rounded-xl font-semibold"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className="px-4 py-2 bg-[#237A88] text-white rounded-xl font-bold shadow-sm hover:bg-[#1C646F]"
+                  >
+                    Next: Booking Details
+                  </button>
+                </div>
+              </form>
+            ) : (
+              <form onSubmit={handleAddClientAndBooking} className="space-y-3">
+                <p className="text-stone-500 font-medium">Set up the initial session details for <strong>{addFormData.name}</strong>.</p>
+                <div className="grid grid-cols-2 gap-2">
+                  <div>
+                    <label className="font-semibold text-stone-700">Session Date</label>
+                    <input
+                      type="text"
+                      required
+                      placeholder="e.g. Mar 02"
+                      value={bookingFormData.date}
+                      onChange={(e) => setBookingFormData({ ...bookingFormData, date: e.target.value })}
+                      className="w-full mt-1 px-3 py-2 bg-stone-50 border border-stone-200 rounded-xl outline-none focus:border-[#237A88]"
+                    />
+                  </div>
+                  <div>
+                    <label className="font-semibold text-stone-700">Time Slot</label>
+                    <input
+                      type="text"
+                      required
+                      placeholder="e.g. 14:00"
+                      value={bookingFormData.time}
+                      onChange={(e) => setBookingFormData({ ...bookingFormData, time: e.target.value })}
+                      className="w-full mt-1 px-3 py-2 bg-stone-50 border border-stone-200 rounded-xl outline-none focus:border-[#237A88]"
+                    />
+                  </div>
+                </div>
+                <div>
+                  <label className="font-semibold text-stone-700">Booking / Session Notes</label>
+                  <textarea
+                    rows="2"
+                    placeholder="Initial intake session structure..."
+                    value={bookingFormData.notes}
+                    onChange={(e) => setBookingFormData({ ...bookingFormData, notes: e.target.value })}
+                    className="w-full mt-1 px-3 py-2 bg-stone-50 border border-stone-200 rounded-xl outline-none focus:border-[#237A88] resize-none"
+                  />
+                </div>
+
+                <div className="flex justify-between items-center pt-2">
+                  <button
+                    type="button"
+                    onClick={handleAddClientOnly}
+                    className="text-stone-500 font-bold hover:underline"
+                  >
+                    Skip Booking & Save Only
+                  </button>
+                  <button
+                    type="submit"
+                    className="px-4 py-2 bg-[#237A88] text-white rounded-xl font-bold shadow-sm hover:bg-[#1C646F]"
+                  >
+                    Save Client & Booking
+                  </button>
+                </div>
+              </form>
+            )}
           </div>
         </div>
       )}
+
     </div>
   );
 }
