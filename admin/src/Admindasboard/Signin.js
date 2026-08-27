@@ -1,5 +1,4 @@
 import React from "react";
-import { Button } from "@/components/ui/button";
 import { Feather, ShieldCheck, HeartPulse } from "lucide-react";
 
 // REMINDER: DO NOT HARDCODE THE URL, OR ADD ANY FALLBACKS OR REDIRECT URLS, THIS BREAKS THE AUTH
@@ -23,9 +22,9 @@ export default function Login() {
         />
         <div className="relative h-full flex flex-col justify-between p-12 text-stone-50">
           <div className="flex items-center gap-3">
-            <div className="h-10 w-10 rounded-xl bg-stone-50 text-emerald-900 grid place-items-center font-display text-xl">P</div>
+            <div className="h-10 w-10 rounded-xl bg-stone-50 text-emerald-900 grid place-items-center font-display text-xl font-bold">P</div>
             <div className="leading-tight">
-              <div className="font-display text-lg">Psychobeings</div>
+              <div className="font-display text-lg font-semibold">Psychobeings</div>
               <div className="text-[11px] tracking-[0.25em] uppercase text-stone-300">Psychological Wellness</div>
             </div>
           </div>
@@ -59,8 +58,8 @@ export default function Login() {
       <div className="relative flex items-center justify-center p-8">
         <div className="w-full max-w-md">
           <div className="lg:hidden mb-8 flex items-center gap-3">
-            <div className="h-10 w-10 rounded-xl bg-emerald-900 text-stone-50 grid place-items-center font-display">P</div>
-            <div className="font-display text-lg">Psychobeings</div>
+            <div className="h-10 w-10 rounded-xl bg-emerald-900 text-stone-50 grid place-items-center font-display font-bold">P</div>
+            <div className="font-display text-lg font-semibold">Psychobeings</div>
           </div>
           <div className="text-xs tracking-[0.3em] uppercase text-stone-500 mb-3">Welcome back</div>
           <h2 className="font-display text-3xl lg:text-4xl text-stone-900 leading-tight">
@@ -70,18 +69,19 @@ export default function Login() {
             One click with Google — no passwords, no fuss. We only store what your practice needs.
           </p>
 
-          <Button
+          <button
+            type="button"
             data-testid="google-login-btn"
             onClick={signIn}
-            className="mt-10 w-full h-12 rounded-full bg-emerald-900 hover:bg-emerald-700 text-stone-50 text-base font-medium"
+            className="mt-10 w-full h-12 rounded-full bg-emerald-900 hover:bg-emerald-700 text-stone-50 text-base font-medium flex items-center justify-center transition-colors cursor-pointer"
           >
             <img
-              alt=""
+              alt="Google Logo"
               className="h-5 w-5 mr-3 bg-white rounded-full p-0.5"
               src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
             />
             Continue with Google
-          </Button>
+          </button>
 
           <div className="mt-8 text-xs text-stone-500 leading-relaxed">
             By continuing you agree to hold client information with care and follow professional confidentiality standards.
