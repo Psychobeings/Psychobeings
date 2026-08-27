@@ -8,13 +8,12 @@ import {
   Plus, 
   Video, 
   MapPin, 
-  User, 
   CheckCircle2 
 } from 'lucide-react';
 
 export default function SessionCalendar() {
   const navigate = useNavigate();
-  const [selectedDate, setSelectedDate] = useState('Aug 27, 2026');
+  const [selectedDate] = useState('Aug 27, 2026');
 
   // Mock sessions for the day
   const sessions = [

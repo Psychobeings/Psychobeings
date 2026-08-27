@@ -21,7 +21,7 @@ export default function App() {
     <BrowserRouter>
       <Routes>
         {/* Auth Route */}
-        <Route path="/" element={<Signin />} />
+        <Route path="/" element={<Navigate to="/dashboard" replace />} />
         <Route path="/signin" element={<Signin />} />
 
         {/* Protected Dashboard Shell */}

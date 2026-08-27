@@ -44,7 +44,9 @@ const Signin = ({ onLoginSuccess }) => {
 
       localStorage.setItem('authToken', response.data.token);
       if (onLoginSuccess) onLoginSuccess();
-      navigate('/admin');
+      
+      // Redirect straight to dashboard workspace upon authentication
+      navigate('/dashboard');
     } catch (err) {
       setError(err.response?.data?.message || 'Invalid credentials. Please try again.');
       console.log("Error:", err);
@@ -266,7 +268,6 @@ const Signin = ({ onLoginSuccess }) => {
         
         {/* Left Decorative Section */}
         <section className="relative hidden overflow-hidden bg-gradient-to-br from-[#0B2326] via-[#0F353A] to-[#124046] p-12 text-white lg:col-span-5 lg:flex lg:flex-col lg:justify-between">
-          {/* Subtle Ambient Orbs */}
           <div className="absolute -right-20 -top-20 h-80 w-80 rounded-full border-[50px] border-[#1B7B87]/20 blur-2xl pointer-events-none" />
           <div className="absolute -bottom-20 -left-20 h-80 w-80 rounded-full border-[40px] border-[#2098A7]/15 blur-xl pointer-events-none" />
 
@@ -304,8 +305,6 @@ const Signin = ({ onLoginSuccess }) => {
         {/* Right Form Section */}
         <section className="flex items-center justify-center px-6 py-10 sm:px-12 lg:col-span-7 lg:px-16">
           <div className="w-full max-w-sm">
-            
-            {/* Logo display */}
             <div className="mb-6">
               <img src={logo} alt="Psychobeings" className="h-11 w-auto object-contain" />
             </div>
@@ -328,7 +327,6 @@ const Signin = ({ onLoginSuccess }) => {
               </p>
             </div>
 
-            {/* Error Message */}
             {error && (
               <div className="mb-5 flex items-center gap-2 rounded-2xl border border-red-200 bg-red-50/80 px-4 py-3 text-xs font-medium text-red-700 animate-fadeIn">
                 <AlertCircle size={16} className="text-red-600 shrink-0" />
@@ -336,7 +334,6 @@ const Signin = ({ onLoginSuccess }) => {
               </div>
             )}
 
-            {/* Success Message */}
             {successMsg && (
               <div className="mb-5 flex items-center gap-2 rounded-2xl border border-emerald-200 bg-emerald-50/80 px-4 py-3 text-xs font-medium text-emerald-800 animate-fadeIn">
                 <CheckCircle2 size={16} className="text-emerald-600 shrink-0" />

@@ -1,10 +1,7 @@
 import React, { useState } from 'react';
 import { 
-  FileText, 
   Search, 
-  Filter, 
   Plus, 
-  User, 
   Calendar, 
   ShieldAlert, 
   Brain, 
