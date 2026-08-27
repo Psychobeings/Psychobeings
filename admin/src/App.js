@@ -5,7 +5,8 @@ import Layout from './Components/Layout';
 import DashboardHome from './Components/DashboardHome';
 import CaseHistory from './Components/CaseHistory';
 import ClientsRoster from './Components/ClientsRoster';
-import SessionCalendar from './Components/SessionCalendar'; // 1. Add import
+import SessionCalendar from './Components/SessionCalendar';
+import TasksAndWorksheets from './Components/TasksAndWorksheets'; // 1. Import your new page
 
 const ProtectedRoute = ({ children }) => {
   const token = localStorage.getItem('authToken');
@@ -45,11 +46,12 @@ export default function App() {
         >
           <Route path="dashboard" element={<DashboardHome />} />
           <Route path="clients" element={<ClientsRoster />} />
-          
-          {/* 2. Replace placeholder div with <SessionCalendar /> */}
           <Route path="calendar" element={<SessionCalendar />} />
-          
           <Route path="case-history" element={<CaseHistory />} />
+          
+          {/* 2. Add the Tasks & Worksheets route here */}
+          <Route path="tasks-worksheets" element={<TasksAndWorksheets />} />
+          
           <Route path="settings" element={<div>Settings Page</div>} />
         </Route>
 
