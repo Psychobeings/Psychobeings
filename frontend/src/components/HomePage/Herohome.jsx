@@ -1,7 +1,6 @@
 import React from 'react';
 import { ArrowRight } from 'lucide-react';
-import heroImg from '../assets/coupletherapy1.svg'; // Update filename and relative path as needed
-
+import heroImg from '../../assets/coupletherapy1.svg'
 const HeroHome = () => {
   return (
     <section className="bg-[#F2F7F7] text-[#1F3A3D] py-16 sm:py-20 px-6 sm:px-8 lg:px-12 min-h-[90vh] flex items-center font-sans">
