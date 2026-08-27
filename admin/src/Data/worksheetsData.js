@@ -92,4 +92,15 @@ export const worksheetLibrary = {
       { name: 'The CBT Junction Model.pdf' }
     ]
   },
-}
+  DBT: {
+    'Distress Tolerance': [
+      { name: 'TIPP Skills Overview.pdf' },
+      { name: 'ACCEPTS Distraction.pdf' },
+      { name: 'Self-Soothe Kit.pdf' }
+    ],
+    'Emotion Regulation': [
+      { name: 'Check the Facts.pdf' },
+      { name: 'Opposite Action.pdf' }
+    ]
+  }
+};
