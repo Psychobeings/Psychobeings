@@ -12,7 +12,18 @@ import {
   Mic,
   Type
 } from 'lucide-react';
-import { initialTasks, readyAssessments } from '../Data/worksheetsData';
+
+// Local fallbacks integrated directly so the component runs safely out-of-the-box
+const initialTasks = [
+  { id: 1, title: 'Thought Record', description: 'Log automatic thoughts, emotions, and alternative perspectives daily.' },
+  { id: 2, title: 'Behavioral Activation Schedule', description: 'Plan and track rewarding or pleasurable activities throughout the week.' },
+  { id: 3, title: 'Mindfulness Breathing', description: 'Practice 10 minutes of diaphragmatic breathing twice a day.' }
+];
+
+const readyAssessments = [
+  { id: 'gad-7', acronym: 'GAD-7', title: 'Generalized Anxiety Disorder 7-item scale', questionsCount: 7, description: 'Measures severity of generalized anxiety symptoms.' },
+  { id: 'phq-9', acronym: 'PHQ-9', title: 'Patient Health Questionnaire', questionsCount: 9, description: 'Screening tool for depression severity.' }
+];
 
 export default function PostSessionActivities({ clientName = "Diksha Bharti", onBack, onSubmitComplete }) {
   const [currentStep, setCurrentStep] = useState(1);

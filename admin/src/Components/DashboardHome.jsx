@@ -25,8 +25,8 @@ import {
 export default function PsychobeingsDashboard() {
   const navigate = useNavigate();
 
-  // Real-time date & time calculations (Friday, 28 August 2026, 11:50 AM)
-  const currentDate = new Date('2026-08-28T11:50:07');
+  // Real-time date & time calculations (Friday, 28 August 2026, 11:54 AM)
+  const currentDate = new Date('2026-08-28T11:54:13');
   const dayName = currentDate.toLocaleDateString('en-US', { weekday: 'long' }).toUpperCase();
   const formattedDateString = `${dayName}, ${currentDate.toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' }).toUpperCase()}`;
   const currentHour = currentDate.getHours();
@@ -117,7 +117,7 @@ export default function PsychobeingsDashboard() {
           </div>
           <button 
             id="btn-direct-new-booking"
-            onClick={() => navigate('/notes/new')}
+            onClick={() => navigate('/booking')}
             className="flex items-center justify-center gap-2 bg-[#7C3AED] hover:bg-[#6D28D9] text-white px-5 py-3 rounded-2xl text-xs font-bold shadow-lg shadow-[#7C3AED]/20 transition shrink-0"
           >
             <Plus size={16} />
