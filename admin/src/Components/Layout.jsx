@@ -113,7 +113,7 @@ export default function Layout() {
 
           <button
             onClick={handleLogout}
-            className="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-2xl text-xs font-semibold text-rose-600 hover:bg-rose-50 transition-colors"
+            className="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-2xl text-xs font-semibold text-rose-600 hover:bg-rose-50 transition-colors cursor-pointer"
           >
             <LogOut className="h-4 w-4" />
             <span>Sign Out</span>
@@ -128,24 +128,29 @@ export default function Layout() {
           <div className="flex items-center gap-3">
             <button 
               onClick={() => setSidebarOpen(true)}
-              className="p-2 text-stone-600 hover:bg-stone-50 rounded-xl lg:hidden"
+              className="p-2 text-stone-600 hover:bg-stone-50 rounded-xl lg:hidden cursor-pointer"
             >
               <Menu size={20} />
             </button>
 
-
             {/* Vertical Divider */}
-            <div className="h-6 w-[1px] bg-stone-200" />
+            <div className="h-6 w-[1px] bg-stone-200 hidden lg:block" />
 
-            {/* Profile Avatar Indicator */}
-            <div className="flex items-center gap-3 cursor-pointer">
-              <div className="h-9 w-9 rounded-2xl bg-[#237A88]/10 text-[#237A88] flex items-center justify-center font-bold text-xs border border-[#237A88]/20">
-                PB
-              </div>
-              <div className="hidden sm:block text-left">
-                <p className="text-xs font-bold text-stone-900 leading-none">Psychobeings Team</p>
-                <p className="text-[10px] text-stone-500 mt-1 font-medium">Practitioner Workspace</p>
-              </div>
+            {/* Header Title Context */}
+            <div>
+              <h2 className="text-xs font-black uppercase tracking-wider text-stone-400">Workspace</h2>
+              <p className="text-sm font-bold text-stone-900">Psychobeings Clinical Portal</p>
+            </div>
+          </div>
+
+          {/* Right Header Side Profile Indicator */}
+          <div className="flex items-center gap-3">
+            <div className="h-9 w-9 rounded-2xl bg-[#237A88]/10 text-[#237A88] flex items-center justify-center font-bold text-xs border border-[#237A88]/20">
+              PB
+            </div>
+            <div className="hidden sm:block text-left">
+              <p className="text-xs font-bold text-stone-900 leading-none">Psychobeings Team</p>
+              <p className="text-[10px] text-stone-500 mt-1 font-medium">Practitioner Workspace</p>
             </div>
           </div>
         </header>
