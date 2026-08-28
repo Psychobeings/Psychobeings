@@ -54,7 +54,7 @@ export default function App() {
           <Route path="tasks-worksheets" element={<TasksAndWorksheets />} />
 
           {/* Corrected Nested Route for Post Session Activities */}
-          <Route path="post-session-activities" element={<PostSessionActivities />} />
+          <Route path="session-activities" element={<PostSessionActivities />} />
 
           <Route path="settings" element={<div>Settings Page</div>} />
         </Route>

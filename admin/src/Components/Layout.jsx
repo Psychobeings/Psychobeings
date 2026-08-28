@@ -30,7 +30,7 @@ export default function Layout() {
     { label: 'Session Calendar', path: '/calendar', icon: Calendar },
     { label: 'Case History', path: '/case-history', icon: FileText },
     { label: 'Tasks & Worksheets', path: '/tasks-worksheets', icon: CheckSquare },
-    { label: 'Postsessionactivites', path:'/post-session',icon:Notebook},
+    { label: 'Post-session Activities', path: '/post-session-activities', icon: Notebook },
     { label: 'Settings', path: '/settings', icon: Settings },
   ];
 
@@ -146,7 +146,7 @@ export default function Layout() {
           <div className="flex items-center gap-4">
             {/* Quick Action Button - Navigates directly to Post Session Activities wizard */}
             <button
-              onClick={() => navigate('/notes/new')}
+              onClick={() => navigate('/post-session-activities')}
               className="flex items-center gap-2 bg-[#237A88] hover:bg-[#1C646F] text-white px-4 py-2 rounded-full text-xs font-semibold transition-all shadow-md shadow-[#237A88]/20"
             >
               <Plus className="h-4 w-4" />
