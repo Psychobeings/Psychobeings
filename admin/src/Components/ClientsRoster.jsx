@@ -11,9 +11,9 @@ export default function ClientRosterWithSessionLogs() {
   // Client Roster State
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedClient, setSelectedClient] = useState(null);
-  const [activeTab, setActiveTab] = useState('therapyJourney'); // 'therapyJourney', 'billing', 'followUps'
-  const [selectedSessionNote, setSelectedSessionNote] = useState(null); // When viewing a specific session note
-  const [isAddingSession, setIsAddingSession] = useState(false); // Modal for New Session Note
+  const [activeTab, setActiveTab] = useState('therapyJourney'); // 'therapyJourney', 'caseHistory', 'billing'
+  const [selectedSessionNote, setSelectedSessionNote] = useState(null);
+  const [isAddingSession, setIsAddingSession] = useState(false);
 
   // Form State for New Session Note
   const [newNoteData, setNewNoteData] = useState({
@@ -29,7 +29,7 @@ export default function ClientRosterWithSessionLogs() {
     clientNotes: ''
   });
 
-  // Mock Clients Data matching portal screens
+  // Mock Clients Data with Case History details
   const [clients, setClients] = useState([
     {
       id: 1,
@@ -41,7 +41,11 @@ export default function ClientRosterWithSessionLogs() {
       gender: 'Male',
       intakeFilled: true,
       consentFilled: true,
-      caseSummary: 'N/A',
+      caseSummary: 'Client presents with initial occupational and interpersonal stressors. Open case with baseline functioning under review.',
+      medicalStateExam: 'Alert, fully oriented to person, time, and place. Cooperative attitude with congruent mood.',
+      behavioralHistory: 'No significant historical trauma reported. Stable pre-morbid functioning with occasional situational anxiety.',
+      medications: 'None reported.',
+      substanceUse: 'None reported.',
       completedSessions: 0,
       upcomingSessions: 0,
       cancelledSessions: 0,
@@ -59,7 +63,11 @@ export default function ClientRosterWithSessionLogs() {
       gender: 'Female',
       intakeFilled: true,
       consentFilled: true,
-      caseSummary: 'The client is engaged in therapy to address procrastination, daily task management, self-care neglect, trust issues, and emotional distress from past traumas...',
+      caseSummary: 'The client is engaged in therapy to address procrastination, daily task management, self-care neglect, trust issues, and emotional distress from past traumas, with a focus on safety due to suicidality.',
+      medicalStateExam: 'Oriented, cooperative, and attentive. Affect anxious and reactive during trauma narratives.',
+      behavioralHistory: 'Childhood trauma history influencing emotional functioning and attachment security. Pre-morbid functioning generally functional.',
+      medications: 'None reported.',
+      substanceUse: 'Smoking: Present (approx 20 cigarettes in one year).',
       completedSessions: 5,
       upcomingSessions: 0,
       cancelledSessions: 0,
@@ -71,7 +79,7 @@ export default function ClientRosterWithSessionLogs() {
           sessionNumber: 'Session 5',
           date: '14 Jul',
           time: '19:00',
-          summary: 'The client struggles with procrastination, difficulty in daily task initiation and completion, low motivation for self-care, and emotional distress from past traumas...',
+          summary: 'The client struggles with procrastination, difficulty in daily task initiation and completion, and low motivation for self-care.',
           details: {
             presenting: ['Persistent procrastination', 'Difficulty initiating tasks', 'Low self-care motivation'],
             sessionFocus: 'Reflecting on strategies and building behavioral activation routines.',
@@ -94,7 +102,11 @@ export default function ClientRosterWithSessionLogs() {
       gender: 'Male',
       intakeFilled: true,
       consentFilled: true,
-      caseSummary: 'N/A',
+      caseSummary: 'Client seeking support for academic stress and mild adjustment issues.',
+      medicalStateExam: 'Oriented x3, calm demeanor, speech clear and coherent.',
+      behavioralHistory: 'Unremarkable developmental and personal history.',
+      medications: 'None',
+      substanceUse: 'None',
       completedSessions: 2,
       upcomingSessions: 1,
       cancelledSessions: 0,
@@ -168,7 +180,7 @@ export default function ClientRosterWithSessionLogs() {
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white p-6 rounded-[2.5rem] border border-stone-200/80 shadow-sm">
         <div>
           <h1 className="text-xl font-black text-stone-900 tracking-tight">Client Roster</h1>
-          <p className="text-xs text-stone-500 font-medium mt-0.5">Manage clients, view comprehensive profiles, and log session notes.</p>
+          <p className="text-xs text-stone-500 font-medium mt-0.5">Manage clients, review case histories, and log session notes.</p>
         </div>
 
         <div className="flex items-center gap-3 w-full sm:w-auto">
@@ -266,6 +278,12 @@ export default function ClientRosterWithSessionLogs() {
                   Therapy Journey
                 </button>
                 <button 
+                  onClick={() => setActiveTab('caseHistory')}
+                  className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${activeTab === 'caseHistory' ? 'bg-[#237A88] text-white shadow-md' : 'text-stone-600 hover:bg-stone-50'}`}
+                >
+                  Case History
+                </button>
+                <button 
                   onClick={() => setActiveTab('billing')}
                   className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${activeTab === 'billing' ? 'bg-[#237A88] text-white shadow-md' : 'text-stone-600 hover:bg-stone-50'}`}
                 >
@@ -284,6 +302,7 @@ export default function ClientRosterWithSessionLogs() {
               )}
             </div>
 
+            {/* Tab 1: Therapy Journey */}
             {activeTab === 'therapyJourney' && (
               <div className="space-y-6">
                 <div className="space-y-3">
@@ -314,6 +333,38 @@ export default function ClientRosterWithSessionLogs() {
                       ))}
                     </div>
                   )}
+                </div>
+              </div>
+            )}
+
+            {/* Tab 2: Case History Mapping */}
+            {activeTab === 'caseHistory' && (
+              <div className="space-y-4 text-xs">
+                <div className="space-y-2 bg-stone-50 p-5 rounded-2xl border border-stone-200/60">
+                  <h3 className="font-black uppercase tracking-wider text-[#237A88]">Comprehensive Case Summary</h3>
+                  <p className="font-medium text-stone-700 leading-relaxed">{selectedClient.caseSummary}</p>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="bg-stone-50 p-4 rounded-2xl border border-stone-200/60 space-y-1">
+                    <span className="font-bold text-[#237A88] uppercase tracking-wider">Medical State Exam (MSE)</span>
+                    <p className="font-medium text-stone-800 mt-1">{selectedClient.medicalStateExam}</p>
+                  </div>
+                  <div className="bg-stone-50 p-4 rounded-2xl border border-stone-200/60 space-y-1">
+                    <span className="font-bold text-[#237A88] uppercase tracking-wider">Behavioral & Trauma History</span>
+                    <p className="font-medium text-stone-800 mt-1">{selectedClient.behavioralHistory}</p>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="bg-stone-50 p-4 rounded-2xl border border-stone-200/60 space-y-1">
+                    <span className="font-bold text-[#237A88] uppercase tracking-wider">Medications</span>
+                    <p className="font-medium text-stone-800 mt-1">{selectedClient.medications}</p>
+                  </div>
+                  <div className="bg-stone-50 p-4 rounded-2xl border border-stone-200/60 space-y-1">
+                    <span className="font-bold text-[#237A88] uppercase tracking-wider">Substance Use</span>
+                    <p className="font-medium text-stone-800 mt-1">{selectedClient.substanceUse}</p>
+                  </div>
                 </div>
               </div>
             )}
@@ -404,7 +455,7 @@ export default function ClientRosterWithSessionLogs() {
                 <textarea
                   rows="3"
                   required
-                  placeholder="Detail the core insights and discussion points..."
+                  placeholder="Detail core insights and discussion points..."
                   value={newNoteData.sessionFocus}
                   onChange={(e) => setNewNoteData({...newNoteData, sessionFocus: e.target.value})}
                   className="w-full px-3 py-2 bg-stone-50 border border-stone-200 rounded-xl outline-none focus:border-[#237A88] resize-none"
