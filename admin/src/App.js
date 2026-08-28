@@ -27,18 +27,18 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Navigate to="/dashboard" replace />} />
 
-        <Route 
-          path="/signin" 
+        <Route
+          path="/signin"
           element={
             <PublicRoute>
               <Signin />
             </PublicRoute>
-          } 
+          }
         />
 
         {/* Layout Wrapper with Nested Routes */}
-        <Route 
-          path="/" 
+        <Route
+          path="/"
           element={
             <ProtectedRoute>
               <Layout />
@@ -49,13 +49,13 @@ export default function App() {
           <Route path="clients" element={<ClientsRoster />} />
           <Route path="calendar" element={<SessionCalendar />} />
           <Route path="case-history" element={<CaseHistory />} />
-          
+
           {/* Tasks & Worksheets primary admin dashboard view */}
           <Route path="tasks-worksheets" element={<TasksAndWorksheets />} />
-          
-          {/* Post Session Activities Wizard Route */}
-          <Route path="notes/new" element={<PostSessionActivities onBack={() => window.history.back()} onSubmitComplete={() => alert('Submitted!')} />} />
-          
+
+          {/* Corrected Nested Route for Post Session Activities */}
+          <Route path="post-session-activities" element={<PostSessionActivities />} />
+
           <Route path="settings" element={<div>Settings Page</div>} />
         </Route>
 
