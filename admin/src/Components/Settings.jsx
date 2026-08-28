@@ -10,9 +10,7 @@ import {
   Copy, 
   ExternalLink, 
   Plus, 
-  Check, 
-  Sparkles,
-  Info
+  Check 
 } from 'lucide-react';
 
 export default function SettingsPage() {
@@ -45,8 +43,8 @@ export default function SettingsPage() {
     pincode: '121002'
   });
 
-  // Charges Tab State
-  const [charges, setCharges] = useState([
+  // Charges Tab State (Removed unused setCharges to clear ESLint warning)
+  const [charges] = useState([
     { id: 1, title: 'Adult Therapy', type: 'Individual', amount: 1500, currency: 'INR', duration: 'Single session' },
     { id: 2, title: 'Adult Therapy (Save Rs 1000)', type: 'Package', amount: 8000, currency: 'INR', duration: '6 sessions' },
     { id: 3, title: 'Teen Therapy', type: 'Individual', amount: 900, currency: 'INR', duration: 'Single session' },
@@ -98,7 +96,7 @@ export default function SettingsPage() {
       {/* Main Settings Layout Container */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
         
-        {/* Left Column: Live Preview Card (Matches Myndspace preview container) */}
+        {/* Left Column: Live Preview Card */}
         <div className="lg:col-span-4 bg-white rounded-[2.5rem] border border-stone-200/80 p-6 shadow-sm space-y-4 sticky top-6">
           <div className="flex items-center justify-between">
             <span className="text-xs font-black uppercase tracking-wider text-stone-400">Preview</span>
@@ -233,7 +231,6 @@ export default function SettingsPage() {
                 />
               </div>
 
-              {/* Languages & Therapy Types tags display */}
               <div className="space-y-2 text-xs">
                 <label className="font-bold text-stone-700">Languages</label>
                 <div className="flex flex-wrap gap-2">

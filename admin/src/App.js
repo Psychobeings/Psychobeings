@@ -8,6 +8,7 @@ import ClientsRoster from './Components/ClientsRoster';
 import SessionCalendar from './Components/SessionCalendar';
 import TasksAndWorksheets from './Components/TasksAndWorksheets';
 import PostSessionActivities from './Components/postsessionactivities';
+import SettingsPage from './Components/Settings';
 
 const ProtectedRoute = ({ children }) => {
   const token = localStorage.getItem('authToken');
@@ -55,8 +56,7 @@ export default function App() {
 
           {/* Updated Nested Route matching Layout sidebar path */}
           <Route path="post-session-activities" element={<PostSessionActivities />} />
-
-          <Route path="settings" element={<div>Settings Page</div>} />
+          <Route path="settings" element={<SettingsPage />} />
         </Route>
 
         <Route path="*" element={<Navigate to="/dashboard" replace />} />
