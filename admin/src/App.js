@@ -54,15 +54,7 @@ export default function App() {
           <Route path="tasks-worksheets" element={<TasksAndWorksheets />} />
           
           {/* Post Session Activities Wizard Route */}
-          <Route 
-            path="notes/new" 
-            element={
-              <PostSessionActivities 
-                onBack={() => window.history.back()} 
-                onSubmitComplete={() => alert('Session notes submitted successfully!')} 
-              />
-            } 
-          />
+          <Route path="notes/new" element={<PostSessionActivities onBack={() => window.history.back()} onSubmitComplete={() => alert('Submitted!')} />} />
           
           <Route path="settings" element={<div>Settings Page</div>} />
         </Route>
