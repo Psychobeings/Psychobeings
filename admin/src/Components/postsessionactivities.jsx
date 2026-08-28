@@ -13,11 +13,11 @@ import {
   Type
 } from 'lucide-react';
 
-// Local fallbacks integrated directly so the component runs safely out-of-the-box
+// Local fallbacks matching Psychobeings data structures
 const initialTasks = [
-  { id: 1, title: 'Thought Record', description: 'Log automatic thoughts, emotions, and alternative perspectives daily.' },
-  { id: 2, title: 'Behavioral Activation Schedule', description: 'Plan and track rewarding or pleasurable activities throughout the week.' },
-  { id: 3, title: 'Mindfulness Breathing', description: 'Practice 10 minutes of diaphragmatic breathing twice a day.' }
+  { id: 1, title: 'Box Breathing Technique', description: 'Sit comfortably with your back supported and place your feet firmly on the floor...' },
+  { id: 2, title: 'Thought Journal', description: 'Record situations during the week when you notice feelings of irritability. For each situa...' },
+  { id: 3, title: 'Reflection on Relationship', description: 'Write about the following: What does a healthy relationship mean to me?...' }
 ];
 
 const readyAssessments = [
@@ -38,7 +38,7 @@ export default function PostSessionActivities({ clientName = "Diksha Bharti", on
 
   // Step 2 State: Reflections
   const [reflectionText, setReflectionText] = useState(
-    "During the session, the client made progress by previously discussed strategies, noting a decrease in emotional distress and an improvement in appetite. Despite this, she continues to face challenges in her relationship, experiencing conflict and struggling with trust issues due to perceived dishonesty from her partner."
+    "During the session, the client made progress by previously discussed strategies, noting a decrease in emotional distress and an improvement in appetite. Despite this, she continues to face challenges in her relationship, experiencing conflict and struggling with trust issues due to perceived dishonesty from her partner. The client is uncertain about the future of their relationship, especially concerning trust and honesty. Goals for therapy include focusing on emotional regulation, managing stress, and improving communication within relationships, while monitoring continually safety due to a past suicide attempt. The therapeutic plan will address relationship difficulties, anger management, and the impact of occupational stress on the client's well-being."
   );
   const [isGeneratingAI, setIsGeneratingAI] = useState(false);
   const [aiGenerated, setAiGenerated] = useState(false);
@@ -101,7 +101,7 @@ export default function PostSessionActivities({ clientName = "Diksha Bharti", on
 
   return (
     <div className="max-w-4xl mx-auto font-sans text-stone-800 pb-16 px-4">
-      {/* Top Header Bar matching the exact screenshot flow */}
+      {/* Top Header Bar maintaining Psychobeings Palette (#237A88) */}
       <div className="flex items-center justify-between mb-6 pt-2">
         <button 
           onClick={onBack}
@@ -119,7 +119,7 @@ export default function PostSessionActivities({ clientName = "Diksha Bharti", on
         </div>
       </div>
 
-      {/* Step Indicator Progress Bar matching screenshots */}
+      {/* Step Indicator Progress Bar */}
       <div className="bg-white p-6 rounded-2xl border border-stone-200/80 shadow-sm mb-6">
         <div className="flex items-center justify-between relative max-w-lg mx-auto">
           <div className="absolute left-6 right-6 top-4 h-[2px] bg-stone-200 -z-0" />
