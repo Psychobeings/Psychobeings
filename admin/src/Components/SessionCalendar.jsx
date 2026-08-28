@@ -6,7 +6,9 @@ import {
   RefreshCw, 
   Calendar as CalendarIcon, 
   AlertCircle, 
-  Link2 
+  Link2,
+  X,
+  CheckCircle2
 } from 'lucide-react';
 import { gapi } from 'gapi-script';
 
@@ -34,7 +36,25 @@ export default function SessionCalendar() {
     Mon: true, Tue: true, Wed: true, Thu: true, Fri: true, Sat: true, Sun: false
   });
 
-  // Initialize GAPI client on mount
+  // New Booking Modal States
+  const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
+  const [bookingStep, setBookingStep] = useState('form'); // form | preview
+  const [selectedDate, setSelectedDate] = useState('2026-08-24');
+  const [selectedTime, setSelectedTime] = useState('10:00');
+  const [sessionMode, setSessionMode] = useState('Online'); // Online | In-Person
+  const [selectedClient, setSelectedClient] = useState('Diksha Bharti');
+  const [selectedCharge, setSelectedCharge] = useState('Standard Therapy (₹1,500 / 45 min)');
+
+  // Mock Client Roster & Charges
+  const clientRoster = ['Diksha Bharti', 'Juhi Chaineva', 'Aarav Sharma', 'Meera Nair', 'Kabir Mehta'];
+  const therapyCharges = [
+    'Standard Therapy (₹1,500 / 45 min)',
+    'Initial Consultation (₹2,000 / 60 min)',
+    'Couples Counseling (₹2,500 / 60 min)',
+    'Student Concession (₹1,000 / 45 min)'
+  ];
+
+  // Initialize GAPI client on mount and setup auth instance listener
   useEffect(() => {
     function start() {
       gapi.client.init({
@@ -43,11 +63,23 @@ export default function SessionCalendar() {
         discoveryDocs: DISCOVERY_DOCS,
         scope: SCOPES,
       }).then(() => {
-        const signedIn = gapi.auth2.getAuthInstance().isSignedIn.get();
+        const authInstance = gapi.auth2.getAuthInstance();
+        const signedIn = authInstance.isSignedIn.get();
         setIsGoogleSynced(signedIn);
+        
         if (signedIn) {
           fetchGoogleCalendarEvents();
         }
+
+        // Listen for sign-in state changes
+        authInstance.isSignedIn.listen((isSignedIn) => {
+          setIsGoogleSynced(isSignedIn);
+          if (isSignedIn) {
+            fetchGoogleCalendarEvents();
+          } else {
+            setLiveEvents([]);
+          }
+        });
       }).catch((error) => {
         console.error("Error initializing Google API", error);
       });
@@ -61,13 +93,9 @@ export default function SessionCalendar() {
     try {
       const authInstance = gapi.auth2.getAuthInstance();
       if (!isGoogleSynced) {
-        await authInstance.signIn();
-        setIsGoogleSynced(true);
-        fetchGoogleCalendarEvents();
+        await authInstance.signIn({ prompt: 'select_account' });
       } else {
         await authInstance.signOut();
-        setIsGoogleSynced(false);
-        setLiveEvents([]);
       }
     } catch (error) {
       console.error("Authentication failed", error);
@@ -113,8 +141,14 @@ export default function SessionCalendar() {
     { day: '29 SAT', date: '29', slots: [{ time: '8:30 - 9:30', title: 'ONLINE ONLY', status: 'unconfirmed', type: 'ONLINE ONLY' }] },
   ];
 
+  const handleConfirmBooking = () => {
+    alert(`Session successfully booked for ${selectedClient} on ${selectedDate} at ${selectedTime}!`);
+    setIsBookingModalOpen(false);
+    setBookingStep('form');
+  };
+
   return (
-    <div className="max-w-7xl mx-auto font-sans text-stone-800 pb-16 space-y-6">
+    <div className="max-w-7xl mx-auto font-sans text-stone-800 pb-16 space-y-6 relative">
       
       {/* Top Header Navigation matching Psychobeings Palette */}
       <div className="bg-white p-4 sm:p-5 rounded-2xl border border-stone-200/85 shadow-sm flex flex-col md:flex-row items-center justify-between gap-4">
@@ -159,7 +193,7 @@ export default function SessionCalendar() {
           <div className="bg-white p-4 rounded-2xl border border-stone-200/80 shadow-sm flex flex-wrap items-center justify-between gap-3">
             <div className="flex items-center gap-2">
               <button
-                onClick={() => {}}
+                onClick={() => { setBookingStep('form'); setIsBookingModalOpen(true); }}
                 className="flex items-center gap-1.5 bg-[#237A88] hover:bg-[#1C646F] text-white px-4 py-2 rounded-xl text-xs font-bold transition shadow-sm shadow-[#237A88]/20"
               >
                 <Plus size={14} />
@@ -297,6 +331,178 @@ export default function SessionCalendar() {
                 </button>
               ))}
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* ================= NEW BOOKING MODAL DIALOGUE ================= */}
+      {isBookingModalOpen && (
+        <div className="fixed inset-0 z-50 bg-stone-900/50 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl border border-stone-200 shadow-xl w-full max-w-lg overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+            
+            {/* Modal Header */}
+            <div className="px-6 py-4 border-b border-stone-100 flex items-center justify-between bg-stone-50/50">
+              <div className="flex items-center gap-2">
+                <CalendarIcon size={18} className="text-[#237A88]" />
+                <h3 className="text-sm font-bold text-stone-900">
+                  {bookingStep === 'form' ? 'New Therapy Session Booking' : 'Booking Preview & Summary'}
+                </h3>
+              </div>
+              <button 
+                onClick={() => setIsBookingModalOpen(false)}
+                className="text-stone-400 hover:text-stone-600 p-1 rounded-lg transition"
+              >
+                <X size={18} />
+              </button>
+            </div>
+
+            {/* Modal Body */}
+            <div className="p-6 space-y-5 max-h-[80vh] overflow-y-auto">
+              {bookingStep === 'form' ? (
+                <>
+                  {/* 1. Date & Time Selection */}
+                  <div className="space-y-2">
+                    <label className="text-xs font-bold text-stone-700 uppercase tracking-wider">Select Date & Time</label>
+                    <div className="grid grid-cols-2 gap-3">
+                      <div>
+                        <span className="text-[11px] text-stone-500 font-medium block mb-1">Date</span>
+                        <input 
+                          type="date" 
+                          value={selectedDate} 
+                          onChange={(e) => setSelectedDate(e.target.value)}
+                          className="w-full px-3 py-2 rounded-xl border border-stone-200 text-xs font-semibold text-stone-800 bg-stone-50 focus:outline-none focus:border-[#237A88]"
+                        />
+                      </div>
+                      <div>
+                        <span className="text-[11px] text-stone-500 font-medium block mb-1">Time Slot</span>
+                        <input 
+                          type="time" 
+                          value={selectedTime} 
+                          onChange={(e) => setSelectedTime(e.target.value)}
+                          className="w-full px-3 py-2 rounded-xl border border-stone-200 text-xs font-semibold text-stone-800 bg-stone-50 focus:outline-none focus:border-[#237A88]"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* 2. Mode of Session */}
+                  <div className="space-y-2">
+                    <label className="text-xs font-bold text-stone-700 uppercase tracking-wider">Mode of Session</label>
+                    <div className="grid grid-cols-2 gap-2">
+                      {['Online', 'In-Person'].map((mode) => (
+                        <button
+                          key={mode}
+                          type="button"
+                          onClick={() => setSessionMode(mode)}
+                          className={`py-2.5 px-4 rounded-xl text-xs font-bold border transition ${
+                            sessionMode === mode 
+                              ? 'bg-[#237A88] text-white border-[#237A88] shadow-sm' 
+                              : 'bg-stone-50 text-stone-600 border-stone-200 hover:bg-stone-100'
+                          }`}
+                        >
+                          {mode}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* 3. Clients from Roster */}
+                  <div className="space-y-2">
+                    <label className="text-xs font-bold text-stone-700 uppercase tracking-wider">Client (From Roster)</label>
+                    <select 
+                      value={selectedClient} 
+                      onChange={(e) => setSelectedClient(e.target.value)}
+                      className="w-full px-3 py-2.5 rounded-xl border border-stone-200 text-xs font-semibold text-stone-800 bg-stone-50 focus:outline-none focus:border-[#237A88]"
+                    >
+                      {clientRoster.map((client, idx) => (
+                        <option key={idx} value={client}>{client}</option>
+                      ))}
+                    </select>
+                  </div>
+
+                  {/* 4. Therapy Charges */}
+                  <div className="space-y-2">
+                    <label className="text-xs font-bold text-stone-700 uppercase tracking-wider">Therapy Charge Plan</label>
+                    <select 
+                      value={selectedCharge} 
+                      onChange={(e) => setSelectedCharge(e.target.value)}
+                      className="w-full px-3 py-2.5 rounded-xl border border-stone-200 text-xs font-semibold text-stone-800 bg-stone-50 focus:outline-none focus:border-[#237A88]"
+                    >
+                      {therapyCharges.map((charge, idx) => (
+                        <option key={idx} value={charge}>{charge}</option>
+                      ))}
+                    </select>
+                  </div>
+                </>
+              ) : (
+                /* Preview Step */
+                <div className="space-y-4">
+                  <div className="bg-stone-50 border border-stone-200 rounded-2xl p-4 space-y-3">
+                    <div className="flex items-center justify-between border-b border-stone-200 pb-2.5">
+                      <span className="text-xs text-stone-500 font-medium">Client Name</span>
+                      <span className="text-xs font-bold text-stone-900">{selectedClient}</span>
+                    </div>
+                    <div className="flex items-center justify-between border-b border-stone-200 pb-2.5">
+                      <span className="text-xs text-stone-500 font-medium">Date & Time</span>
+                      <span className="text-xs font-bold text-stone-900">{selectedDate} at {selectedTime}</span>
+                    </div>
+                    <div className="flex items-center justify-between border-b border-stone-200 pb-2.5">
+                      <span className="text-xs text-stone-500 font-medium">Session Mode</span>
+                      <span className="text-xs font-bold text-stone-900">{sessionMode}</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs text-stone-500 font-medium">Selected Charge</span>
+                      <span className="text-xs font-bold text-[#237A88]">{selectedCharge}</span>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2 bg-emerald-50 border border-emerald-200 rounded-xl p-3 text-xs text-emerald-800">
+                    <CheckCircle2 size={16} className="text-emerald-600 shrink-0" />
+                    <span>Everything looks correct. Ready to confirm and dispatch booking invite.</span>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Modal Footer */}
+            <div className="px-6 py-4 border-t border-stone-100 bg-stone-50/50 flex items-center justify-between">
+              {bookingStep === 'preview' ? (
+                <button
+                  type="button"
+                  onClick={() => setBookingStep('form')}
+                  className="px-4 py-2 rounded-xl text-xs font-bold text-stone-600 hover:bg-stone-200/50 transition"
+                >
+                  Back to Edit
+                </button>
+              ) : <div />}
+
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => setIsBookingModalOpen(false)}
+                  className="px-4 py-2 rounded-xl text-xs font-bold text-stone-600 hover:bg-stone-200/50 transition"
+                >
+                  Cancel
+                </button>
+                {bookingStep === 'form' ? (
+                  <button
+                    type="button"
+                    onClick={() => setBookingStep('preview')}
+                    className="px-5 py-2 rounded-xl text-xs font-bold bg-[#237A88] hover:bg-[#1C646F] text-white shadow-sm transition"
+                  >
+                    Preview Selection
+                  </button>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={handleConfirmBooking}
+                    className="px-5 py-2 rounded-xl text-xs font-bold bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm transition"
+                  >
+                    Confirm & Book
+                  </button>
+                )}
+              </div>
+            </div>
+
           </div>
         </div>
       )}
