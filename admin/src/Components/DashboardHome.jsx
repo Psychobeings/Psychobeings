@@ -1,262 +1,207 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
+  Sparkles, 
+  Calendar, 
   Users, 
-  Calendar as CalendarIcon, 
-  Clock, 
-  CheckCircle2, 
-  Video, 
-  MapPin, 
-  Plus, 
-  Search,
-  ChevronRight,
-  Sparkles
+  Settings, 
+  MessageSquare, 
+  Phone, 
+  ArrowRight, 
+  Bell, 
+  Plus,
+  ChevronRight
 } from 'lucide-react';
 
-export default function DashboardHome() {
+export default function PsychobeingsDashboard() {
   const navigate = useNavigate();
 
-  const todaysSessions = [
-    {
-      id: 1,
-      clientName: "Sarah Jenkins",
-      time: "09:00 AM - 09:50 AM",
-      type: "Telehealth",
-      status: "Completed",
-      modality: "CBT - Anxiety",
-    },
-    {
-      id: 2,
-      clientName: "Michael Chen",
-      time: "11:00 AM - 11:50 AM",
-      type: "In-Person",
-      location: "Office 2B",
-      status: "In Progress",
-      modality: "General Check-in",
-    },
-    {
-      id: 3,
-      clientName: "Emma Watson",
-      time: "02:00 PM - 02:50 PM",
-      type: "Telehealth",
-      status: "Upcoming",
-      modality: "EMDR Session",
-    },
-    {
-      id: 4,
-      clientName: "David Miller",
-      time: "04:00 PM - 04:50 PM",
-      type: "In-Person",
-      location: "Office 2B",
-      status: "Upcoming",
-      modality: "Initial Assessment",
-    },
+  // Retain Clients Mock Cards (updated with Psychobeings Assistant)
+  const retainClients = [
+    { id: 'client-deepanshu-rawat', name: 'Deepanshu Rawat', risk: 'High drop-off risk', days: 'No session in 28 days', tagColor: 'bg-rose-100 text-rose-700' },
+    { id: 'client-diya-ghosh', name: 'Diya Ghosh', risk: 'High drop-off risk', days: 'No session in 48 days', tagColor: 'bg-rose-100 text-rose-700' },
+    { id: 'client-sahajpreet-singh', name: 'Sahajpreet singh ma...', risk: 'Medium drop-off risk', days: 'No session in 28 days', tagColor: 'bg-amber-100 text-amber-700' },
+    { id: 'client-shruti', name: 'Shruti', risk: 'Medium drop-off risk', days: 'No session in 29 days', tagColor: 'bg-amber-100 text-amber-700' },
   ];
 
   return (
-    <div className="space-y-8 max-w-7xl mx-auto">
-      {/* Welcome Banner */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-stone-200/80">
-        <div>
-          <div className="flex items-center gap-2 mb-1">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#237A88]/10 text-[#237A88] text-xs font-semibold">
-              <Sparkles size={13} />
-              <span>Practitioner Workspace</span>
-            </span>
+    <div id="psychobeings-dashboard-root" className="max-w-6xl mx-auto space-y-8 font-sans text-stone-800 pb-16">
+      
+      {/* Top Greeting & Psychobeings Assistant Status Banner */}
+      <div id="dashboard-header-banner" className="bg-white p-6 sm:p-8 rounded-3xl border border-stone-200/80 shadow-sm relative overflow-hidden flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+        <div id="greeting-text-container" className="space-y-2">
+          <div id="dashboard-date-badge" className="flex items-center gap-2 text-xs font-bold text-[#237A88]">
+            <Sparkles size={15} />
+            <span>THURSDAY, 27 AUGUST 2026</span>
           </div>
-          <h1 className="text-2xl font-bold tracking-tight text-stone-900">Welcome back</h1>
-          <p className="text-xs text-stone-500 mt-1">
-            You have <span className="font-semibold text-[#237A88]">4 sessions scheduled</span> for today.
+          <h1 id="user-greeting-heading" className="text-2xl sm:text-3xl font-extrabold text-stone-900 tracking-tight">
+            Good evening, <span className="text-[#237A88]">Amanpreet.</span>
+          </h1>
+          <p id="assistant-status-text" className="text-xs sm:text-sm text-stone-500 font-medium flex items-center gap-2">
+            <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
+            Psychobeings Assistant is watching retention • 3 medium • 3 high
           </p>
         </div>
-        <div className="flex items-center gap-3">
+
+        <div id="header-action-buttons" className="flex items-center gap-3 w-full md:w-auto">
           <button 
-            onClick={() => navigate('/clients')} 
-            className="px-4 py-2.5 bg-white border border-stone-200 rounded-2xl text-xs font-semibold text-stone-700 hover:bg-stone-50 transition-colors shadow-sm"
+            id="btn-new-booking-session"
+            onClick={() => navigate('/notes/new')}
+            className="flex-1 md:flex-none flex items-center justify-center gap-2 bg-[#237A88] hover:bg-[#1C646F] text-white px-5 py-3 rounded-2xl text-xs font-bold shadow-lg shadow-[#237A88]/20 transition"
           >
-            Client Roster
-          </button>
-          <button 
-            onClick={() => navigate('/notes/new')} 
-            className="px-4 py-2.5 bg-[#237A88] text-white rounded-2xl text-xs font-semibold hover:bg-[#1C646F] transition-all shadow-md shadow-[#237A88]/20 flex items-center gap-2"
-          >
-            <Plus className="h-4 w-4" />
-            New Progress Note
+            <Plus size={16} />
+            <span>New Booking / Session</span>
           </button>
         </div>
       </div>
 
-      {/* Metrics Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-5">
-        <div className="bg-white p-5 rounded-3xl border border-stone-100 shadow-xl shadow-stone-200/50 flex items-center gap-4">
-          <div className="h-12 w-12 rounded-2xl bg-[#237A88]/10 text-[#237A88] flex items-center justify-center shrink-0">
-            <Users className="h-6 w-6" />
+      {/* Psychobeings Insights & Automation Banner */}
+      <div id="psychobeings-insights-card" className="bg-gradient-to-r from-[#237A88]/10 via-stone-50 to-white p-5 sm:p-6 rounded-3xl border border-[#237A88]/20 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+        <div id="insights-content-wrapper" className="flex items-start gap-4">
+          <div id="insights-avatar-icon" className="h-10 w-10 rounded-2xl bg-[#237A88] text-white flex items-center justify-center shrink-0 shadow-md shadow-[#237A88]/30 font-bold text-sm">
+            P
           </div>
           <div>
-            <p className="text-[11px] uppercase tracking-wider text-stone-400 font-bold">Active Clients</p>
-            <p className="text-2xl font-bold text-stone-900 mt-0.5">28</p>
+            <div id="insights-title-row" className="flex items-center gap-2">
+              <h3 id="insights-heading-label" className="text-xs font-bold text-stone-900 uppercase tracking-wider">PSYCHOBEINGS INSIGHTS</h3>
+              <span id="insights-active-badge" className="text-[10px] bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded-full">Active</span>
+            </div>
+            <p id="insights-description-text" className="text-xs sm:text-sm font-semibold text-stone-700 mt-1">
+              "Don't leave money on the table. You have an earning potential of ₹1,694 this month."
+            </p>
+          </div>
+        </div>
+        <button id="btn-insights-know-more" className="flex items-center gap-1.5 text-xs font-bold text-[#237A88] hover:underline shrink-0">
+          <span>Know More</span>
+          <ArrowRight size={14} />
+        </button>
+      </div>
+
+      {/* Retain Clients Section (High & Medium Drop-off Risk) */}
+      <div id="retain-clients-section" className="space-y-4">
+        <div id="retain-clients-header-row" className="flex justify-between items-center">
+          <div>
+            <h2 id="retain-clients-title" className="text-base font-bold text-stone-900">Retain Clients</h2>
+            <p id="retain-clients-subtitle" className="text-xs text-stone-500">Clients showing drop-off risks requiring proactive follow-up.</p>
+          </div>
+          <div id="risk-counters-wrapper" className="flex items-center gap-2 text-xs font-semibold">
+            <span id="badge-high-risk-count" className="px-2.5 py-1 rounded-full bg-rose-50 text-rose-700 border border-rose-200">3 high</span>
+            <span id="badge-medium-risk-count" className="px-2.5 py-1 rounded-full bg-amber-50 text-amber-700 border border-amber-200">3 medium</span>
           </div>
         </div>
 
-        <div className="bg-white p-5 rounded-3xl border border-stone-100 shadow-xl shadow-stone-200/50 flex items-center gap-4">
-          <div className="h-12 w-12 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center shrink-0">
-            <CalendarIcon className="h-6 w-6" />
-          </div>
-          <div>
-            <p className="text-[11px] uppercase tracking-wider text-stone-400 font-bold">Sessions Today</p>
-            <p className="text-2xl font-bold text-stone-900 mt-0.5">4</p>
-          </div>
-        </div>
+        <div id="retain-clients-grid" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {retainClients.map((client) => (
+            <div key={client.id} id={`card-${client.id}`} className="bg-white rounded-2xl p-5 border border-stone-200/80 shadow-sm flex flex-col justify-between space-y-4">
+              <div id={`card-inner-${client.id}`} className="space-y-2">
+                <div id={`card-top-row-${client.id}`} className="flex justify-between items-start">
+                  <div id={`client-avatar-${client.id}`} className="h-9 w-9 rounded-xl bg-[#237A88]/10 text-[#237A88] font-bold text-xs flex items-center justify-center">
+                    {client.name.charAt(0)}
+                  </div>
+                  <span id={`risk-tag-${client.id}`} className={`text-[10px] font-bold px-2 py-0.5 rounded-md ${client.tagColor}`}>
+                    {client.risk}
+                  </span>
+                </div>
+                <div>
+                  <h3 id={`client-name-${client.id}`} className="font-bold text-stone-900 text-sm truncate">{client.name}</h3>
+                  <p id={`client-days-${client.id}`} className="text-[11px] text-stone-500 mt-0.5">{client.days}</p>
+                </div>
+              </div>
 
-        <div className="bg-white p-5 rounded-3xl border border-stone-100 shadow-xl shadow-stone-200/50 flex items-center gap-4">
-          <div className="h-12 w-12 rounded-2xl bg-sky-50 text-sky-600 flex items-center justify-center shrink-0">
-            <Clock className="h-6 w-6" />
-          </div>
-          <div>
-            <p className="text-[11px] uppercase tracking-wider text-stone-400 font-bold">Pending Notes</p>
-            <p className="text-2xl font-bold text-stone-900 mt-0.5">2</p>
-          </div>
+              <div id={`card-actions-${client.id}`} className="grid grid-cols-2 gap-2 pt-2 border-t border-stone-100">
+                <button id={`btn-message-${client.id}`} className="flex items-center justify-center gap-1.5 bg-[#237A88]/10 text-[#237A88] hover:bg-[#237A88]/20 py-2 rounded-xl text-xs font-bold transition">
+                  <MessageSquare size={13} />
+                  <span>Message</span>
+                </button>
+                <button id={`btn-call-${client.id}`} className="flex items-center justify-center gap-1.5 bg-stone-900 text-white hover:bg-stone-800 py-2 rounded-xl text-xs font-bold transition">
+                  <Phone size={13} />
+                  <span>Call</span>
+                </button>
+              </div>
+            </div>
+          ))}
         </div>
+      </div>
 
-        <div className="bg-white p-5 rounded-3xl border border-stone-100 shadow-xl shadow-stone-200/50 flex items-center gap-4">
-          <div className="h-12 w-12 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
-            <CheckCircle2 className="h-6 w-6" />
+      {/* Quick Access Grid */}
+      <div id="quick-access-section" className="space-y-4">
+        <h2 id="quick-access-title" className="text-base font-bold text-stone-900">Quick Access</h2>
+        
+        <div id="quick-access-grid" className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div 
+            id="card-quick-access-schedule"
+            onClick={() => navigate('/calendar')}
+            className="bg-white p-6 rounded-2xl border border-stone-200/80 shadow-sm hover:border-[#237A88]/50 transition cursor-pointer group"
+          >
+            <div className="flex justify-between items-start mb-4">
+              <div className="h-10 w-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center font-bold">
+                <Calendar size={20} />
+              </div>
+              <ChevronRight size={16} className="text-stone-400 group-hover:text-[#237A88] transition-transform group-hover:translate-x-1" />
+            </div>
+            <h3 className="font-bold text-stone-900 text-sm mb-1">Your Schedule</h3>
+            <p className="text-xs text-stone-500">View and manage upcoming sessions.</p>
           </div>
-          <div>
-            <p className="text-[11px] uppercase tracking-wider text-stone-400 font-bold">Completed (Week)</p>
-            <p className="text-2xl font-bold text-stone-900 mt-0.5">16</p>
+
+          <div 
+            id="card-quick-access-clients"
+            onClick={() => navigate('/clients')}
+            className="bg-white p-6 rounded-2xl border border-stone-200/80 shadow-sm hover:border-[#237A88]/50 transition cursor-pointer group"
+          >
+            <div className="flex justify-between items-start mb-4">
+              <div className="h-10 w-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold">
+                <Users size={20} />
+              </div>
+              <ChevronRight size={16} className="text-stone-400 group-hover:text-[#237A88] transition-transform group-hover:translate-x-1" />
+            </div>
+            <h3 className="font-bold text-stone-900 text-sm mb-1">Clients Roster</h3>
+            <p className="text-xs text-stone-500">Add and manage your clients.</p>
+          </div>
+
+          <div 
+            id="card-quick-access-settings"
+            onClick={() => navigate('/settings')}
+            className="bg-white p-6 rounded-2xl border border-stone-200/80 shadow-sm hover:border-[#237A88]/50 transition cursor-pointer group"
+          >
+            <div className="flex justify-between items-start mb-4">
+              <div className="h-10 w-10 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center font-bold">
+                <Settings size={20} />
+              </div>
+              <ChevronRight size={16} className="text-stone-400 group-hover:text-[#237A88] transition-transform group-hover:translate-x-1" />
+            </div>
+            <h3 className="font-bold text-stone-900 text-sm mb-1">Your Settings</h3>
+            <p className="text-xs text-stone-500">Fine tune settings for Psychobeings.</p>
           </div>
         </div>
       </div>
 
-      {/* Main Content Layout */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Today's Schedule Column (2/3 width) */}
-        <div className="lg:col-span-2 space-y-4">
-          <div className="flex items-center justify-between">
-            <h2 className="text-base font-bold text-stone-900">Today's Schedule</h2>
-            <button 
-              onClick={() => navigate('/calendar')}
-              className="text-xs font-semibold text-[#237A88] hover:text-[#1C646F] flex items-center gap-1 transition-colors"
-            >
-              View Full Calendar <ChevronRight className="h-3.5 w-3.5" />
-            </button>
-          </div>
-
-          <div className="bg-white border border-stone-100 rounded-3xl shadow-xl shadow-stone-200/50 overflow-hidden">
-            <div className="divide-y divide-stone-100">
-              {todaysSessions.map((session) => (
-                <div key={session.id} className="p-5 hover:bg-stone-50/60 transition-colors flex items-center justify-between gap-4">
-                  <div className="flex items-start gap-4">
-                    <div className="mt-1">
-                      {session.type === 'Telehealth' ? (
-                        <span className="h-10 w-10 rounded-2xl bg-[#237A88]/10 text-[#237A88] flex items-center justify-center" title="Telehealth">
-                          <Video className="h-4 w-4" />
-                        </span>
-                      ) : (
-                        <span className="h-10 w-10 rounded-2xl bg-amber-50 text-amber-700 flex items-center justify-center" title="In-Person">
-                          <MapPin className="h-4 w-4" />
-                        </span>
-                      )}
-                    </div>
-
-                    <div>
-                      <h3 className="text-xs font-bold text-stone-900">{session.clientName}</h3>
-                      <div className="flex flex-wrap items-center gap-2 mt-1 text-xs text-stone-500">
-                        <span className="flex items-center gap-1 font-semibold text-stone-700">
-                          <Clock className="h-3.5 w-3.5 text-stone-400" />
-                          {session.time}
-                        </span>
-                        <span>•</span>
-                        <span>{session.modality}</span>
-                        {session.location && (
-                          <>
-                            <span>•</span>
-                            <span>{session.location}</span>
-                          </>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center gap-3">
-                    {session.status === 'Completed' && (
-                      <span className="px-3 py-1 text-[11px] font-semibold rounded-full bg-stone-100 text-stone-600">
-                        Completed
-                      </span>
-                    )}
-                    {session.status === 'In Progress' && (
-                      <span className="px-3 py-1 text-[11px] font-semibold rounded-full bg-amber-100 text-amber-800 animate-pulse">
-                        In Progress
-                      </span>
-                    )}
-                    {session.status === 'Upcoming' && (
-                      <span className="px-3 py-1 text-[11px] font-semibold rounded-full bg-[#237A88]/10 text-[#237A88]">
-                        Upcoming
-                      </span>
-                    )}
-
-                    <button 
-                      onClick={() => navigate(`/notes/new?client=${session.id}`)}
-                      className="text-xs font-semibold px-3.5 py-1.5 rounded-xl border border-stone-200 text-stone-700 hover:bg-[#237A88] hover:text-white hover:border-[#237A88] transition-all"
-                    >
-                      Note
-                    </button>
-                  </div>
-                </div>
-              ))}
+      {/* Notification Centre Feed */}
+      <div id="notification-centre-card" className="bg-white rounded-3xl p-6 sm:p-8 border border-stone-200/80 shadow-sm space-y-4">
+        <div id="notification-centre-header" className="flex justify-between items-center">
+          <div className="flex items-center gap-2.5">
+            <div className="h-8 w-8 rounded-xl bg-[#237A88]/10 text-[#237A88] flex items-center justify-center">
+              <Bell size={16} />
+            </div>
+            <div>
+              <h2 id="notification-centre-title" className="text-base font-bold text-stone-900">Notification Centre</h2>
+              <p id="notification-centre-subtitle" className="text-xs text-stone-500">Psychobeings Assistant's live updates on client engagement and reminders.</p>
             </div>
           </div>
+          <span id="badge-live-feed" className="text-xs font-bold text-[#237A88] bg-[#237A88]/10 px-3 py-1 rounded-full">Live Feed</span>
         </div>
 
-        {/* Quick Actions & Recent Activity Side Column */}
-        <div className="space-y-6">
-          {/* Quick Client Search */}
-          <div className="bg-white p-6 rounded-3xl border border-stone-100 shadow-xl shadow-stone-200/50 space-y-3">
-            <h3 className="text-xs font-bold text-stone-900">Quick Client Search</h3>
-            <div className="relative">
-              <Search className="h-4 w-4 absolute left-3.5 top-3.5 text-stone-400" />
-              <input
-                type="text"
-                placeholder="Search by client name or ID..."
-                className="w-full pl-10 pr-4 py-3 text-xs bg-stone-50/70 border border-stone-200 rounded-2xl outline-none transition-all focus:border-[#237A88] focus:bg-white focus:ring-4 focus:ring-[#237A88]/10"
-              />
-            </div>
+        <div id="notification-feed-list" className="space-y-3 pt-2">
+          <div id="notification-item-1" className="flex items-center justify-between p-3.5 rounded-2xl bg-stone-50 border border-stone-200/60 text-xs">
+            <span className="font-semibold text-stone-800">I messaged Diksha Bharti about taking a follow-up session.</span>
+            <span className="text-[11px] text-stone-400">1 hour ago</span>
           </div>
-
-          {/* Pending Draft Notes */}
-          <div className="bg-white p-6 rounded-3xl border border-stone-100 shadow-xl shadow-stone-200/50 space-y-4">
-            <div className="flex items-center justify-between">
-              <h3 className="text-xs font-bold text-stone-900">Draft Progress Notes</h3>
-              <span className="text-[10px] font-bold text-amber-800 bg-amber-50 px-2.5 py-0.5 rounded-full">2 Pending</span>
-            </div>
-
-            <div className="space-y-3">
-              <div 
-                onClick={() => navigate('/notes/edit/101')}
-                className="p-3.5 bg-stone-50 hover:bg-[#237A88]/5 rounded-2xl cursor-pointer transition-colors border border-stone-100"
-              >
-                <div className="flex justify-between items-center">
-                  <p className="text-xs font-bold text-stone-900">Sarah Jenkins</p>
-                  <span className="text-[10px] text-stone-400 font-medium">Today, 09:50 AM</span>
-                </div>
-                <p className="text-xs text-stone-500 mt-1 truncate">SOAP draft: CBT techniques for cognitive restructuring...</p>
-              </div>
-
-              <div 
-                onClick={() => navigate('/notes/edit/102')}
-                className="p-3.5 bg-stone-50 hover:bg-[#237A88]/5 rounded-2xl cursor-pointer transition-colors border border-stone-100"
-              >
-                <div className="flex justify-between items-center">
-                  <p className="text-xs font-bold text-stone-900">Robert Vance</p>
-                  <span className="text-[10px] text-stone-400 font-medium">Yesterday</span>
-                </div>
-                <p className="text-xs text-stone-500 mt-1 truncate">DAP draft: Patient reported decreased insomnia symptoms...</p>
-              </div>
-            </div>
+          <div id="notification-item-2" className="flex items-center justify-between p-3.5 rounded-2xl bg-stone-50 border border-stone-200/60 text-xs">
+            <span className="font-semibold text-stone-800">I messaged Lokesh Acharya about taking a follow-up session.</span>
+            <span className="text-[11px] text-stone-400">7 hours ago</span>
           </div>
         </div>
       </div>
+
     </div>
   );
 }
