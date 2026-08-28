@@ -2,21 +2,23 @@ import React, { useState } from 'react';
 import { 
   Search, 
   FileText, 
-  CheckCircle2, 
   X,
-  Plus
+  Plus,
+  Calendar,
+  Clock,
+  CheckCircle,
+  Ban
 } from 'lucide-react';
 
-export default function ClientRosterWithSessionLogs() {
-  // Client Roster State
+export default function ClientRosterWithBookingSummary() {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedClient, setSelectedClient] = useState(null);
-  const [activeTab, setActiveTab] = useState('therapyJourney'); // 'therapyJourney', 'caseHistory', 'billing'
+  const [activeTab, setActiveTab] = useState('therapyJourney'); 
   const [selectedSessionNote, setSelectedSessionNote] = useState(null);
   const [isAddingSession, setIsAddingSession] = useState(false);
 
-  // Form State for New Session Note
   const [newNoteData, setNewNoteData] = useState({
+    bookingId: '',
     sessionNumber: '',
     date: '',
     time: '',
@@ -29,90 +31,58 @@ export default function ClientRosterWithSessionLogs() {
     clientNotes: ''
   });
 
-  // Mock Clients Data with Case History details
   const [clients, setClients] = useState([
     {
       id: 1,
-      name: 'Amit Paul',
-      status: 'Active',
-      initials: 'AP',
-      email: 'amitpaul0904@gmail.com',
-      phone: '+91 9086020336',
-      gender: 'Male',
-      intakeFilled: true,
-      consentFilled: true,
-      caseSummary: 'Client presents with initial occupational and interpersonal stressors. Open case with baseline functioning under review.',
-      medicalStateExam: 'Alert, fully oriented to person, time, and place. Cooperative attitude with congruent mood.',
-      behavioralHistory: 'No significant historical trauma reported. Stable pre-morbid functioning with occasional situational anxiety.',
-      medications: 'None reported.',
-      substanceUse: 'None reported.',
-      completedSessions: 0,
-      upcomingSessions: 0,
-      cancelledSessions: 0,
-      totalSessions: 1,
-      suggestedSessions: 12,
-      sessionHistory: []
-    },
-    {
-      id: 2,
       name: 'Avni Kohli',
       status: 'Active',
       initials: 'AK',
       email: 'avnikohli01@gmail.com',
       phone: '+91 09981002244',
       gender: 'Female',
-      intakeFilled: true,
-      consentFilled: true,
-      caseSummary: 'The client is engaged in therapy to address procrastination, daily task management, self-care neglect, trust issues, and emotional distress from past traumas, with a focus on safety due to suicidality.',
-      medicalStateExam: 'Oriented, cooperative, and attentive. Affect anxious and reactive during trauma narratives.',
-      behavioralHistory: 'Childhood trauma history influencing emotional functioning and attachment security. Pre-morbid functioning generally functional.',
-      medications: 'None reported.',
-      substanceUse: 'Smoking: Present (approx 20 cigarettes in one year).',
+      caseSummary: 'Client engaged in therapy addressing procrastination and task management.',
       completedSessions: 5,
-      upcomingSessions: 0,
+      upcomingSessions: 1,
       cancelledSessions: 0,
       totalSessions: 6,
       suggestedSessions: 12,
+      bookingLogs: [
+        {
+          bookingId: 'bk_101',
+          date: '14 Jul 2026',
+          time: '19:00 - 20:00',
+          mode: 'Online Video',
+          status: 'Completed',
+          notesLinked: 's5'
+        },
+        {
+          bookingId: 'bk_102',
+          date: '28 Jul 2026',
+          time: '19:00 - 20:00',
+          mode: 'Online Video',
+          status: 'Upcoming',
+          notesLinked: null
+        }
+      ],
       sessionHistory: [
         {
           id: 's5',
+          bookingId: 'bk_101',
           sessionNumber: 'Session 5',
-          date: '14 Jul',
+          date: '14 Jul 2026',
           time: '19:00',
-          summary: 'The client struggles with procrastination, difficulty in daily task initiation and completion, and low motivation for self-care.',
+          summary: 'Struggling with procrastination and daily task initiation.',
           details: {
-            presenting: ['Persistent procrastination', 'Difficulty initiating tasks', 'Low self-care motivation'],
+            presenting: ['Persistent procrastination', 'Difficulty initiating tasks'],
             sessionFocus: 'Reflecting on strategies and building behavioral activation routines.',
-            treatmentPlan: ['Establish safety', 'CBT for procrastination', 'Sleep hygiene improvement'],
+            treatmentPlan: ['Establish safety', 'CBT for procrastination'],
             intervention: 'PMR, Behavioural Activation',
             progress: 'Improved',
             riskAssessment: 'Low',
-            clientNotes: 'Keep practicing the structured task breakdown.'
+            clientNotes: 'Keep practicing structured task breakdown.'
           }
         }
       ]
-    },
-    {
-      id: 3,
-      name: 'Deepanshu Rawat',
-      status: 'Active',
-      initials: 'DR',
-      email: 'rawat.deepanshu@gmail.com',
-      phone: '+91 8078750838',
-      gender: 'Male',
-      intakeFilled: true,
-      consentFilled: true,
-      caseSummary: 'Client seeking support for academic stress and mild adjustment issues.',
-      medicalStateExam: 'Oriented x3, calm demeanor, speech clear and coherent.',
-      behavioralHistory: 'Unremarkable developmental and personal history.',
-      medications: 'None',
-      substanceUse: 'None',
-      completedSessions: 2,
-      upcomingSessions: 1,
-      cancelledSessions: 0,
-      totalSessions: 3,
-      suggestedSessions: 8,
-      sessionHistory: []
     }
   ]);
 
@@ -127,6 +97,7 @@ export default function ClientRosterWithSessionLogs() {
 
     const createdSession = {
       id: 's_' + Date.now(),
+      bookingId: newNoteData.bookingId || 'bk_manual',
       sessionNumber: newNoteData.sessionNumber || `Session ${selectedClient.sessionHistory.length + 1}`,
       date: newNoteData.date || 'Today',
       time: newNoteData.time || '18:00',
@@ -134,7 +105,7 @@ export default function ClientRosterWithSessionLogs() {
       details: {
         presenting: newNoteData.presenting ? newNoteData.presenting.split(',') : ['General counseling'],
         sessionFocus: newNoteData.sessionFocus,
-        treatmentPlan: newNoteData.treatmentPlan ? newNoteData.treatmentPlan.split(',') : ['Targeted therapeutic goals'],
+        treatmentPlan: newNoteData.treatmentPlan ? newNoteData.treatmentPlan.split(',') : ['Targeted goals'],
         intervention: newNoteData.intervention,
         progress: newNoteData.progress,
         riskAssessment: newNoteData.riskAssessment,
@@ -145,11 +116,26 @@ export default function ClientRosterWithSessionLogs() {
     const updatedClients = clients.map(client => {
       if (client.id === selectedClient.id) {
         const updatedHistory = [createdSession, ...client.sessionHistory];
+        
+        const updatedBookings = client.bookingLogs.map(b => {
+          if (b.bookingId === newNoteData.bookingId) {
+            return { ...b, status: 'Completed', notesLinked: createdSession.id };
+          }
+          return b;
+        });
+
+        const completedCount = updatedBookings.filter(b => b.status === 'Completed').length;
+        const upcomingCount = updatedBookings.filter(b => b.status === 'Upcoming').length;
+        const cancelledCount = updatedBookings.filter(b => b.status === 'Cancelled').length;
+
         const updatedClientObj = {
           ...client,
-          completedSessions: client.completedSessions + 1,
-          totalSessions: client.totalSessions + 1,
-          sessionHistory: updatedHistory
+          bookingLogs: updatedBookings,
+          sessionHistory: updatedHistory,
+          completedSessions: completedCount,
+          upcomingSessions: upcomingCount,
+          cancelledSessions: cancelledCount,
+          totalSessions: updatedBookings.length
         };
         setSelectedClient(updatedClientObj);
         return updatedClientObj;
@@ -160,6 +146,7 @@ export default function ClientRosterWithSessionLogs() {
     setClients(updatedClients);
     setIsAddingSession(false);
     setNewNoteData({
+      bookingId: '',
       sessionNumber: '',
       date: '',
       time: '',
@@ -176,71 +163,66 @@ export default function ClientRosterWithSessionLogs() {
   return (
     <div className="max-w-7xl mx-auto space-y-6 pb-20 font-sans text-stone-800">
       
-      {/* Top Header & Search Control */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white p-6 rounded-[2.5rem] border border-stone-200/80 shadow-sm">
         <div>
-          <h1 className="text-xl font-black text-stone-900 tracking-tight">Client Roster</h1>
-          <p className="text-xs text-stone-500 font-medium mt-0.5">Manage clients, review case histories, and log session notes.</p>
+          <h1 className="text-xl font-black text-stone-900 tracking-tight">Client Session Tracking</h1>
+          <p className="text-xs text-stone-500 font-medium mt-0.5">Overview of client roster with session counters and booking integration.</p>
         </div>
 
-        <div className="flex items-center gap-3 w-full sm:w-auto">
-          <div className="relative flex-1 sm:w-72">
-            <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-stone-400" />
-            <input
-              type="text"
-              placeholder="Search by name or email..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-11 pr-4 py-2.5 bg-stone-50 border border-stone-200 rounded-2xl text-xs font-bold outline-none focus:border-[#237A88]"
-            />
-          </div>
+        <div className="relative w-full sm:w-72">
+          <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-stone-400" />
+          <input
+            type="text"
+            placeholder="Search clients..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="w-full pl-11 pr-4 py-2.5 bg-stone-50 border border-stone-200 rounded-2xl text-xs font-bold outline-none focus:border-[#237A88]"
+          />
         </div>
       </div>
 
-      {/* Clients Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredClients.map((client) => (
           <div key={client.id} className="bg-white rounded-[2.5rem] border border-stone-200/80 p-6 shadow-sm flex flex-col justify-between space-y-6">
             <div className="space-y-4">
-              <div className="flex items-start justify-between">
-                <div className="flex items-center gap-3">
-                  <div className="h-11 w-11 rounded-2xl bg-[#237A88]/10 text-[#237A88] flex items-center justify-center font-black text-sm border border-[#237A88]/20">
-                    {client.initials}
-                  </div>
-                  <div>
-                    <h2 className="text-sm font-black text-stone-900">{client.name}</h2>
-                    <span className="text-[10px] font-extrabold px-2.5 py-0.5 bg-emerald-100 text-emerald-800 rounded-full">
-                      {client.status}
-                    </span>
-                  </div>
+              <div className="flex items-center gap-3">
+                <div className="h-11 w-11 rounded-2xl bg-[#237A88]/10 text-[#237A88] flex items-center justify-center font-black text-sm border border-[#237A88]/20">
+                  {client.initials}
+                </div>
+                <div>
+                  <h2 className="text-sm font-black text-stone-900">{client.name}</h2>
+                  <span className="text-[10px] font-extrabold px-2.5 py-0.5 bg-emerald-100 text-emerald-800 rounded-full">
+                    {client.status}
+                  </span>
                 </div>
               </div>
 
-              <div className="space-y-2 text-xs font-medium text-stone-600">
-                <div className="flex items-center gap-2">
-                  <span className="text-stone-400 font-semibold w-12">Email:</span>
-                  <span className="truncate">{client.email}</span>
+              <div className="grid grid-cols-3 gap-2 bg-stone-50 p-3 rounded-2xl text-center text-xs">
+                <div>
+                  <span className="block text-[10px] text-stone-400 font-bold uppercase">Done</span>
+                  <span className="font-black text-stone-800">{client.completedSessions}</span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <span className="text-stone-400 font-semibold w-12">Phone:</span>
-                  <span>{client.phone}</span>
+                <div>
+                  <span className="block text-[10px] text-stone-400 font-bold uppercase">Upcoming</span>
+                  <span className="font-black text-[#237A88]">{client.upcomingSessions}</span>
+                </div>
+                <div>
+                  <span className="block text-[10px] text-stone-400 font-bold uppercase">Total</span>
+                  <span className="font-black text-stone-800">{client.totalSessions}</span>
                 </div>
               </div>
             </div>
 
-            <div className="pt-4 border-t border-stone-100 flex items-center gap-2">
-              <button
-                onClick={() => { setSelectedClient(client); setSelectedSessionNote(null); }}
-                className="flex-1 py-2.5 bg-[#237A88]/10 hover:bg-[#237A88] text-[#237A88] hover:text-white rounded-2xl text-xs font-bold transition-all text-center cursor-pointer"
-              >
-                View Profile & Logs
-              </button>
-            </div>
+            <button
+              onClick={() => { setSelectedClient(client); setSelectedSessionNote(null); }}
+              className="w-full py-2.5 bg-[#237A88]/10 hover:bg-[#237A88] text-[#237A88] hover:text-white rounded-2xl text-xs font-bold transition-all text-center cursor-pointer"
+            >
+              View Profile & Metrics
+            </button>
           </div>
         ))}
       </div>
 
-      {/* CLIENT PROFILE MODAL */}
       {selectedClient && !selectedSessionNote && !isAddingSession && (
         <div className="fixed inset-0 bg-stone-900/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 overflow-y-auto">
           <div className="bg-white rounded-[2.5rem] border border-stone-200 max-w-4xl w-full max-h-[90vh] overflow-y-auto shadow-2xl p-6 sm:p-8 space-y-6">
@@ -251,25 +233,50 @@ export default function ClientRosterWithSessionLogs() {
                   {selectedClient.initials}
                 </div>
                 <div>
-                  <div className="flex items-center gap-2">
-                    <h2 className="text-base font-black text-stone-900">{selectedClient.name}</h2>
-                    <span className="text-[10px] font-extrabold px-2.5 py-0.5 bg-emerald-100 text-emerald-800 rounded-full">
-                      {selectedClient.status}
-                    </span>
-                  </div>
-                  <p className="text-xs text-stone-500 font-medium mt-0.5">{selectedClient.email} • {selectedClient.phone}</p>
+                  <h2 className="text-base font-black text-stone-900">{selectedClient.name}</h2>
+                  <p className="text-xs text-stone-500 font-medium">{selectedClient.email} • {selectedClient.phone}</p>
                 </div>
               </div>
-              <button 
-                onClick={() => setSelectedClient(null)}
-                className="p-2 text-stone-400 hover:text-stone-600 rounded-xl bg-stone-50 cursor-pointer"
-              >
+              <button onClick={() => setSelectedClient(null)} className="p-2 text-stone-400 hover:text-stone-600 rounded-xl bg-stone-50 cursor-pointer">
                 <X size={18} />
               </button>
             </div>
 
-            {/* Sub-tabs & Action Control */}
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-stone-100 pb-3">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 bg-stone-50 p-4 rounded-3xl border border-stone-200/60">
+              <div className="bg-white p-3.5 rounded-2xl border border-stone-200/80 flex items-center gap-3">
+                <div className="p-2.5 bg-emerald-50 text-emerald-600 rounded-xl"><CheckCircle size={16} /></div>
+                <div>
+                  <span className="block text-[10px] text-stone-400 font-bold uppercase">Completed</span>
+                  <span className="text-sm font-black text-stone-900">{selectedClient.completedSessions}</span>
+                </div>
+              </div>
+
+              <div className="bg-white p-3.5 rounded-2xl border border-stone-200/80 flex items-center gap-3">
+                <div className="p-2.5 bg-[#237A88]/10 text-[#237A88] rounded-xl"><Clock size={16} /></div>
+                <div>
+                  <span className="block text-[10px] text-stone-400 font-bold uppercase">Upcoming</span>
+                  <span className="text-sm font-black text-stone-900">{selectedClient.upcomingSessions}</span>
+                </div>
+              </div>
+
+              <div className="bg-white p-3.5 rounded-2xl border border-stone-200/80 flex items-center gap-3">
+                <div className="p-2.5 bg-rose-50 text-rose-600 rounded-xl"><Ban size={16} /></div>
+                <div>
+                  <span className="block text-[10px] text-stone-400 font-bold uppercase">Cancelled</span>
+                  <span className="text-sm font-black text-stone-900">{selectedClient.cancelledSessions}</span>
+                </div>
+              </div>
+
+              <div className="bg-white p-3.5 rounded-2xl border border-stone-200/80 flex items-center gap-3">
+                <div className="p-2.5 bg-stone-100 text-stone-600 rounded-xl"><Calendar size={16} /></div>
+                <div>
+                  <span className="block text-[10px] text-stone-400 font-bold uppercase">Total Bookings</span>
+                  <span className="text-sm font-black text-stone-900">{selectedClient.totalSessions}</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex flex-wrap items-center justify-between gap-3 border-b border-stone-100 pb-3">
               <div className="flex items-center gap-2">
                 <button 
                   onClick={() => setActiveTab('therapyJourney')}
@@ -278,16 +285,10 @@ export default function ClientRosterWithSessionLogs() {
                   Therapy Journey
                 </button>
                 <button 
-                  onClick={() => setActiveTab('caseHistory')}
-                  className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${activeTab === 'caseHistory' ? 'bg-[#237A88] text-white shadow-md' : 'text-stone-600 hover:bg-stone-50'}`}
+                  onClick={() => setActiveTab('bookings')}
+                  className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${activeTab === 'bookings' ? 'bg-[#237A88] text-white shadow-md' : 'text-stone-600 hover:bg-stone-50'}`}
                 >
-                  Case History
-                </button>
-                <button 
-                  onClick={() => setActiveTab('billing')}
-                  className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${activeTab === 'billing' ? 'bg-[#237A88] text-white shadow-md' : 'text-stone-600 hover:bg-stone-50'}`}
-                >
-                  Billing
+                  Booking Schedule Logs
                 </button>
               </div>
 
@@ -297,81 +298,89 @@ export default function ClientRosterWithSessionLogs() {
                   className="flex items-center gap-1.5 px-4 py-2 bg-[#237A88] text-white rounded-xl text-xs font-bold hover:bg-[#1b616d] transition-all cursor-pointer shadow-sm"
                 >
                   <Plus size={14} />
-                  <span>New Session Note</span>
+                  <span>Convert Booking to Note</span>
                 </button>
               )}
             </div>
 
-            {/* Tab 1: Therapy Journey */}
             {activeTab === 'therapyJourney' && (
-              <div className="space-y-6">
-                <div className="space-y-3">
-                  <h3 className="text-xs font-black uppercase tracking-wider text-stone-500">Session History & Post-Session Logs</h3>
-                  {selectedClient.sessionHistory.length === 0 ? (
-                    <div className="text-center py-8 text-stone-400 text-xs font-medium bg-stone-50 rounded-2xl border border-stone-200">
-                      No logs added yet. Click &quot;New Session Note&quot; above to log your first session.
-                    </div>
-                  ) : (
-                    <div className="space-y-3">
-                      {selectedClient.sessionHistory.map((session) => (
-                        <div key={session.id} className="bg-white p-5 rounded-2xl border border-stone-200 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-                          <div className="space-y-1">
-                            <div className="flex items-center gap-2">
-                              <span className="font-black text-xs text-stone-900">{session.sessionNumber}</span>
-                              <span className="text-[10px] font-bold px-2 py-0.5 bg-stone-100 text-stone-600 rounded-md">{session.date} • {session.time}</span>
-                            </div>
-                            <p className="text-xs text-stone-500 font-medium line-clamp-1">{session.summary}</p>
+              <div className="space-y-4">
+                <h3 className="text-xs font-black uppercase tracking-wider text-stone-500">Linked Session Logs</h3>
+                {selectedClient.sessionHistory.length === 0 ? (
+                  <div className="text-center py-8 text-stone-400 text-xs font-medium bg-stone-50 rounded-2xl border border-stone-200">
+                    No session logs found.
+                  </div>
+                ) : (
+                  <div className="space-y-3">
+                    {selectedClient.sessionHistory.map((session) => (
+                      <div key={session.id} className="bg-white p-5 rounded-2xl border border-stone-200 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                        <div className="space-y-1">
+                          <div className="flex items-center gap-2">
+                            <span className="font-black text-xs text-stone-900">{session.sessionNumber}</span>
+                            <span className="text-[10px] font-extrabold px-2 py-0.5 bg-[#237A88]/10 text-[#237A88] rounded-md">
+                              Booking Ref: {session.bookingId}
+                            </span>
                           </div>
-                          <button
-                            onClick={() => setSelectedSessionNote(session)}
-                            className="flex items-center gap-1.5 px-4 py-2 bg-[#237A88]/10 hover:bg-[#237A88] text-[#237A88] hover:text-white rounded-xl text-xs font-bold transition-all cursor-pointer shrink-0"
-                          >
-                            <FileText size={14} />
-                            <span>View Notes</span>
-                          </button>
+                          <p className="text-xs text-stone-500 font-medium">{session.date} • {session.time}</p>
                         </div>
-                      ))}
+                        <button
+                          onClick={() => setSelectedSessionNote(session)}
+                          className="flex items-center gap-1.5 px-4 py-2 bg-[#237A88]/10 hover:bg-[#237A88] text-[#237A88] hover:text-white rounded-xl text-xs font-bold transition-all cursor-pointer shrink-0"
+                        >
+                          <FileText size={14} />
+                          <span>View Notes</span>
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
+
+            {activeTab === 'bookings' && (
+              <div className="space-y-4">
+                <h3 className="text-xs font-black uppercase tracking-wider text-stone-500">Booking Schedule History</h3>
+                <div className="space-y-3">
+                  {selectedClient.bookingLogs.map((booking) => (
+                    <div key={booking.bookingId} className="bg-stone-50 p-4 rounded-2xl border border-stone-200/60 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+                      <div className="space-y-1">
+                        <div className="flex items-center gap-2">
+                          <span className="font-bold text-xs text-stone-900">{booking.bookingId}</span>
+                          <span className={`text-[10px] font-extrabold px-2 py-0.5 rounded-full ${
+                            booking.status === 'Completed' ? 'bg-emerald-100 text-emerald-800' : 
+                            booking.status === 'Upcoming' ? 'bg-cyan-100 text-cyan-800' : 'bg-rose-100 text-rose-800'
+                          }`}>
+                            {booking.status}
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-3 text-xs text-stone-500 font-medium">
+                          <span>{booking.date}</span>
+                          <span>{booking.time}</span>
+                          <span>{booking.mode}</span>
+                        </div>
+                      </div>
+
+                      {booking.notesLinked ? (
+                        <span className="text-xs font-bold text-[#237A88] bg-[#237A88]/10 px-3 py-1.5 rounded-xl">
+                          Note Logged ✓
+                        </span>
+                      ) : (
+                        booking.status === 'Upcoming' && (
+                          <button
+                            onClick={() => {
+                              setNewNoteData(prev => ({ ...prev, bookingId: booking.bookingId, date: booking.date, time: booking.time.split(' - ')[0] }));
+                              setActiveTab('therapyJourney');
+                              setIsAddingSession(true);
+                            }}
+                            className="px-3 py-1.5 bg-[#237A88] text-white rounded-xl text-xs font-bold hover:bg-[#1b616d] cursor-pointer"
+                          >
+                            Convert to Note
+                          </button>
+                        )
+                      )}
                     </div>
-                  )}
+                  ))}
                 </div>
-              </div>
-            )}
-
-            {/* Tab 2: Case History Mapping */}
-            {activeTab === 'caseHistory' && (
-              <div className="space-y-4 text-xs">
-                <div className="space-y-2 bg-stone-50 p-5 rounded-2xl border border-stone-200/60">
-                  <h3 className="font-black uppercase tracking-wider text-[#237A88]">Comprehensive Case Summary</h3>
-                  <p className="font-medium text-stone-700 leading-relaxed">{selectedClient.caseSummary}</p>
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div className="bg-stone-50 p-4 rounded-2xl border border-stone-200/60 space-y-1">
-                    <span className="font-bold text-[#237A88] uppercase tracking-wider">Medical State Exam (MSE)</span>
-                    <p className="font-medium text-stone-800 mt-1">{selectedClient.medicalStateExam}</p>
-                  </div>
-                  <div className="bg-stone-50 p-4 rounded-2xl border border-stone-200/60 space-y-1">
-                    <span className="font-bold text-[#237A88] uppercase tracking-wider">Behavioral & Trauma History</span>
-                    <p className="font-medium text-stone-800 mt-1">{selectedClient.behavioralHistory}</p>
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div className="bg-stone-50 p-4 rounded-2xl border border-stone-200/60 space-y-1">
-                    <span className="font-bold text-[#237A88] uppercase tracking-wider">Medications</span>
-                    <p className="font-medium text-stone-800 mt-1">{selectedClient.medications}</p>
-                  </div>
-                  <div className="bg-stone-50 p-4 rounded-2xl border border-stone-200/60 space-y-1">
-                    <span className="font-bold text-[#237A88] uppercase tracking-wider">Substance Use</span>
-                    <p className="font-medium text-stone-800 mt-1">{selectedClient.substanceUse}</p>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {activeTab === 'billing' && (
-              <div className="py-12 text-center text-xs text-stone-500 font-medium">
-                Billing records for {selectedClient.name}.
               </div>
             )}
 
@@ -379,145 +388,64 @@ export default function ClientRosterWithSessionLogs() {
         </div>
       )}
 
-      {/* NEW SESSION NOTE FORM MODAL */}
       {isAddingSession && (
         <div className="fixed inset-0 bg-stone-900/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 overflow-y-auto">
           <div className="bg-white rounded-[2.5rem] border border-stone-200 max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl p-6 sm:p-8 space-y-6">
             
             <div className="flex items-center justify-between pb-4 border-b border-stone-100">
-              <div className="flex items-center gap-3">
-                <div className="p-3 bg-[#237A88]/10 text-[#237A88] rounded-2xl">
-                  <Plus size={18} />
-                </div>
-                <div>
-                  <h2 className="text-sm font-black text-stone-900">Add New Session Note</h2>
-                  <p className="text-[11px] text-stone-500 font-medium">For {selectedClient?.name}</p>
-                </div>
-              </div>
-              <button 
-                onClick={() => setIsAddingSession(false)}
-                className="p-2 text-stone-400 hover:text-stone-600 rounded-xl bg-stone-50 cursor-pointer"
-              >
+              <h2 className="text-sm font-black text-stone-900">Create Session Note From Booking</h2>
+              <button onClick={() => setIsAddingSession(false)} className="p-2 text-stone-400 hover:text-stone-600 rounded-xl bg-stone-50 cursor-pointer">
                 <X size={18} />
               </button>
             </div>
 
             <form onSubmit={handleSaveNewSession} className="space-y-4 text-xs font-bold text-stone-700">
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label className="block mb-1 text-stone-500 uppercase text-[10px]">Select Upcoming Booking</label>
+                  <select
+                    required
+                    value={newNoteData.bookingId}
+                    onChange={(e) => {
+                      const selectedB = selectedClient?.bookingLogs.find(b => b.bookingId === e.target.value);
+                      setNewNoteData({
+                        ...newNoteData, 
+                        bookingId: e.target.value,
+                        date: selectedB ? selectedB.date : newNoteData.date,
+                        time: selectedB ? selectedB.time.split(' - ')[0] : newNoteData.time
+                      });
+                    }}
+                    className="w-full px-3 py-2 bg-stone-50 border border-stone-200 rounded-xl outline-none focus:border-[#237A88]"
+                  >
+                    <option value="">-- Choose Booking Slot --</option>
+                    {selectedClient?.bookingLogs.filter(b => b.status === 'Upcoming').map(b => (
+                      <option key={b.bookingId} value={b.bookingId}>
+                        {b.bookingId} ({b.date})
+                      </option>
+                    ))}
+                  </select>
+                </div>
                 <div>
                   <label className="block mb-1 text-stone-500 uppercase text-[10px]">Session Name</label>
                   <input
                     type="text"
                     required
-                    placeholder="e.g. Session 1"
+                    placeholder="e.g. Session 6"
                     value={newNoteData.sessionNumber}
                     onChange={(e) => setNewNoteData({...newNoteData, sessionNumber: e.target.value})}
                     className="w-full px-3 py-2 bg-stone-50 border border-stone-200 rounded-xl outline-none focus:border-[#237A88]"
                   />
                 </div>
-                <div>
-                  <label className="block mb-1 text-stone-500 uppercase text-[10px]">Date</label>
-                  <input
-                    type="text"
-                    required
-                    placeholder="e.g. 18 Aug"
-                    value={newNoteData.date}
-                    onChange={(e) => setNewNoteData({...newNoteData, date: e.target.value})}
-                    className="w-full px-3 py-2 bg-stone-50 border border-stone-200 rounded-xl outline-none focus:border-[#237A88]"
-                  />
-                </div>
-                <div>
-                  <label className="block mb-1 text-stone-500 uppercase text-[10px]">Time</label>
-                  <input
-                    type="text"
-                    required
-                    placeholder="e.g. 19:00"
-                    value={newNoteData.time}
-                    onChange={(e) => setNewNoteData({...newNoteData, time: e.target.value})}
-                    className="w-full px-3 py-2 bg-stone-50 border border-stone-200 rounded-xl outline-none focus:border-[#237A88]"
-                  />
-                </div>
               </div>
 
               <div>
-                <label className="block mb-1 text-stone-500 uppercase text-[10px]">Presenting Issues (Comma separated)</label>
-                <input
-                  type="text"
-                  placeholder="e.g. Procrastination, Anxiety, Sleep disturbance"
-                  value={newNoteData.presenting}
-                  onChange={(e) => setNewNoteData({...newNoteData, presenting: e.target.value})}
-                  className="w-full px-3 py-2 bg-stone-50 border border-stone-200 rounded-xl outline-none focus:border-[#237A88]"
-                />
-              </div>
-
-              <div>
-                <label className="block mb-1 text-stone-500 uppercase text-[10px]">Session Focus & Discussion Summary</label>
+                <label className="block mb-1 text-stone-500 uppercase text-[10px]">Session Discussion Focus</label>
                 <textarea
                   rows="3"
                   required
-                  placeholder="Detail core insights and discussion points..."
+                  placeholder="Detail notes..."
                   value={newNoteData.sessionFocus}
                   onChange={(e) => setNewNoteData({...newNoteData, sessionFocus: e.target.value})}
-                  className="w-full px-3 py-2 bg-stone-50 border border-stone-200 rounded-xl outline-none focus:border-[#237A88] resize-none"
-                />
-              </div>
-
-              <div>
-                <label className="block mb-1 text-stone-500 uppercase text-[10px]">Treatment Plan Goals (Comma separated)</label>
-                <input
-                  type="text"
-                  placeholder="e.g. CBT reframing, Behavioural activation"
-                  value={newNoteData.treatmentPlan}
-                  onChange={(e) => setNewNoteData({...newNoteData, treatmentPlan: e.target.value})}
-                  className="w-full px-3 py-2 bg-stone-50 border border-stone-200 rounded-xl outline-none focus:border-[#237A88]"
-                />
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                <div>
-                  <label className="block mb-1 text-stone-500 uppercase text-[10px]">Intervention</label>
-                  <input
-                    type="text"
-                    placeholder="e.g. PMR, Discussion"
-                    value={newNoteData.intervention}
-                    onChange={(e) => setNewNoteData({...newNoteData, intervention: e.target.value})}
-                    className="w-full px-3 py-2 bg-stone-50 border border-stone-200 rounded-xl outline-none focus:border-[#237A88]"
-                  />
-                </div>
-                <div>
-                  <label className="block mb-1 text-stone-500 uppercase text-[10px]">Progress</label>
-                  <select
-                    value={newNoteData.progress}
-                    onChange={(e) => setNewNoteData({...newNoteData, progress: e.target.value})}
-                    className="w-full px-3 py-2 bg-stone-50 border border-stone-200 rounded-xl outline-none focus:border-[#237A88]"
-                  >
-                    <option value="Initial">Initial</option>
-                    <option value="Stable">Stable</option>
-                    <option value="Improved">Improved</option>
-                    <option value="Challenged">Challenged</option>
-                  </select>
-                </div>
-                <div>
-                  <label className="block mb-1 text-stone-500 uppercase text-[10px]">Risk Assessment</label>
-                  <select
-                    value={newNoteData.riskAssessment}
-                    onChange={(e) => setNewNoteData({...newNoteData, riskAssessment: e.target.value})}
-                    className="w-full px-3 py-2 bg-stone-50 border border-stone-200 rounded-xl outline-none focus:border-[#237A88]"
-                  >
-                    <option value="Low">Low</option>
-                    <option value="Moderate">Moderate</option>
-                    <option value="High">High</option>
-                  </select>
-                </div>
-              </div>
-
-              <div>
-                <label className="block mb-1 text-stone-500 uppercase text-[10px]">Client Takeaways & Homework</label>
-                <textarea
-                  rows="2"
-                  placeholder="Assignments or notes for the client..."
-                  value={newNoteData.clientNotes}
-                  onChange={(e) => setNewNoteData({...newNoteData, clientNotes: e.target.value})}
                   className="w-full px-3 py-2 bg-stone-50 border border-stone-200 rounded-xl outline-none focus:border-[#237A88] resize-none"
                 />
               </div>
@@ -534,93 +462,10 @@ export default function ClientRosterWithSessionLogs() {
                   type="submit"
                   className="px-6 py-2.5 bg-[#237A88] text-white rounded-xl text-xs font-bold shadow-md cursor-pointer hover:bg-[#1b616d]"
                 >
-                  Save & Push to Log
+                  Save & Update Counts
                 </button>
               </div>
             </form>
-
-          </div>
-        </div>
-      )}
-
-      {/* DETAILED POST-SESSION LOG / SESSION NOTES VIEW MODAL */}
-      {selectedSessionNote && (
-        <div className="fixed inset-0 bg-stone-900/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 overflow-y-auto">
-          <div className="bg-white rounded-[2.5rem] border border-stone-200 max-w-3xl w-full max-h-[90vh] overflow-y-auto shadow-2xl p-6 sm:p-8 space-y-6">
-            
-            <div className="flex items-center justify-between pb-4 border-b border-stone-100">
-              <div className="flex items-center gap-3">
-                <div className="p-3 bg-[#237A88]/10 text-[#237A88] rounded-2xl">
-                  <FileText size={18} />
-                </div>
-                <div>
-                  <h2 className="text-sm font-black text-stone-900">Session Notes & Post-Session Log</h2>
-                  <p className="text-[11px] text-stone-500 font-medium">{selectedSessionNote.sessionNumber} • {selectedSessionNote.date}</p>
-                </div>
-              </div>
-              <button 
-                onClick={() => setSelectedSessionNote(null)}
-                className="p-2 text-stone-400 hover:text-stone-600 rounded-xl bg-stone-50 cursor-pointer"
-              >
-                <X size={18} />
-              </button>
-            </div>
-
-            <div className="space-y-6 text-xs">
-              <div className="bg-stone-50 p-5 rounded-2xl border border-stone-200/60 space-y-2">
-                <h3 className="font-black uppercase tracking-wider text-[#237A88]">Presenting / Clinical Presentation</h3>
-                <ul className="space-y-1.5">
-                  {selectedSessionNote.details.presenting.map((item, idx) => (
-                    <li key={idx} className="flex items-start gap-2 text-stone-700 font-medium">
-                      <span className="h-1.5 w-1.5 rounded-full bg-[#237A88] mt-1.5 shrink-0" />
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              <div className="bg-stone-50 p-5 rounded-2xl border border-stone-200/60 space-y-2">
-                <h3 className="font-black uppercase tracking-wider text-[#237A88]">Session Focus & Discussion</h3>
-                <p className="text-stone-700 font-medium leading-relaxed">{selectedSessionNote.details.sessionFocus}</p>
-              </div>
-
-              <div className="bg-stone-50 p-5 rounded-2xl border border-stone-200/60 space-y-2">
-                <h3 className="font-black uppercase tracking-wider text-[#237A88]">Treatment Plan</h3>
-                <ul className="space-y-1.5">
-                  {selectedSessionNote.details.treatmentPlan.map((tp, idx) => (
-                    <li key={idx} className="flex items-center gap-2 text-stone-700 font-medium">
-                      <CheckCircle2 size={13} className="text-emerald-600 shrink-0" />
-                      <span>{tp}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="bg-stone-50 p-4 rounded-2xl border border-stone-200/60 space-y-1">
-                  <span className="font-bold text-[#237A88] uppercase tracking-wider">Intervention Applied</span>
-                  <p className="font-medium text-stone-800">{selectedSessionNote.details.intervention}</p>
-                </div>
-                <div className="bg-stone-50 p-4 rounded-2xl border border-stone-200/60 space-y-1">
-                  <span className="font-bold text-[#237A88] uppercase tracking-wider">Client Progress</span>
-                  <p className="font-medium text-stone-800">{selectedSessionNote.details.progress}</p>
-                </div>
-              </div>
-
-              <div className="bg-stone-50 p-5 rounded-2xl border border-stone-200/60 space-y-2">
-                <h3 className="font-black uppercase tracking-wider text-[#237A88]">Client Takeaways & Homework</h3>
-                <p className="text-stone-700 font-medium leading-relaxed">{selectedSessionNote.details.clientNotes}</p>
-              </div>
-            </div>
-
-            <div className="pt-4 border-t border-stone-100 flex justify-end">
-              <button
-                onClick={() => setSelectedSessionNote(null)}
-                className="px-6 py-2.5 bg-[#237A88] text-white rounded-2xl text-xs font-bold shadow-md cursor-pointer"
-              >
-                Close Notes
-              </button>
-            </div>
 
           </div>
         </div>
