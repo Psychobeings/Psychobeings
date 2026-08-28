@@ -64,7 +64,7 @@ export default function Layout() {
             </div>
             <button 
               onClick={() => setSidebarOpen(false)}
-              className="lg:hidden text-stone-400 hover:text-stone-600"
+              className="lg:hidden text-stone-400 hover:text-stone-600 cursor-pointer"
             >
               <X size={20} />
             </button>
