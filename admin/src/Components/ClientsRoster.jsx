@@ -3,7 +3,8 @@ import {
   Search, 
   FileText, 
   CheckCircle2, 
-  X 
+  X,
+  Plus
 } from 'lucide-react';
 
 export default function ClientRosterWithSessionLogs() {
@@ -12,9 +13,24 @@ export default function ClientRosterWithSessionLogs() {
   const [selectedClient, setSelectedClient] = useState(null);
   const [activeTab, setActiveTab] = useState('therapyJourney'); // 'therapyJourney', 'billing', 'followUps'
   const [selectedSessionNote, setSelectedSessionNote] = useState(null); // When viewing a specific session note
+  const [isAddingSession, setIsAddingSession] = useState(false); // Modal for New Session Note
+
+  // Form State for New Session Note
+  const [newNoteData, setNewNoteData] = useState({
+    sessionNumber: '',
+    date: '',
+    time: '',
+    presenting: '',
+    sessionFocus: '',
+    treatmentPlan: '',
+    intervention: '',
+    progress: 'Stable',
+    riskAssessment: 'Low',
+    clientNotes: ''
+  });
 
   // Mock Clients Data matching portal screens
-  const clients = [
+  const [clients, setClients] = useState([
     {
       id: 1,
       name: 'Amit Paul',
@@ -43,7 +59,7 @@ export default function ClientRosterWithSessionLogs() {
       gender: 'Female',
       intakeFilled: true,
       consentFilled: true,
-      caseSummary: 'The client is engaged in therapy to address procrastination, daily task management, self-care neglect, trust issues, and emotional distress from past traumas, with a focus on safety due to suicidality. Therapy embraces CBT, Behavioural Activation, and strategies for sleep and social support, while gradually confronting trauma-related distress. The client continues to struggle with sleep, friendship beliefs, and emotional regulation, despite therapy engagement. The plan prioritizes mental stability, addressing core beliefs, and building social support, with an eye towards trauma processing once the client is more stabilized. A recent session highlighted the challenges in setting difficulties and tendency to procrastinate, reinforcing the need for the outlined treatment plan.',
+      caseSummary: 'The client is engaged in therapy to address procrastination, daily task management, self-care neglect, trust issues, and emotional distress from past traumas...',
       completedSessions: 5,
       upcomingSessions: 0,
       cancelledSessions: 0,
@@ -55,69 +71,16 @@ export default function ClientRosterWithSessionLogs() {
           sessionNumber: 'Session 5',
           date: '14 Jul',
           time: '19:00',
-          summary: 'The client struggles with procrastination, difficulty in daily task initiation and completion, low motivation for self-care, boredom in family interactions, trust issues, and emotional distress from past traumas. During the session, the focus was on understanding...',
+          summary: 'The client struggles with procrastination, difficulty in daily task initiation and completion, low motivation for self-care, and emotional distress from past traumas...',
           details: {
-            presenting: [
-              'Persistent procrastination',
-              'Difficulty initiating and completing daily tasks',
-              'Reduced motivation for self-care',
-              'Feelings of boredom and dissatisfaction with family interactions',
-              'Difficulty trusting others',
-              'Emotional distress related to multiple traumatic experiences.'
-            ],
-            sessionFocus: 'The client attended the session after a two-week break, which she had intentionally requested to provide herself with time to reflect on and implement the strategies discussed in previous sessions...',
-            treatmentPlan: [
-              'Establish safety and continuously monitor suicide risk.',
-              'Cognitive Behaviour Therapy (CBT) for anxiety, depression, and procrastination.',
-              'Behavioural Activation to increase engagement in meaningful activities.',
-              'Improve sleep hygiene.'
-            ],
-            intervention: 'Progressive Muscle Relaxation (PMR), Behavioural Activation',
+            presenting: ['Persistent procrastination', 'Difficulty initiating tasks', 'Low self-care motivation'],
+            sessionFocus: 'Reflecting on strategies and building behavioral activation routines.',
+            treatmentPlan: ['Establish safety', 'CBT for procrastination', 'Sleep hygiene improvement'],
+            intervention: 'PMR, Behavioural Activation',
             progress: 'Improved',
             riskAssessment: 'Low',
-            symptoms: 'Anxiety, Procrastination, Sleep disturbance',
-            medicalStateExam: 'Oriented, cooperative, and attentive. Affect anxious and reactive.',
-            behavioralHistory: 'Pre-morbid functioning generally functional prior to current difficulties. Childhood trauma history influencing emotional functioning.',
-            medications: 'None reported.',
-            substanceUse: 'Smoking: Present (approx 20 cigarettes in one year).',
-            clientNotes: 'Over the past two weeks, you gave yourself the space to pause and reflect on the strategies we discussed...',
-            assignments: [
-              { id: 1, title: 'Sleep Hygiene Routine', status: 'Completed', frequency: 'Everyday', instruction: 'Maintain consistent sleep schedule.' },
-              { id: 2, title: 'Anger Triggers Worksheet', status: 'Completed', frequency: 'None', instruction: 'Analyze recent anger episodes.' }
-            ]
+            clientNotes: 'Keep practicing the structured task breakdown.'
           }
-        },
-        {
-          id: 's4',
-          sessionNumber: 'Session 4',
-          date: '31 Jul',
-          time: '19:00',
-          summary: 'The client, presenting issues of procrastination, difficulty with daily tasks, lack of motivation for self-care, boredom in family interactions, trust issues, and emotional distress from trauma, was scheduled for therapy. The focus was to employ CBT for...',
-          details: { presenting: ['Procrastination', 'Low motivation'], sessionFocus: 'Focused on CBT techniques for procrastination.', treatmentPlan: ['CBT target focus'], intervention: 'CBT', progress: 'Steady', riskAssessment: 'Low', symptoms: 'Anxiety', medicalStateExam: 'Stable', behavioralHistory: 'None', medications: 'None', substanceUse: 'None', clientNotes: 'Keep up the practice.', assignments: [] }
-        },
-        {
-          id: 's3',
-          sessionNumber: 'Session 3',
-          date: '24 Jul',
-          time: '19:00',
-          summary: 'The client struggled with procrastination, daily task initiation and completion, self-care, dissatisfaction with family interactions, trust issues, and emotional distress from past traumas. During the session, focus was placed on recent irritability in social interactions,...',
-          details: { presenting: ['Procrastination'], sessionFocus: 'Social interactions focus.', treatmentPlan: ['Interpersonal boundaries'], intervention: 'Discussion', progress: 'Moderate', riskAssessment: 'Low', symptoms: 'Anxiety', medicalStateExam: 'Stable', behavioralHistory: 'None', medications: 'None', substanceUse: 'None', clientNotes: 'Reflect on boundaries.', assignments: [] }
-        },
-        {
-          id: 's2',
-          sessionNumber: 'Session 2',
-          date: '17 Jul',
-          time: '19:00',
-          summary: 'The client, struggling with procrastination, daily task initiation and completion, self-care, dissatisfaction with family interactions, trust issues, and emotional distress from past traumas. During the session, focus was placed on recent irritability in social interactions,...',
-          details: { presenting: ['Procrastination'], sessionFocus: 'Task initiation focus.', treatmentPlan: ['Behavioral activation'], intervention: 'Activation', progress: 'Stable', riskAssessment: 'Low', symptoms: 'Anxiety', medicalStateExam: 'Stable', behavioralHistory: 'None', medications: 'None', substanceUse: 'None', clientNotes: 'Try task breakdown.', assignments: [] }
-        },
-        {
-          id: 's1',
-          sessionNumber: 'Session 1',
-          date: '10 Jul',
-          time: '19:00',
-          summary: 'The client, struggling with procrastination, daily task initiation and completion, self-care, dissatisfaction with family interactions, trust issues, and emotional distress from past traumas. During the session, focus was placed on recent irritability in social interactions,...',
-          details: { presenting: ['Initial intake issues'], sessionFocus: 'Intake and goal setting.', treatmentPlan: ['Goal establishment'], intervention: 'Clinical Interview', progress: 'Initial', riskAssessment: 'Low', symptoms: 'Anxiety', medicalStateExam: 'Stable', behavioralHistory: 'None', medications: 'None', substanceUse: 'None', clientNotes: 'Welcome session.', assignments: [] }
         }
       ]
     },
@@ -139,12 +102,64 @@ export default function ClientRosterWithSessionLogs() {
       suggestedSessions: 8,
       sessionHistory: []
     }
-  ];
+  ]);
 
   const filteredClients = clients.filter(c => 
     c.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
     c.email.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  const handleSaveNewSession = (e) => {
+    e.preventDefault();
+    if (!selectedClient) return;
+
+    const createdSession = {
+      id: 's_' + Date.now(),
+      sessionNumber: newNoteData.sessionNumber || `Session ${selectedClient.sessionHistory.length + 1}`,
+      date: newNoteData.date || 'Today',
+      time: newNoteData.time || '18:00',
+      summary: newNoteData.sessionFocus || 'Session completed successfully.',
+      details: {
+        presenting: newNoteData.presenting ? newNoteData.presenting.split(',') : ['General counseling'],
+        sessionFocus: newNoteData.sessionFocus,
+        treatmentPlan: newNoteData.treatmentPlan ? newNoteData.treatmentPlan.split(',') : ['Targeted therapeutic goals'],
+        intervention: newNoteData.intervention,
+        progress: newNoteData.progress,
+        riskAssessment: newNoteData.riskAssessment,
+        clientNotes: newNoteData.clientNotes
+      }
+    };
+
+    const updatedClients = clients.map(client => {
+      if (client.id === selectedClient.id) {
+        const updatedHistory = [createdSession, ...client.sessionHistory];
+        const updatedClientObj = {
+          ...client,
+          completedSessions: client.completedSessions + 1,
+          totalSessions: client.totalSessions + 1,
+          sessionHistory: updatedHistory
+        };
+        setSelectedClient(updatedClientObj);
+        return updatedClientObj;
+      }
+      return client;
+    });
+
+    setClients(updatedClients);
+    setIsAddingSession(false);
+    setNewNoteData({
+      sessionNumber: '',
+      date: '',
+      time: '',
+      presenting: '',
+      sessionFocus: '',
+      treatmentPlan: '',
+      intervention: '',
+      progress: 'Stable',
+      riskAssessment: 'Low',
+      clientNotes: ''
+    });
+  };
 
   return (
     <div className="max-w-7xl mx-auto space-y-6 pb-20 font-sans text-stone-800">
@@ -153,7 +168,7 @@ export default function ClientRosterWithSessionLogs() {
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white p-6 rounded-[2.5rem] border border-stone-200/80 shadow-sm">
         <div>
           <h1 className="text-xl font-black text-stone-900 tracking-tight">Client Roster</h1>
-          <p className="text-xs text-stone-500 font-medium mt-0.5">Manage clients, view comprehensive profiles, and access post-session logs.</p>
+          <p className="text-xs text-stone-500 font-medium mt-0.5">Manage clients, view comprehensive profiles, and log session notes.</p>
         </div>
 
         <div className="flex items-center gap-3 w-full sm:w-auto">
@@ -213,12 +228,11 @@ export default function ClientRosterWithSessionLogs() {
         ))}
       </div>
 
-      {/* CLIENT PROFILE MODAL WITH POST-SESSION LOGS MAPPING */}
-      {selectedClient && !selectedSessionNote && (
+      {/* CLIENT PROFILE MODAL */}
+      {selectedClient && !selectedSessionNote && !isAddingSession && (
         <div className="fixed inset-0 bg-stone-900/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 overflow-y-auto">
           <div className="bg-white rounded-[2.5rem] border border-stone-200 max-w-4xl w-full max-h-[90vh] overflow-y-auto shadow-2xl p-6 sm:p-8 space-y-6">
             
-            {/* Modal Header */}
             <div className="flex items-start justify-between pb-6 border-b border-stone-100">
               <div className="flex items-center gap-3">
                 <div className="h-12 w-12 rounded-2xl bg-[#237A88]/10 text-[#237A88] flex items-center justify-center font-black text-base border border-[#237A88]/20">
@@ -242,75 +256,41 @@ export default function ClientRosterWithSessionLogs() {
               </button>
             </div>
 
-            {/* Intake & Consent Pills */}
-            <div className="flex items-center gap-3 text-xs">
-              <span className={`px-3 py-1.5 rounded-xl font-bold flex items-center gap-1.5 ${selectedClient.intakeFilled ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-stone-50 text-stone-500'}`}>
-                <CheckCircle2 size={14} /> Intake Filled
-              </span>
-              <span className={`px-3 py-1.5 rounded-xl font-bold flex items-center gap-1.5 ${selectedClient.consentFilled ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-stone-50 text-stone-500'}`}>
-                <CheckCircle2 size={14} /> Consent Filled
-              </span>
+            {/* Sub-tabs & Action Control */}
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-stone-100 pb-3">
+              <div className="flex items-center gap-2">
+                <button 
+                  onClick={() => setActiveTab('therapyJourney')}
+                  className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${activeTab === 'therapyJourney' ? 'bg-[#237A88] text-white shadow-md' : 'text-stone-600 hover:bg-stone-50'}`}
+                >
+                  Therapy Journey
+                </button>
+                <button 
+                  onClick={() => setActiveTab('billing')}
+                  className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${activeTab === 'billing' ? 'bg-[#237A88] text-white shadow-md' : 'text-stone-600 hover:bg-stone-50'}`}
+                >
+                  Billing
+                </button>
+              </div>
+
+              {activeTab === 'therapyJourney' && (
+                <button
+                  onClick={() => setIsAddingSession(true)}
+                  className="flex items-center gap-1.5 px-4 py-2 bg-[#237A88] text-white rounded-xl text-xs font-bold hover:bg-[#1b616d] transition-all cursor-pointer shadow-sm"
+                >
+                  <Plus size={14} />
+                  <span>New Session Note</span>
+                </button>
+              )}
             </div>
 
-            {/* Profile Sub-tabs */}
-            <div className="flex items-center gap-2 border-b border-stone-100 pb-3">
-              <button 
-                onClick={() => setActiveTab('therapyJourney')}
-                className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${activeTab === 'therapyJourney' ? 'bg-[#237A88] text-white shadow-md' : 'text-stone-600 hover:bg-stone-50'}`}
-              >
-                Therapy Journey
-              </button>
-              <button 
-                onClick={() => setActiveTab('billing')}
-                className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${activeTab === 'billing' ? 'bg-[#237A88] text-white shadow-md' : 'text-stone-600 hover:bg-stone-50'}`}
-              >
-                Billing
-              </button>
-              <button 
-                onClick={() => setActiveTab('followUps')}
-                className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${activeTab === 'followUps' ? 'bg-[#237A88] text-white shadow-md' : 'text-stone-600 hover:bg-stone-50'}`}
-              >
-                Follow Ups
-              </button>
-            </div>
-
-            {/* Tab 1: Therapy Journey & Session Logs Mapping */}
             {activeTab === 'therapyJourney' && (
               <div className="space-y-6">
-                <div className="space-y-2 bg-stone-50 p-5 rounded-2xl border border-stone-200/60">
-                  <h3 className="text-xs font-black uppercase tracking-wider text-[#237A88]">Case Summary</h3>
-                  <p className="text-xs font-medium text-stone-700 leading-relaxed">{selectedClient.caseSummary}</p>
-                </div>
-
-                {/* Session Tracker */}
-                <div className="space-y-3 bg-stone-50 p-5 rounded-2xl border border-stone-200/60">
-                  <h3 className="text-xs font-black uppercase tracking-wider text-[#237A88]">Session Tracker</h3>
-                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
-                    <div className="bg-white p-3 rounded-xl border border-stone-200">
-                      <div className="text-base font-black text-[#237A88]">{selectedClient.completedSessions}</div>
-                      <div className="text-[10px] text-stone-400 font-bold uppercase">Completed</div>
-                    </div>
-                    <div className="bg-white p-3 rounded-xl border border-stone-200">
-                      <div className="text-base font-black text-amber-600">{selectedClient.upcomingSessions}</div>
-                      <div className="text-[10px] text-stone-400 font-bold uppercase">Upcoming</div>
-                    </div>
-                    <div className="bg-white p-3 rounded-xl border border-stone-200">
-                      <div className="text-base font-black text-rose-600">{selectedClient.cancelledSessions}</div>
-                      <div className="text-[10px] text-stone-400 font-bold uppercase">Cancelled</div>
-                    </div>
-                    <div className="bg-white p-3 rounded-xl border border-stone-200">
-                      <div className="text-base font-black text-stone-800">{selectedClient.totalSessions}</div>
-                      <div className="text-[10px] text-stone-400 font-bold uppercase">Total</div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Session History & Notes Link */}
                 <div className="space-y-3">
                   <h3 className="text-xs font-black uppercase tracking-wider text-stone-500">Session History & Post-Session Logs</h3>
                   {selectedClient.sessionHistory.length === 0 ? (
                     <div className="text-center py-8 text-stone-400 text-xs font-medium bg-stone-50 rounded-2xl border border-stone-200">
-                      No completed sessions or post-session logs yet.
+                      No logs added yet. Click &quot;New Session Note&quot; above to log your first session.
                     </div>
                   ) : (
                     <div className="space-y-3">
@@ -340,15 +320,173 @@ export default function ClientRosterWithSessionLogs() {
 
             {activeTab === 'billing' && (
               <div className="py-12 text-center text-xs text-stone-500 font-medium">
-                Billing and payment records for {selectedClient.name}.
+                Billing records for {selectedClient.name}.
               </div>
             )}
 
-            {activeTab === 'followUps' && (
-              <div className="py-12 text-center text-xs text-stone-500 font-medium">
-                Follow-up automation settings for {selectedClient.name}.
+          </div>
+        </div>
+      )}
+
+      {/* NEW SESSION NOTE FORM MODAL */}
+      {isAddingSession && (
+        <div className="fixed inset-0 bg-stone-900/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 overflow-y-auto">
+          <div className="bg-white rounded-[2.5rem] border border-stone-200 max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl p-6 sm:p-8 space-y-6">
+            
+            <div className="flex items-center justify-between pb-4 border-b border-stone-100">
+              <div className="flex items-center gap-3">
+                <div className="p-3 bg-[#237A88]/10 text-[#237A88] rounded-2xl">
+                  <Plus size={18} />
+                </div>
+                <div>
+                  <h2 className="text-sm font-black text-stone-900">Add New Session Note</h2>
+                  <p className="text-[11px] text-stone-500 font-medium">For {selectedClient?.name}</p>
+                </div>
               </div>
-            )}
+              <button 
+                onClick={() => setIsAddingSession(false)}
+                className="p-2 text-stone-400 hover:text-stone-600 rounded-xl bg-stone-50 cursor-pointer"
+              >
+                <X size={18} />
+              </button>
+            </div>
+
+            <form onSubmit={handleSaveNewSession} className="space-y-4 text-xs font-bold text-stone-700">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div>
+                  <label className="block mb-1 text-stone-500 uppercase text-[10px]">Session Name</label>
+                  <input
+                    type="text"
+                    required
+                    placeholder="e.g. Session 1"
+                    value={newNoteData.sessionNumber}
+                    onChange={(e) => setNewNoteData({...newNoteData, sessionNumber: e.target.value})}
+                    className="w-full px-3 py-2 bg-stone-50 border border-stone-200 rounded-xl outline-none focus:border-[#237A88]"
+                  />
+                </div>
+                <div>
+                  <label className="block mb-1 text-stone-500 uppercase text-[10px]">Date</label>
+                  <input
+                    type="text"
+                    required
+                    placeholder="e.g. 18 Aug"
+                    value={newNoteData.date}
+                    onChange={(e) => setNewNoteData({...newNoteData, date: e.target.value})}
+                    className="w-full px-3 py-2 bg-stone-50 border border-stone-200 rounded-xl outline-none focus:border-[#237A88]"
+                  />
+                </div>
+                <div>
+                  <label className="block mb-1 text-stone-500 uppercase text-[10px]">Time</label>
+                  <input
+                    type="text"
+                    required
+                    placeholder="e.g. 19:00"
+                    value={newNoteData.time}
+                    onChange={(e) => setNewNoteData({...newNoteData, time: e.target.value})}
+                    className="w-full px-3 py-2 bg-stone-50 border border-stone-200 rounded-xl outline-none focus:border-[#237A88]"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block mb-1 text-stone-500 uppercase text-[10px]">Presenting Issues (Comma separated)</label>
+                <input
+                  type="text"
+                  placeholder="e.g. Procrastination, Anxiety, Sleep disturbance"
+                  value={newNoteData.presenting}
+                  onChange={(e) => setNewNoteData({...newNoteData, presenting: e.target.value})}
+                  className="w-full px-3 py-2 bg-stone-50 border border-stone-200 rounded-xl outline-none focus:border-[#237A88]"
+                />
+              </div>
+
+              <div>
+                <label className="block mb-1 text-stone-500 uppercase text-[10px]">Session Focus & Discussion Summary</label>
+                <textarea
+                  rows="3"
+                  required
+                  placeholder="Detail the core insights and discussion points..."
+                  value={newNoteData.sessionFocus}
+                  onChange={(e) => setNewNoteData({...newNoteData, sessionFocus: e.target.value})}
+                  className="w-full px-3 py-2 bg-stone-50 border border-stone-200 rounded-xl outline-none focus:border-[#237A88] resize-none"
+                />
+              </div>
+
+              <div>
+                <label className="block mb-1 text-stone-500 uppercase text-[10px]">Treatment Plan Goals (Comma separated)</label>
+                <input
+                  type="text"
+                  placeholder="e.g. CBT reframing, Behavioural activation"
+                  value={newNoteData.treatmentPlan}
+                  onChange={(e) => setNewNoteData({...newNoteData, treatmentPlan: e.target.value})}
+                  className="w-full px-3 py-2 bg-stone-50 border border-stone-200 rounded-xl outline-none focus:border-[#237A88]"
+                />
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div>
+                  <label className="block mb-1 text-stone-500 uppercase text-[10px]">Intervention</label>
+                  <input
+                    type="text"
+                    placeholder="e.g. PMR, Discussion"
+                    value={newNoteData.intervention}
+                    onChange={(e) => setNewNoteData({...newNoteData, intervention: e.target.value})}
+                    className="w-full px-3 py-2 bg-stone-50 border border-stone-200 rounded-xl outline-none focus:border-[#237A88]"
+                  />
+                </div>
+                <div>
+                  <label className="block mb-1 text-stone-500 uppercase text-[10px]">Progress</label>
+                  <select
+                    value={newNoteData.progress}
+                    onChange={(e) => setNewNoteData({...newNoteData, progress: e.target.value})}
+                    className="w-full px-3 py-2 bg-stone-50 border border-stone-200 rounded-xl outline-none focus:border-[#237A88]"
+                  >
+                    <option value="Initial">Initial</option>
+                    <option value="Stable">Stable</option>
+                    <option value="Improved">Improved</option>
+                    <option value="Challenged">Challenged</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block mb-1 text-stone-500 uppercase text-[10px]">Risk Assessment</label>
+                  <select
+                    value={newNoteData.riskAssessment}
+                    onChange={(e) => setNewNoteData({...newNoteData, riskAssessment: e.target.value})}
+                    className="w-full px-3 py-2 bg-stone-50 border border-stone-200 rounded-xl outline-none focus:border-[#237A88]"
+                  >
+                    <option value="Low">Low</option>
+                    <option value="Moderate">Moderate</option>
+                    <option value="High">High</option>
+                  </select>
+                </div>
+              </div>
+
+              <div>
+                <label className="block mb-1 text-stone-500 uppercase text-[10px]">Client Takeaways & Homework</label>
+                <textarea
+                  rows="2"
+                  placeholder="Assignments or notes for the client..."
+                  value={newNoteData.clientNotes}
+                  onChange={(e) => setNewNoteData({...newNoteData, clientNotes: e.target.value})}
+                  className="w-full px-3 py-2 bg-stone-50 border border-stone-200 rounded-xl outline-none focus:border-[#237A88] resize-none"
+                />
+              </div>
+
+              <div className="pt-4 border-t border-stone-100 flex justify-end gap-3">
+                <button
+                  type="button"
+                  onClick={() => setIsAddingSession(false)}
+                  className="px-5 py-2.5 bg-stone-100 text-stone-600 rounded-xl text-xs font-bold cursor-pointer"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-6 py-2.5 bg-[#237A88] text-white rounded-xl text-xs font-bold shadow-md cursor-pointer hover:bg-[#1b616d]"
+                >
+                  Save & Push to Log
+                </button>
+              </div>
+            </form>
 
           </div>
         </div>
@@ -377,7 +515,6 @@ export default function ClientRosterWithSessionLogs() {
               </button>
             </div>
 
-            {/* Note Sections */}
             <div className="space-y-6 text-xs">
               <div className="bg-stone-50 p-5 rounded-2xl border border-stone-200/60 space-y-2">
                 <h3 className="font-black uppercase tracking-wider text-[#237A88]">Presenting / Clinical Presentation</h3>
