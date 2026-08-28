@@ -7,11 +7,9 @@ import {
   FileText, 
   CheckSquare, 
   Settings, 
-  Plus, 
   LogOut, 
   Menu,
   X,
-  Sparkles,
   Notebook
 } from 'lucide-react';
 
@@ -134,25 +132,7 @@ export default function Layout() {
             >
               <Menu size={20} />
             </button>
-            
-            <div className="flex items-center gap-2">
-              <span className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#237A88]/10 text-[#237A88] text-xs font-semibold">
-                <Sparkles size={13} />
-                <span>Practitioner Workspace</span>
-              </span>
-            </div>
-          </div>
 
-          <div className="flex items-center gap-4">
-            {/* Quick Action Button - Navigates directly to Post Session Activities wizard */}
-            <button
-              onClick={() => navigate('/post-session-activities')}
-              className="flex items-center gap-2 bg-[#237A88] hover:bg-[#1C646F] text-white px-4 py-2 rounded-full text-xs font-semibold transition-all shadow-md shadow-[#237A88]/20"
-            >
-              <Plus className="h-4 w-4" />
-              <span className="hidden sm:inline">New Progress Note</span>
-              <span className="sm:hidden">Note</span>
-            </button>
 
             {/* Vertical Divider */}
             <div className="h-6 w-[1px] bg-stone-200" />
