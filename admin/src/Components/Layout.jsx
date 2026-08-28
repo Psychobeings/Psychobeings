@@ -161,8 +161,8 @@ export default function Layout() {
                 PB
               </div>
               <div className="hidden sm:block text-left">
-                <p className="text-xs font-bold text-stone-900 leading-none">Practitioner</p>
-                <p className="text-[10px] text-stone-500 mt-1 font-medium">Psychobeings Practice</p>
+                <p className="text-xs font-bold text-stone-900 leading-none">Psychobeings Team</p>
+                <p className="text-[10px] text-stone-500 mt-1 font-medium">Practitioner Workspace</p>
               </div>
             </div>
           </div>
