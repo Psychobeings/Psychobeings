@@ -53,8 +53,8 @@ export default function App() {
           {/* Tasks & Worksheets primary admin dashboard view */}
           <Route path="tasks-worksheets" element={<TasksAndWorksheets />} />
 
-          {/* Corrected Nested Route for Post Session Activities */}
-          <Route path="session-activities" element={<PostSessionActivities />} />
+          {/* Updated Nested Route matching Layout sidebar path */}
+          <Route path="post-session-activities" element={<PostSessionActivities />} />
 
           <Route path="settings" element={<div>Settings Page</div>} />
         </Route>
