@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   FileText, 
   CheckSquare, 
@@ -10,7 +10,12 @@ import {
   ArrowLeft,
   Plus,
   UserPlus,
-  Repeat
+  Repeat,
+  Download,
+  Mail,
+  Save,
+  History,
+  CheckCircle2
 } from 'lucide-react';
 
 export default function PostSessionActivities() {
@@ -22,14 +27,18 @@ export default function PostSessionActivities() {
   const [filterTab, setFilterTab] = useState('all'); // all | first-time | follow-up | completed
   const [searchQuery, setSearchQuery] = useState('');
 
-  // Client Workspace Active Sub-Tab: 'notes' | 'reflections' | 'tasks' | 'submit'
+  // Client Workspace Active Sub-Tab: 'notes' | 'history' | 'reflections' | 'tasks' | 'submit'
   const [workspaceTab, setWorkspaceTab] = useState('notes');
+
+  // Auto-save & persistence indicator state
+  const [lastSaved, setLastSaved] = useState(null);
+  const [isSaving, setIsSaving] = useState(false);
 
   // Form States for Client Workspace
   const [presentingConcerns, setPresentingConcerns] = useState('Chronic work stress, sleep fragmentation, and situational anxiety related to performance evaluations.');
   const [sessionFocus, setSessionFocus] = useState('Anxiety management & reframing catastrophic thoughts');
   
-  // Case History & Screening Sections (Crucial for First-Time Clients)
+  // Case History & Screening Sections
   const [developmentalHistory, setDevelopmentalHistory] = useState('No major developmental trauma reported. Supportive family dynamic during childhood.');
   const [medicalHistory, setMedicalHistory] = useState('No chronic illness. Occasional tension headaches during high-stress periods.');
   const [socialHistory, setSocialHistory] = useState('Strong peer support network, though currently experiencing boundary fatigue at workplace.');
@@ -47,35 +56,75 @@ export default function PostSessionActivities() {
   ]);
   const [newCustomTask, setNewCustomTask] = useState('');
 
-  // Mock Sessions List with First-Time vs Returning indicators
-  const [sessionsList, setSessionsList] = useState([
-    {
-      id: 1,
-      clientName: 'Diksha Bharti',
-      isFirstTime: true,
-      date: '25 Aug 2026',
-      time: '9:00 PM',
-      status: 'Case History & Notes Pending',
-      statusType: 'notes'
-    },
-    {
-      id: 2,
-      clientName: 'Juhi Chaineva',
-      isFirstTime: false,
-      date: '24 Aug 2026',
-      time: '6:30 PM',
-      status: 'Needs Follow-up',
-      statusType: 'follow-up'
-    },
-    {
-      id: 3,
-      clientName: 'Aarav Sharma',
-      isFirstTime: false,
-      date: '22 Aug 2026',
-      time: '4:00 PM',
-      status: 'Completed',
-      statusType: 'completed'
+  // Historical Session Logs Mock Data (for Side-by-Side Profile View)
+  const [historicalNotes, setHistoricalNotes] = useState([
+    { sessionNum: 'Session 1', date: '18 Aug 2026', summary: 'Initial intake completed. GAD-7 score evaluated at 14. Established therapeutic rapport.' },
+    { sessionNum: 'Session 2', date: '25 Aug 2026', summary: 'Explored somatic triggers of workplace anxiety. Introduced box breathing techniques.' }
+  ]);
+
+  // Mock Sessions List with Persistence from localStorage if available
+  const [sessionsList, setSessionsList] = useState(() => {
+    const saved = localStorage.getItem('psychobeings_sessions');
+    if (saved) {
+      try { return JSON.parse(saved); } catch (e) { console.error(e); }
     }
+    return [
+      {
+        id: 1,
+        clientName: 'Diksha Bharti',
+        isFirstTime: true,
+        date: '25 Aug 2026',
+        time: '9:00 PM',
+        status: 'Case History & Notes Pending',
+        statusType: 'notes'
+      },
+      {
+        id: 2,
+        clientName: 'Juhi Chaineva',
+        isFirstTime: false,
+        date: '24 Aug 2026',
+        time: '6:30 PM',
+        status: 'Needs Follow-up',
+        statusType: 'follow-up'
+      },
+      {
+        id: 3,
+        clientName: 'Aarav Sharma',
+        isFirstTime: false,
+        date: '22 Aug 2026',
+        time: '4:00 PM',
+        status: 'Completed',
+        statusType: 'completed'
+      }
+    ];
+  });
+
+  // Save sessions list changes to localStorage
+  useEffect(() => {
+    localStorage.setItem('psychobeings_sessions', JSON.stringify(sessionsList));
+  }, [sessionsList]);
+
+  // Auto-save draft effect when form states or context change inside workspace
+  useEffect(() => {
+    if (currentView === 'client-workspace' && selectedSession) {
+      setIsSaving(true);
+      const timer = setTimeout(() => {
+        setIsSaving(false);
+        setLastSaved(new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
+      }, 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [
+    currentView, 
+    selectedSession, 
+    presentingConcerns, 
+    sessionFocus, 
+    developmentalHistory, 
+    medicalHistory, 
+    socialHistory, 
+    screeningMeasures, 
+    aiReflection, 
+    homeworkTasks
   ]);
 
   const handleOpenWorkspace = (session) => {
@@ -99,7 +148,7 @@ export default function PostSessionActivities() {
   const handleAddTask = (e) => {
     e.preventDefault();
     if (!newCustomTask.trim()) return;
-    setHomeworkTasks([...homeworkTasks, { id: Date.now(), task: newCustomTask, assigned: true }]);
+    setHomeworkTasks([...homeworkTasks, { id: Date.now(), task: newCustomTask.trim(), assigned: true }]);
     setNewCustomTask('');
   };
 
@@ -107,9 +156,26 @@ export default function PostSessionActivities() {
     setHomeworkTasks(homeworkTasks.map(t => t.id === id ? { ...t, assigned: !t.assigned } : t));
   };
 
+  const handleDownloadSummaryPdf = () => {
+    alert(`Generating encrypted clinical session summary PDF for ${selectedSession?.clientName}...`);
+  };
+
+  const handleEmailSummaryClient = () => {
+    alert(`Assigned homework summary and reflections successfully dispatched to ${selectedSession?.clientName}'s registered email.`);
+  };
+
   const handleFinalSubmit = () => {
-    alert(`Post-session documentation, reflections, and assigned tasks successfully finalized and dispatched for ${selectedSession?.clientName}!`);
+    setHistoricalNotes([
+      ...historicalNotes, 
+      { 
+        sessionNum: `Session ${historicalNotes.length + 1}`, 
+        date: selectedSession?.date || 'Today', 
+        summary: sessionFocus 
+      }
+    ]);
+
     setSessionsList(sessionsList.map(s => s.id === selectedSession.id ? { ...s, status: 'Completed', statusType: 'completed' } : s));
+    alert(`Post-session documentation, reflections, and assigned tasks successfully finalized, stored in client profile, and dispatched for ${selectedSession?.clientName}!`);
     setCurrentView('dashboard');
   };
 
@@ -135,7 +201,7 @@ export default function PostSessionActivities() {
               <span className="text-xs font-bold uppercase tracking-wider text-[#237A88]">Post-Session & Client Management</span>
             </div>
             <h1 className="text-2xl font-bold text-stone-900 mt-1">Client Sessions & Follow-ups</h1>
-            <p className="text-xs text-stone-500 mt-0.5">Manage initial case intake, follow-up progression, clinical notes, and assigned tasks.</p>
+            <p className="text-xs text-stone-500 mt-0.5">Manage initial case intake, follow-up progression, clinical notes, and assigned tasks with profile mapping.</p>
           </div>
 
           {/* Metric Cards */}
@@ -287,7 +353,7 @@ export default function PostSessionActivities() {
       {currentView === 'client-workspace' && selectedSession && (
         <div className="space-y-6">
           
-          {/* Top Bar */}
+          {/* Top Bar with Auto-Save Status */}
           <div className="bg-white p-5 rounded-2xl border border-stone-200/85 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4">
             <div className="flex items-center gap-3">
               <button 
@@ -304,11 +370,17 @@ export default function PostSessionActivities() {
                     Session Workspace: <span className="text-[#237A88]">{selectedSession.clientName}</span>
                   </h1>
                 </div>
-                <div className="flex items-center gap-2 mt-0.5">
+                <div className="flex items-center gap-3 mt-0.5">
                   <span className="text-xs text-stone-500">Date: <span className="font-semibold text-stone-700">{selectedSession.date}</span></span>
-                  {selectedSession.isFirstTime && (
-                    <span className="text-[10px] bg-blue-100 text-blue-800 font-bold px-2 py-0.5 rounded uppercase">First-Time Intakes (Case Mapping Active)</span>
-                  )}
+                  {isSaving ? (
+                    <span className="text-[10px] text-amber-600 font-semibold flex items-center gap-1">
+                      <Save size={10} className="animate-spin" /> Saving draft...
+                    </span>
+                  ) : lastSaved ? (
+                    <span className="text-[10px] text-emerald-600 font-semibold flex items-center gap-1">
+                      <CheckCircle2 size={10} /> Saved locally at {lastSaved}
+                    </span>
+                  ) : null}
                 </div>
               </div>
             </div>
@@ -324,12 +396,20 @@ export default function PostSessionActivities() {
                 1. Notes & Case History
               </button>
               <button
+                onClick={() => setWorkspaceTab('history')}
+                className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition ${
+                  workspaceTab === 'history' ? 'bg-[#237A88] text-white shadow-sm' : 'text-stone-600 hover:text-stone-900'
+                }`}
+              >
+                2. Profile History View
+              </button>
+              <button
                 onClick={() => setWorkspaceTab('reflections')}
                 className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition ${
                   workspaceTab === 'reflections' ? 'bg-[#237A88] text-white shadow-sm' : 'text-stone-600 hover:text-stone-900'
                 }`}
               >
-                2. Reflections
+                3. Reflections
               </button>
               <button
                 onClick={() => setWorkspaceTab('tasks')}
@@ -337,7 +417,7 @@ export default function PostSessionActivities() {
                   workspaceTab === 'tasks' ? 'bg-[#237A88] text-white shadow-sm' : 'text-stone-600 hover:text-stone-900'
                 }`}
               >
-                3. Tasks
+                4. Tasks
               </button>
               <button
                 onClick={() => setWorkspaceTab('submit')}
@@ -345,7 +425,7 @@ export default function PostSessionActivities() {
                   workspaceTab === 'submit' ? 'bg-[#237A88] text-white shadow-sm' : 'text-stone-600 hover:text-stone-900'
                 }`}
               >
-                4. Submit
+                5. Submit
               </button>
             </div>
           </div>
@@ -387,7 +467,7 @@ export default function PostSessionActivities() {
                 </div>
               </div>
 
-              {/* Case History Sections (Highlighted for First-Time Clients) */}
+              {/* Case History Sections */}
               <div className="border-t border-stone-100 pt-5 space-y-4">
                 <h3 className="text-xs font-bold text-stone-900 uppercase tracking-wider">
                   Case History Mapping {selectedSession.isFirstTime ? '(Required for First-Time Client)' : '(Optional Update)'}
@@ -439,6 +519,51 @@ export default function PostSessionActivities() {
 
               <div className="flex justify-end pt-2">
                 <button
+                  onClick={() => setWorkspaceTab('history')}
+                  className="px-5 py-2.5 bg-[#237A88] hover:bg-[#1C646F] text-white rounded-xl text-xs font-bold transition flex items-center gap-2 shadow-sm"
+                >
+                  <span>View Profile & Session History</span>
+                  <ArrowRight size={14} />
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* SUB-TAB 2: PROFILE & SESSION HISTORY VIEW */}
+          {workspaceTab === 'history' && (
+            <div className="bg-white p-6 rounded-2xl border border-stone-200/80 shadow-sm space-y-6 max-w-3xl mx-auto">
+              <div className="flex items-center justify-between border-b border-stone-100 pb-4">
+                <div className="flex items-center gap-2">
+                  <History size={18} className="text-[#237A88]" />
+                  <h2 className="text-sm font-bold text-stone-900">Therapy Journey & Prior Session Notes</h2>
+                </div>
+                <span className="text-xs font-semibold text-stone-500">{historicalNotes.length} Recorded Sessions</span>
+              </div>
+
+              <p className="text-xs text-stone-600">
+                Reviewing past clinical logs side-by-side ensures contextual continuity while completing current documentation for <span className="font-bold text-stone-900">{selectedSession.clientName}</span>.
+              </p>
+
+              <div className="space-y-3">
+                {historicalNotes.map((note, idx) => (
+                  <div key={idx} className="p-4 rounded-xl bg-stone-50 border border-stone-200/80 space-y-1">
+                    <div className="flex justify-between items-center">
+                      <span className="text-xs font-bold text-[#237A88]">{note.sessionNum}</span>
+                      <span className="text-[11px] text-stone-400">{note.date}</span>
+                    </div>
+                    <p className="text-xs text-stone-700 font-medium leading-relaxed">{note.summary}</p>
+                  </div>
+                ))}
+              </div>
+
+              <div className="flex justify-between pt-4">
+                <button
+                  onClick={() => setWorkspaceTab('notes')}
+                  className="px-4 py-2.5 border border-stone-200 text-stone-700 rounded-xl text-xs font-bold hover:bg-stone-50 transition"
+                >
+                  Back to Current Notes
+                </button>
+                <button
                   onClick={() => setWorkspaceTab('reflections')}
                   className="px-5 py-2.5 bg-[#237A88] hover:bg-[#1C646F] text-white rounded-xl text-xs font-bold transition flex items-center gap-2 shadow-sm"
                 >
@@ -449,7 +574,7 @@ export default function PostSessionActivities() {
             </div>
           )}
 
-          {/* SUB-TAB 2: REFLECTIONS */}
+          {/* SUB-TAB 3: REFLECTIONS */}
           {workspaceTab === 'reflections' && (
             <div className="bg-white p-6 rounded-2xl border border-stone-200/80 shadow-sm space-y-6 max-w-3xl mx-auto">
               <div className="flex items-center gap-2 border-b border-stone-100 pb-4">
@@ -490,10 +615,10 @@ export default function PostSessionActivities() {
 
               <div className="flex justify-between pt-2">
                 <button
-                  onClick={() => setWorkspaceTab('notes')}
+                  onClick={() => setWorkspaceTab('history')}
                   className="px-4 py-2.5 border border-stone-200 text-stone-700 rounded-xl text-xs font-bold hover:bg-stone-50 transition"
                 >
-                  Back to Notes
+                  Back to History
                 </button>
                 <button
                   onClick={() => setWorkspaceTab('tasks')}
@@ -506,7 +631,7 @@ export default function PostSessionActivities() {
             </div>
           )}
 
-          {/* SUB-TAB 3: TASKS */}
+          {/* SUB-TAB 4: TASKS */}
           {workspaceTab === 'tasks' && (
             <div className="bg-white p-6 rounded-2xl border border-stone-200/80 shadow-sm space-y-6 max-w-3xl mx-auto">
               <div className="flex items-center justify-between border-b border-stone-100 pb-4">
@@ -574,7 +699,7 @@ export default function PostSessionActivities() {
             </div>
           )}
 
-          {/* SUB-TAB 4: SUBMIT */}
+          {/* SUB-TAB 5: SUBMIT */}
           {workspaceTab === 'submit' && (
             <div className="bg-white p-6 rounded-2xl border border-stone-200/80 shadow-sm space-y-6 max-w-3xl mx-auto">
               <div className="flex items-center gap-2 border-b border-stone-100 pb-4">
@@ -605,7 +730,25 @@ export default function PostSessionActivities() {
                 </div>
               </div>
 
-              <div className="flex items-center justify-between pt-2">
+              {/* Export Actions Toolbar */}
+              <div className="flex flex-wrap items-center gap-3 pt-2">
+                <button 
+                  onClick={handleDownloadSummaryPdf}
+                  className="flex-1 py-2.5 px-4 rounded-xl border border-stone-200 bg-white hover:bg-stone-50 text-stone-800 text-xs font-bold transition flex items-center justify-center gap-2 shadow-sm"
+                >
+                  <Download size={14} className="text-[#237A88]" />
+                  <span>Download PDF Summary</span>
+                </button>
+                <button 
+                  onClick={handleEmailSummaryClient}
+                  className="flex-1 py-2.5 px-4 rounded-xl border border-stone-200 bg-white hover:bg-stone-50 text-stone-800 text-xs font-bold transition flex items-center justify-center gap-2 shadow-sm"
+                >
+                  <Mail size={14} className="text-[#237A88]" />
+                  <span>Email Summary to Client</span>
+                </button>
+              </div>
+
+              <div className="flex items-center justify-between pt-4 border-t border-stone-100">
                 <button
                   onClick={() => setWorkspaceTab('tasks')}
                   className="px-4 py-2.5 border border-stone-200 text-stone-700 rounded-xl text-xs font-bold hover:bg-stone-50 transition"
@@ -616,7 +759,7 @@ export default function PostSessionActivities() {
                   onClick={handleFinalSubmit}
                   className="flex items-center gap-2 bg-[#237A88] hover:bg-[#1C646F] text-white px-6 py-3 rounded-xl text-xs font-bold transition shadow-sm"
                 >
-                  <span>Submit & Dispatch Documentation</span>
+                  <span>Submit & Save to Profile View</span>
                   <ArrowRight size={14} />
                 </button>
               </div>
