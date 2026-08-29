@@ -16,10 +16,12 @@ import {
   Trash2,
   SlidersHorizontal,
   LayoutGrid,
-  List
+  List,
+  Edit3,
+  HeartPulse
 } from 'lucide-react';
 
-export default function ClientRosterWithDummyData() {
+export default function ClientRosterWithEditFeature() {
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('All');
   const [riskFilter, setRiskFilter] = useState('All');
@@ -29,8 +31,10 @@ export default function ClientRosterWithDummyData() {
   const [activeTab, setActiveTab] = useState('therapyJourney'); 
   const [selectedSessionNote, setSelectedSessionNote] = useState(null);
   const [isAddingSession, setIsAddingSession] = useState(false);
+  const [isEditingSession, setIsEditingSession] = useState(false);
 
   const [newNoteData, setNewNoteData] = useState({
+    id: '',
     bookingId: '',
     sessionNumber: '',
     date: '',
@@ -44,7 +48,6 @@ export default function ClientRosterWithDummyData() {
     clientNotes: ''
   });
 
-  // Fully randomized dummy data replacing real individual entries
   const [clients, setClients] = useState([
     {
       id: 1,
@@ -56,6 +59,7 @@ export default function ClientRosterWithDummyData() {
       phone: '+1 (555) 234-5678',
       gender: 'Male',
       caseSummary: 'Managing chronic stress related to corporate restructuring and executive leadership pressure.',
+      presentingIssues: ['Executive burnout', 'Imposter syndrome', 'Sleep disruption'],
       completedSessions: 3,
       upcomingSessions: 1,
       cancelledSessions: 0,
@@ -109,6 +113,7 @@ export default function ClientRosterWithDummyData() {
       phone: '+1 (555) 876-5432',
       gender: 'Female',
       caseSummary: 'Focusing on social anxiety management, interpersonal assertiveness, and cognitive restructuring.',
+      presentingIssues: ['Social anxiety', 'Public speaking dread', 'Anticipatory panic'],
       completedSessions: 6,
       upcomingSessions: 1,
       cancelledSessions: 1,
@@ -151,112 +156,6 @@ export default function ClientRosterWithDummyData() {
           }
         }
       ]
-    },
-    {
-      id: 3,
-      name: 'Marcus Chen',
-      status: 'Active',
-      risk: 'Low',
-      initials: 'MC',
-      email: 'marcus.chen.demo@example.com',
-      phone: '+1 (555) 345-6789',
-      gender: 'Male',
-      caseSummary: 'Addressing mild depressive symptoms, sleep disturbance routines, and emotional regulation.',
-      completedSessions: 2,
-      upcomingSessions: 2,
-      cancelledSessions: 0,
-      totalSessions: 4,
-      suggestedSessions: 8,
-      bookingLogs: [
-        {
-          bookingId: 'bk_d05',
-          date: '20 Aug 2026',
-          time: '11:00 - 12:00',
-          mode: 'Online Video',
-          status: 'Completed',
-          notesLinked: 'mc_s1'
-        },
-        {
-          bookingId: 'bk_d06',
-          date: '04 Sep 2026',
-          time: '11:00 - 12:00',
-          mode: 'Online Video',
-          status: 'Upcoming',
-          notesLinked: null
-        }
-      ],
-      sessionHistory: [
-        {
-          id: 'mc_s1',
-          bookingId: 'bk_d05',
-          sessionNumber: 'Session 2',
-          date: '20 Aug 2026',
-          time: '11:00',
-          summary: 'Established strict sleep hygiene guidelines and evening winding-down routines.',
-          details: {
-            presenting: ['Sleep hygiene issues', 'Low mood'],
-            sessionFocus: 'Behavioral activation scheduling.',
-            treatmentPlan: ['Sleep restriction therapy', 'Behavioral activation'],
-            intervention: 'Routine Mapping',
-            progress: 'Stable',
-            riskAssessment: 'Low',
-            clientNotes: 'Avoid screen usage 45 minutes prior to bedtime.'
-          }
-        }
-      ]
-    },
-    {
-      id: 4,
-      name: 'Sophia Sterling',
-      status: 'Active',
-      risk: 'High',
-      initials: 'SS',
-      email: 'sophia.sterling.demo@example.com',
-      phone: '+1 (555) 987-6543',
-      gender: 'Female',
-      caseSummary: 'Intensive therapy supporting crisis stabilization, emotion regulation, and interpersonal distress.',
-      completedSessions: 7,
-      upcomingSessions: 1,
-      cancelledSessions: 2,
-      totalSessions: 10,
-      suggestedSessions: 16,
-      bookingLogs: [
-        {
-          bookingId: 'bk_d07',
-          date: '22 Aug 2026',
-          time: '10:00 - 11:00',
-          mode: 'Online Video',
-          status: 'Completed',
-          notesLinked: 'ss_s1'
-        },
-        {
-          bookingId: 'bk_d08',
-          date: '05 Sep 2026',
-          time: '10:00 - 11:00',
-          mode: 'Online Video',
-          status: 'Upcoming',
-          notesLinked: null
-        }
-      ],
-      sessionHistory: [
-        {
-          id: 'ss_s1',
-          bookingId: 'bk_d07',
-          sessionNumber: 'Session 7',
-          date: '22 Aug 2026',
-          time: '10:00',
-          summary: 'Crisis response mapping and distress tolerance drill practice.',
-          details: {
-            presenting: ['Intense emotional reactivity', 'Relationship conflict'],
-            sessionFocus: 'DBT distress tolerance techniques (TIPP skills).',
-            treatmentPlan: ['Crisis intervention plan', 'Emotional regulation'],
-            intervention: 'DBT Distress Tolerance',
-            progress: 'Challenged',
-            riskAssessment: 'High',
-            clientNotes: 'Review emergency contact network and use ice-water immersion for acute panic.'
-          }
-        }
-      ]
     }
   ]);
 
@@ -283,31 +182,58 @@ export default function ClientRosterWithDummyData() {
     e.preventDefault();
     if (!selectedClient) return;
 
-    const createdSession = {
-      id: 's_' + Date.now(),
-      bookingId: newNoteData.bookingId || 'bk_manual',
-      sessionNumber: newNoteData.sessionNumber || `Session ${selectedClient.sessionHistory.length + 1}`,
-      date: newNoteData.date || 'Today',
-      time: newNoteData.time || '18:00',
-      summary: newNoteData.sessionFocus || 'Session completed successfully.',
-      details: {
-        presenting: newNoteData.presenting ? newNoteData.presenting.split(',') : ['General counseling'],
-        sessionFocus: newNoteData.sessionFocus,
-        treatmentPlan: newNoteData.treatmentPlan ? newNoteData.treatmentPlan.split(',') : ['Targeted goals'],
-        intervention: newNoteData.intervention,
-        progress: newNoteData.progress,
-        riskAssessment: newNoteData.riskAssessment,
-        clientNotes: newNoteData.clientNotes
-      }
-    };
+    const presentingArray = newNoteData.presenting 
+      ? newNoteData.presenting.split(',').map(item => item.trim()) 
+      : selectedClient.presentingIssues;
 
     const updatedClients = clients.map(client => {
       if (client.id === selectedClient.id) {
-        const updatedHistory = [createdSession, ...client.sessionHistory];
-        
+        let updatedHistory = [...client.sessionHistory];
+
+        if (isEditingSession) {
+          updatedHistory = updatedHistory.map(s => {
+            if (s.id === newNoteData.id) {
+              return {
+                ...s,
+                sessionNumber: newNoteData.sessionNumber,
+                summary: newNoteData.sessionFocus,
+                details: {
+                  ...s.details,
+                  presenting: presentingArray,
+                  sessionFocus: newNoteData.sessionFocus,
+                  intervention: newNoteData.intervention,
+                  progress: newNoteData.progress,
+                  riskAssessment: newNoteData.riskAssessment,
+                  clientNotes: newNoteData.clientNotes
+                }
+              };
+            }
+            return s;
+          });
+        } else {
+          const createdSession = {
+            id: 's_' + Date.now(),
+            bookingId: newNoteData.bookingId || 'bk_manual',
+            sessionNumber: newNoteData.sessionNumber || `Session ${client.sessionHistory.length + 1}`,
+            date: newNoteData.date || 'Today',
+            time: newNoteData.time || '18:00',
+            summary: newNoteData.sessionFocus || 'Session completed successfully.',
+            details: {
+              presenting: presentingArray,
+              sessionFocus: newNoteData.sessionFocus,
+              treatmentPlan: ['Targeted therapeutic goals'],
+              intervention: newNoteData.intervention,
+              progress: newNoteData.progress,
+              riskAssessment: newNoteData.riskAssessment,
+              clientNotes: newNoteData.clientNotes
+            }
+          };
+          updatedHistory = [createdSession, ...updatedHistory];
+        }
+
         const updatedBookings = client.bookingLogs.map(b => {
           if (b.bookingId === newNoteData.bookingId) {
-            return { ...b, status: 'Completed', notesLinked: createdSession.id };
+            return { ...b, status: 'Completed' };
           }
           return b;
         });
@@ -316,8 +242,11 @@ export default function ClientRosterWithDummyData() {
         const upcomingCount = updatedBookings.filter(b => b.status === 'Upcoming').length;
         const cancelledCount = updatedBookings.filter(b => b.status === 'Cancelled').length;
 
+        const mergedIssues = Array.from(new Set([...client.presentingIssues, ...presentingArray]));
+
         const updatedClientObj = {
           ...client,
+          presentingIssues: mergedIssues,
           bookingLogs: updatedBookings,
           sessionHistory: updatedHistory,
           completedSessions: completedCount,
@@ -326,6 +255,7 @@ export default function ClientRosterWithDummyData() {
           totalSessions: updatedBookings.length,
           risk: newNoteData.riskAssessment
         };
+
         setSelectedClient(updatedClientObj);
         return updatedClientObj;
       }
@@ -334,7 +264,9 @@ export default function ClientRosterWithDummyData() {
 
     setClients(updatedClients);
     setIsAddingSession(false);
+    setIsEditingSession(false);
     setNewNoteData({
+      id: '',
       bookingId: '',
       sessionNumber: '',
       date: '',
@@ -349,600 +281,729 @@ export default function ClientRosterWithDummyData() {
     });
   };
 
+  const handleOpenEditModal = (session) => {
+    setIsEditingSession(true);
+    setNewNoteData({
+      id: session.id,
+      bookingId: session.bookingId,
+      sessionNumber: session.sessionNumber,
+      date: session.date,
+      time: session.time,
+      presenting: session.details.presenting.join(', '),
+      sessionFocus: session.details.sessionFocus,
+      treatmentPlan: session.details.treatmentPlan.join(', '),
+      intervention: session.details.intervention,
+      progress: session.details.progress,
+      riskAssessment: session.details.riskAssessment,
+      clientNotes: session.details.clientNotes
+    });
+    setSelectedSessionNote(null);
+    setIsAddingSession(true);
+  };
+
   const getCompletionPercentage = (completed, suggested) => {
     if (!suggested || suggested === 0) return 0;
     return Math.min(Math.round((completed / suggested) * 100), 100);
   };
 
   return (
-    <div className="max-w-7xl mx-auto space-y-6 pb-20 font-sans text-stone-800">
-      
-      {/* Header matching Psychobeings branding */}
-      <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 bg-white p-6 sm:p-8 rounded-[2.5rem] border border-stone-200/85 shadow-sm relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-96 h-96 bg-[#18757C]/5 rounded-full blur-3xl pointer-events-none" />
-        <div className="relative z-10 space-y-1">
-          <span className="px-3 py-1 bg-[#18757C]/10 text-[#18757C] text-[10px] font-extrabold rounded-full inline-flex items-center gap-1.5">
-            <Sparkles size={11} /> Psychobeings Dummy Demo Portal
-          </span>
-          <h1 className="text-xl sm:text-2xl font-black text-stone-900 tracking-tight">Client Roster & Session Manager</h1>
-          <p className="text-xs text-stone-500 font-medium">Fully randomized sample data for demonstration and testing purposes.</p>
-        </div>
-
-        <div className="flex items-center gap-2 relative z-10">
-          <div className="flex items-center bg-stone-50 p-1 rounded-2xl border border-stone-200/60">
-            <button
-              onClick={() => setViewMode('grid')}
-              className={`p-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${viewMode === 'grid' ? 'bg-[#18757C] text-white shadow-sm' : 'text-stone-500 hover:text-stone-900'}`}
-              title="Grid View"
-            >
-              <LayoutGrid size={15} />
-            </button>
-            <button
-              onClick={() => setViewMode('list')}
-              className={`p-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${viewMode === 'list' ? 'bg-[#18757C] text-white shadow-sm' : 'text-stone-500 hover:text-stone-900'}`}
-              title="List View"
-            >
-              <List size={15} />
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {/* Control Bar */}
-      <div className="bg-white p-4 sm:p-5 rounded-[2rem] border border-stone-200/85 shadow-sm flex flex-col md:flex-row items-center justify-between gap-4">
-        <div className="relative w-full md:w-80">
-          <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-stone-400" />
-          <input
-            type="text"
-            placeholder="Search sample clients..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pl-11 pr-4 py-3 bg-stone-50 border border-stone-200 rounded-2xl text-xs font-bold outline-none focus:border-[#18757C] transition-all shadow-inner"
-          />
-        </div>
-
-        <div className="flex flex-wrap items-center gap-3 w-full md:w-auto">
-          <div className="flex items-center gap-2 bg-stone-50 px-3.5 py-2.5 rounded-2xl border border-stone-200/80">
-            <Filter size={14} className="text-stone-400" />
-            <span className="text-[11px] font-bold text-stone-500 uppercase">Status:</span>
-            <select
-              value={statusFilter}
-              onChange={(e) => setStatusFilter(e.target.value)}
-              className="bg-transparent text-xs font-black text-stone-800 outline-none cursor-pointer"
-            >
-              <option value="All">All</option>
-              <option value="Active">Active</option>
-              <option value="Inactive">Inactive</option>
-            </select>
-          </div>
-
-          <div className="flex items-center gap-2 bg-stone-50 px-3.5 py-2.5 rounded-2xl border border-stone-200/80">
-            <SlidersHorizontal size={14} className="text-stone-400" />
-            <span className="text-[11px] font-bold text-stone-500 uppercase">Risk:</span>
-            <select
-              value={riskFilter}
-              onChange={(e) => setRiskFilter(e.target.value)}
-              className="bg-transparent text-xs font-black text-stone-800 outline-none cursor-pointer"
-            >
-              <option value="All">All</option>
-              <option value="Low">Low</option>
-              <option value="Moderate">Moderate</option>
-              <option value="High">High</option>
-            </select>
-          </div>
-        </div>
-      </div>
-
-      {/* Cards / List Display */}
-      {filteredClients.length === 0 ? (
-        <div className="text-center py-16 bg-white rounded-[2.5rem] border border-stone-200/85 shadow-sm space-y-3">
-          <Filter size={24} className="mx-auto text-stone-400" />
-          <h2 className="text-sm font-black text-stone-800">No matching dummy clients found</h2>
-          <p className="text-xs text-stone-400 font-medium">Try clearing your search query or filters.</p>
-        </div>
-      ) : viewMode === 'grid' ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredClients.map((client) => {
-            const progressPct = getCompletionPercentage(client.completedSessions, client.suggestedSessions);
-            return (
-              <div key={client.id} className="bg-white rounded-[2.5rem] border border-stone-200/85 p-6 shadow-sm flex flex-col justify-between space-y-6 hover:shadow-md transition-all group">
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <div className="h-12 w-12 rounded-2xl bg-gradient-to-br from-[#18757C]/25 to-[#18757C]/10 text-[#18757C] flex items-center justify-center font-black text-sm border border-[#18757C]/20 shadow-sm">
-                        {client.initials}
-                      </div>
-                      <div>
-                        <h2 className="text-sm font-black text-stone-900 group-hover:text-[#18757C] transition-colors">{client.name}</h2>
-                        <p className="text-[11px] text-stone-400 font-medium">{client.email}</p>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-1.5">
-                      <span className="text-[10px] font-extrabold px-2 py-0.5 bg-emerald-50 text-emerald-700 rounded-full border border-emerald-200/50">
-                        {client.status}
-                      </span>
-                      <span className={`text-[10px] font-extrabold px-2 py-0.5 rounded-full border ${
-                        client.risk === 'High' ? 'bg-rose-50 text-rose-700 border-rose-200/60' :
-                        client.risk === 'Moderate' ? 'bg-amber-50 text-amber-700 border-amber-200/60' :
-                        'bg-emerald-50 text-emerald-700 border-emerald-200/50'
-                      }`}>
-                        {client.risk}
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className="space-y-1 text-xs text-stone-500 font-medium pt-1">
-                    <p className="flex items-center gap-2"><span className="text-stone-400 font-bold">📞</span> {client.phone}</p>
-                    <p className="flex items-center gap-2 truncate"><span className="text-stone-400 font-bold">✉️</span> {client.email}</p>
-                  </div>
-
-                  <div className="space-y-1.5 bg-stone-50 p-3.5 rounded-2xl border border-stone-100">
-                    <div className="flex justify-between items-center text-[11px] font-bold">
-                      <span className="text-stone-500 flex items-center gap-1"><TrendingUp size={12} /> Treatment Plan Progress</span>
-                      <span className="text-[#18757C]">{client.completedSessions} / {client.suggestedSessions} Sessions</span>
-                    </div>
-                    <div className="w-full bg-stone-200 h-2 rounded-full overflow-hidden">
-                      <div className="bg-[#18757C] h-full rounded-full transition-all duration-500" style={{ width: `${progressPct}%` }} />
-                    </div>
-                  </div>
-                </div>
-
-                <div className="space-y-2 pt-2 border-t border-stone-100">
-                  <button
-                    onClick={() => { setSelectedClient(client); setSelectedSessionNote(null); }}
-                    className="w-full py-3 bg-[#18757C]/10 hover:bg-[#18757C] text-[#18757C] hover:text-white rounded-2xl text-xs font-bold transition-all text-center cursor-pointer flex items-center justify-center gap-1.5 shadow-sm"
-                  >
-                    <span>View Profile</span>
-                    <ArrowUpRight size={14} />
-                  </button>
-                  <button
-                    onClick={(e) => handleDeleteClient(client.id, e)}
-                    className="w-full py-2.5 bg-rose-50 hover:bg-rose-100 text-rose-600 rounded-2xl text-xs font-bold transition-all text-center cursor-pointer flex items-center justify-center gap-1.5"
-                  >
-                    <Trash2 size={13} />
-                    <span>Delete Client</span>
-                  </button>
-                </div>
+    <div className="min-h-screen bg-[#FBFBFA] text-[#2D3130] font-sans selection:bg-[#E2F1F2] selection:text-[#123E45]">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+        
+        {/* Workspace Banner */}
+        <div className="relative overflow-hidden bg-gradient-to-br from-[#123E45] via-[#1B5D68] to-[#18757C] rounded-[2.5rem] p-8 sm:p-10 text-white shadow-2xl shadow-[#123E45]/15 border border-white/10">
+          <div className="absolute -right-16 -top-16 h-72 w-72 rounded-full bg-white/5 blur-3xl pointer-events-none" />
+          <div className="absolute right-1/3 -bottom-20 h-60 w-60 rounded-full bg-[#88D9E6]/10 blur-2xl pointer-events-none" />
+          
+          <div className="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+            <div className="space-y-3 max-w-2xl">
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 border border-white/15 text-[#E2F1F2] text-xs font-semibold tracking-wide backdrop-blur-md">
+                <Sparkles size={13} className="text-[#88D9E6]" /> Psychobeings Clinical Roster
               </div>
-            );
-          })}
-        </div>
-      ) : (
-        <div className="bg-white rounded-[2.5rem] border border-stone-200/85 overflow-hidden shadow-sm">
-          <div className="divide-y divide-stone-100">
-            {filteredClients.map((client) => (
-              <div key={client.id} className="p-4 sm:p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 hover:bg-stone-50/80 transition-all">
-                <div className="flex items-center gap-4">
-                  <div className="h-12 w-12 rounded-2xl bg-gradient-to-br from-[#18757C]/25 to-[#18757C]/10 text-[#18757C] flex items-center justify-center font-black text-sm border border-[#18757C]/20">
-                    {client.initials}
-                  </div>
-                  <div>
-                    <div className="flex items-center gap-2">
-                      <h2 className="text-sm font-black text-stone-900">{client.name}</h2>
-                      <span className="text-[10px] font-extrabold px-2 py-0.5 bg-emerald-50 text-emerald-700 rounded-full">{client.status}</span>
-                      <span className="text-[10px] font-extrabold px-2 py-0.5 bg-stone-100 text-stone-700 rounded-full">Risk: {client.risk}</span>
-                    </div>
-                    <p className="text-xs text-stone-500 font-medium">{client.phone} • {client.email}</p>
-                  </div>
-                </div>
+              <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-white leading-tight">
+                Clinical Intelligence & Case History Hub
+              </h1>
+              <p className="text-sm text-teal-100/90 font-normal leading-relaxed">
+                Seamlessly manage active client rosters, track longitudinal presenting issues, and maintain structured post-session clinical logs with live editing capabilities.
+              </p>
+            </div>
 
-                <div className="flex items-center gap-2 w-full sm:w-auto justify-end">
-                  <button
-                    onClick={() => { setSelectedClient(client); setSelectedSessionNote(null); }}
-                    className="px-4 py-2.5 bg-[#18757C]/10 text-[#18757C] hover:bg-[#18757C] hover:text-white rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1"
-                  >
-                    <span>View Profile</span>
-                    <ArrowUpRight size={13} />
-                  </button>
-                  <button
-                    onClick={(e) => handleDeleteClient(client.id, e)}
-                    className="p-2.5 bg-rose-50 text-rose-600 hover:bg-rose-100 rounded-xl transition-all cursor-pointer"
-                    title="Delete"
-                  >
-                    <Trash2 size={15} />
-                  </button>
-                </div>
+            <div className="flex items-center gap-4 bg-white/10 border border-white/15 px-5 py-4 rounded-2xl backdrop-blur-md shadow-inner shrink-0">
+              <div className="p-3 rounded-xl bg-white/15 text-[#88D9E6]">
+                <HeartPulse size={22} />
               </div>
-            ))}
+              <div>
+                <p className="text-[11px] uppercase tracking-wider font-bold text-teal-200/80">Active Profiles</p>
+                <p className="text-lg font-black text-white">{clients.length} Registered</p>
+              </div>
+            </div>
           </div>
         </div>
-      )}
 
-      {/* CLIENT PROFILE MODAL */}
-      {selectedClient && !selectedSessionNote && !isAddingSession && (
-        <div className="fixed inset-0 bg-stone-900/60 backdrop-blur-md z-50 flex items-center justify-center p-4 overflow-y-auto">
-          <div className="bg-white rounded-[2.5rem] border border-stone-200 max-w-4xl w-full max-h-[90vh] overflow-y-auto shadow-2xl p-6 sm:p-8 space-y-6">
-            
-            <div className="flex items-start justify-between pb-6 border-b border-stone-100">
-              <div className="flex items-center gap-4">
-                <div className="h-14 w-14 rounded-2xl bg-gradient-to-br from-[#18757C]/25 to-[#18757C]/10 text-[#18757C] flex items-center justify-center font-black text-lg border border-[#18757C]/20 shadow-sm">
-                  {selectedClient.initials}
-                </div>
-                <div className="space-y-0.5">
-                  <div className="flex items-center gap-2">
-                    <h2 className="text-lg font-black text-stone-900">{selectedClient.name}</h2>
-                    <span className="text-[10px] font-extrabold px-2.5 py-0.5 bg-emerald-100 text-emerald-800 rounded-full">
-                      {selectedClient.status}
-                    </span>
-                    <span className="text-[10px] font-extrabold px-2.5 py-0.5 bg-stone-100 text-stone-800 rounded-full">
-                      Risk: {selectedClient.risk}
-                    </span>
-                  </div>
-                  <p className="text-xs text-stone-500 font-medium">{selectedClient.email} • {selectedClient.phone} • {selectedClient.gender}</p>
-                </div>
-              </div>
-              <button onClick={() => setSelectedClient(null)} className="p-2.5 text-stone-400 hover:text-stone-600 rounded-2xl bg-stone-50 hover:bg-stone-100 transition-all cursor-pointer">
-                <X size={18} />
+        {/* Control & Filter Bar */}
+        <div className="bg-white p-4 sm:p-5 rounded-[2rem] border border-stone-200/70 shadow-sm flex flex-col md:flex-row items-center justify-between gap-4">
+          <div className="relative w-full md:w-96">
+            <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-stone-400" />
+            <input
+              type="text"
+              placeholder="Search by client name, email, phone..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full pl-11 pr-4 py-3 bg-[#FBFBFA] border border-stone-200/80 rounded-2xl text-xs font-semibold text-stone-800 placeholder-stone-400 outline-none focus:border-[#18757C] focus:bg-white focus:ring-4 focus:ring-[#18757C]/10 transition-all shadow-inner"
+            />
+          </div>
+
+          <div className="flex flex-wrap items-center gap-3 w-full md:w-auto">
+            <div className="flex items-center gap-2 bg-[#FBFBFA] px-3.5 py-2.5 rounded-2xl border border-stone-200/80">
+              <Filter size={14} className="text-stone-400" />
+              <span className="text-[11px] font-bold text-stone-500 uppercase">Status:</span>
+              <select
+                value={statusFilter}
+                onChange={(e) => setStatusFilter(e.target.value)}
+                className="bg-transparent text-xs font-bold text-stone-800 outline-none cursor-pointer"
+              >
+                <option value="All">All Status</option>
+                <option value="Active">Active</option>
+                <option value="Inactive">Inactive</option>
+              </select>
+            </div>
+
+            <div className="flex items-center gap-2 bg-[#FBFBFA] px-3.5 py-2.5 rounded-2xl border border-stone-200/80">
+              <SlidersHorizontal size={14} className="text-stone-400" />
+              <span className="text-[11px] font-bold text-stone-500 uppercase">Risk:</span>
+              <select
+                value={riskFilter}
+                onChange={(e) => setRiskFilter(e.target.value)}
+                className="bg-transparent text-xs font-bold text-stone-800 outline-none cursor-pointer"
+              >
+                <option value="All">All Risk</option>
+                <option value="Low">Low Risk</option>
+                <option value="Moderate">Moderate Risk</option>
+                <option value="High">High Risk</option>
+              </select>
+            </div>
+
+            <div className="flex items-center bg-[#FBFBFA] p-1 rounded-2xl border border-stone-200/80">
+              <button
+                onClick={() => setViewMode('grid')}
+                className={`p-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${viewMode === 'grid' ? 'bg-[#18757C] text-white shadow-sm' : 'text-stone-500 hover:text-stone-900'}`}
+                title="Grid View"
+              >
+                <LayoutGrid size={16} />
+              </button>
+              <button
+                onClick={() => setViewMode('list')}
+                className={`p-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${viewMode === 'list' ? 'bg-[#18757C] text-white shadow-sm' : 'text-stone-500 hover:text-stone-900'}`}
+                title="List View"
+              >
+                <List size={16} />
               </button>
             </div>
+          </div>
+        </div>
 
-            <div className="bg-stone-50 p-4 rounded-2xl border border-stone-200/60 flex items-start gap-3">
-              <Award size={18} className="text-[#18757C] shrink-0 mt-0.5" />
-              <div>
-                <span className="block text-[10px] font-black uppercase text-stone-400 tracking-wider">Clinical Case Summary</span>
-                <p className="text-xs text-stone-700 font-medium mt-0.5">{selectedClient.caseSummary}</p>
-              </div>
+        {/* Client Cards Grid / List */}
+        {filteredClients.length === 0 ? (
+          <div className="text-center py-20 bg-white rounded-[2.5rem] border border-stone-200/70 shadow-sm space-y-3">
+            <div className="h-12 w-12 rounded-full bg-stone-100 flex items-center justify-center mx-auto text-stone-400">
+              <Filter size={20} />
             </div>
-
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 bg-stone-50 p-4 rounded-3xl border border-stone-200/60">
-              <div className="bg-white p-4 rounded-2xl border border-stone-200/85 flex items-center gap-3.5 shadow-sm">
-                <div className="p-3 bg-emerald-50 text-emerald-600 rounded-2xl"><CheckCircle size={18} /></div>
-                <div>
-                  <span className="block text-[10px] text-stone-400 font-bold uppercase tracking-wider">Completed</span>
-                  <span className="text-base font-black text-stone-900">{selectedClient.completedSessions}</span>
-                </div>
-              </div>
-
-              <div className="bg-white p-4 rounded-2xl border border-stone-200/85 flex items-center gap-3.5 shadow-sm">
-                <div className="p-3 bg-[#18757C]/10 text-[#18757C] rounded-2xl"><Clock size={18} /></div>
-                <div>
-                  <span className="block text-[10px] text-stone-400 font-bold uppercase tracking-wider">Upcoming</span>
-                  <span className="text-base font-black text-stone-900">{selectedClient.upcomingSessions}</span>
-                </div>
-              </div>
-
-              <div className="bg-white p-4 rounded-2xl border border-stone-200/85 flex items-center gap-3.5 shadow-sm">
-                <div className="p-3 bg-rose-50 text-rose-600 rounded-2xl"><Ban size={18} /></div>
-                <div>
-                  <span className="block text-[10px] text-stone-400 font-bold uppercase tracking-wider">Cancelled</span>
-                  <span className="text-base font-black text-stone-900">{selectedClient.cancelledSessions}</span>
-                </div>
-              </div>
-
-              <div className="bg-white p-4 rounded-2xl border border-stone-200/85 flex items-center gap-3.5 shadow-sm">
-                <div className="p-3 bg-stone-100 text-stone-600 rounded-2xl"><Calendar size={18} /></div>
-                <div>
-                  <span className="block text-[10px] text-stone-400 font-bold uppercase tracking-wider">Total Bookings</span>
-                  <span className="text-base font-black text-stone-900">{selectedClient.totalSessions}</span>
-                </div>
-              </div>
-            </div>
-
-            <div className="flex flex-wrap items-center justify-between gap-3 border-b border-stone-100 pb-3">
-              <div className="flex items-center gap-2">
-                <button 
-                  onClick={() => setActiveTab('therapyJourney')}
-                  className={`px-4 py-2.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${activeTab === 'therapyJourney' ? 'bg-[#18757C] text-white shadow-md' : 'text-stone-600 hover:bg-stone-50'}`}
+            <h2 className="text-sm font-bold text-stone-800">No matching client profiles found</h2>
+            <p className="text-xs text-stone-400">Try adjusting your search filters or keyword criteria.</p>
+          </div>
+        ) : viewMode === 'grid' ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredClients.map((client) => {
+              const progressPct = getCompletionPercentage(client.completedSessions, client.suggestedSessions);
+              return (
+                <div 
+                  key={client.id} 
+                  className="bg-white rounded-[2.5rem] border border-stone-200/80 p-6 shadow-sm hover:shadow-xl hover:border-[#18757C]/30 transition-all duration-300 flex flex-col justify-between space-y-6 group"
                 >
-                  Therapy Journey ({selectedClient.sessionHistory.length})
-                </button>
-                <button 
-                  onClick={() => setActiveTab('bookings')}
-                  className={`px-4 py-2.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${activeTab === 'bookings' ? 'bg-[#18757C] text-white shadow-md' : 'text-stone-600 hover:bg-stone-50'}`}
-                >
-                  Booking Schedule Logs ({selectedClient.bookingLogs.length})
-                </button>
-              </div>
-
-              {activeTab === 'therapyJourney' && (
-                <button
-                  onClick={() => setIsAddingSession(true)}
-                  className="flex items-center gap-1.5 px-4 py-2.5 bg-[#18757C] text-white rounded-xl text-xs font-bold hover:bg-[#135d62] transition-all cursor-pointer shadow-sm"
-                >
-                  <Plus size={14} />
-                  <span>Convert Booking to Note</span>
-                </button>
-              )}
-            </div>
-
-            {activeTab === 'therapyJourney' && (
-              <div className="space-y-4">
-                <h3 className="text-xs font-black uppercase tracking-wider text-stone-400">Linked Session Logs</h3>
-                {selectedClient.sessionHistory.length === 0 ? (
-                  <div className="text-center py-10 text-stone-400 text-xs font-medium bg-stone-50 rounded-2xl border border-stone-200">
-                    No session logs found yet. Convert an upcoming booking to start tracking progress.
-                  </div>
-                ) : (
-                  <div className="space-y-3">
-                    {selectedClient.sessionHistory.map((session) => (
-                      <div key={session.id} className="bg-white p-5 rounded-2xl border border-stone-200/85 hover:border-[#18757C]/40 transition-all flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 shadow-sm">
-                        <div className="space-y-1">
-                          <div className="flex items-center gap-2.5">
-                            <span className="font-black text-xs text-stone-900 bg-stone-100 px-2.5 py-1 rounded-lg">{session.sessionNumber}</span>
-                            <span className="text-[10px] font-extrabold px-2.5 py-0.5 bg-[#18757C]/10 text-[#18757C] rounded-md">
-                              Booking Ref: {session.bookingId}
-                            </span>
-                            <span className="text-[10px] font-bold px-2 py-0.5 bg-emerald-50 text-emerald-700 rounded-md">
-                              Risk: {session.details.riskAssessment}
-                            </span>
-                          </div>
-                          <p className="text-xs text-stone-600 font-medium pt-1">{session.summary}</p>
-                          <p className="text-[11px] text-stone-400 font-medium">{session.date} at {session.time}</p>
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-3.5">
+                        <div className="h-12 w-12 rounded-2xl bg-gradient-to-br from-[#18757C]/20 to-[#18757C]/5 text-[#123E45] flex items-center justify-center font-black text-sm border border-[#18757C]/20 shadow-xs">
+                          {client.initials}
                         </div>
-                        <button
-                          onClick={() => setSelectedSessionNote(session)}
-                          className="flex items-center gap-1.5 px-4 py-2.5 bg-[#18757C]/10 hover:bg-[#18757C] text-[#18757C] hover:text-white rounded-xl text-xs font-bold transition-all cursor-pointer shrink-0 shadow-sm"
-                        >
-                          <FileText size={14} />
-                          <span>View Full Notes</span>
-                        </button>
+                        <div>
+                          <h2 className="text-sm font-black text-stone-900 group-hover:text-[#18757C] transition-colors">{client.name}</h2>
+                          <p className="text-[11px] text-stone-400 font-medium truncate max-w-[160px]">{client.email}</p>
+                        </div>
                       </div>
-                    ))}
+                      
+                      <span className={`text-[10px] font-extrabold px-2.5 py-1 rounded-full border shadow-2xs ${
+                        client.risk === 'High' ? 'bg-rose-50 text-rose-700 border-rose-200/60' :
+                        client.risk === 'Moderate' ? 'bg-amber-50 text-amber-700 border-amber-200/60' :
+                        'bg-emerald-50 text-emerald-700 border-emerald-200/60'
+                      }`}>
+                        {client.risk} Risk
+                      </span>
+                    </div>
+
+                    <div className="space-y-2">
+                      <span className="text-[10px] font-bold uppercase tracking-wider text-stone-400">Presenting Focus</span>
+                      <div className="flex flex-wrap gap-1.5">
+                        {client.presentingIssues.map((issue, idx) => (
+                          <span key={idx} className="text-[10px] font-semibold px-2.5 py-1 bg-[#FBFBFA] border border-stone-200/60 text-stone-600 rounded-xl">
+                            {issue}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="space-y-2 bg-[#FBFBFA] p-4 rounded-2xl border border-stone-200/60">
+                      <div className="flex justify-between items-center text-xs font-bold">
+                        <span className="text-stone-500 flex items-center gap-1.5"><TrendingUp size={13} className="text-[#18757C]" /> Plan Progress</span>
+                        <span className="text-[#123E45]">{client.completedSessions} / {client.suggestedSessions} Sessions</span>
+                      </div>
+                      <div className="w-full bg-stone-200/70 h-2 rounded-full overflow-hidden">
+                        <div className="bg-gradient-to-r from-[#18757C] to-[#88D9E6] h-full rounded-full transition-all duration-500" style={{ width: `${progressPct}%` }} />
+                      </div>
+                    </div>
                   </div>
+
+                  <div className="space-y-2 pt-2 border-t border-stone-100">
+                    <button
+                      onClick={() => { setSelectedClient(client); setSelectedSessionNote(null); }}
+                      className="w-full py-3 bg-[#18757C]/10 hover:bg-[#18757C] text-[#18757C] hover:text-white rounded-2xl text-xs font-bold transition-all duration-200 text-center cursor-pointer flex items-center justify-center gap-2 shadow-2xs"
+                    >
+                      <span>View Full Profile & History</span>
+                      <ArrowUpRight size={14} />
+                    </button>
+                    <button
+                      onClick={(e) => handleDeleteClient(client.id, e)}
+                      className="w-full py-2.5 bg-rose-50/60 hover:bg-rose-100 text-rose-600 rounded-2xl text-xs font-semibold transition-all text-center cursor-pointer flex items-center justify-center gap-1.5"
+                    >
+                      <Trash2 size={13} />
+                      <span>Remove Client</span>
+                    </button>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        ) : (
+          <div className="bg-white rounded-[2.5rem] border border-stone-200/80 overflow-hidden shadow-sm">
+            <div className="divide-y divide-stone-100">
+              {filteredClients.map((client) => (
+                <div key={client.id} className="p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 hover:bg-[#FBFBFA]/80 transition-all">
+                  <div className="flex items-center gap-4">
+                    <div className="h-12 w-12 rounded-2xl bg-gradient-to-br from-[#18757C]/20 to-[#18757C]/5 text-[#123E45] flex items-center justify-center font-black text-sm border border-[#18757C]/20 shadow-xs">
+                      {client.initials}
+                    </div>
+                    <div className="space-y-1">
+                      <div className="flex items-center gap-2.5 flex-wrap">
+                        <h2 className="text-sm font-black text-stone-900">{client.name}</h2>
+                        <span className="text-[10px] font-extrabold px-2 py-0.5 bg-emerald-50 text-emerald-700 rounded-full border border-emerald-200/50">{client.status}</span>
+                        <span className="text-[10px] font-extrabold px-2 py-0.5 bg-stone-100 text-stone-700 rounded-full">Risk: {client.risk}</span>
+                      </div>
+                      <div className="flex flex-wrap gap-1">
+                        {client.presentingIssues.map((issue, idx) => (
+                          <span key={idx} className="text-[10px] font-semibold text-stone-500 bg-[#FBFBFA] border border-stone-200/60 px-2 py-0.5 rounded-lg">
+                            {issue}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-2.5 w-full sm:w-auto justify-end">
+                    <button
+                      onClick={() => { setSelectedClient(client); setSelectedSessionNote(null); }}
+                      className="px-4 py-2.5 bg-[#18757C]/10 text-[#18757C] hover:bg-[#18757C] hover:text-white rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5"
+                    >
+                      <span>View Profile</span>
+                      <ArrowUpRight size={13} />
+                    </button>
+                    <button
+                      onClick={(e) => handleDeleteClient(client.id, e)}
+                      className="p-2.5 bg-rose-50 text-rose-600 hover:bg-rose-100 rounded-xl transition-all cursor-pointer"
+                      title="Delete Client"
+                    >
+                      <Trash2 size={15} />
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* CLIENT PROFILE MODAL */}
+        {selectedClient && !selectedSessionNote && !isAddingSession && (
+          <div className="fixed inset-0 bg-[#123E45]/40 backdrop-blur-md z-50 flex items-center justify-center p-4 overflow-y-auto animate-fadeIn">
+            <div className="bg-white rounded-[2.5rem] border border-stone-200 max-w-4xl w-full max-h-[90vh] overflow-y-auto shadow-2xl p-6 sm:p-8 space-y-6">
+              
+              <div className="flex items-start justify-between pb-6 border-b border-stone-100">
+                <div className="flex items-center gap-4">
+                  <div className="h-16 w-16 rounded-2xl bg-gradient-to-br from-[#18757C]/25 to-[#18757C]/10 text-[#123E45] flex items-center justify-center font-black text-xl border border-[#18757C]/20 shadow-sm">
+                    {selectedClient.initials}
+                  </div>
+                  <div className="space-y-1">
+                    <div className="flex items-center gap-2.5 flex-wrap">
+                      <h2 className="text-xl font-black text-stone-900">{selectedClient.name}</h2>
+                      <span className="text-[10px] font-extrabold px-3 py-1 bg-emerald-50 text-emerald-700 border border-emerald-200/60 rounded-full">
+                        {selectedClient.status}
+                      </span>
+                      <span className="text-[10px] font-extrabold px-3 py-1 bg-amber-50 text-amber-700 border border-amber-200/60 rounded-full">
+                        Risk: {selectedClient.risk}
+                      </span>
+                    </div>
+                    <p className="text-xs text-stone-500 font-medium">{selectedClient.email} • {selectedClient.phone} • {selectedClient.gender}</p>
+                  </div>
+                </div>
+                <button 
+                  onClick={() => setSelectedClient(null)} 
+                  className="p-3 text-stone-400 hover:text-stone-700 rounded-2xl bg-[#FBFBFA] hover:bg-stone-100 border border-stone-200/60 transition-all cursor-pointer"
+                >
+                  <X size={18} />
+                </button>
+              </div>
+
+              {/* Case History & Presenting Issues Banner */}
+              <div className="bg-gradient-to-br from-[#FBFBFA] to-[#E2F1F2]/30 p-6 rounded-3xl border border-stone-200/80 space-y-3">
+                <div className="flex items-center gap-2 text-[#18757C]">
+                  <Award size={18} />
+                  <h3 className="text-xs font-black uppercase tracking-wider text-stone-800">Comprehensive Case Summary</h3>
+                </div>
+                <p className="text-xs text-stone-700 font-medium leading-relaxed">{selectedClient.caseSummary}</p>
+                
+                <div className="pt-2 flex flex-wrap items-center gap-2">
+                  <span className="text-[10px] font-bold text-stone-400 uppercase">Tracked Issues:</span>
+                  {selectedClient.presentingIssues.map((issue, idx) => (
+                    <span key={idx} className="text-[11px] font-bold px-3 py-1 bg-white text-[#18757C] border border-stone-200/80 rounded-xl shadow-2xs">
+                      • {issue}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              {/* Metrics Grid */}
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                <div className="bg-white p-4 rounded-2xl border border-stone-200/80 flex items-center gap-3.5 shadow-2xs">
+                  <div className="p-3 bg-emerald-50 text-emerald-600 rounded-2xl"><CheckCircle size={18} /></div>
+                  <div>
+                    <span className="block text-[10px] text-stone-400 font-bold uppercase tracking-wider">Completed</span>
+                    <span className="text-base font-black text-stone-900">{selectedClient.completedSessions}</span>
+                  </div>
+                </div>
+
+                <div className="bg-white p-4 rounded-2xl border border-stone-200/80 flex items-center gap-3.5 shadow-2xs">
+                  <div className="p-3 bg-cyan-50 text-[#18757C] rounded-2xl"><Clock size={18} /></div>
+                  <div>
+                    <span className="block text-[10px] text-stone-400 font-bold uppercase tracking-wider">Upcoming</span>
+                    <span className="text-base font-black text-stone-900">{selectedClient.upcomingSessions}</span>
+                  </div>
+                </div>
+
+                <div className="bg-white p-4 rounded-2xl border border-stone-200/80 flex items-center gap-3.5 shadow-2xs">
+                  <div className="p-3 bg-rose-50 text-rose-600 rounded-2xl"><Ban size={18} /></div>
+                  <div>
+                    <span className="block text-[10px] text-stone-400 font-bold uppercase tracking-wider">Cancelled</span>
+                    <span className="text-base font-black text-stone-900">{selectedClient.cancelledSessions}</span>
+                  </div>
+                </div>
+
+                <div className="bg-white p-4 rounded-2xl border border-stone-200/80 flex items-center gap-3.5 shadow-2xs">
+                  <div className="p-3 bg-stone-100 text-stone-600 rounded-2xl"><Calendar size={18} /></div>
+                  <div>
+                    <span className="block text-[10px] text-stone-400 font-bold uppercase tracking-wider">Total Sessions</span>
+                    <span className="text-base font-black text-stone-900">{selectedClient.totalSessions}</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Navigation Tabs */}
+              <div className="flex flex-wrap items-center justify-between gap-3 border-b border-stone-100 pb-3">
+                <div className="flex items-center gap-2 bg-[#FBFBFA] p-1.5 rounded-2xl border border-stone-200/70">
+                  <button 
+                    onClick={() => setActiveTab('therapyJourney')}
+                    className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${activeTab === 'therapyJourney' ? 'bg-[#18757C] text-white shadow-sm' : 'text-stone-600 hover:text-stone-900'}`}
+                  >
+                    Therapy Journey ({selectedClient.sessionHistory.length})
+                  </button>
+                  <button 
+                    onClick={() => setActiveTab('bookings')}
+                    className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${activeTab === 'bookings' ? 'bg-[#18757C] text-white shadow-sm' : 'text-stone-600 hover:text-stone-900'}`}
+                  >
+                    Booking Schedule ({selectedClient.bookingLogs.length})
+                  </button>
+                </div>
+
+                {activeTab === 'therapyJourney' && (
+                  <button
+                    onClick={() => {
+                      setIsEditingSession(false);
+                      setNewNoteData({
+                        id: '',
+                        bookingId: '',
+                        sessionNumber: '',
+                        date: '',
+                        time: '',
+                        presenting: '',
+                        sessionFocus: '',
+                        treatmentPlan: '',
+                        intervention: '',
+                        progress: 'Stable',
+                        riskAssessment: 'Low',
+                        clientNotes: ''
+                      });
+                      setIsAddingSession(true);
+                    }}
+                    className="flex items-center gap-1.5 px-4 py-2.5 bg-[#18757C] text-white rounded-xl text-xs font-bold hover:bg-[#123E45] transition-all cursor-pointer shadow-sm"
+                  >
+                    <Plus size={14} />
+                    <span>Convert Booking to Note</span>
+                  </button>
                 )}
               </div>
-            )}
 
-            {activeTab === 'bookings' && (
-              <div className="space-y-4">
-                <h3 className="text-xs font-black uppercase tracking-wider text-stone-400">Booking Schedule History</h3>
-                <div className="space-y-3">
-                  {selectedClient.bookingLogs.map((booking) => (
-                    <div key={booking.bookingId} className="bg-stone-50 p-4 rounded-2xl border border-stone-200/60 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
-                      <div className="space-y-1">
-                        <div className="flex items-center gap-2">
-                          <span className="font-bold text-xs text-stone-950">{booking.bookingId}</span>
-                          <span className={`text-[10px] font-extrabold px-2.5 py-0.5 rounded-full ${
-                            booking.status === 'Completed' ? 'bg-emerald-100 text-emerald-800' : 
-                            booking.status === 'Upcoming' ? 'bg-cyan-100 text-cyan-800' : 'bg-rose-100 text-rose-800'
-                          }`}>
-                            {booking.status}
-                          </span>
+              {/* Journey Tab Content */}
+              {activeTab === 'therapyJourney' && (
+                <div className="space-y-4">
+                  <h3 className="text-xs font-black uppercase tracking-wider text-stone-400">Linked Post-Session Clinical Logs</h3>
+                  {selectedClient.sessionHistory.length === 0 ? (
+                    <div className="text-center py-12 text-stone-400 text-xs font-medium bg-[#FBFBFA] rounded-3xl border border-stone-200">
+                      No session logs recorded yet. Convert an upcoming booking to log structured clinical notes.
+                    </div>
+                  ) : (
+                    <div className="space-y-3">
+                      {selectedClient.sessionHistory.map((session) => (
+                        <div key={session.id} className="bg-white p-5 rounded-3xl border border-stone-200/80 hover:border-[#18757C]/40 transition-all flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 shadow-2xs">
+                          <div className="space-y-1.5">
+                            <div className="flex items-center gap-2.5 flex-wrap">
+                              <span className="font-black text-xs text-stone-900 bg-stone-100 px-2.5 py-1 rounded-lg">{session.sessionNumber}</span>
+                              <span className="text-[10px] font-extrabold px-2.5 py-0.5 bg-[#18757C]/10 text-[#18757C] rounded-md">
+                                Ref: {session.bookingId}
+                              </span>
+                              <span className="text-[10px] font-bold px-2.5 py-0.5 bg-emerald-50 text-emerald-700 rounded-md">
+                                Risk: {session.details.riskAssessment}
+                              </span>
+                            </div>
+                            <p className="text-xs text-stone-700 font-semibold">{session.summary}</p>
+                            
+                            <div className="flex flex-wrap gap-1">
+                              {session.details.presenting.map((pIssue, pIdx) => (
+                                <span key={pIdx} className="text-[10px] font-semibold bg-[#FBFBFA] border border-stone-200/60 text-stone-600 px-2 py-0.5 rounded">
+                                  {pIssue}
+                                </span>
+                              ))}
+                            </div>
+                            <p className="text-[11px] text-stone-400 font-medium">{session.date} at {session.time}</p>
+                          </div>
+                          
+                          <div className="flex items-center gap-2 shrink-0">
+                            <button
+                              onClick={() => handleOpenEditModal(session)}
+                              className="flex items-center gap-1 px-3.5 py-2.5 bg-[#FBFBFA] hover:bg-stone-100 border border-stone-200 text-stone-700 rounded-xl text-xs font-bold transition-all cursor-pointer shadow-2xs"
+                              title="Edit Note"
+                            >
+                              <Edit3 size={13} />
+                              <span>Edit</span>
+                            </button>
+                            <button
+                              onClick={() => setSelectedSessionNote(session)}
+                              className="flex items-center gap-1.5 px-4 py-2.5 bg-[#18757C]/10 hover:bg-[#18757C] text-[#18757C] hover:text-white rounded-xl text-xs font-bold transition-all cursor-pointer shadow-2xs"
+                            >
+                              <FileText size={14} />
+                              <span>View Note</span>
+                            </button>
+                          </div>
                         </div>
-                        <div className="flex items-center gap-3 text-xs text-stone-500 font-medium">
-                          <span className="flex items-center gap-1"><Calendar size={12} /> {booking.date}</span>
-                          <span className="flex items-center gap-1"><Clock size={12} /> {booking.time}</span>
-                          <span className="text-stone-400">• {booking.mode}</span>
-                        </div>
-                      </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
 
-                      {booking.notesLinked ? (
-                        <span className="text-xs font-bold text-[#18757C] bg-[#18757C]/10 px-3 py-1.5 rounded-xl flex items-center gap-1">
-                          <CheckCircle size={12} /> Note Logged
-                        </span>
-                      ) : (
-                        booking.status === 'Upcoming' && (
+              {/* Bookings Tab Content */}
+              {activeTab === 'bookings' && (
+                <div className="space-y-4">
+                  <h3 className="text-xs font-black uppercase tracking-wider text-stone-400">Booking Schedule History</h3>
+                  <div className="space-y-3">
+                    {selectedClient.bookingLogs.map((booking) => (
+                      <div key={booking.bookingId} className="bg-white p-4 rounded-3xl border border-stone-200/80 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 shadow-2xs">
+                        <div className="space-y-1">
+                          <div className="flex items-center gap-2">
+                            <span className="font-mono text-[11px] font-bold text-stone-500 bg-stone-100 px-2.5 py-0.5 rounded-md">{booking.bookingId}</span>
+                            <span className={`text-[10px] font-extrabold px-2.5 py-0.5 rounded-md ${
+                              booking.status === 'Completed' ? 'bg-emerald-50 text-emerald-700' :
+                              booking.status === 'Upcoming' ? 'bg-cyan-50 text-[#18757C]' : 'bg-rose-50 text-rose-700'
+                            }`}>
+                              {booking.status}
+                            </span>
+                          </div>
+                          <p className="text-xs text-stone-800 font-bold">{booking.date} • {booking.time} ({booking.mode})</p>
+                        </div>
+
+                        {booking.status === 'Upcoming' && (
                           <button
                             onClick={() => {
-                              setNewNoteData(prev => ({ ...prev, bookingId: booking.bookingId, date: booking.date, time: booking.time.split(' - ')[0] }));
+                              setIsEditingSession(false);
+                              setNewNoteData({
+                                id: '',
+                                bookingId: booking.bookingId,
+                                sessionNumber: '',
+                                date: booking.date,
+                                time: booking.time.split(' - ')[0],
+                                presenting: '',
+                                sessionFocus: '',
+                                treatmentPlan: '',
+                                intervention: '',
+                                progress: 'Stable',
+                                riskAssessment: 'Low',
+                                clientNotes: ''
+                              });
                               setActiveTab('therapyJourney');
                               setIsAddingSession(true);
                             }}
-                            className="px-4 py-2 bg-[#18757C] text-white rounded-xl text-xs font-bold hover:bg-[#135d62] cursor-pointer shadow-sm transition-all"
+                            className="px-4 py-2.5 bg-[#18757C] text-white rounded-xl text-xs font-bold hover:bg-[#123E45] transition-all cursor-pointer shadow-sm"
                           >
                             Convert to Note
                           </button>
-                        )
-                      )}
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-          </div>
-        </div>
-      )}
-
-      {/* SESSION NOTE VIEW MODAL */}
-      {selectedSessionNote && selectedClient && (
-        <div className="fixed inset-0 bg-stone-900/60 backdrop-blur-md z-50 flex items-center justify-center p-4 overflow-y-auto">
-          <div className="bg-white rounded-[2.5rem] border border-stone-200 max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl p-6 sm:p-8 space-y-6">
-            
-            <div className="flex items-center justify-between pb-4 border-b border-stone-100">
-              <div>
-                <span className="text-[10px] font-black uppercase text-[#18757C] tracking-wider">{selectedSessionNote.sessionNumber}</span>
-                <h2 className="text-base font-black text-stone-900">{selectedClient.name} — Clinical Session Record</h2>
-              </div>
-              <button onClick={() => setSelectedSessionNote(null)} className="p-2.5 text-stone-400 hover:text-stone-600 rounded-2xl bg-stone-50 cursor-pointer">
-                <X size={18} />
-              </button>
-            </div>
-
-            <div className="space-y-4 text-xs">
-              <div className="grid grid-cols-2 gap-3 bg-stone-50 p-4 rounded-2xl border border-stone-200/60">
-                <div>
-                  <span className="text-[10px] font-bold text-stone-400 uppercase">Date & Time</span>
-                  <p className="font-bold text-stone-800 mt-0.5">{selectedSessionNote.date} at {selectedSessionNote.time}</p>
-                </div>
-                <div>
-                  <span className="text-[10px] font-bold text-stone-400 uppercase">Booking Reference</span>
-                  <p className="font-bold text-[#18757C] mt-0.5">{selectedSessionNote.bookingId}</p>
-                </div>
-              </div>
-
-              <div className="space-y-1.5">
-                <span className="text-[10px] font-black uppercase text-stone-400 tracking-wider">Presenting Concerns</span>
-                <div className="flex flex-wrap gap-1.5">
-                  {selectedSessionNote.details.presenting.map((item, idx) => (
-                    <span key={idx} className="px-3 py-1 bg-stone-100 text-stone-700 font-bold rounded-xl">{item}</span>
-                  ))}
-                </div>
-              </div>
-
-              <div className="space-y-1.5">
-                <span className="text-[10px] font-black uppercase text-stone-400 tracking-wider">Session Focus & Interventions</span>
-                <div className="bg-stone-50 p-4 rounded-2xl border border-stone-200/60 space-y-2">
-                  <p className="text-stone-700 font-medium"><strong className="text-stone-900">Focus:</strong> {selectedSessionNote.details.sessionFocus}</p>
-                  <p className="text-stone-700 font-medium"><strong className="text-stone-900">Intervention:</strong> {selectedSessionNote.details.intervention}</p>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-2 gap-3">
-                <div className="bg-stone-50 p-3.5 rounded-2xl border border-stone-200/60">
-                  <span className="text-[10px] font-bold text-stone-400 uppercase">Client Progress</span>
-                  <p className="font-black text-emerald-700 mt-0.5">{selectedSessionNote.details.progress}</p>
-                </div>
-                <div className="bg-stone-50 p-3.5 rounded-2xl border border-stone-200/60">
-                  <span className="text-[10px] font-bold text-stone-400 uppercase">Risk Assessment</span>
-                  <p className="font-black text-stone-800 mt-0.5">{selectedSessionNote.details.riskAssessment}</p>
-                </div>
-              </div>
-
-              <div className="space-y-1.5">
-                <span className="text-[10px] font-black uppercase text-stone-400 tracking-wider">Clinical Takeaways & Notes</span>
-                <div className="bg-stone-50 p-4 rounded-2xl border border-stone-200/60 text-stone-700 font-medium">
-                  {selectedSessionNote.details.clientNotes}
-                </div>
-              </div>
-            </div>
-
-            <div className="pt-4 border-t border-stone-100 flex justify-end">
-              <button
-                onClick={() => setSelectedSessionNote(null)}
-                className="px-6 py-2.5 bg-[#18757C] text-white rounded-xl text-xs font-bold shadow-md cursor-pointer hover:bg-[#135d62]"
-              >
-                Close Record
-              </button>
-            </div>
-
-          </div>
-        </div>
-      )}
-
-      {/* NEW SESSION NOTE FORM MODAL */}
-      {isAddingSession && (
-        <div className="fixed inset-0 bg-stone-900/60 backdrop-blur-md z-50 flex items-center justify-center p-4 overflow-y-auto">
-          <div className="bg-white rounded-[2.5rem] border border-stone-200 max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl p-6 sm:p-8 space-y-6">
-            
-            <div className="flex items-center justify-between pb-4 border-b border-stone-100">
-              <h2 className="text-sm font-black text-stone-900">Create Session Note From Booking</h2>
-              <button onClick={() => setIsAddingSession(false)} className="p-2.5 text-stone-400 hover:text-stone-600 rounded-2xl bg-stone-50 cursor-pointer">
-                <X size={18} />
-              </button>
-            </div>
-
-            <form onSubmit={handleSaveNewSession} className="space-y-4 text-xs font-bold text-stone-700">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <div>
-                  <label className="block mb-1.5 text-stone-400 uppercase text-[10px]">Select Upcoming Booking Slot</label>
-                  <select
-                    required
-                    value={newNoteData.bookingId}
-                    onChange={(e) => {
-                      const selectedB = selectedClient?.bookingLogs.find(b => b.bookingId === e.target.value);
-                      setNewNoteData({
-                        ...newNoteData, 
-                        bookingId: e.target.value,
-                        date: selectedB ? selectedB.date : newNoteData.date,
-                        time: selectedB ? selectedB.time.split(' - ')[0] : newNoteData.time
-                      });
-                    }}
-                    className="w-full px-3.5 py-3 bg-stone-50 border border-stone-200 rounded-2xl outline-none focus:border-[#18757C] shadow-inner"
-                  >
-                    <option value="">-- Choose Booking Slot --</option>
-                    {selectedClient?.bookingLogs.filter(b => b.status === 'Upcoming').map(b => (
-                      <option key={b.bookingId} value={b.bookingId}>
-                        {b.bookingId} ({b.date})
-                      </option>
+                        )}
+                      </div>
                     ))}
-                  </select>
+                  </div>
                 </div>
+              )}
+
+            </div>
+          </div>
+        )}
+
+        {/* VIEW INDIVIDUAL SESSION NOTE MODAL */}
+        {selectedSessionNote && selectedClient && (
+          <div className="fixed inset-0 bg-[#123E45]/40 backdrop-blur-md z-50 flex items-center justify-center p-4 overflow-y-auto animate-fadeIn">
+            <div className="bg-white rounded-[2.5rem] border border-stone-200 max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl p-6 sm:p-8 space-y-6">
+              
+              <div className="flex items-start justify-between pb-4 border-b border-stone-100">
                 <div>
-                  <label className="block mb-1.5 text-stone-400 uppercase text-[10px]">Session Name / Number</label>
+                  <span className="text-[10px] font-extrabold px-3 py-1 bg-[#18757C]/10 text-[#18757C] rounded-md uppercase tracking-wider">
+                    {selectedSessionNote.sessionNumber} • {selectedClient.name}
+                  </span>
+                  <h2 className="text-base font-black text-stone-900 mt-2">{selectedSessionNote.summary}</h2>
+                  <p className="text-xs text-stone-400 font-medium mt-0.5">{selectedSessionNote.date} at {selectedSessionNote.time} | Ref: {selectedSessionNote.bookingId}</p>
+                </div>
+                <button onClick={() => setSelectedSessionNote(null)} className="p-3 text-stone-400 hover:text-stone-700 rounded-2xl bg-[#FBFBFA] border border-stone-200/60 transition-all cursor-pointer">
+                  <X size={18} />
+                </button>
+              </div>
+
+              <div className="space-y-4 text-xs font-medium">
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="bg-[#FBFBFA] p-4 rounded-2xl border border-stone-200/60 space-y-1">
+                    <span className="text-[10px] font-black uppercase text-stone-400 tracking-wider">Progress Status</span>
+                    <p className="font-bold text-stone-800 text-sm">{selectedSessionNote.details.progress}</p>
+                  </div>
+                  <div className="bg-[#FBFBFA] p-4 rounded-2xl border border-stone-200/60 space-y-1">
+                    <span className="text-[10px] font-black uppercase text-stone-400 tracking-wider">Risk Assessment</span>
+                    <p className="font-bold text-stone-800 text-sm">{selectedSessionNote.details.riskAssessment}</p>
+                  </div>
+                </div>
+
+                <div className="bg-[#FBFBFA] p-4 rounded-2xl border border-stone-200/60 space-y-2">
+                  <span className="text-[10px] font-black uppercase text-stone-400 tracking-wider">Presenting Issues Addressed</span>
+                  <div className="flex flex-wrap gap-1.5">
+                    {selectedSessionNote.details.presenting.map((issue, idx) => (
+                      <span key={idx} className="bg-white px-3 py-1 rounded-xl text-[#18757C] font-bold border border-stone-200/80 text-[11px] shadow-2xs">
+                        {issue}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="bg-[#FBFBFA] p-4 rounded-2xl border border-stone-200/60 space-y-1">
+                  <span className="text-[10px] font-black uppercase text-stone-400 tracking-wider">Session Focus</span>
+                  <p className="text-stone-700 leading-relaxed">{selectedSessionNote.details.sessionFocus}</p>
+                </div>
+
+                <div className="bg-[#FBFBFA] p-4 rounded-2xl border border-stone-200/60 space-y-1">
+                  <span className="text-[10px] font-black uppercase text-stone-400 tracking-wider">Core Therapeutic Intervention</span>
+                  <p className="text-stone-700 leading-relaxed">{selectedSessionNote.details.intervention}</p>
+                </div>
+
+                <div className="bg-[#FBFBFA] p-4 rounded-2xl border border-stone-200/60 space-y-1">
+                  <span className="text-[10px] font-black uppercase text-stone-400 tracking-wider">Client Homework & Takeaways</span>
+                  <p className="text-stone-700 italic bg-white p-3 rounded-xl border border-stone-200/60">"{selectedSessionNote.details.clientNotes}"</p>
+                </div>
+              </div>
+
+              <div className="pt-4 border-t border-stone-100 flex justify-between items-center">
+                <button
+                  onClick={() => handleOpenEditModal(selectedSessionNote)}
+                  className="px-4 py-2.5 bg-[#FBFBFA] hover:bg-stone-100 border border-stone-200 text-stone-800 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 shadow-2xs"
+                >
+                  <Edit3 size={14} />
+                  <span>Edit Note Details</span>
+                </button>
+                <button
+                  onClick={() => setSelectedSessionNote(null)}
+                  className="px-6 py-2.5 bg-stone-900 text-white rounded-xl text-xs font-bold hover:bg-stone-800 transition-all cursor-pointer"
+                >
+                  Close Window
+                </button>
+              </div>
+
+            </div>
+          </div>
+        )}
+
+        {/* ADD / EDIT SESSION NOTE MODAL */}
+        {isAddingSession && selectedClient && (
+          <div className="fixed inset-0 bg-[#123E45]/40 backdrop-blur-md z-50 flex items-center justify-center p-4 overflow-y-auto animate-fadeIn">
+            <div className="bg-white rounded-[2.5rem] border border-stone-200 max-w-xl w-full max-h-[90vh] overflow-y-auto shadow-2xl p-6 sm:p-8 space-y-6">
+              
+              <div className="flex items-center justify-between pb-4 border-b border-stone-100">
+                <div>
+                  <h2 className="text-base font-black text-stone-900">
+                    {isEditingSession ? 'Edit Clinical Session Note' : 'Convert Booking to Session Note'}
+                  </h2>
+                  <p className="text-xs text-stone-400 font-medium">
+                    {isEditingSession ? `Modify clinical logs for ${selectedClient.name}` : `Record clinical notes & update presenting issues for ${selectedClient.name}`}
+                  </p>
+                </div>
+                <button onClick={() => setIsAddingSession(false)} className="p-3 text-stone-400 hover:text-stone-700 rounded-2xl bg-[#FBFBFA] border border-stone-200/60 transition-all cursor-pointer">
+                  <X size={18} />
+                </button>
+              </div>
+
+              <form onSubmit={handleSaveNewSession} className="space-y-4 text-xs font-medium">
+                {!isEditingSession && (
+                  <div className="space-y-1.5">
+                    <label className="text-[11px] font-extrabold text-stone-700 uppercase">Select Booking Slot</label>
+                    <select
+                      value={newNoteData.bookingId}
+                      onChange={(e) => {
+                        const found = selectedClient.bookingLogs.find(b => b.bookingId === e.target.value);
+                        setNewNoteData(prev => ({ 
+                          ...prev, 
+                          bookingId: e.target.value,
+                          date: found ? found.date : prev.date,
+                          time: found ? found.time.split(' - ')[0] : prev.time
+                        }));
+                      }}
+                      className="w-full p-3.5 bg-[#FBFBFA] border border-stone-200/80 rounded-2xl font-bold text-stone-800 outline-none focus:border-[#18757C] focus:bg-white"
+                      required
+                    >
+                      <option value="">-- Choose Booking Slot --</option>
+                      {selectedClient.bookingLogs.map(b => (
+                        <option key={b.bookingId} value={b.bookingId}>
+                          {b.bookingId} — {b.date} ({b.status})
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                )}
+
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="space-y-1.5">
+                    <label className="text-[11px] font-extrabold text-stone-700 uppercase">Session Label</label>
+                    <input
+                      type="text"
+                      placeholder="e.g. Session 4"
+                      value={newNoteData.sessionNumber}
+                      onChange={(e) => setNewNoteData({ ...newNoteData, sessionNumber: e.target.value })}
+                      className="w-full p-3.5 bg-[#FBFBFA] border border-stone-200/80 rounded-2xl font-bold text-stone-800 outline-none focus:border-[#18757C] focus:bg-white"
+                      required
+                    />
+                  </div>
+                  <div className="space-y-1.5">
+                    <label className="text-[11px] font-extrabold text-stone-700 uppercase">Progress Status</label>
+                    <select
+                      value={newNoteData.progress}
+                      onChange={(e) => setNewNoteData({ ...newNoteData, progress: e.target.value })}
+                      className="w-full p-3.5 bg-[#FBFBFA] border border-stone-200/80 rounded-2xl font-bold text-stone-800 outline-none focus:border-[#18757C] focus:bg-white"
+                    >
+                      <option value="Stable">Stable</option>
+                      <option value="Improving">Improving</option>
+                      <option value="Challenged">Challenged</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div className="space-y-1.5">
+                  <label className="text-[11px] font-extrabold text-stone-700 uppercase">Presenting Issues Addressed (Comma Separated)</label>
                   <input
                     type="text"
-                    required
-                    placeholder="e.g. Session 4"
-                    value={newNoteData.sessionNumber}
-                    onChange={(e) => setNewNoteData({...newNoteData, sessionNumber: e.target.value})}
-                    className="w-full px-3.5 py-3 bg-stone-50 border border-stone-200 rounded-2xl outline-none focus:border-[#18757C] shadow-inner"
+                    placeholder="e.g. Burnout, Sleep disruption"
+                    value={newNoteData.presenting}
+                    onChange={(e) => setNewNoteData({ ...newNoteData, presenting: e.target.value })}
+                    className="w-full p-3.5 bg-[#FBFBFA] border border-stone-200/80 rounded-2xl font-bold text-stone-800 outline-none focus:border-[#18757C] focus:bg-white"
                   />
                 </div>
-              </div>
 
-              <div>
-                <label className="block mb-1.5 text-stone-400 uppercase text-[10px]">Session Discussion Focus</label>
-                <textarea
-                  rows="3"
-                  required
-                  placeholder="Detail primary topics discussed..."
-                  value={newNoteData.sessionFocus}
-                  onChange={(e) => setNewNoteData({...newNoteData, sessionFocus: e.target.value})}
-                  className="w-full px-3.5 py-3 bg-stone-50 border border-stone-200 rounded-2xl outline-none focus:border-[#18757C] resize-none shadow-inner"
-                />
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <div>
-                  <label className="block mb-1.5 text-stone-400 uppercase text-[10px]">Client Progress Status</label>
-                  <select
-                    value={newNoteData.progress}
-                    onChange={(e) => setNewNoteData({...newNoteData, progress: e.target.value})}
-                    className="w-full px-3.5 py-3 bg-stone-50 border border-stone-200 rounded-2xl outline-none focus:border-[#18757C] shadow-inner"
-                  >
-                    <option value="Improving">Improving</option>
-                    <option value="Stable">Stable</option>
-                    <option value="Challenged">Challenged</option>
-                  </select>
+                <div className="space-y-1.5">
+                  <label className="text-[11px] font-extrabold text-stone-700 uppercase">Session Focus / Summary</label>
+                  <input
+                    type="text"
+                    placeholder="e.g. Addressed cognitive distortions and reframing."
+                    value={newNoteData.sessionFocus}
+                    onChange={(e) => setNewNoteData({ ...newNoteData, sessionFocus: e.target.value })}
+                    className="w-full p-3.5 bg-[#FBFBFA] border border-stone-200/80 rounded-2xl font-bold text-stone-800 outline-none focus:border-[#18757C] focus:bg-white"
+                    required
+                  />
                 </div>
-                <div>
-                  <label className="block mb-1.5 text-stone-400 uppercase text-[10px]">Risk Assessment</label>
+
+                <div className="space-y-1.5">
+                  <label className="text-[11px] font-extrabold text-stone-700 uppercase">Core Intervention Applied</label>
+                  <input
+                    type="text"
+                    placeholder="e.g. CBT Cognitive Restructuring"
+                    value={newNoteData.intervention}
+                    onChange={(e) => setNewNoteData({ ...newNoteData, intervention: e.target.value })}
+                    className="w-full p-3.5 bg-[#FBFBFA] border border-stone-200/80 rounded-2xl font-bold text-stone-800 outline-none focus:border-[#18757C] focus:bg-white"
+                    required
+                  />
+                </div>
+
+                <div className="space-y-1.5">
+                  <label className="text-[11px] font-extrabold text-stone-700 uppercase">Risk Assessment Level</label>
                   <select
                     value={newNoteData.riskAssessment}
-                    onChange={(e) => setNewNoteData({...newNoteData, riskAssessment: e.target.value})}
-                    className="w-full px-3.5 py-3 bg-stone-50 border border-stone-200 rounded-2xl outline-none focus:border-[#18757C] shadow-inner"
+                    onChange={(e) => setNewNoteData({ ...newNoteData, riskAssessment: e.target.value })}
+                    className="w-full p-3.5 bg-[#FBFBFA] border border-stone-200/80 rounded-2xl font-bold text-stone-800 outline-none focus:border-[#18757C] focus:bg-white"
                   >
-                    <option value="Low">Low</option>
-                    <option value="Moderate">Moderate</option>
-                    <option value="High">High</option>
+                    <option value="Low">Low Risk</option>
+                    <option value="Moderate">Moderate Risk</option>
+                    <option value="High">High Risk</option>
                   </select>
                 </div>
-              </div>
 
-              <div>
-                <label className="block mb-1.5 text-stone-400 uppercase text-[10px]">Interventions Used</label>
-                <input
-                  type="text"
-                  placeholder="e.g. CBT, Exposure Therapy, DBT"
-                  value={newNoteData.intervention}
-                  onChange={(e) => setNewNoteData({...newNoteData, intervention: e.target.value})}
-                  className="w-full px-3.5 py-3 bg-stone-50 border border-stone-200 rounded-2xl outline-none focus:border-[#18757C] shadow-inner"
-                />
-              </div>
+                <div className="space-y-1.5">
+                  <label className="text-[11px] font-extrabold text-stone-700 uppercase">Client Homework / Takeaways</label>
+                  <textarea
+                    rows="3"
+                    placeholder="Record client takeaways and homework instructions..."
+                    value={newNoteData.clientNotes}
+                    onChange={(e) => setNewNoteData({ ...newNoteData, clientNotes: e.target.value })}
+                    className="w-full p-3.5 bg-[#FBFBFA] border border-stone-200/80 rounded-2xl font-bold text-stone-800 outline-none focus:border-[#18757C] focus:bg-white resize-none"
+                  />
+                </div>
 
-              <div>
-                <label className="block mb-1.5 text-stone-400 uppercase text-[10px]">Clinical Takeaways & Notes</label>
-                <textarea
-                  rows="2"
-                  placeholder="Key homework or session takeaways..."
-                  value={newNoteData.clientNotes}
-                  onChange={(e) => setNewNoteData({...newNoteData, clientNotes: e.target.value})}
-                  className="w-full px-3.5 py-3 bg-stone-50 border border-stone-200 rounded-2xl outline-none focus:border-[#18757C] resize-none shadow-inner"
-                />
-              </div>
+                <div className="pt-4 border-t border-stone-100 flex justify-end gap-2.5">
+                  <button
+                    type="button"
+                    onClick={() => setIsAddingSession(false)}
+                    className="px-5 py-3 bg-[#FBFBFA] hover:bg-stone-100 border border-stone-200 text-stone-700 rounded-2xl font-bold transition-all cursor-pointer"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className="px-6 py-3 bg-[#18757C] hover:bg-[#123E45] text-white rounded-2xl font-bold transition-all cursor-pointer shadow-md shadow-[#18757C]/20"
+                  >
+                    {isEditingSession ? 'Save Changes' : 'Save & Complete Note'}
+                  </button>
+                </div>
+              </form>
 
-              <div className="pt-4 border-t border-stone-100 flex justify-end gap-3">
-                <button
-                  type="button"
-                  onClick={() => setIsAddingSession(false)}
-                  className="px-5 py-3 bg-stone-100 text-stone-600 rounded-2xl text-xs font-bold cursor-pointer hover:bg-stone-200 transition-all"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="px-6 py-3 bg-[#18757C] text-white rounded-2xl text-xs font-bold shadow-md cursor-pointer hover:bg-[#135d62] transition-all"
-                >
-                  Save & Update Counts
-                </button>
-              </div>
-            </form>
-
+            </div>
           </div>
-        </div>
-      )}
+        )}
 
+      </div>
     </div>
   );
 }
