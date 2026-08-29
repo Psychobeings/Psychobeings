@@ -6,7 +6,6 @@ import {
   ArrowRight,
   ShieldCheck,
   Search,
-  Clock,
   ArrowLeft,
   Plus,
   UserPlus,
@@ -15,17 +14,22 @@ import {
   Mail,
   Save,
   History,
-  CheckCircle2
+  CheckCircle2,
+  Users,
+  Phone,
+  Mail as MailIcon,
 } from 'lucide-react';
 
 export default function PostSessionActivities() {
-  // Navigation & View State: 'dashboard' | 'client-workspace'
-  const [currentView, setCurrentView] = useState('dashboard');
+  // Navigation & View State: 'roster' | 'dashboard' | 'client-workspace'
+  const [currentView, setCurrentView] = useState('roster');
+  const [selectedClient, setSelectedClient] = useState(null);
+  // eslint-disable-next-line no-unused-vars
   const [selectedSession, setSelectedSession] = useState(null);
 
-  // Dashboard Filters State
-  const [filterTab, setFilterTab] = useState('all'); // all | first-time | follow-up | completed
+  // Search & Filter State
   const [searchQuery, setSearchQuery] = useState('');
+  const [rosterFilter, setRosterFilter] = useState('all'); // all | active | intake | follow-up
 
   // Client Workspace Active Sub-Tab: 'notes' | 'history' | 'reflections' | 'tasks' | 'submit'
   const [workspaceTab, setWorkspaceTab] = useState('notes');
@@ -35,14 +39,14 @@ export default function PostSessionActivities() {
   const [isSaving, setIsSaving] = useState(false);
 
   // Form States for Client Workspace
-  const [presentingConcerns, setPresentingConcerns] = useState('Chronic work stress, sleep fragmentation, and situational anxiety related to performance evaluations.');
-  const [sessionFocus, setSessionFocus] = useState('Anxiety management & reframing catastrophic thoughts');
+  const [presentingConcerns, setPresentingConcerns] = useState('');
+  const [sessionFocus, setSessionFocus] = useState('');
   
   // Case History & Screening Sections
-  const [developmentalHistory, setDevelopmentalHistory] = useState('No major developmental trauma reported. Supportive family dynamic during childhood.');
-  const [medicalHistory, setMedicalHistory] = useState('No chronic illness. Occasional tension headaches during high-stress periods.');
-  const [socialHistory, setSocialHistory] = useState('Strong peer support network, though currently experiencing boundary fatigue at workplace.');
-  const [screeningMeasures, setScreeningMeasures] = useState('GAD-7 Score: 14 (Moderate-Severe Anxiety) \nPHQ-9 Score: 8 (Mild Depression)');
+  const [developmentalHistory, setDevelopmentalHistory] = useState('');
+  const [medicalHistory, setMedicalHistory] = useState('');
+  const [socialHistory, setSocialHistory] = useState('');
+  const [screeningMeasures, setScreeningMeasures] = useState('');
 
   // Reflections State
   const [aiReflection, setAiReflection] = useState('');
@@ -56,57 +60,91 @@ export default function PostSessionActivities() {
   ]);
   const [newCustomTask, setNewCustomTask] = useState('');
 
-  // Historical Session Logs Mock Data (for Side-by-Side Profile View)
-  const [historicalNotes, setHistoricalNotes] = useState([
-    { sessionNum: 'Session 1', date: '18 Aug 2026', summary: 'Initial intake completed. GAD-7 score evaluated at 14. Established therapeutic rapport.' },
-    { sessionNum: 'Session 2', date: '25 Aug 2026', summary: 'Explored somatic triggers of workplace anxiety. Introduced box breathing techniques.' }
-  ]);
-
-  // Mock Sessions List with Persistence from localStorage if available
-  const [sessionsList, setSessionsList] = useState(() => {
-    const saved = localStorage.getItem('psychobeings_sessions');
+  // Master Client Roster & Sessions Database with localStorage Persistence
+  const [clientRoster, setClientRoster] = useState(() => {
+    const saved = localStorage.getItem('psychobeings_client_roster');
     if (saved) {
       try { return JSON.parse(saved); } catch (e) { console.error(e); }
     }
     return [
       {
-        id: 1,
+        id: 101,
         clientName: 'Diksha Bharti',
-        isFirstTime: true,
-        date: '25 Aug 2026',
-        time: '9:00 PM',
-        status: 'Case History & Notes Pending',
-        statusType: 'notes'
+        age: 26,
+        gender: 'Female',
+        phone: '+91 98765 43210',
+        email: 'diksha.bharti@example.com',
+        clientType: 'First-Time Intake',
+        statusType: 'intake-pending',
+        lastSessionDate: '25 Aug 2026',
+        totalSessions: 1,
+        history: [
+          { sessionNum: 'Session 1', date: '25 Aug 2026', summary: 'Initial intake completed. GAD-7 score evaluated at 14. Established therapeutic rapport.' }
+        ],
+        presentingConcerns: 'Chronic work stress, sleep fragmentation, and situational anxiety related to performance evaluations.',
+        sessionFocus: 'Anxiety management & reframing catastrophic thoughts',
+        developmentalHistory: 'No major developmental trauma reported. Supportive family dynamic during childhood.',
+        medicalHistory: 'No chronic illness. Occasional tension headaches during high-stress periods.',
+        socialHistory: 'Strong peer support network, though currently experiencing boundary fatigue at workplace.',
+        screeningMeasures: 'GAD-7 Score: 14 (Moderate-Severe Anxiety)\nPHQ-9 Score: 8 (Mild Depression)'
       },
       {
-        id: 2,
+        id: 102,
         clientName: 'Juhi Chaineva',
-        isFirstTime: false,
-        date: '24 Aug 2026',
-        time: '6:30 PM',
-        status: 'Needs Follow-up',
-        statusType: 'follow-up'
+        age: 31,
+        gender: 'Female',
+        phone: '+91 98112 33445',
+        email: 'juhi.chaineva@example.com',
+        clientType: 'Follow-up Client',
+        statusType: 'follow-up-needed',
+        lastSessionDate: '24 Aug 2026',
+        totalSessions: 4,
+        history: [
+          { sessionNum: 'Session 1', date: '01 Aug 2026', summary: 'Intake and baseline assessment.' },
+          { sessionNum: 'Session 2', date: '10 Aug 2026', summary: 'Identified core relational patterns.' },
+          { sessionNum: 'Session 3', date: '17 Aug 2026', summary: 'Introduced somatic regulation tools.' },
+          { sessionNum: 'Session 4', date: '24 Aug 2026', summary: 'Reviewed homework progress and emotional regulation.' }
+        ],
+        presentingConcerns: 'Interpersonal relationship friction and emotional regulation difficulties.',
+        sessionFocus: 'Boundary setting and assertive communication',
+        developmentalHistory: 'Reported high parental expectations during adolescence.',
+        medicalHistory: 'Clear of major conditions. Mild sleep disturbances.',
+        socialHistory: 'Limited close friendships; high reliance on partner for emotional validation.',
+        screeningMeasures: 'DASS-21: Stress: 18, Anxiety: 14, Depression: 10'
       },
       {
-        id: 3,
+        id: 103,
         clientName: 'Aarav Sharma',
-        isFirstTime: false,
-        date: '22 Aug 2026',
-        time: '4:00 PM',
-        status: 'Completed',
-        statusType: 'completed'
+        age: 24,
+        gender: 'Male',
+        phone: '+91 99223 44556',
+        email: 'aarav.sharma@example.com',
+        clientType: 'Follow-up Client',
+        statusType: 'completed',
+        lastSessionDate: '22 Aug 2026',
+        totalSessions: 6,
+        history: [
+          { sessionNum: 'Session 5', date: '15 Aug 2026', summary: 'Examined academic burnout triggers.' },
+          { sessionNum: 'Session 6', date: '22 Aug 2026', summary: 'Consolidation of coping strategies and goal setting.' }
+        ],
+        presentingConcerns: 'Academic burnout and career transition anxiety.',
+        sessionFocus: 'Goal prioritization and resilience building',
+        developmentalHistory: 'Stable upbringing. High-achieving academic background.',
+        medicalHistory: 'None reported.',
+        socialHistory: 'Active college peer network and supportive roommates.',
+        screeningMeasures: 'PSS (Perceived Stress Scale): 22 (Moderate)'
       }
     ];
   });
 
-  // Save sessions list changes to localStorage
+  // Save roster updates to localStorage
   useEffect(() => {
-    localStorage.setItem('psychobeings_sessions', JSON.stringify(sessionsList));
-  }, [sessionsList]);
+    localStorage.setItem('psychobeings_client_roster', JSON.stringify(clientRoster));
+  }, [clientRoster]);
 
-  // Auto-save draft effect when form states or context change inside workspace
+  // Auto-save draft effect when workspace form fields update
   useEffect(() => {
-    if (currentView === 'client-workspace' && selectedSession) {
+    if (currentView === 'client-workspace' && selectedClient) {
       setIsSaving(true);
       const timer = setTimeout(() => {
         setIsSaving(false);
@@ -116,7 +154,7 @@ export default function PostSessionActivities() {
     }
   }, [
     currentView, 
-    selectedSession, 
+    selectedClient, 
     presentingConcerns, 
     sessionFocus, 
     developmentalHistory, 
@@ -127,8 +165,14 @@ export default function PostSessionActivities() {
     homeworkTasks
   ]);
 
-  const handleOpenWorkspace = (session) => {
-    setSelectedSession(session);
+  const handleOpenClientWorkspace = (client) => {
+    setSelectedClient(client);
+    setPresentingConcerns(client.presentingConcerns || '');
+    setSessionFocus(client.sessionFocus || '');
+    setDevelopmentalHistory(client.developmentalHistory || '');
+    setMedicalHistory(client.medicalHistory || '');
+    setSocialHistory(client.socialHistory || '');
+    setScreeningMeasures(client.screeningMeasures || '');
     setCurrentView('client-workspace');
     setWorkspaceTab('notes');
   };
@@ -137,9 +181,9 @@ export default function PostSessionActivities() {
     setIsGeneratingAi(true);
     setTimeout(() => {
       setAiReflection(
-        `Clinical AI Insight for Focus: "${sessionFocus}"\n\n` +
-        `The client demonstrated strong cognitive flexibility today when exploring catastrophic thoughts around work performance. ` +
-        `Recommended therapeutic posture for upcoming sessions: Validate underlying perfectionistic drivers while gently reinforcing somatic grounding exercises.`
+        `Clinical AI Insight for Focus: "${sessionFocus || 'General therapeutic progress'}"\n\n` +
+        `The client demonstrated strong cognitive flexibility today when exploring recurring emotional triggers. ` +
+        `Recommended therapeutic posture for upcoming sessions: Validate underlying self-critical patterns while gently reinforcing behavioral activation.`
       );
       setIsGeneratingAi(false);
     }, 800);
@@ -157,62 +201,94 @@ export default function PostSessionActivities() {
   };
 
   const handleDownloadSummaryPdf = () => {
-    alert(`Generating encrypted clinical session summary PDF for ${selectedSession?.clientName}...`);
+    alert(`Generating encrypted clinical session summary PDF for ${selectedClient?.clientName}...`);
   };
 
   const handleEmailSummaryClient = () => {
-    alert(`Assigned homework summary and reflections successfully dispatched to ${selectedSession?.clientName}'s registered email.`);
+    alert(`Assigned homework summary and reflections successfully dispatched to ${selectedClient?.clientName}'s registered email (${selectedClient?.email}).`);
   };
 
   const handleFinalSubmit = () => {
-    setHistoricalNotes([
-      ...historicalNotes, 
-      { 
-        sessionNum: `Session ${historicalNotes.length + 1}`, 
-        date: selectedSession?.date || 'Today', 
-        summary: sessionFocus 
+    const updatedHistory = [
+      ...selectedClient.history,
+      {
+        sessionNum: `Session ${selectedClient.totalSessions + 1}`,
+        date: new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }),
+        summary: sessionFocus || 'Post-session documentation finalized.'
       }
-    ]);
+    ];
 
-    setSessionsList(sessionsList.map(s => s.id === selectedSession.id ? { ...s, status: 'Completed', statusType: 'completed' } : s));
-    alert(`Post-session documentation, reflections, and assigned tasks successfully finalized, stored in client profile, and dispatched for ${selectedSession?.clientName}!`);
-    setCurrentView('dashboard');
+    const updatedRoster = clientRoster.map(c => {
+      if (c.id === selectedClient.id) {
+        return {
+          ...c,
+          totalSessions: c.totalSessions + 1,
+          lastSessionDate: 'Today',
+          statusType: 'completed',
+          history: updatedHistory,
+          presentingConcerns,
+          sessionFocus,
+          developmentalHistory,
+          medicalHistory,
+          socialHistory,
+          screeningMeasures
+        };
+      }
+      return c;
+    });
+
+    setClientRoster(updatedRoster);
+    alert(`Post-session documentation successfully synced and stored in ${selectedClient.clientName}'s permanent profile history!`);
+    setCurrentView('roster');
   };
 
-  const filteredSessions = sessionsList.filter(s => {
-    const matchesSearch = s.clientName.toLowerCase().includes(searchQuery.toLowerCase());
-    if (filterTab === 'all') return matchesSearch;
-    if (filterTab === 'first-time') return matchesSearch && s.isFirstTime;
-    if (filterTab === 'follow-up') return matchesSearch && s.statusType === 'follow-up';
-    if (filterTab === 'completed') return matchesSearch && s.statusType === 'completed';
+  const filteredClients = clientRoster.filter(c => {
+    const matchesSearch = c.clientName.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                          c.email.toLowerCase().includes(searchQuery.toLowerCase());
+    if (rosterFilter === 'all') return matchesSearch;
+    if (rosterFilter === 'intake') return matchesSearch && c.clientType === 'First-Time Intake';
+    if (rosterFilter === 'follow-up') return matchesSearch && c.clientType === 'Follow-up Client';
     return matchesSearch;
   });
 
   return (
     <div className="max-w-6xl mx-auto font-sans text-stone-800 pb-16 px-4 sm:px-6">
 
-      {/* VIEW 1: SESSIONS DASHBOARD */}
-      {currentView === 'dashboard' && (
+      {/* VIEW 1: CLIENT ROSTER & DIRECTORY */}
+      {currentView === 'roster' && (
         <div className="space-y-6">
           
-          <div className="pt-4">
-            <div className="flex items-center gap-2">
-              <span className="w-2.5 h-2.5 rounded-full bg-[#237A88]" />
-              <span className="text-xs font-bold uppercase tracking-wider text-[#237A88]">Post-Session & Client Management</span>
+          <div className="pt-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="w-2.5 h-2.5 rounded-full bg-[#237A88]" />
+                <span className="text-xs font-bold uppercase tracking-wider text-[#237A88]">Clinical Practice Management</span>
+              </div>
+              <h1 className="text-2xl font-bold text-stone-900 mt-1">Client Roster & Session Workspace</h1>
+              <p className="text-xs text-stone-500 mt-0.5">Select a client below to manage case history, session notes, AI reflections, and assigned tasks mapped directly to their profile.</p>
             </div>
-            <h1 className="text-2xl font-bold text-stone-900 mt-1">Client Sessions & Follow-ups</h1>
-            <p className="text-xs text-stone-500 mt-0.5">Manage initial case intake, follow-up progression, clinical notes, and assigned tasks with profile mapping.</p>
           </div>
 
-          {/* Metric Cards */}
+          {/* Roster Metrics */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div className="bg-white p-5 rounded-2xl border border-stone-200/80 shadow-sm flex items-center justify-between">
+              <div>
+                <span className="text-[11px] font-bold text-stone-400 uppercase tracking-wider">Total Active Clients</span>
+                <div className="text-2xl font-black text-stone-900 mt-1">{clientRoster.length}</div>
+                <span className="text-[11px] text-stone-500">Managed in directory</span>
+              </div>
+              <div className="w-10 h-10 rounded-xl bg-[#237A88]/10 text-[#237A88] flex items-center justify-center font-bold">
+                <Users size={18} />
+              </div>
+            </div>
+
             <div className="bg-white p-5 rounded-2xl border border-stone-200/80 shadow-sm flex items-center justify-between">
               <div>
                 <span className="text-[11px] font-bold text-stone-400 uppercase tracking-wider">First-Time Intakes</span>
                 <div className="text-2xl font-black text-stone-900 mt-1">
-                  {sessionsList.filter(s => s.isFirstTime).length}
+                  {clientRoster.filter(c => c.clientType === 'First-Time Intake').length}
                 </div>
-                <span className="text-[11px] text-stone-500">Requires case mapping</span>
+                <span className="text-[11px] text-stone-500">Requires baseline history</span>
               </div>
               <div className="w-10 h-10 rounded-xl bg-[#237A88]/10 text-[#237A88] flex items-center justify-center font-bold">
                 <UserPlus size={18} />
@@ -221,38 +297,25 @@ export default function PostSessionActivities() {
 
             <div className="bg-white p-5 rounded-2xl border border-stone-200/80 shadow-sm flex items-center justify-between">
               <div>
-                <span className="text-[11px] font-bold text-stone-400 uppercase tracking-wider">Pending Follow-ups</span>
+                <span className="text-[11px] font-bold text-stone-400 uppercase tracking-wider">Follow-up Clients</span>
                 <div className="text-2xl font-black text-stone-900 mt-1">
-                  {sessionsList.filter(s => s.statusType === 'follow-up' || s.statusType === 'notes').length}
+                  {clientRoster.filter(c => c.clientType === 'Follow-up Client').length}
                 </div>
-                <span className="text-[11px] text-stone-500">Action items required</span>
+                <span className="text-[11px] text-stone-500">Ongoing progression</span>
               </div>
               <div className="w-10 h-10 rounded-xl bg-[#237A88]/10 text-[#237A88] flex items-center justify-center font-bold">
-                <Clock size={18} />
-              </div>
-            </div>
-
-            <div className="bg-white p-5 rounded-2xl border border-stone-200/80 shadow-sm flex items-center justify-between">
-              <div>
-                <span className="text-[11px] font-bold text-stone-400 uppercase tracking-wider">Completed Sessions</span>
-                <div className="text-2xl font-black text-stone-900 mt-1">
-                  {sessionsList.filter(s => s.statusType === 'completed').length}
-                </div>
-                <span className="text-[11px] text-stone-500">Fully documented</span>
-              </div>
-              <div className="w-10 h-10 rounded-xl bg-[#237A88]/10 text-[#237A88] flex items-center justify-center font-bold">
-                ✓
+                <Repeat size={18} />
               </div>
             </div>
           </div>
 
-          {/* Search and Filters */}
+          {/* Search & Filter Bar */}
           <div className="space-y-4 pt-2">
             <div className="relative">
               <Search size={16} className="absolute left-4 top-3.5 text-stone-400" />
               <input 
                 type="text"
-                placeholder="Search by client name..."
+                placeholder="Search clients by name or email..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full pl-10 pr-4 py-3 bg-white rounded-2xl border border-stone-200/80 text-xs font-semibold text-stone-800 shadow-sm focus:outline-none focus:border-[#237A88]"
@@ -261,81 +324,80 @@ export default function PostSessionActivities() {
 
             <div className="flex flex-wrap items-center gap-2">
               <button
-                onClick={() => setFilterTab('all')}
+                onClick={() => setRosterFilter('all')}
                 className={`px-4 py-2 rounded-xl text-xs font-bold transition ${
-                  filterTab === 'all' ? 'bg-[#7344C0] text-white shadow-sm' : 'bg-white text-stone-600 border border-stone-200/80 hover:bg-stone-50'
+                  rosterFilter === 'all' ? 'bg-[#7344C0] text-white shadow-sm' : 'bg-white text-stone-600 border border-stone-200/80 hover:bg-stone-50'
                 }`}
               >
-                All Sessions
+                All Clients ({clientRoster.length})
               </button>
               <button
-                onClick={() => setFilterTab('first-time')}
+                onClick={() => setRosterFilter('intake')}
                 className={`px-4 py-2 rounded-xl text-xs font-bold transition ${
-                  filterTab === 'first-time' ? 'bg-[#7344C0] text-white shadow-sm' : 'bg-white text-stone-600 border border-stone-200/80 hover:bg-stone-50'
+                  rosterFilter === 'intake' ? 'bg-[#7344C0] text-white shadow-sm' : 'bg-white text-stone-600 border border-stone-200/80 hover:bg-stone-50'
                 }`}
               >
                 First-Time Intakes
               </button>
               <button
-                onClick={() => setFilterTab('follow-up')}
+                onClick={() => setRosterFilter('follow-up')}
                 className={`px-4 py-2 rounded-xl text-xs font-bold transition ${
-                  filterTab === 'follow-up' ? 'bg-[#7344C0] text-white shadow-sm' : 'bg-white text-stone-600 border border-stone-200/80 hover:bg-stone-50'
+                  rosterFilter === 'follow-up' ? 'bg-[#7344C0] text-white shadow-sm' : 'bg-white text-stone-600 border border-stone-200/80 hover:bg-stone-50'
                 }`}
               >
-                Needs Follow-up
-              </button>
-              <button
-                onClick={() => setFilterTab('completed')}
-                className={`px-4 py-2 rounded-xl text-xs font-bold transition ${
-                  filterTab === 'completed' ? 'bg-[#7344C0] text-white shadow-sm' : 'bg-white text-stone-600 border border-stone-200/80 hover:bg-stone-50'
-                }`}
-              >
-                Completed
+                Follow-up Clients
               </button>
             </div>
           </div>
 
-          {/* Sessions List */}
-          <div className="space-y-3 pt-2">
-            {filteredSessions.map((session) => (
+          {/* Client Cards Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+            {filteredClients.map((client) => (
               <div 
-                key={session.id}
-                className="bg-white p-5 rounded-2xl border border-stone-200/80 shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-4 transition hover:border-[#237A88]/40"
+                key={client.id}
+                className="bg-white p-5 rounded-2xl border border-stone-200/80 shadow-sm flex flex-col justify-between space-y-4 transition hover:border-[#237A88]/40"
               >
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-2xl bg-indigo-600 text-white font-bold flex items-center justify-center text-sm shadow-sm">
-                    {session.clientName.split(' ').map(n => n[0]).join('')}
-                  </div>
-                  <div>
-                    <div className="flex items-center gap-2">
-                      <span className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider ${
-                        session.statusType === 'notes' ? 'bg-amber-100 text-amber-800' :
-                        session.statusType === 'follow-up' ? 'bg-purple-100 text-purple-800' :
-                        'bg-emerald-100 text-emerald-800'
-                      }`}>
-                        {session.status}
-                      </span>
-                      {session.isFirstTime ? (
-                        <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-blue-100 text-blue-800 uppercase tracking-wider flex items-center gap-1">
-                          <UserPlus size={10} /> First-Time Client
-                        </span>
-                      ) : (
-                        <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-stone-100 text-stone-600 uppercase tracking-wider flex items-center gap-1">
-                          <Repeat size={10} /> Follow-up Session
-                        </span>
-                      )}
+                <div className="space-y-3">
+                  <div className="flex items-start justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className="w-12 h-12 rounded-2xl bg-indigo-600 text-white font-bold flex items-center justify-center text-sm shadow-sm">
+                        {client.clientName.split(' ').map(n => n[0]).join('')}
+                      </div>
+                      <div>
+                        <h3 className="text-sm font-bold text-stone-900">{client.clientName}</h3>
+                        <p className="text-[11px] text-stone-500">{client.age} yrs • {client.gender}</p>
+                      </div>
                     </div>
-                    <h3 className="text-sm font-bold text-stone-900 mt-1">{session.clientName}</h3>
-                    <p className="text-xs text-stone-500 flex items-center gap-1 mt-0.5">
-                      <Clock size={12} />
-                      <span>{session.date} • {session.time}</span>
-                    </p>
+                    <span className={`text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider ${
+                      client.clientType === 'First-Time Intake' ? 'bg-blue-100 text-blue-800' : 'bg-purple-100 text-purple-800'
+                    }`}>
+                      {client.clientType}
+                    </span>
+                  </div>
+
+                  <div className="space-y-1.5 pt-1 text-xs text-stone-600">
+                    <div className="flex items-center gap-2">
+                      <Phone size={12} className="text-stone-400" />
+                      <span>{client.phone}</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <MailIcon size={12} className="text-stone-400" />
+                      <span>{client.email}</span>
+                    </div>
+                  </div>
+
+                  <div className="p-3 bg-stone-50 rounded-xl border border-stone-200/60 text-xs space-y-1">
+                    <span className="text-[10px] font-bold text-stone-400 uppercase tracking-wider block">Latest Session Focus</span>
+                    <p className="font-semibold text-stone-800 line-clamp-1">{client.sessionFocus || 'Not specified yet'}</p>
                   </div>
                 </div>
 
-                <div className="flex items-center gap-2 w-full md:w-auto justify-end">
+                <div className="flex items-center justify-between pt-2 border-t border-stone-100">
+                  <span className="text-[11px] text-stone-500 font-medium">
+                    {client.totalSessions} {client.totalSessions === 1 ? 'Session logged' : 'Sessions logged'}
+                  </span>
                   <button 
-                    onClick={() => handleOpenWorkspace(session)}
+                    onClick={() => handleOpenClientWorkspace(client)}
                     className="px-4 py-2 rounded-xl bg-stone-900 hover:bg-stone-800 text-white text-xs font-bold transition flex items-center gap-1.5 shadow-sm"
                   >
                     <FileText size={14} />
@@ -350,16 +412,16 @@ export default function PostSessionActivities() {
       )}
 
       {/* VIEW 2: CLIENT WORKSPACE */}
-      {currentView === 'client-workspace' && selectedSession && (
+      {currentView === 'client-workspace' && selectedClient && (
         <div className="space-y-6">
           
           {/* Top Bar with Auto-Save Status */}
           <div className="bg-white p-5 rounded-2xl border border-stone-200/85 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4">
             <div className="flex items-center gap-3">
               <button 
-                onClick={() => setCurrentView('dashboard')}
+                onClick={() => setCurrentView('roster')}
                 className="p-2 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-700 transition"
-                title="Back to Sessions"
+                title="Back to Roster"
               >
                 <ArrowLeft size={18} />
               </button>
@@ -367,11 +429,11 @@ export default function PostSessionActivities() {
                 <div className="flex items-center gap-2">
                   <span className="w-2.5 h-2.5 rounded-full bg-[#237A88] animate-pulse" />
                   <h1 className="text-base font-bold text-stone-900">
-                    Session Workspace: <span className="text-[#237A88]">{selectedSession.clientName}</span>
+                    Client Workspace: <span className="text-[#237A88]">{selectedClient.clientName}</span>
                   </h1>
                 </div>
                 <div className="flex items-center gap-3 mt-0.5">
-                  <span className="text-xs text-stone-500">Date: <span className="font-semibold text-stone-700">{selectedSession.date}</span></span>
+                  <span className="text-xs text-stone-500">Type: <span className="font-semibold text-stone-700">{selectedClient.clientType}</span></span>
                   {isSaving ? (
                     <span className="text-[10px] text-amber-600 font-semibold flex items-center gap-1">
                       <Save size={10} className="animate-spin" /> Saving draft...
@@ -385,7 +447,7 @@ export default function PostSessionActivities() {
               </div>
             </div>
 
-            {/* Stepper / Sub-Tab Navigation */}
+            {/* Sub-Tab Navigation */}
             <div className="flex items-center bg-stone-100 p-1 rounded-xl flex-wrap justify-center gap-1">
               <button
                 onClick={() => setWorkspaceTab('notes')}
@@ -401,7 +463,7 @@ export default function PostSessionActivities() {
                   workspaceTab === 'history' ? 'bg-[#237A88] text-white shadow-sm' : 'text-stone-600 hover:text-stone-900'
                 }`}
               >
-                2. Profile History View
+                2. Profile History ({selectedClient.history.length})
               </button>
               <button
                 onClick={() => setWorkspaceTab('reflections')}
@@ -438,11 +500,9 @@ export default function PostSessionActivities() {
                   <FileText size={18} className="text-[#237A88]" />
                   <h2 className="text-sm font-bold text-stone-900">Clinical Session Notes & Session Focus</h2>
                 </div>
-                {selectedSession.isFirstTime && (
-                  <span className="text-[11px] font-bold text-blue-800 bg-blue-50 border border-blue-200 px-3 py-1 rounded-lg">
-                    ✨ Full Case History Mapped for Initial Intake
-                  </span>
-                )}
+                <span className="text-[11px] font-bold text-[#237A88] bg-[#237A88]/10 px-3 py-1 rounded-lg">
+                  Mapped to Roster Profile: {selectedClient.clientName}
+                </span>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
@@ -452,6 +512,7 @@ export default function PostSessionActivities() {
                     rows="3"
                     value={presentingConcerns}
                     onChange={(e) => setPresentingConcerns(e.target.value)}
+                    placeholder="Enter presenting concerns..."
                     className="w-full px-3.5 py-2.5 rounded-xl border border-stone-200 text-xs font-semibold text-stone-800 bg-stone-50 focus:outline-none focus:border-[#237A88] resize-none"
                   />
                 </div>
@@ -462,6 +523,7 @@ export default function PostSessionActivities() {
                     type="text"
                     value={sessionFocus}
                     onChange={(e) => setSessionFocus(e.target.value)}
+                    placeholder="Enter current session focus..."
                     className="w-full px-3.5 py-2.5 rounded-xl border border-stone-200 text-xs font-semibold text-stone-800 bg-stone-50 focus:outline-none focus:border-[#237A88]"
                   />
                 </div>
@@ -470,7 +532,7 @@ export default function PostSessionActivities() {
               {/* Case History Sections */}
               <div className="border-t border-stone-100 pt-5 space-y-4">
                 <h3 className="text-xs font-bold text-stone-900 uppercase tracking-wider">
-                  Case History Mapping {selectedSession.isFirstTime ? '(Required for First-Time Client)' : '(Optional Update)'}
+                  Case History Mapping {selectedClient.clientType === 'First-Time Intake' ? '(Required Intake Details)' : '(Background Reference)'}
                 </h3>
                 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -480,6 +542,7 @@ export default function PostSessionActivities() {
                       rows="3"
                       value={developmentalHistory}
                       onChange={(e) => setDevelopmentalHistory(e.target.value)}
+                      placeholder="Developmental background..."
                       className="w-full px-3 py-2 rounded-xl border border-stone-200 text-xs font-semibold text-stone-800 bg-stone-50 focus:outline-none focus:border-[#237A88] resize-none"
                     />
                   </div>
@@ -490,6 +553,7 @@ export default function PostSessionActivities() {
                       rows="3"
                       value={medicalHistory}
                       onChange={(e) => setMedicalHistory(e.target.value)}
+                      placeholder="Medical background..."
                       className="w-full px-3 py-2 rounded-xl border border-stone-200 text-xs font-semibold text-stone-800 bg-stone-50 focus:outline-none focus:border-[#237A88] resize-none"
                     />
                   </div>
@@ -500,6 +564,7 @@ export default function PostSessionActivities() {
                       rows="3"
                       value={socialHistory}
                       onChange={(e) => setSocialHistory(e.target.value)}
+                      placeholder="Social and support network..."
                       className="w-full px-3 py-2 rounded-xl border border-stone-200 text-xs font-semibold text-stone-800 bg-stone-50 focus:outline-none focus:border-[#237A88] resize-none"
                     />
                   </div>
@@ -508,11 +573,12 @@ export default function PostSessionActivities() {
 
               {/* Screening Measures */}
               <div className="border-t border-stone-100 pt-5 space-y-2">
-                <label className="text-xs font-bold text-stone-700 uppercase tracking-wider block">Screening Measures & Standardized Tests</label>
+                <label className="text-xs font-bold text-stone-700 uppercase tracking-wider block">Screening Measures & Standardized Test Scores</label>
                 <textarea 
                   rows="2"
                   value={screeningMeasures}
                   onChange={(e) => setScreeningMeasures(e.target.value)}
+                  placeholder="e.g., GAD-7, PHQ-9, DASS-21 scores..."
                   className="w-full px-3.5 py-2.5 rounded-xl border border-stone-200 text-xs font-semibold text-stone-800 bg-stone-50 focus:outline-none focus:border-[#237A88] resize-none font-mono"
                 />
               </div>
@@ -522,30 +588,30 @@ export default function PostSessionActivities() {
                   onClick={() => setWorkspaceTab('history')}
                   className="px-5 py-2.5 bg-[#237A88] hover:bg-[#1C646F] text-white rounded-xl text-xs font-bold transition flex items-center gap-2 shadow-sm"
                 >
-                  <span>View Profile & Session History</span>
+                  <span>View Client Profile History</span>
                   <ArrowRight size={14} />
                 </button>
               </div>
             </div>
           )}
 
-          {/* SUB-TAB 2: PROFILE & SESSION HISTORY VIEW */}
+          {/* SUB-TAB 2: PROFILE HISTORY VIEW */}
           {workspaceTab === 'history' && (
             <div className="bg-white p-6 rounded-2xl border border-stone-200/80 shadow-sm space-y-6 max-w-3xl mx-auto">
               <div className="flex items-center justify-between border-b border-stone-100 pb-4">
                 <div className="flex items-center gap-2">
                   <History size={18} className="text-[#237A88]" />
-                  <h2 className="text-sm font-bold text-stone-900">Therapy Journey & Prior Session Notes</h2>
+                  <h2 className="text-sm font-bold text-stone-900">Therapy Journey & Prior Session Logs</h2>
                 </div>
-                <span className="text-xs font-semibold text-stone-500">{historicalNotes.length} Recorded Sessions</span>
+                <span className="text-xs font-semibold text-stone-500">{selectedClient.history.length} Total Sessions Recorded</span>
               </div>
 
               <p className="text-xs text-stone-600">
-                Reviewing past clinical logs side-by-side ensures contextual continuity while completing current documentation for <span className="font-bold text-stone-900">{selectedSession.clientName}</span>.
+                Reviewing past clinical logs side-by-side ensures contextual continuity while completing current documentation for <span className="font-bold text-stone-900">{selectedClient.clientName}</span>.
               </p>
 
               <div className="space-y-3">
-                {historicalNotes.map((note, idx) => (
+                {selectedClient.history.map((note, idx) => (
                   <div key={idx} className="p-4 rounded-xl bg-stone-50 border border-stone-200/80 space-y-1">
                     <div className="flex justify-between items-center">
                       <span className="text-xs font-bold text-[#237A88]">{note.sessionNum}</span>
@@ -588,7 +654,7 @@ export default function PostSessionActivities() {
                   <span className="text-[11px] font-semibold text-[#237A88] bg-[#237A88]/10 px-2.5 py-0.5 rounded-md">Auto-synced</span>
                 </div>
                 <div className="p-3 bg-white rounded-xl border border-stone-200 text-xs font-semibold text-stone-800">
-                  {sessionFocus}
+                  {sessionFocus || 'No session focus specified yet.'}
                 </div>
 
                 <button
@@ -704,21 +770,21 @@ export default function PostSessionActivities() {
             <div className="bg-white p-6 rounded-2xl border border-stone-200/80 shadow-sm space-y-6 max-w-3xl mx-auto">
               <div className="flex items-center gap-2 border-b border-stone-100 pb-4">
                 <ShieldCheck size={18} className="text-[#237A88]" />
-                <h2 className="text-sm font-bold text-stone-900">Post-Session Preview & Final Dispatch</h2>
+                <h2 className="text-sm font-bold text-stone-900">Post-Session Preview & Profile Sync</h2>
               </div>
 
               <div className="bg-stone-50 border border-stone-200 rounded-2xl p-5 space-y-4">
                 <div className="flex justify-between items-center text-xs border-b border-stone-200 pb-3">
                   <span className="text-stone-500 font-medium">Client Name</span>
-                  <span className="font-bold text-stone-900">{selectedSession.clientName}</span>
+                  <span className="font-bold text-stone-900">{selectedClient.clientName}</span>
                 </div>
                 <div className="flex justify-between items-center text-xs border-b border-stone-200 pb-3">
-                  <span className="text-stone-500 font-medium">Session Type</span>
-                  <span className="font-bold text-blue-800">{selectedSession.isFirstTime ? 'First-Time Intake (Case History Mapped)' : 'Follow-up Session'}</span>
+                  <span className="text-stone-500 font-medium">Client Type</span>
+                  <span className="font-bold text-blue-800">{selectedClient.clientType}</span>
                 </div>
                 <div className="flex justify-between items-center text-xs border-b border-stone-200 pb-3">
                   <span className="text-stone-500 font-medium">Session Focus</span>
-                  <span className="font-bold text-stone-800">{sessionFocus}</span>
+                  <span className="font-bold text-stone-800">{sessionFocus || 'Not specified'}</span>
                 </div>
                 <div className="flex justify-between items-center text-xs border-b border-stone-200 pb-3">
                   <span className="text-stone-500 font-medium">AI Reflections Box</span>
@@ -759,7 +825,7 @@ export default function PostSessionActivities() {
                   onClick={handleFinalSubmit}
                   className="flex items-center gap-2 bg-[#237A88] hover:bg-[#1C646F] text-white px-6 py-3 rounded-xl text-xs font-bold transition shadow-sm"
                 >
-                  <span>Submit & Save to Profile View</span>
+                  <span>Sync & Save to Client Roster</span>
                   <ArrowRight size={14} />
                 </button>
               </div>
