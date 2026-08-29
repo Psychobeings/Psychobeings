@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { Calendar, Users, FileText, CreditCard, Settings, LogOut, ChevronRight, Plus, Search, Bell, Activity} from 'lucide-react';
+import { Calendar, Users, FileText, CreditCard, Settings, LogOut, ChevronRight, Plus, Search, Bell, Activity, Copy, Check } from 'lucide-react';
 
 export default function PractitionerPortalApp() {
-  const [activeTab, setActiveTab] = useState('dashboard');
+  const [activeTab, setActiveTab] = useState('notes');
   const [isLoggedIn, setIsLoggedIn] = useState(true);
 
   if (!isLoggedIn) {
@@ -256,18 +256,144 @@ function ClientsView() {
   );
 }
 
-// 4. NOTES VIEW
+// 4. NOTES VIEW (Updated with Ready-to-Use Templates for New & Old Clients)
 function NotesView() {
+  const [activeTemplate, setActiveTemplate] = useState('intake');
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = () => {
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold text-stone-900">Clinical Notes & Documentation</h1>
-        <p className="text-stone-500 text-xs mt-1">Modality-aligned progress notes and structured diagnostic charting.</p>
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl font-bold text-stone-900">Clinical Notes & Documentation</h1>
+          <p className="text-stone-500 text-xs mt-1">Ready-to-use modality-aligned templates for new client intake and ongoing progress reviews.</p>
+        </div>
+        <button 
+          onClick={handleCopy}
+          className="bg-stone-900 text-white text-xs font-medium px-4 py-2.5 rounded-xl hover:bg-stone-800 transition flex items-center space-x-2"
+        >
+          {copied ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
+          <span>{copied ? 'Template Copied' : 'Copy Active Template'}</span>
+        </button>
       </div>
-      <div className="bg-white p-8 rounded-2xl border border-stone-200 shadow-sm text-center py-16">
-        <FileText className="w-12 h-12 text-stone-300 mx-auto mb-3" />
-        <h3 className="font-semibold text-stone-900 text-sm">Modality-Specific Note Templates</h3>
-        <p className="text-stone-500 text-xs mt-1">Select from CBT thought records, narrative frameworks, or standard SOAP notes.</p>
+
+      {/* Template Switcher Tabs */}
+      <div className="flex space-x-2 bg-stone-200/60 p-1.5 rounded-2xl w-fit">
+        <button
+          onClick={() => setActiveTemplate('intake')}
+          className={`px-5 py-2.5 rounded-xl text-xs font-semibold transition ${activeTemplate === 'intake' ? 'bg-white text-stone-900 shadow-sm' : 'text-stone-600 hover:text-stone-900'}`}
+        >
+          New Client Intake Template
+        </button>
+        <button
+          onClick={() => setActiveTemplate('progress')}
+          className={`px-5 py-2.5 rounded-xl text-xs font-semibold transition ${activeTemplate === 'progress' ? 'bg-white text-stone-900 shadow-sm' : 'text-stone-600 hover:text-stone-900'}`}
+        >
+          Existing Client Progress Note
+        </button>
+      </div>
+
+      {/* Template Editor / Preview Card */}
+      <div className="bg-white rounded-2xl border border-stone-200 shadow-sm p-8 space-y-6">
+        {activeTemplate === 'intake' ? (
+          <div className="space-y-6">
+            <div className="flex items-center justify-between border-b border-stone-100 pb-4">
+              <div>
+                <span className="text-[10px] font-semibold uppercase tracking-widest bg-stone-100 text-stone-600 px-2 py-0.5 rounded">Initial Consultation</span>
+                <h3 className="text-lg font-bold text-stone-900 mt-1">New Client Intake & Assessment Record</h3>
+              </div>
+              <span className="text-xs text-stone-400">Session 01 • Secure EHR</span>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+              <div className="p-3 bg-stone-50 rounded-xl border border-stone-100">
+                <label className="block text-[11px] font-semibold text-stone-400 uppercase">Client Identifier</label>
+                <input type="text" defaultValue="[Client Initials / ID]" className="w-full mt-1 bg-transparent border-b border-stone-300 pb-1 text-stone-900 focus:outline-none" />
+              </div>
+              <div className="p-3 bg-stone-50 rounded-xl border border-stone-100">
+                <label className="block text-[11px] font-semibold text-stone-400 uppercase">Session Date</label>
+                <input type="text" defaultValue="DD / MM / YYYY" className="w-full mt-1 bg-transparent border-b border-stone-300 pb-1 text-stone-900 focus:outline-none" />
+              </div>
+              <div className="p-3 bg-stone-50 rounded-xl border border-stone-100">
+                <label className="block text-[11px] font-semibold text-stone-400 uppercase">Primary Modality</label>
+                <input type="text" defaultValue="CBT / Narrative / Family Systems" className="w-full mt-1 bg-transparent border-b border-stone-300 pb-1 text-stone-900 focus:outline-none" />
+              </div>
+            </div>
+
+            <div className="space-y-4 text-xs">
+              <div>
+                <label className="block font-semibold text-stone-900 mb-1.5">1. Presenting Concerns</label>
+                <textarea rows="3" placeholder="Primary reason for seeking support; client's own words regarding current distress, emotional barriers, or functional impacts..." className="w-full p-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-stone-900"></textarea>
+              </div>
+              <div>
+                <label className="block font-semibold text-stone-900 mb-1.5">2. Developmental & Psycho-Social History</label>
+                <textarea rows="3" placeholder="Key historical background, family dynamics, educational/work context, and previous therapeutic experiences..." className="w-full p-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-stone-900"></textarea>
+              </div>
+              <div>
+                <label className="block font-semibold text-stone-900 mb-1.5">3. Clinical Observations & Mental Status Exam (MSE)</label>
+                <textarea rows="3" placeholder="Appearance, affect, thought process, orientation, and general demeanor during the interview..." className="w-full p-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-stone-900"></textarea>
+              </div>
+              <div>
+                <label className="block font-semibold text-stone-900 mb-1.5">4. Formulation & Treatment Goals</label>
+                <textarea rows="3" placeholder="Initial clinical impressions, identified modalities, and collaborative short-term therapeutic goals..." className="w-full p-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-stone-900"></textarea>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <div className="space-y-6">
+            <div className="flex items-center justify-between border-b border-stone-100 pb-4">
+              <div>
+                <span className="text-[10px] font-semibold uppercase tracking-widest bg-stone-900 text-white px-2 py-0.5 rounded">Follow-Up Review</span>
+                <h3 className="text-lg font-bold text-stone-900 mt-1">Existing Client Progress Note</h3>
+              </div>
+              <span className="text-xs text-stone-400">Session [0X] • Secure EHR</span>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+              <div className="p-3 bg-stone-50 rounded-xl border border-stone-100">
+                <label className="block text-[11px] font-semibold text-stone-400 uppercase">Client Identifier</label>
+                <input type="text" defaultValue="[Client Initials / ID]" className="w-full mt-1 bg-transparent border-b border-stone-300 pb-1 text-stone-900 focus:outline-none" />
+              </div>
+              <div className="p-3 bg-stone-50 rounded-xl border border-stone-100">
+                <label className="block text-[11px] font-semibold text-stone-400 uppercase">Session Date</label>
+                <input type="text" defaultValue="DD / MM / YYYY" className="w-full mt-1 bg-transparent border-b border-stone-300 pb-1 text-stone-900 focus:outline-none" />
+              </div>
+              <div className="p-3 bg-stone-50 rounded-xl border border-stone-100">
+                <label className="block text-[11px] font-semibold text-stone-400 uppercase">Session Number</label>
+                <input type="text" defaultValue="e.g., Session 06" className="w-full mt-1 bg-transparent border-b border-stone-300 pb-1 text-stone-900 focus:outline-none" />
+              </div>
+            </div>
+
+            <div className="space-y-4 text-xs">
+              <div>
+                <label className="block font-semibold text-stone-900 mb-1.5">1. Subjective Update</label>
+                <textarea rows="3" placeholder="Client's self-report since the last session, homework compliance (e.g., CBT thought records), and shifts in emotional state..." className="w-full p-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-stone-900"></textarea>
+              </div>
+              <div>
+                <label className="block font-semibold text-stone-900 mb-1.5">2. Objective Observations</label>
+                <textarea rows="3" placeholder="Behavioral shifts, engagement levels, emotional regulation observed during the hour, and narrative reframes explored..." className="w-full p-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-stone-900"></textarea>
+              </div>
+              <div>
+                <label className="block font-semibold text-stone-900 mb-1.5">3. Assessment & Clinical Progress</label>
+                <textarea rows="3" placeholder="Evaluation of progress toward established treatment goals, identification of emerging resistance or breakthrough patterns..." className="w-full p-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-stone-900"></textarea>
+              </div>
+              <div>
+                <label className="block font-semibold text-stone-900 mb-1.5">4. Plan & Next Steps</label>
+                <textarea rows="3" placeholder="Homework assignments, focus areas for the next session, and scheduled date for follow-up..." className="w-full p-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-stone-900"></textarea>
+              </div>
+            </div>
+          </div>
+        )}
+
+        <div className="pt-4 border-t border-stone-100 flex items-center justify-between text-xs text-stone-500">
+          <span>All notes are automatically encrypted and restricted to authorized clinical personnel.</span>
+          <button className="bg-stone-900 text-white font-medium px-6 py-2.5 rounded-xl hover:bg-stone-800 transition">Save Note to Record</button>
+        </div>
       </div>
     </div>
   );
