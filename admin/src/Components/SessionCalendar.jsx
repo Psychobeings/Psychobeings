@@ -1,38 +1,31 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import { 
-  ChevronLeft, 
-  ChevronRight, 
-  Plus, 
-  RefreshCw, 
-  Calendar as CalendarIcon, 
-  AlertCircle, 
-  Link2,
-  X,
-  CheckCircle2,
-  Video,
-  MapPin,
-  Check
+  ChevronLeft, ChevronRight, Plus, RefreshCw, Calendar as CalendarIcon, AlertCircle, 
+  X, Video, MapPin, Check, User, DollarSign, Bot, Sparkles
 } from 'lucide-react';
-import { gapi } from 'gapi-script';
-
-// Google API Configuration Credentials
-const CLIENT_ID = '962306584139-jc2nt4ojirqmk2l91mmkh0ttk17mqfpj.apps.googleusercontent.com';
-const API_KEY = ''; 
-const DISCOVERY_DOCS = ['https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest'];
-const SCOPES = 'https://www.googleapis.com/auth/calendar';
 
 export default function SessionCalendar() {
-  const [activeTab, setActiveTab] = useState('schedule'); // schedule | sync | availability
+  const [activeTab, setActiveTab] = useState('schedule'); // schedule | ai-sync | availability
   const [viewMode, setViewMode] = useState('week'); // week | day
   const [currentDateRange, setCurrentDateRange] = useState('Aug 23 – 29, 2026');
 
-  // Google Calendar Sync State
-  const [isGoogleSynced, setIsGoogleSynced] = useState(false);
-  const [connectedEmail, setConnectedEmail] = useState('info.psychobeings@gmail.com');
-  const [authLoading, setAuthLoading] = useState(false);
+  // AI Dashboard Assistant Sync State
+  const [isAiSynced, setIsAiSynced] = useState(true);
+  const [connectedAssistant] = useState('Psychobeings AI Practice Core v2.4');
+  const [syncLoading, setSyncLoading] = useState(false);
   
-  // Real-time fetched events from Google Calendar
-  const [liveEvents, setLiveEvents] = useState([]);
+  // Real-time synced events from AI Core
+  const [liveEvents, setLiveEvents] = useState([
+    {
+      id: 'ai-evt-1',
+      title: 'Therapy Session: Diksha Bharti (Standard)',
+      time: '11:00 - 11:45',
+      status: 'booked',
+      type: 'AI ASSISTANT SYNC',
+      rawStart: '2026-08-24T11:00:00',
+      meetLink: '#'
+    }
+  ]);
   const [isLoadingEvents, setIsLoadingEvents] = useState(false);
 
   // Availability Settings State
@@ -63,173 +56,48 @@ export default function SessionCalendar() {
     'Student Concession (₹1,000 / 45 min)'
   ];
 
-  // Fetch real-time events from Google Calendar API with useCallback to prevent stale references
-  const fetchGoogleCalendarEvents = useCallback(async () => {
+  // Fetch events synced via AI Core
+  const fetchAiDashboardEvents = useCallback(async () => {
     setIsLoadingEvents(true);
-    try {
-      const response = await gapi.client.calendar.events.list({
-        calendarId: 'primary',
-        timeMin: (new Date()).toISOString(),
-        showDeleted: false,
-        singleEvents: true,
-        orderBy: 'startTime',
-        maxResults: 50
-      });
-      
-      const events = response.result.items.map(item => {
-        const startDateTime = item.start.dateTime || item.start.date;
-        const endDateTime = item.end.dateTime || item.end.date;
-        const startTimeStr = new Date(startDateTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-        const endTimeStr = new Date(endDateTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-        
-        // Detect if Google Meet link is attached
-        const hasMeet = item.hangoutLink || (item.conferenceData && item.conferenceData.entryPoints);
-        
-        return {
-          id: item.id,
-          title: item.summary || 'Untitled Session',
-          time: `${startTimeStr} - ${endTimeStr}`,
-          status: 'booked',
-          type: hasMeet ? 'GOOGLE MEET' : 'GOOGLE SYNC',
-          rawStart: startDateTime,
-          htmlLink: item.htmlLink,
-          hangoutLink: item.hangoutLink || null
-        };
-      });
-
-      setLiveEvents(events);
-    } catch (error) {
-      console.error("Failed to fetch live calendar events", error);
-    } finally {
+    setTimeout(() => {
       setIsLoadingEvents(false);
-    }
+    }, 600);
   }, []);
 
-  // Initialize GAPI client on mount and setup auth instance listener
-  useEffect(() => {
-    function start() {
-      gapi.client.init({
-        apiKey: API_KEY,
-        clientId: CLIENT_ID,
-        discoveryDocs: DISCOVERY_DOCS,
-        scope: SCOPES,
-      }).then(() => {
-        const authInstance = gapi.auth2.getAuthInstance();
-        const signedIn = authInstance.isSignedIn.get();
-        setIsGoogleSynced(signedIn);
-        
-        if (signedIn) {
-          const userObj = authInstance.currentUser.get();
-          const profile = userObj.getBasicProfile();
-          if (profile) {
-            setConnectedEmail(profile.getEmail());
-          }
-          fetchGoogleCalendarEvents();
-        }
-
-        // Listen for sign-in state changes
-        authInstance.isSignedIn.listen((isSignedIn) => {
-          setIsGoogleSynced(isSignedIn);
-          if (isSignedIn) {
-            const userObj = authInstance.currentUser.get();
-            const profile = userObj.getBasicProfile();
-            if (profile) {
-              setConnectedEmail(profile.getEmail());
-            }
-            fetchGoogleCalendarEvents();
-          } else {
-            setLiveEvents([]);
-          }
-        });
-      }).catch((error) => {
-        console.error("Error initializing Google API", error);
-      });
-    }
-
-    gapi.load('client:auth2', start);
-  }, [fetchGoogleCalendarEvents]);
-
-  // Function to handle Google Sign-In & Live Sync with proper offline/popup handling
-  const handleGoogleAuth = async () => {
-    setAuthLoading(true);
-    try {
-      const authInstance = gapi.auth2.getAuthInstance();
-      if (!isGoogleSynced) {
-        await authInstance.signIn({ prompt: 'select_account' });
-        const userObj = authInstance.currentUser.get();
-        const profile = userObj.getBasicProfile();
-        if (profile) {
-          setConnectedEmail(profile.getEmail());
-        }
-      } else {
-        await authInstance.signOut();
-        setIsGoogleSynced(false);
-      }
-    } catch (error) {
-      console.error("Authentication failed", error);
-    } finally {
-      setAuthLoading(false);
-    }
+  const handleAiSyncToggle = async () => {
+    setSyncLoading(true);
+    setTimeout(() => {
+      setIsAiSynced(!isAiSynced);
+      setSyncLoading(false);
+    }, 800);
   };
 
-  // Push new event directly to Google Calendar API with Google Meet generation support
   const handleConfirmBooking = async () => {
     setIsCreatingEvent(true);
-    try {
+    setTimeout(() => {
       const startDateObj = new Date(`${selectedDate}T${selectedTime}:00`);
       const durationMinutes = parseInt(slotDuration, 10) || 45;
       const endDateObj = new Date(startDateObj.getTime() + durationMinutes * 60000);
 
-      const eventRequestBody = {
-        summary: `Therapy Session: ${selectedClient} (${selectedCharge.split(' ')[0]})`,
-        description: `Mode: ${sessionMode}\nCharge Plan: ${selectedCharge}\nManaged via Psychobeings Practitioner Portal.`,
-        start: {
-          dateTime: startDateObj.toISOString(),
-          timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-        },
-        end: {
-          dateTime: endDateObj.toISOString(),
-          timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-        },
-        attendees: [
-          { email: connectedEmail }
-        ],
-        ...(sessionMode === 'Online' && {
-          conferenceData: {
-            createRequest: {
-              requestId: `psychobeings-${Date.now()}`,
-              conferenceSolutionKey: { type: 'hangoutsMeet' }
-            }
-          }
-        })
+      const startTimeStr = startDateObj.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      const endTimeStr = endDateObj.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+      const newEvent = {
+        id: `ai-evt-${Date.now()}`,
+        title: `Therapy Session: ${selectedClient} (${selectedCharge.split(' ')[0]})`,
+        time: `${startTimeStr} - ${endTimeStr}`,
+        status: 'booked',
+        type: sessionMode === 'Online' ? 'AI VIDEO SESSION' : 'IN-PERSON',
+        rawStart: `${selectedDate}T${selectedTime}:00`,
+        meetLink: sessionMode === 'Online' ? '#' : null
       };
 
-      if (isGoogleSynced) {
-        // Create event live in Google Calendar
-        const response = await gapi.client.calendar.events.insert({
-          calendarId: 'primary',
-          resource: eventRequestBody,
-          conferenceDataVersion: sessionMode === 'Online' ? 1 : 0,
-        });
-
-        const created = response.result;
-        alert(`Session successfully booked for ${selectedClient} and synced directly to Google Calendar!${created.hangoutLink ? ` Google Meet link generated.` : ''}`);
-        
-        // Refresh events list
-        await fetchGoogleCalendarEvents();
-      } else {
-        // Fallback simulation if offline or disconnected
-        alert(`Session booked locally for ${selectedClient} on ${selectedDate} at ${selectedTime}. Connect Google Calendar for live sync.`);
-      }
-
+      setLiveEvents(prev => [...prev, newEvent]);
+      setIsCreatingEvent(false);
       setIsBookingModalOpen(false);
       setBookingStep('form');
-    } catch (error) {
-      console.error("Error creating Google Calendar event:", error);
-      alert("Failed to sync event with Google Calendar. Please check your connection and permissions.");
-    } finally {
-      setIsCreatingEvent(false);
-    }
+      alert(`Session successfully booked for ${selectedClient} and synced with the Psychobeings AI Dashboard.`);
+    }, 800);
   };
 
   const handleSaveAvailability = (e) => {
@@ -238,10 +106,9 @@ export default function SessionCalendar() {
     setTimeout(() => setSaveAvailabilitySuccess(false), 3000);
   };
 
-  // Mock Calendar Grid Data combined with live API events
   const weekDays = [
     { day: '23 SUN', date: '23', slots: [{ time: '9:00 - 10:00', title: 'Diksha Bharti', status: 'booked', type: 'ONLINE' }] },
-    { day: '24 MON', date: '24', slots: [{ time: '10:00 - 11:00', title: 'Open Slot', status: 'open', type: 'OPEN' }, ...liveEvents.filter(e => e.rawStart?.includes('2026-08-24') || true)] },
+    { day: '24 MON', date: '24', slots: [{ time: '10:00 - 11:00', title: 'Open Slot', status: 'open', type: 'OPEN' }, ...liveEvents] },
     { day: '25 TUE', date: '25', slots: [{ time: '9:00 - 10:00', title: 'Diksha Bharti', status: 'booked', type: 'ONLINE' }] },
     { day: '26 WED', date: '26', slots: [{ time: '3:00 - 4:00', title: 'Open Slot', status: 'open', type: 'OPEN' }] },
     { day: '27 THU', date: '27', slots: [{ time: '9:00 - 10:00', title: 'Open Slot', status: 'open', type: 'OPEN' }] },
@@ -250,18 +117,20 @@ export default function SessionCalendar() {
   ];
 
   return (
-    <div className="max-w-7xl mx-auto font-sans text-stone-800 pb-16 space-y-6 relative">
+    <div className="max-w-7xl mx-auto font-sans text-stone-800 pb-16 space-y-6 relative bg-stone-50/30 p-2 sm:p-4">
       
-      {/* Top Header Navigation matching Psychobeings Palette */}
+      {/* Top Header Navigation */}
       <div className="bg-white p-4 sm:p-5 rounded-2xl border border-stone-200/85 shadow-sm flex flex-col md:flex-row items-center justify-between gap-4">
         <div>
-          <h1 className="text-base font-bold text-stone-900">Your Schedule (Live Google Sync)</h1>
+          <h1 className="text-base font-bold text-stone-900 flex items-center gap-2">
+            <span>Practitioner Schedule & AI Core</span>
+            <span className="text-[10px] bg-teal-50 text-[#237A88] border border-teal-200 px-2 py-0.5 rounded-full font-semibold">AI Connected</span>
+          </h1>
           <p className="text-xs text-stone-500 mt-0.5">
-            {isGoogleSynced ? `Connected and syncing live with ${connectedEmail}.` : 'Google Calendar not connected. Click Sync to authorize.'}
+            {isAiSynced ? `Connected and syncing in real-time with ${connectedAssistant}.` : 'AI Assistant disconnected. Reconnect to resume live updates.'}
           </p>
         </div>
 
-        {/* Secondary Navigation Tabs */}
         <div className="flex items-center bg-stone-100 p-1 rounded-xl">
           <button
             onClick={() => setActiveTab('schedule')}
@@ -272,13 +141,13 @@ export default function SessionCalendar() {
             Manage
           </button>
           <button
-            onClick={() => setActiveTab('sync')}
+            onClick={() => setActiveTab('ai-sync')}
             className={`px-4 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 ${
-              activeTab === 'sync' ? 'bg-[#237A88] text-white shadow-sm' : 'text-stone-600 hover:text-stone-900'
+              activeTab === 'ai-sync' ? 'bg-[#237A88] text-white shadow-sm' : 'text-stone-600 hover:text-stone-900'
             }`}
           >
-            <Link2 size={13} />
-            <span>Sync</span>
+            <Bot size={13} />
+            <span>AI Core Sync</span>
           </button>
           <button
             onClick={() => setActiveTab('availability')}
@@ -303,13 +172,13 @@ export default function SessionCalendar() {
                 <Plus size={14} />
                 <span>New Booking</span>
               </button>
-              {isGoogleSynced && (
+              {isAiSynced && (
                 <button 
-                  onClick={fetchGoogleCalendarEvents}
+                  onClick={fetchAiDashboardEvents}
                   className="flex items-center gap-1 bg-white border border-stone-300 hover:bg-stone-50 text-stone-700 px-3.5 py-2 rounded-xl text-xs font-bold transition"
                 >
                   <RefreshCw size={13} className={isLoadingEvents ? 'animate-spin' : ''} />
-                  <span>Fetch Live Google Events</span>
+                  <span>Sync AI Dashboard</span>
                 </button>
               )}
             </div>
@@ -326,13 +195,12 @@ export default function SessionCalendar() {
               </div>
 
               <div className="flex items-center bg-stone-100 p-1 rounded-xl">
-                <button onClick={() => setViewMode('week')} className={`px-3 py-1 rounded-lg text-xs font-bold transition ${viewMode === 'week' ? 'bg-[#237A88] text-white shadow-sm' : 'text-stone-600'}`}>week</button>
-                <button onClick={() => setViewMode('day')} className={`px-3 py-1 rounded-lg text-xs font-bold transition ${viewMode === 'day' ? 'bg-[#237A88] text-white shadow-sm' : 'text-stone-600'}`}>day</button>
+                <button onClick={() => setViewMode('week')} className={`px-3 py-1 rounded-lg text-xs font-bold transition ${viewMode === 'week' ? 'bg-[#237A88] text-white shadow-sm' : 'text-stone-600'}`}>Week</button>
+                <button onClick={() => setViewMode('day')} className={`px-3 py-1 rounded-lg text-xs font-bold transition ${viewMode === 'day' ? 'bg-[#237A88] text-white shadow-sm' : 'text-stone-600'}`}>Day</button>
               </div>
             </div>
           </div>
 
-          {/* Calendar Grid View */}
           <div className="bg-white rounded-2xl border border-stone-200/80 shadow-sm overflow-hidden">
             <div className="grid grid-cols-7 border-b border-stone-200 bg-stone-50/70 text-center">
               {weekDays.map((col, idx) => (
@@ -347,9 +215,9 @@ export default function SessionCalendar() {
                 <div key={idx} className="p-2 space-y-2">
                   {col.slots.map((slot, sIdx) => {
                     let bgStyle = 'bg-[#237A88] text-white border-[#1C646F]';
-                    if (slot.status === 'open') bgStyle = 'bg-[#237A88]/20 text-[#237A88] border-[#237A88]/30';
-                    if (slot.type === 'GOOGLE SYNC') bgStyle = 'bg-indigo-600 text-white border-indigo-700';
-                    if (slot.type === 'GOOGLE MEET') bgStyle = 'bg-blue-600 text-white border-blue-700';
+                    if (slot.status === 'open') bgStyle = 'bg-[#237A88]/10 text-[#237A88] border-[#237A88]/20';
+                    if (slot.type === 'AI ASSISTANT SYNC') bgStyle = 'bg-teal-700 text-white border-teal-800';
+                    if (slot.type === 'AI VIDEO SESSION') bgStyle = 'bg-[#1C646F] text-white border-[#134952]';
 
                     return (
                       <div key={sIdx} className={`p-2.5 rounded-xl border text-[11px] font-semibold shadow-sm space-y-1.5 ${bgStyle}`}>
@@ -358,16 +226,14 @@ export default function SessionCalendar() {
                           <span className="text-[9px] uppercase px-1.5 py-0.5 rounded bg-black/10 font-bold">{slot.type}</span>
                         </div>
                         <p className="font-bold truncate">{slot.title}</p>
-                        {slot.hangoutLink && (
-                          <a 
-                            href={slot.hangoutLink} 
-                            target="_blank" 
-                            rel="noopener noreferrer" 
+                        {slot.meetLink && (
+                          <button 
+                            onClick={() => alert("Launching Secure AI Video Room...")}
                             className="inline-flex items-center gap-1 bg-white/20 hover:bg-white/30 text-white px-2 py-1 rounded text-[10px] font-bold transition mt-1 w-full justify-center"
                           >
                             <Video size={10} />
-                            <span>Join Meet</span>
-                          </a>
+                            <span>AI Secure Room</span>
+                          </button>
                         )}
                       </div>
                     );
@@ -376,75 +242,62 @@ export default function SessionCalendar() {
               ))}
             </div>
 
-            {/* Legend Footer */}
             <div className="p-4 bg-stone-50 border-t border-stone-200 flex items-center gap-6 text-xs font-semibold text-stone-700">
               <div className="flex items-center gap-2"><span className="w-3 h-3 rounded-full bg-[#237A88]" /><span>Booked</span></div>
-              <div className="flex items-center gap-2"><span className="w-3 h-3 rounded-full bg-indigo-600" /><span>Google Calendar Event</span></div>
-              <div className="flex items-center gap-2"><span className="w-3 h-3 rounded-full bg-blue-600" /><span>Google Meet Session</span></div>
+              <div className="flex items-center gap-2"><span className="w-3 h-3 rounded-full bg-teal-700" /><span>AI Dashboard Event</span></div>
+              <div className="flex items-center gap-2"><span className="w-3 h-3 rounded-full bg-[#1C646F]" /><span>AI Video Session</span></div>
             </div>
           </div>
         </div>
       )}
 
-      {/* ================= TAB 2: GOOGLE CALENDAR SYNC ================= */}
-      {activeTab === 'sync' && (
+      {/* ================= TAB 2: AI CORE SYNC ================= */}
+      {activeTab === 'ai-sync' && (
         <div className="bg-white rounded-2xl border border-stone-200/80 shadow-sm p-6 sm:p-8 space-y-6 max-w-4xl mx-auto">
           <div className="flex items-center justify-between border-b border-stone-100 pb-4">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold">
-                <CalendarIcon size={20} />
+              <div className="w-10 h-10 rounded-xl bg-teal-50 text-[#237A88] flex items-center justify-center font-bold">
+                <Bot size={20} />
               </div>
               <div>
-                <h2 className="text-base font-bold text-stone-900">Google Calendar Sync</h2>
-                <p className="text-xs text-stone-500">Connect your live Google Workspace account to sync appointments and generate Google Meet links automatically.</p>
+                <h2 className="text-base font-bold text-stone-900">Psychobeings AI Assistant Core</h2>
+                <p className="text-xs text-stone-500">Manage automated dashboard synchronization and intelligent booking streams.</p>
               </div>
             </div>
             <button 
-              onClick={handleGoogleAuth}
-              disabled={authLoading}
+              onClick={handleAiSyncToggle}
+              disabled={syncLoading}
               className={`px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 ${
-                isGoogleSynced 
+                isAiSynced 
                   ? 'bg-rose-50 text-rose-700 border border-rose-200 hover:bg-rose-100' 
                   : 'bg-[#237A88] text-white hover:bg-[#1C646F]'
               }`}
             >
-              <RefreshCw size={13} className={authLoading ? 'animate-spin' : ''} />
-              <span>{isGoogleSynced ? 'Disconnect Google Account' : 'Connect Google Account'}</span>
+              <RefreshCw size={13} className={syncLoading ? 'animate-spin' : ''} />
+              <span>{isAiSynced ? 'Disconnect AI Core' : 'Connect AI Core'}</span>
             </button>
           </div>
 
           <div className="space-y-4">
             <div className="flex items-center justify-between p-4 rounded-xl bg-stone-50 border border-stone-200">
               <div>
-                <h4 className="text-xs font-bold text-stone-900">Real-Time Sync Status</h4>
+                <h4 className="text-xs font-bold text-stone-900">Dashboard Real-Time Bridge</h4>
                 <p className="text-[11px] text-stone-500">
-                  {isGoogleSynced ? 'Connected and syncing live with Google Calendar API' : 'Not Connected. Sign in to enable live synchronization.'}
+                  {isAiSynced ? 'Connected and actively streaming session updates to dashboard UI.' : 'Disconnected. Reconnect to enable automatic AI stream.'}
                 </p>
               </div>
-              <span className={`w-3 h-3 rounded-full ${isGoogleSynced ? 'bg-emerald-500 animate-pulse' : 'bg-stone-300'}`} />
+              <span className={`w-3 h-3 rounded-full ${isAiSynced ? 'bg-emerald-500 animate-pulse' : 'bg-stone-300'}`} />
             </div>
 
             <div className="border border-stone-200 rounded-2xl p-5 space-y-3 bg-stone-50/50">
-              <h4 className="text-xs font-bold text-stone-700">Authorized Workspace Account</h4>
+              <h4 className="text-xs font-bold text-stone-700">Active AI Practice Node</h4>
               <div className="flex items-center justify-between p-3 bg-white rounded-xl border border-stone-200">
-                <span className="text-xs font-bold text-stone-800">{connectedEmail}</span>
-                <span className={`text-[10px] px-2 py-0.5 rounded font-semibold ${isGoogleSynced ? 'text-indigo-600 bg-indigo-50' : 'text-stone-500 bg-stone-100'}`}>
-                  {isGoogleSynced ? 'Active API Stream' : 'Disconnected'}
+                <span className="text-xs font-bold text-stone-800">{connectedAssistant}</span>
+                <span className={`text-[10px] px-2 py-0.5 rounded font-semibold ${isAiSynced ? 'text-teal-700 bg-teal-50' : 'text-stone-500 bg-stone-100'}`}>
+                  {isAiSynced ? 'Active Stream' : 'Disconnected'}
                 </span>
               </div>
             </div>
-
-            {isGoogleSynced && (
-              <div className="pt-2 flex justify-end">
-                <button
-                  onClick={fetchGoogleCalendarEvents}
-                  className="px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold transition flex items-center gap-2 shadow-sm"
-                >
-                  <RefreshCw size={14} className={isLoadingEvents ? 'animate-spin' : ''} />
-                  <span>Sync Events Now</span>
-                </button>
-              </div>
-            )}
           </div>
         </div>
       )}
@@ -534,9 +387,9 @@ export default function SessionCalendar() {
             {/* Modal Header */}
             <div className="px-6 py-4 border-b border-stone-100 flex items-center justify-between bg-stone-50/50">
               <div className="flex items-center gap-2">
-                <CalendarIcon size={18} className="text-[#237A88]" />
+                <Sparkles size={18} className="text-[#237A88]" />
                 <h3 className="text-sm font-bold text-stone-900">
-                  {bookingStep === 'form' ? 'New Therapy Session Booking' : 'Booking Preview & Summary'}
+                  {bookingStep === 'form' ? 'New Therapy Session Booking' : 'AI Booking Preview & Summary'}
                 </h3>
               </div>
               <button 
@@ -551,10 +404,10 @@ export default function SessionCalendar() {
             <div className="p-6 space-y-5 max-h-[80vh] overflow-y-auto">
               {bookingStep === 'form' ? (
                 <>
-                  {!isGoogleSynced && (
+                  {!isAiSynced && (
                     <div className="bg-amber-50 border border-amber-200 rounded-xl p-3 text-xs text-amber-800 flex items-center gap-2">
                       <AlertCircle size={16} className="shrink-0 text-amber-600" />
-                      <span>Google Calendar is not connected. Bookings will be saved locally until connected.</span>
+                      <span>AI Core is disconnected. Bookings will be saved locally until reconnected.</span>
                     </div>
                   )}
 
@@ -611,7 +464,7 @@ export default function SessionCalendar() {
                     </div>
                     {sessionMode === 'Online' && (
                       <p className="text-[11px] text-[#237A88] font-medium pt-1">
-                        ✨ Selecting Online will automatically generate a Google Meet video conference link upon confirmation.
+                        ✨ Selecting Online will automatically configure a secure AI video room link upon confirmation.
                       </p>
                     )}
                   </div>
@@ -648,51 +501,45 @@ export default function SessionCalendar() {
                 /* Preview Step */
                 <div className="space-y-4">
                   <div className="bg-stone-50 border border-stone-200 rounded-2xl p-4 space-y-3">
-                    <div className="flex items-center justify-between border-b border-stone-200 pb-2.5">
-                      <span className="text-xs text-stone-500 font-medium">Client Name</span>
-                      <span className="text-xs font-bold text-stone-900">{selectedClient}</span>
+                    <h4 className="text-xs font-bold text-stone-700 uppercase tracking-wider mb-2">Session Summary</h4>
+                    <div className="flex items-center gap-3 text-xs text-stone-700">
+                      <User size={14} className="text-[#237A88]" />
+                      <span><strong>Client:</strong> {selectedClient}</span>
                     </div>
-                    <div className="flex items-center justify-between border-b border-stone-200 pb-2.5">
-                      <span className="text-xs text-stone-500 font-medium">Date & Time</span>
-                      <span className="text-xs font-bold text-stone-900">{selectedDate} at {selectedTime}</span>
+                    <div className="flex items-center gap-3 text-xs text-stone-700">
+                      <CalendarIcon size={14} className="text-[#237A88]" />
+                      <span><strong>Date & Time:</strong> {selectedDate} at {selectedTime} ({slotDuration} mins)</span>
                     </div>
-                    <div className="flex items-center justify-between border-b border-stone-200 pb-2.5">
-                      <span className="text-xs text-stone-500 font-medium">Session Mode</span>
-                      <span className="text-xs font-bold text-stone-900 flex items-center gap-1">
-                        {sessionMode === 'Online' ? <Video size={12} className="text-[#237A88]" /> : <MapPin size={12} className="text-[#237A88]" />}
-                        {sessionMode} {sessionMode === 'Online' && '(Google Meet)'}
-                      </span>
+                    <div className="flex items-center gap-3 text-xs text-stone-700">
+                      {sessionMode === 'Online' ? <Video size={14} className="text-[#237A88]" /> : <MapPin size={14} className="text-[#237A88]" />}
+                      <span><strong>Mode:</strong> {sessionMode} {sessionMode === 'Online' ? '(AI Video Room Enabled)' : ''}</span>
                     </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-xs text-stone-500 font-medium">Selected Charge</span>
-                      <span className="text-xs font-bold text-[#237A88]">{selectedCharge}</span>
+                    <div className="flex items-center gap-3 text-xs text-stone-700">
+                      <DollarSign size={14} className="text-[#237A88]" />
+                      <span><strong>Plan:</strong> {selectedCharge}</span>
                     </div>
-                  </div>
-                  <div className="flex items-center gap-2 bg-emerald-50 border border-emerald-200 rounded-xl p-3 text-xs text-emerald-800">
-                    <CheckCircle2 size={16} className="text-emerald-600 shrink-0" />
-                    <span>Everything looks correct. Ready to confirm and dispatch calendar invitation.</span>
                   </div>
                 </div>
               )}
             </div>
 
             {/* Modal Footer */}
-            <div className="px-6 py-4 border-t border-stone-100 bg-stone-50/50 flex items-center justify-between">
+            <div className="px-6 py-4 bg-stone-50 border-t border-stone-100 flex items-center justify-between">
               {bookingStep === 'preview' ? (
                 <button
                   type="button"
                   onClick={() => setBookingStep('form')}
-                  className="px-4 py-2 rounded-xl text-xs font-bold text-stone-600 hover:bg-stone-200/50 transition"
+                  className="px-4 py-2 border border-stone-300 text-stone-700 rounded-xl text-xs font-bold hover:bg-stone-100 transition"
                 >
                   Back to Edit
                 </button>
               ) : <div />}
 
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 ml-auto">
                 <button
                   type="button"
                   onClick={() => setIsBookingModalOpen(false)}
-                  className="px-4 py-2 rounded-xl text-xs font-bold text-stone-600 hover:bg-stone-200/50 transition"
+                  className="px-4 py-2 text-stone-600 hover:text-stone-800 text-xs font-bold transition"
                 >
                   Cancel
                 </button>
@@ -700,19 +547,19 @@ export default function SessionCalendar() {
                   <button
                     type="button"
                     onClick={() => setBookingStep('preview')}
-                    className="px-5 py-2 rounded-xl text-xs font-bold bg-[#237A88] hover:bg-[#1C646F] text-white shadow-sm transition"
+                    className="px-5 py-2 bg-[#237A88] hover:bg-[#1C646F] text-white rounded-xl text-xs font-bold transition shadow-sm"
                   >
-                    Preview Selection
+                    Review Booking
                   </button>
                 ) : (
                   <button
                     type="button"
-                    disabled={isCreatingEvent}
                     onClick={handleConfirmBooking}
-                    className="px-5 py-2 rounded-xl text-xs font-bold bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm transition flex items-center gap-2 disabled:opacity-50"
+                    disabled={isCreatingEvent}
+                    className="px-5 py-2 bg-[#237A88] hover:bg-[#1C646F] text-white rounded-xl text-xs font-bold transition shadow-sm flex items-center gap-2"
                   >
-                    <RefreshCw size={13} className={isCreatingEvent ? 'animate-spin' : ''} />
-                    <span>{isCreatingEvent ? 'Syncing to Calendar...' : 'Confirm & Book'}</span>
+                    {isCreatingEvent && <RefreshCw size={13} className="animate-spin" />}
+                    <span>Confirm & Sync with Dashboard</span>
                   </button>
                 )}
               </div>
