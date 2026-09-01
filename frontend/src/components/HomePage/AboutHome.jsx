@@ -1,5 +1,5 @@
 import React from 'react';
-import { HeartHandshake, Shield, Sparkles, ArrowRight } from 'lucide-react';
+import { Sparkles } from 'lucide-react';
 
 const AboutHome = () => {
   return (
@@ -10,7 +10,7 @@ const AboutHome = () => {
         <div className="relative mx-auto max-w-md lg:max-w-none">
           
           {/* Decorative Background Glow / Accent Frame */}
-          <div className="absolute -inset-2 rounded-[2.5Krem] bg-gradient-to-tr from-[#1C7C83]/20 via-[#1C7C83]/5 to-transparent blur-xl -z-10" />
+          <div className="absolute -inset-2 rounded-[2.5rem] bg-gradient-to-tr from-[#1C7C83]/20 via-[#1C7C83]/5 to-transparent blur-xl -z-10" />
 
           {/* Primary Image Card */}
           <div className="relative overflow-hidden rounded-[2rem] shadow-2xl shadow-[#1F3A3D]/10 border border-[#1C7C83]/15 bg-[#F2F7F7]">
@@ -26,7 +26,7 @@ const AboutHome = () => {
           {/* Floating Trust Badge */}
           <div className="absolute -bottom-6 -right-4 sm:-right-6 bg-white/95 backdrop-blur-xl p-4 sm:p-5 rounded-2xl border border-white shadow-xl shadow-[#1F3A3D]/10 flex items-center gap-3.5 max-w-[260px] animate-fade-in">
             <div className="p-3 bg-gradient-to-br from-[#1C7C83] to-[#155F64] text-white rounded-xl shadow-md shadow-[#1C7C83]/30">
-              <Shield size={22} className="stroke-[2.2]" />
+              <Sparkles size={22} className="stroke-[2.2]" />
             </div>
             <div>
               <p className="text-[11px] font-bold uppercase tracking-widest text-[#1C7C83]">Secure Sanctuary</p>
@@ -79,7 +79,7 @@ const AboutHome = () => {
         <div className="pt-2 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-4 rounded-2xl bg-[#F2F7F7] border border-[#1C7C83]/15 shadow-sm">
           <div className="flex items-center gap-3.5 text-[#1F3A3D]">
             <div className="p-2.5 rounded-xl bg-white text-[#1C7C83] shadow-sm border border-[#1C7C83]/10">
-              <HeartHandshake size={20} className="stroke-[2]" />
+              <Sparkles size={20} className="stroke-[2]" />
             </div>
             <span className="font-medium text-xs sm:text-sm text-[#1F3A3D]">
               Personalized, evidence-based care focused on sustainable growth.
