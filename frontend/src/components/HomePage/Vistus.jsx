@@ -103,10 +103,10 @@ export default function PsychobeingsVisitUs() {
                 <div className="flex items-center gap-2.5">
                   <Phone className="w-4 h-4 text-slate-400 shrink-0" />
                   <a
-                    href="tel:+918305777371"
+                    href="tel:+91 9962452865"
                     className="hover:text-[#1C6B6B] transition-colors font-medium text-slate-800"
                   >
-                    +91 83057 77371
+                    +91 9962452865
                   </a>
                 </div>
 
