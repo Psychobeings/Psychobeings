@@ -11,11 +11,6 @@ import Packageshome from '../components/HomePage/Packageshome';
 import Vistus from '../components/HomePage/Vistus';
 import { MapPin, Globe2, Clock3 } from 'lucide-react';
 
-const trustBarItems = [
-  { icon: MapPin, label: 'Faridabad, Haryana', detail: 'In-person care available' },
-  { icon: Globe2, label: 'English & Hindi', detail: 'Sessions in both languages' },
-  { icon: Clock3, label: 'Fast response', detail: 'Usually within 24 hours' },
-];
 
 const homeSections = [
   { component: AboutHome, bg: 'bg-[#fbfdfd]' },
