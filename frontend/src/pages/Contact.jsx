@@ -37,6 +37,11 @@ const Contact = () => {
       const res = await axios.post(`${baseUrl}email/sendmessage`, formData);
 
       if (res.status >= 200 && res.status < 300) {
+        try {
+          await axios.post(`${baseUrl}email/messages`, formData);
+        } catch (saveError) {
+          console.error('Contact message save failed:', saveError);
+        }
         setSubmitted(true);
       }
     } catch (error) {

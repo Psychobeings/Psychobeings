@@ -10,7 +10,8 @@ import {
   LogOut, 
   Menu,
   X,
-  Notebook
+  Notebook,
+  Mail
 } from 'lucide-react';
 
 export default function Layout() {
@@ -29,6 +30,7 @@ export default function Layout() {
     { label: 'Case History', path: '/case-history', icon: FileText },
     { label: 'Tasks & Worksheets', path: '/tasks-worksheets', icon: CheckSquare },
     { label: 'Post-session Activities', path: '/post-session-activities', icon: Notebook },
+    { label: 'Messages', path: '/messages', icon: Mail },
     { label: 'Settings', path: '/settings', icon: Settings },
   ];
 

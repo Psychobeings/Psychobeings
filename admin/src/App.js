@@ -9,6 +9,7 @@ import SessionCalendar from './Components/SessionCalendar';
 import TasksAndWorksheets from './Components/TasksAndWorksheets';
 import PostSessionActivities from './Components/postsessionactivities';
 import SettingsPage from './Components/Settings';
+import MessagesInbox from './Components/MessagesInbox';
 
 const ProtectedRoute = ({ children }) => {
   const token = localStorage.getItem('authToken');
@@ -56,6 +57,7 @@ export default function App() {
 
           {/* Updated Nested Route matching Layout sidebar path */}
           <Route path="post-session-activities" element={<PostSessionActivities />} />
+          <Route path="messages" element={<MessagesInbox />} />
           <Route path="settings" element={<SettingsPage />} />
         </Route>
 
