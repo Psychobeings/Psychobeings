@@ -74,7 +74,7 @@ export default function PsychobeingsVisitUs() {
             </div>
 
             <a
-              href="<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3509.090963337977!2d77.35230657461014!3d28.416511993859277!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390cdd8c1cbcd9ad%3A0xcb81de111c2746f0!2sPsychobeings%20%E2%80%93%20Psychological%20Wellness%20%26%20Therapy!5e0!3m2!1sen!2sin!4v1788235553090!5m2!1sen!2sin" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>"
+              href="https://maps.google.com/?q=RPS+Palms+Sector+88+Faridabad"
               target="_blank"
               rel="noreferrer"
               className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#1C6B6B] hover:underline pt-2"
