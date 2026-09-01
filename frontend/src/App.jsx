@@ -15,6 +15,7 @@ import Booking from './pages/Booking';
 import PrivacyPolicy from './pages/Privacy';
 import TermsAndConditions from './pages/Terms&Conditions';
 import CancellationPolicy from './pages/CancellationPolicy';
+import WhatsAppChat from './components/WhatsAppChat';
 
 function App() {
   return (
@@ -43,6 +44,7 @@ function App() {
           </Routes>
         </main>
       </div>
+      <WhatsAppChat />
       <Footer />
     </Router>
   );
