@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { Calendar, Users, FileText, CreditCard, Settings, LogOut, ChevronRight, Plus, Search, Bell, Activity, Copy, Check } from 'lucide-react';
+import { Calendar, Users, FileText, CreditCard, Settings, LogOut, ChevronRight, Plus, Search, Bell, Activity, ChevronLeft } from 'lucide-react';
 
 export default function PractitionerPortalApp() {
-  const [activeTab, setActiveTab] = useState('notes');
+  const [activeTab, setActiveTab] = useState('schedule');
   const [isLoggedIn, setIsLoggedIn] = useState(true);
 
   if (!isLoggedIn) {
@@ -201,21 +201,116 @@ function DashboardView({ setActiveTab }) {
   );
 }
 
-// 2. SCHEDULE VIEW
+// 2. SCHEDULE VIEW (Interactive Calendar Implementation)
 function ScheduleView() {
+  const [currentDate, setCurrentDate] = useState('August 2026');
+  const [selectedDate, setSelectedDate] = useState('29');
+
+  const daysInMonth = [
+    { day: 26, prev: true }, { day: 27, prev: true }, { day: 28, prev: true }, { day: 29, prev: true }, { day: 30, prev: true }, { day: 31, prev: true },
+    { day: 1 }, { day: 2 }, { day: 3 }, { day: 4 }, { day: 5 }, { day: 6 }, { day: 7 },
+    { day: 8 }, { day: 9 }, { day: 10 }, { day: 11 }, { day: 12 }, { day: 13 }, { day: 14 },
+    { day: 15 }, { day: 16 }, { day: 17 }, { day: 18 }, { day: 19 }, { day: 20 }, { day: 21 },
+    { day: 22 }, { day: 23 }, { day: 24 }, { day: 25 }, { day: 26 }, { day: 27 }, { day: 28 },
+    { day: 29, today: true, active: true, events: 4 }, { day: 30 }, { day: 31 }, { day: 1, next: true }, { day: 2, next: true }, { day: 3, next: true }, { day: 4, next: true }
+  ];
+
+  const timeSlots = [
+    '09:00 AM', '10:00 AM', '11:30 AM', '01:00 PM', '02:00 PM', '03:30 PM', '05:00 PM'
+  ];
+
+  const scheduledEvents = [
+    { time: '10:00 AM', client: 'Aarav M.', type: 'Individual Therapy (CBT)', status: 'Completed', color: 'bg-stone-900 text-white' },
+    { time: '11:30 AM', client: 'Priya S.', type: 'Initial Consultation', status: 'Upcoming', color: 'bg-stone-200 text-stone-900' },
+    { time: '02:00 PM', client: 'Family V.', type: 'Family Systems Session', status: 'Scheduled', color: 'bg-stone-100 text-stone-800' },
+    { time: '03:30 PM', client: 'Rohan K.', type: 'Follow-up Progress Review', status: 'Scheduled', color: 'bg-stone-100 text-stone-800' },
+  ];
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-stone-900">Schedule & Calendar</h1>
-          <p className="text-stone-500 text-xs mt-1">Manage your weekly calendar, booking links, and session time slots.</p>
+          <h1 className="text-2xl font-bold text-stone-900">Schedule & Master Calendar</h1>
+          <p className="text-stone-500 text-xs mt-1">Manage weekly appointments, synchronized slots, and client session bookings.</p>
         </div>
-        <button className="bg-stone-900 text-white text-xs font-medium px-4 py-2.5 rounded-xl hover:bg-stone-800 transition">Add Appointment</button>
+        <button className="bg-stone-900 text-white text-xs font-medium px-4 py-2.5 rounded-xl hover:bg-stone-800 transition flex items-center space-x-2">
+          <Plus className="w-3.5 h-3.5" />
+          <span>New Appointment</span>
+        </button>
       </div>
-      <div className="bg-white p-8 rounded-2xl border border-stone-200 shadow-sm text-center py-16">
-        <Calendar className="w-12 h-12 text-stone-300 mx-auto mb-3" />
-        <h3 className="font-semibold text-stone-900 text-sm">Interactive Master Calendar Grid</h3>
-        <p className="text-stone-500 text-xs mt-1">Integrates with client portal online booking rules and automated reminders.</p>
+
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        {/* Calendar Grid Container */}
+        <div className="lg:col-span-2 bg-white p-6 rounded-2xl border border-stone-200 shadow-sm space-y-6">
+          <div className="flex items-center justify-between">
+            <h2 className="font-semibold text-stone-900 text-sm">{currentDate}</h2>
+            <div className="flex items-center space-x-2">
+              <button className="p-2 rounded-xl border border-stone-200 hover:bg-stone-50 text-stone-600 transition">
+                <ChevronLeft className="w-4 h-4" />
+              </button>
+              <button className="p-2 rounded-xl border border-stone-200 hover:bg-stone-50 text-stone-600 transition">
+                <ChevronRight className="w-4 h-4" />
+              </button>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-7 gap-2 text-center text-xs font-semibold text-stone-400 uppercase tracking-wider pb-2 border-b border-stone-100">
+            <span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
+          </div>
+
+          <div className="grid grid-cols-7 gap-2 text-xs">
+            {daysInMonth.map((item, idx) => (
+              <button
+                key={idx}
+                onClick={() => setSelectedDate(item.day.toString())}
+                className={`h-16 p-2 rounded-xl border flex flex-col justify-between transition text-left ${
+                  item.active ? 'border-stone-900 bg-stone-900 text-white shadow-sm' :
+                  item.prev || item.next ? 'border-transparent text-stone-300 hover:bg-stone-50' :
+                  'border-stone-100 bg-stone-50/50 hover:bg-stone-100 text-stone-800'
+                }`}
+              >
+                <span className={`font-semibold ${item.active ? 'text-white' : 'text-stone-900'}`}>{item.day}</span>
+                {item.events && (
+                  <span className={`text-[9px] px-1.5 py-0.5 rounded-md font-medium w-fit ${item.active ? 'bg-white/20 text-white' : 'bg-stone-200 text-stone-700'}`}>
+                    {item.events} sessions
+                  </span>
+                )}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Selected Day Agenda Sidepane */}
+        <div className="bg-white p-6 rounded-2xl border border-stone-200 shadow-sm flex flex-col justify-between">
+          <div>
+            <div className="flex items-center justify-between border-b border-stone-100 pb-4 mb-4">
+              <div>
+                <span className="text-[10px] font-semibold uppercase tracking-widest text-stone-400">Daily Agenda</span>
+                <h3 className="font-bold text-stone-900 text-sm mt-0.5">August {selectedDate}, 2026</h3>
+              </div>
+              <span className="text-xs font-semibold bg-stone-100 text-stone-700 px-2.5 py-1 rounded-full">4 Sessions</span>
+            </div>
+
+            <div className="space-y-3">
+              {scheduledEvents.map((ev, i) => (
+                <div key={i} className={`p-3.5 rounded-xl border border-stone-100 text-xs space-y-1.5 ${ev.color}`}>
+                  <div className="flex items-center justify-between">
+                    <span className="font-semibold text-[11px] opacity-80">{ev.time}</span>
+                    <span className="text-[10px] px-2 py-0.5 rounded-full font-medium bg-white/20">{ev.status}</span>
+                  </div>
+                  <p className="font-bold">{ev.client}</p>
+                  <p className="text-[11px] opacity-90">{ev.type}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="mt-6 pt-4 border-t border-stone-100">
+            <button className="w-full bg-stone-100 text-stone-800 hover:bg-stone-200 transition font-medium py-2.5 rounded-xl text-xs">
+              Sync External Calendar
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -256,144 +351,18 @@ function ClientsView() {
   );
 }
 
-// 4. NOTES VIEW (Updated with Ready-to-Use Templates for New & Old Clients)
+// 4. NOTES VIEW
 function NotesView() {
-  const [activeTemplate, setActiveTemplate] = useState('intake');
-  const [copied, setCopied] = useState(false);
-
-  const handleCopy = () => {
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
-
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-stone-900">Clinical Notes & Documentation</h1>
-          <p className="text-stone-500 text-xs mt-1">Ready-to-use modality-aligned templates for new client intake and ongoing progress reviews.</p>
-        </div>
-        <button 
-          onClick={handleCopy}
-          className="bg-stone-900 text-white text-xs font-medium px-4 py-2.5 rounded-xl hover:bg-stone-800 transition flex items-center space-x-2"
-        >
-          {copied ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
-          <span>{copied ? 'Template Copied' : 'Copy Active Template'}</span>
-        </button>
+      <div>
+        <h1 className="text-2xl font-bold text-stone-900">Clinical Notes & Documentation</h1>
+        <p className="text-stone-500 text-xs mt-1">Modality-aligned progress notes and structured diagnostic charting.</p>
       </div>
-
-      {/* Template Switcher Tabs */}
-      <div className="flex space-x-2 bg-stone-200/60 p-1.5 rounded-2xl w-fit">
-        <button
-          onClick={() => setActiveTemplate('intake')}
-          className={`px-5 py-2.5 rounded-xl text-xs font-semibold transition ${activeTemplate === 'intake' ? 'bg-white text-stone-900 shadow-sm' : 'text-stone-600 hover:text-stone-900'}`}
-        >
-          New Client Intake Template
-        </button>
-        <button
-          onClick={() => setActiveTemplate('progress')}
-          className={`px-5 py-2.5 rounded-xl text-xs font-semibold transition ${activeTemplate === 'progress' ? 'bg-white text-stone-900 shadow-sm' : 'text-stone-600 hover:text-stone-900'}`}
-        >
-          Existing Client Progress Note
-        </button>
-      </div>
-
-      {/* Template Editor / Preview Card */}
-      <div className="bg-white rounded-2xl border border-stone-200 shadow-sm p-8 space-y-6">
-        {activeTemplate === 'intake' ? (
-          <div className="space-y-6">
-            <div className="flex items-center justify-between border-b border-stone-100 pb-4">
-              <div>
-                <span className="text-[10px] font-semibold uppercase tracking-widest bg-stone-100 text-stone-600 px-2 py-0.5 rounded">Initial Consultation</span>
-                <h3 className="text-lg font-bold text-stone-900 mt-1">New Client Intake & Assessment Record</h3>
-              </div>
-              <span className="text-xs text-stone-400">Session 01 • Secure EHR</span>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
-              <div className="p-3 bg-stone-50 rounded-xl border border-stone-100">
-                <label className="block text-[11px] font-semibold text-stone-400 uppercase">Client Identifier</label>
-                <input type="text" defaultValue="[Client Initials / ID]" className="w-full mt-1 bg-transparent border-b border-stone-300 pb-1 text-stone-900 focus:outline-none" />
-              </div>
-              <div className="p-3 bg-stone-50 rounded-xl border border-stone-100">
-                <label className="block text-[11px] font-semibold text-stone-400 uppercase">Session Date</label>
-                <input type="text" defaultValue="DD / MM / YYYY" className="w-full mt-1 bg-transparent border-b border-stone-300 pb-1 text-stone-900 focus:outline-none" />
-              </div>
-              <div className="p-3 bg-stone-50 rounded-xl border border-stone-100">
-                <label className="block text-[11px] font-semibold text-stone-400 uppercase">Primary Modality</label>
-                <input type="text" defaultValue="CBT / Narrative / Family Systems" className="w-full mt-1 bg-transparent border-b border-stone-300 pb-1 text-stone-900 focus:outline-none" />
-              </div>
-            </div>
-
-            <div className="space-y-4 text-xs">
-              <div>
-                <label className="block font-semibold text-stone-900 mb-1.5">1. Presenting Concerns</label>
-                <textarea rows="3" placeholder="Primary reason for seeking support; client's own words regarding current distress, emotional barriers, or functional impacts..." className="w-full p-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-stone-900"></textarea>
-              </div>
-              <div>
-                <label className="block font-semibold text-stone-900 mb-1.5">2. Developmental & Psycho-Social History</label>
-                <textarea rows="3" placeholder="Key historical background, family dynamics, educational/work context, and previous therapeutic experiences..." className="w-full p-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-stone-900"></textarea>
-              </div>
-              <div>
-                <label className="block font-semibold text-stone-900 mb-1.5">3. Clinical Observations & Mental Status Exam (MSE)</label>
-                <textarea rows="3" placeholder="Appearance, affect, thought process, orientation, and general demeanor during the interview..." className="w-full p-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-stone-900"></textarea>
-              </div>
-              <div>
-                <label className="block font-semibold text-stone-900 mb-1.5">4. Formulation & Treatment Goals</label>
-                <textarea rows="3" placeholder="Initial clinical impressions, identified modalities, and collaborative short-term therapeutic goals..." className="w-full p-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-stone-900"></textarea>
-              </div>
-            </div>
-          </div>
-        ) : (
-          <div className="space-y-6">
-            <div className="flex items-center justify-between border-b border-stone-100 pb-4">
-              <div>
-                <span className="text-[10px] font-semibold uppercase tracking-widest bg-stone-900 text-white px-2 py-0.5 rounded">Follow-Up Review</span>
-                <h3 className="text-lg font-bold text-stone-900 mt-1">Existing Client Progress Note</h3>
-              </div>
-              <span className="text-xs text-stone-400">Session [0X] • Secure EHR</span>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
-              <div className="p-3 bg-stone-50 rounded-xl border border-stone-100">
-                <label className="block text-[11px] font-semibold text-stone-400 uppercase">Client Identifier</label>
-                <input type="text" defaultValue="[Client Initials / ID]" className="w-full mt-1 bg-transparent border-b border-stone-300 pb-1 text-stone-900 focus:outline-none" />
-              </div>
-              <div className="p-3 bg-stone-50 rounded-xl border border-stone-100">
-                <label className="block text-[11px] font-semibold text-stone-400 uppercase">Session Date</label>
-                <input type="text" defaultValue="DD / MM / YYYY" className="w-full mt-1 bg-transparent border-b border-stone-300 pb-1 text-stone-900 focus:outline-none" />
-              </div>
-              <div className="p-3 bg-stone-50 rounded-xl border border-stone-100">
-                <label className="block text-[11px] font-semibold text-stone-400 uppercase">Session Number</label>
-                <input type="text" defaultValue="e.g., Session 06" className="w-full mt-1 bg-transparent border-b border-stone-300 pb-1 text-stone-900 focus:outline-none" />
-              </div>
-            </div>
-
-            <div className="space-y-4 text-xs">
-              <div>
-                <label className="block font-semibold text-stone-900 mb-1.5">1. Subjective Update</label>
-                <textarea rows="3" placeholder="Client's self-report since the last session, homework compliance (e.g., CBT thought records), and shifts in emotional state..." className="w-full p-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-stone-900"></textarea>
-              </div>
-              <div>
-                <label className="block font-semibold text-stone-900 mb-1.5">2. Objective Observations</label>
-                <textarea rows="3" placeholder="Behavioral shifts, engagement levels, emotional regulation observed during the hour, and narrative reframes explored..." className="w-full p-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-stone-900"></textarea>
-              </div>
-              <div>
-                <label className="block font-semibold text-stone-900 mb-1.5">3. Assessment & Clinical Progress</label>
-                <textarea rows="3" placeholder="Evaluation of progress toward established treatment goals, identification of emerging resistance or breakthrough patterns..." className="w-full p-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-stone-900"></textarea>
-              </div>
-              <div>
-                <label className="block font-semibold text-stone-900 mb-1.5">4. Plan & Next Steps</label>
-                <textarea rows="3" placeholder="Homework assignments, focus areas for the next session, and scheduled date for follow-up..." className="w-full p-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-stone-900"></textarea>
-              </div>
-            </div>
-          </div>
-        )}
-
-        <div className="pt-4 border-t border-stone-100 flex items-center justify-between text-xs text-stone-500">
-          <span>All notes are automatically encrypted and restricted to authorized clinical personnel.</span>
-          <button className="bg-stone-900 text-white font-medium px-6 py-2.5 rounded-xl hover:bg-stone-800 transition">Save Note to Record</button>
-        </div>
+      <div className="bg-white p-8 rounded-2xl border border-stone-200 shadow-sm text-center py-16">
+        <FileText className="w-12 h-12 text-stone-300 mx-auto mb-3" />
+        <h3 className="font-semibold text-stone-900 text-sm">Modality-Specific Note Templates</h3>
+        <p className="text-stone-500 text-xs mt-1">Select from CBT thought records, narrative frameworks, or standard SOAP notes.</p>
       </div>
     </div>
   );
