@@ -284,7 +284,7 @@ const Contact = () => {
               <div className="bg-white rounded-3xl p-5 border border-[#d8ecec] shadow-xs space-y-4">
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-bold uppercase tracking-wider text-[#036b75]">
-                    Clinic Location
+                    Centre Location
                   </span>
                   <a
                     href="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d28076.2060174367!2d77.33622655499245!3d28.403388650564068!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390cdd8c1cbcd9ad%3A0xcb81de111c2746f0!2sPsychobeings%20%E2%80%93%20Psychological%20Wellness%20%26%20Therapy!5e0!3m2!1sen!2sin!4v1787038689039!5m2!1sen!2sin"

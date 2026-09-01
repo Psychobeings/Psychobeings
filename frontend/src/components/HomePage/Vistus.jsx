@@ -14,7 +14,7 @@ export default function PsychobeingsVisitUs() {
     <div className="min-h-screen bg-[#F8F9FA] py-16 px-4 sm:px-6 lg:px-8 text-slate-800">
       <div className="max-w-5xl mx-auto space-y-12">
         
-        {/* Top Hero Section (Matches your reference image style) */}
+        {/* Top Hero Section */}
         <div className="text-center max-w-3xl mx-auto space-y-4">
           <div>
             <span className="inline-block bg-[#DCECE9] text-[#1C6B6B] text-[11px] font-bold tracking-[0.18em] uppercase px-3 py-1 rounded-xs">
@@ -74,7 +74,7 @@ export default function PsychobeingsVisitUs() {
             </div>
 
             <a
-              href="https://maps.google.com/?q=RPS+Palms+Sector+88+Faridabad"
+              href="https://maps.app.goo.gl/YourMapLinkHere"
               target="_blank"
               rel="noreferrer"
               className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#1C6B6B] hover:underline pt-2"
@@ -103,10 +103,10 @@ export default function PsychobeingsVisitUs() {
                 <div className="flex items-center gap-2.5">
                   <Phone className="w-4 h-4 text-slate-400 shrink-0" />
                   <a
-                    href="tel:+91 9962452865"
+                    href="tel:+919962452865"
                     className="hover:text-[#1C6B6B] transition-colors font-medium text-slate-800"
                   >
-                    +91 9962452865
+                    +91 99624-52865
                   </a>
                 </div>
 
@@ -138,15 +138,16 @@ export default function PsychobeingsVisitUs() {
             <div className="w-full h-48 lg:h-full min-h-[180px] rounded-2xl overflow-hidden border border-slate-200">
               <iframe
                 title="PSYCHOBEINGS Location Map"
-                src="https://www.google.com/maps?q=RPS%20Palms%20Sector%2088%20Faridabad&z=16&output=embed"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3509.090963337977!2d77.35230657461014!3d28.416511993859277!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390cdd8c1cbcd9ad%3A0xcb81de111c2746f0!2sPsychobeings%20%E2%80%93%20Psychological%20Wellness%20%26%20Therapy!5e0!3m2!1sen!2sin!4v1788235553090!5m2!1sen!2sin"
                 className="w-full h-full border-0"
+                style={{ border: 0 }}
                 loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
+                referrerPolicy="strict-origin-when-cross-origin"
               />
             </div>
 
             <a
-              href="https://maps.google.com/?q=RPS+Palms+Sector+88+Faridabad"
+              href="https://www.google.com/maps/place/Psychobeings+%E2%80%93+Psychological+Wellness+%26+Therapy/@28.416512,77.3523066,17z/data=!3m1!4b1!4m6!3m5!1s0x390cdd8c1cbcd9ad:0xcb81de111c2746f0!8m2!3d28.416512!4d77.3523066!16s%2Fg%2F11wsp0v2g8"
               target="_blank"
               rel="noreferrer"
               className="text-center block text-xs font-semibold text-[#1C6B6B] hover:underline py-1"
