@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowRight, CalendarCheck2, ShieldCheck, Sparkles, Star, Shield, Users } from 'lucide-react';
+import { ArrowRight, CalendarCheck2, ShieldCheck, Sparkles, Star } from 'lucide-react';
 import heroImg from '../../assets/coupletherapy1.svg';
 
 const HeroHome = () => {

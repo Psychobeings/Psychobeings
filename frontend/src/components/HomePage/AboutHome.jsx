@@ -24,7 +24,7 @@ const AboutHome = () => {
           </div>
 
           {/* Floating Trust Badge */}
-          <div className="absolute -bottom-6 -right-4 sm:-right-6 bg-white/95 backdrop-blur-xl p-4 sm:p-5 rounded-2xl border border-white shadow-xl shadow-[#1F3A3D]/10 flex items-center gap-3.5 max-w-[260px] animate-fade-in">
+          <div className="absolute -bottom-6 -right-4 sm:-right-6 bg-white/95 backdrop-blur-xl p-4 sm:p-5 rounded-2xl border border-white shadow-xl shadow-[#1F3A3D]/10 flex items-center gap-3.5 max-w-[260px]">
             <div className="p-3 bg-gradient-to-br from-[#1C7C83] to-[#155F64] text-white rounded-xl shadow-md shadow-[#1C7C83]/30">
               <Sparkles size={22} className="stroke-[2.2]" />
             </div>
@@ -92,7 +92,5 @@ const AboutHome = () => {
     </div>
   );
 };
-
-AboutHome.displayName = 'AboutHome';
 
 export default AboutHome;
