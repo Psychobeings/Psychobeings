@@ -16,16 +16,17 @@ Connection();
 
 app.use(cors());
 
-// console.log(process.env.SOURCE_URL)
-
 const corsOptions = {
-  origin: [process.env.SOURCE_URL , process.env.ADMIN_URL], 
+  origin: [process.env.SOURCE_URL, process.env.ADMIN_URL].filter(Boolean),
 };
 
-// Use configured CORS options
-app.get('/', (req, res)=>{
-  res.send("Ping from the server !")
-})
+app.get('/', (req, res) => {
+  res.send('Ping from the server!');
+});
+
+app.get('/health', (req, res) => {
+  res.status(200).json({ ok: true, service: 'psychobeings-backend' });
+});
 
 app.use(cors(corsOptions));
 
@@ -33,6 +34,8 @@ app.use('/admin', admin_user);
 app.use('/session-form', sessionRoute);
 app.use('/email', emailRoute);
 
-app.listen(8080, ()=>{
-    console.log("Server started!");
-})
+const PORT = Number(process.env.PORT) || 8080;
+
+app.listen(PORT, () => {
+  console.log(`Server started on port ${PORT}`);
+});

@@ -30,7 +30,7 @@ const Contact = () => {
     setIsLoading(true);
     setErrorMessage('');
 
-    const rawUrl = process.env.REACT_APP_URL || '';
+    const rawUrl = process.env.REACT_APP_URL || 'http://localhost:8080/';
     const baseUrl = rawUrl.endsWith('/') ? rawUrl : `${rawUrl}/`;
 
     try {
@@ -46,7 +46,10 @@ const Contact = () => {
       }
     } catch (error) {
       console.error('FAILED...', error);
-      setErrorMessage('Something went wrong. Please try again in a moment.');
+      const backendMessage = error?.response?.data?.message;
+      setErrorMessage(
+        backendMessage || 'Something went wrong. Please try again in a moment.'
+      );
     } finally {
       setIsLoading(false);
     }

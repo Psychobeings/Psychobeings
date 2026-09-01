@@ -14,10 +14,12 @@ dotenv.config();
 
 
 
-const transporter = nodemailer.createTransport({
+const emailConfigured = Boolean(process.env.EMAILADD && process.env.EMAILPASS && process.env.EMAIL);
+
+const transporter = emailConfigured ? nodemailer.createTransport({
   host: 'smtp-relay.brevo.com',
   port: 587,
-  secure: false, // true for 465, false for other ports
+  secure: false,
   auth: {
     user: process.env.EMAILADD,
     pass: process.env.EMAILPASS
@@ -25,20 +27,28 @@ const transporter = nodemailer.createTransport({
   tls: {
     rejectUnauthorized: true
   }
-});
+}) : null;
 
-transporter.verify(function (error, success) {
-  if (error) {
-    console.log("Server connection failed:", error);
-  } else {
-    console.log("Server is ready to take our messages");
-  }
-});
+if (transporter) {
+  transporter.verify(function (error, success) {
+    if (error) {
+      console.log("Server connection failed:", error);
+    } else {
+      console.log("Server is ready to take our messages");
+    }
+  });
+}
 //..............................Send Message.....................................
 export const SendMessage = async (req, res) => {
 
   const { name, email, message } = req.body;
   console.log(email);
+
+  if (!emailConfigured) {
+    return res.status(500).json({
+      message: 'Email service is not configured on the server. Please contact the administrator.'
+    });
+  }
 
   const mailToUser = {
     from: process.env.EMAIL,
