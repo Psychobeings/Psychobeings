@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowRight, CalendarCheck2, ShieldCheck, Sparkles } from 'lucide-react';
+import { ArrowRight, CalendarCheck2, ShieldCheck, Sparkles, Star, Shield, Users } from 'lucide-react';
 import heroImg from '../../assets/coupletherapy1.svg';
 
 const HeroHome = () => {
@@ -8,31 +8,36 @@ const HeroHome = () => {
       <div className="mx-auto grid max-w-7xl items-center gap-12 lg:grid-cols-12">
         <div className="lg:col-span-7">
           <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-[#1c7c83]/20 bg-white/80 px-3.5 py-1.5 text-xs font-semibold tracking-[0.12em] text-[#1c7c83] uppercase shadow-sm backdrop-blur-sm">
-            <span className="h-2.5 w-2.5 rounded-full bg-[#1c7c83]" />
-            Calm. Clear. Supported.
+            <Sparkles className="h-3.5 w-3.5 text-[#1c7c83]" />
+            Empowering minds.
           </div>
 
           <h1 className="max-w-2xl text-4xl font-bold leading-[1.05] tracking-tight text-slate-900 sm:text-5xl lg:text-6xl">
-            Feel heard. <span className="text-[#1c7c83]">Feel supported.</span>
-            <span className="mt-2 block text-slate-700">Start your healing journey today.</span>
+            Transforming lives with <span className="text-[#1c7c83]">expert care.</span>
           </h1>
 
-          <p className="mt-5 max-w-xl text-base leading-relaxed text-slate-600 sm:text-lg">
-            At Psychobeings, we help individuals, couples, and families manage anxiety,
-            burnout, relationship stress, and life transitions with compassionate,
-            evidence-based therapy in a space that feels safe, private, and personal.
-          </p>
+          <div className="mt-5 max-w-xl space-y-4 text-base leading-relaxed text-slate-600 sm:text-lg">
+            <p>
+              At <strong className="text-slate-900 font-semibold">Psychobeings</strong>, we believe that every individual deserves a safe space to be heard, understood, and empowered.
+            </p>
+            <p>
+              Through evidence-based psychological therapy and holistic wellbeing practices, we support you in overcoming life's challenges, strengthening emotional resilience, and creating meaningful, lasting change.
+            </p>
+            <p className="text-xs sm:text-sm font-medium text-[#1c7c83] bg-white/90 p-3.5 rounded-xl border border-[#1c7c83]/15 shadow-sm inline-block">
+              Therapy sessions are available in English and Hindi, with secure online counselling across India and in-person appointments in Faridabad, Haryana.
+            </p>
+          </div>
 
           <div className="mt-6 flex flex-col gap-3 sm:flex-row">
             <a
-              href="/booking"
+              href="#begin-journey"
               className="inline-flex items-center justify-center gap-2 rounded-full bg-[#1c7c83] px-7 py-3.5 text-sm font-semibold text-white shadow-[0_18px_35px_rgba(28,124,131,0.24)] transition hover:bg-[#135b60]"
             >
-              Book a Consultation
+              Begin Your Journey
               <ArrowRight className="h-4 w-4" />
             </a>
             <a
-              href="/services"
+              href="#explore-services"
               className="inline-flex items-center justify-center gap-2 rounded-full border border-slate-200 bg-white px-7 py-3.5 text-sm font-semibold text-slate-700 transition hover:border-[#1c7c83]/30 hover:text-[#1c7c83]"
             >
               Explore Services
@@ -42,15 +47,18 @@ const HeroHome = () => {
           <div className="mt-8 grid max-w-lg grid-cols-3 gap-4 border-t border-[#1c7c83]/15 pt-5">
             <div>
               <p className="text-2xl font-bold text-[#1c7c83]">500+</p>
-              <p className="text-xs text-slate-600">Clients supported</p>
+              <p className="text-xs text-slate-600">Sessions Conducted</p>
             </div>
             <div>
-              <p className="text-2xl font-bold text-[#1c7c83]">4.9/5</p>
-              <p className="text-xs text-slate-600">Average rating</p>
+              <div className="flex items-center gap-1">
+                <p className="text-2xl font-bold text-[#1c7c83]">4.9</p>
+                <Star className="h-4 w-4 fill-amber-500 text-amber-500" />
+              </div>
+              <p className="text-xs text-slate-600">Client Rating</p>
             </div>
             <div>
               <p className="text-2xl font-bold text-[#1c7c83]">100%</p>
-              <p className="text-xs text-slate-600">Confidential care</p>
+              <p className="text-xs text-slate-600">Confidentiality Guaranteed</p>
             </div>
           </div>
         </div>
@@ -69,10 +77,10 @@ const HeroHome = () => {
             <div className="absolute bottom-8 left-8 right-8 rounded-2xl border border-white/60 bg-white/85 p-4 shadow-lg backdrop-blur-sm">
               <div className="flex items-center gap-3">
                 <div className="rounded-xl bg-[#dff3f1] p-2 text-[#1c7c83]">
-                  <CalendarCheck2 className="h-5 w-5" />
+                  <ShieldCheck className="h-5 w-5" />
                 </div>
                 <div>
-                  <p className="text-sm font-semibold text-slate-900">Same-week support available</p>
+                  <p className="text-sm font-semibold text-slate-900">100% Confidentiality Guaranteed</p>
                   <p className="text-xs text-slate-600">Secure online & in-person sessions</p>
                 </div>
               </div>
