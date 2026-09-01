@@ -1,110 +1,87 @@
 import React from 'react';
-import { ArrowRight, CalendarCheck2, ShieldCheck, Sparkles, Star } from 'lucide-react';
-import heroImg from '../../assets/coupletherapy1.svg';
-
+import { ArrowRight } from 'lucide-react';
+import heroImg from '../../assets/coupletherapy1.svg'
 const HeroHome = () => {
   return (
-    <section className="relative overflow-hidden bg-[radial-gradient(circle_at_top_left,_rgba(28,124,131,0.15),_transparent_35%),linear-gradient(180deg,#f6fbfb_0%,#eef8f7_45%,#f8fbfb_100%)] px-6 py-16 text-[#1f3a3d] sm:px-8 lg:px-12 lg:py-20">
-      <div className="mx-auto grid max-w-7xl items-center gap-12 lg:grid-cols-12">
-        <div className="lg:col-span-7">
-          <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-[#1c7c83]/20 bg-white/80 px-3.5 py-1.5 text-xs font-semibold tracking-[0.12em] text-[#1c7c83] uppercase shadow-sm backdrop-blur-sm">
-            <Sparkles className="h-3.5 w-3.5 text-[#1c7c83]" />
-            Empowering minds.
+    <section className="bg-[#F2F7F7] text-[#1F3A3D] py-16 sm:py-20 px-6 sm:px-8 lg:px-12 min-h-[90vh] flex items-center font-sans">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+        
+        {/* Left Column: Text Content & Actions */}
+        <div className="lg:col-span-7 flex flex-col items-start space-y-6">
+          
+          {/* Top Pill / Badge */}
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#E6F0F0] border border-[#1C7C83]/20 text-[#1C7C83] text-xs sm:text-sm font-semibold tracking-wide">
+            <span className="w-2 h-2 rounded-full bg-[#1C7C83] animate-pulse"></span>
+            Evidence-Based Psychological Therapy
           </div>
 
-          <h1 className="max-w-2xl text-4xl font-bold leading-[1.05] tracking-tight text-slate-900 sm:text-5xl lg:text-6xl">
-            Transforming lives with <span className="text-[#1c7c83]">expert care.</span>
+          {/* Main Headline */}
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-serif font-bold text-[#1F3A3D] leading-[1.15] tracking-tight">
+            Empowering minds. <br />
+            <span className="text-[#1C7C83] italic font-normal">Transforming lives</span> with expert care.
           </h1>
 
-          <div className="mt-5 max-w-xl space-y-4 text-base leading-relaxed text-slate-600 sm:text-lg">
-            <p>
-              At <strong className="text-slate-900 font-semibold">Psychobeings</strong>, we believe that every individual deserves a safe space to be heard, understood, and empowered.
-            </p>
-            <p>
-              Through evidence-based psychological therapy and holistic wellbeing practices, we support you in overcoming life's challenges, strengthening emotional resilience, and creating meaningful, lasting change.
-            </p>
-            <p className="text-xs sm:text-sm font-medium text-[#1c7c83] bg-white/90 p-3.5 rounded-xl border border-[#1c7c83]/15 shadow-sm inline-block">
-              Therapy sessions are available in English and Hindi, with secure online counselling across India and in-person appointments in Faridabad, Haryana.
-            </p>
+          {/* Subheading / Description */}
+          <p className="text-base sm:text-lg text-gray-700 max-w-2xl leading-relaxed font-sans">
+            At Psychobeings, we believe that every individual deserves a safe space to be heard, understood, and empowered. Through evidence-based psychological therapy and holistic wellbeing practices, 
+            we support you in overcoming life's challenges, strengthening emotional resilience, and creating meaningful, lasting change.
+            Therapy sessions are available in English and Hindi, with secure online counselling across India and in-person appointments in Faridabad, Haryana.
+          </p>
+
+          {/* Key Metrics / Social Proof Badges */}
+          <div className="grid grid-cols-3 gap-4 py-4 w-full max-w-lg border-y border-[#1C7C83]/15">
+            <div>
+              <p className="text-2xl sm:text-3xl font-serif font-bold text-[#1C7C83]">500+</p>
+              <p className="text-xs sm:text-sm text-gray-600 font-medium">Sessions Conducted</p>
+            </div>
+            <div>
+              <p className="text-2xl sm:text-3xl font-serif font-bold text-[#1C7C83]">4.9 ★</p>
+              <p className="text-xs sm:text-sm text-gray-600 font-medium">Client Rating</p>
+            </div>
+            <div>
+              <p className="text-2xl sm:text-3xl font-serif font-bold text-[#1C7C83]">100%</p>
+              <p className="text-xs sm:text-sm text-gray-600 font-medium">Confidentiality Guaranteed</p>
+            </div>
           </div>
 
-          <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+          {/* Call to Action Buttons */}
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 w-full sm:w-auto pt-2">
             <a
-              href="#begin-journey"
-              className="inline-flex items-center justify-center gap-2 rounded-full bg-[#1c7c83] px-7 py-3.5 text-sm font-semibold text-white shadow-[0_18px_35px_rgba(28,124,131,0.24)] transition hover:bg-[#135b60]"
+              href="#book"
+              className="inline-flex justify-center items-center gap-2 bg-[#1C7C83] hover:bg-[#135B60] text-white font-medium text-sm px-8 py-3.5 rounded-full shadow-sm hover:shadow transition-all duration-300 text-center"
             >
               Begin Your Journey
-              <ArrowRight className="h-4 w-4" />
+              <ArrowRight className="w-4 h-4" />
             </a>
+
             <a
-              href="#explore-services"
-              className="inline-flex items-center justify-center gap-2 rounded-full border border-slate-200 bg-white px-7 py-3.5 text-sm font-semibold text-slate-700 transition hover:border-[#1c7c83]/30 hover:text-[#1c7c83]"
+              href="#services"
+              className="inline-flex justify-center items-center bg-transparent hover:bg-[#E6F0F0] text-[#1C7C83] border border-[#1C7C83] font-medium text-sm px-8 py-3.5 rounded-full transition-all duration-300 text-center"
             >
               Explore Services
             </a>
           </div>
 
-          <div className="mt-8 grid max-w-lg grid-cols-3 gap-4 border-t border-[#1c7c83]/15 pt-5">
-            <div>
-              <p className="text-2xl font-bold text-[#1c7c83]">500+</p>
-              <p className="text-xs text-slate-600">Sessions Conducted</p>
-            </div>
-            <div>
-              <div className="flex items-center gap-1">
-                <p className="text-2xl font-bold text-[#1c7c83]">4.9</p>
-                <Star className="h-4 w-4 fill-amber-500 text-amber-500" />
-              </div>
-              <p className="text-xs text-slate-600">Client Rating</p>
-            </div>
-            <div>
-              <p className="text-2xl font-bold text-[#1c7c83]">100%</p>
-              <p className="text-xs text-slate-600">Confidentiality Guaranteed</p>
+        </div>
+
+        {/* Right Column: Imagery & Visual Card */}
+        <div className="lg:col-span-5 relative w-full flex justify-center">
+          <div className="relative w-full max-w-md lg:max-w-none">
+            
+            {/* Background Decorative Ambient Highlight */}
+            <div className="absolute -top-4 -left-4 w-72 h-72 bg-[#1C7C83]/10 rounded-full blur-3xl -z-10 pointer-events-none"></div>
+            
+            {/* Main Image Frame */}
+            <div className="relative overflow-hidden rounded-[2rem] shadow-md border border-[#1C7C83]/15 bg-white">
+              <img
+                src={heroImg}
+                alt="Therapy and psychological wellness session"
+                className="w-full h-[420px] sm:h-[500px] object-cover hover:scale-105 transition-transform duration-500"
+              />
             </div>
           </div>
         </div>
 
-        <div className="relative lg:col-span-5">
-          <div className="absolute -left-10 top-8 h-56 w-56 rounded-full bg-[#1c7c83]/10 blur-3xl" />
-          <div className="absolute -right-6 bottom-4 h-56 w-56 rounded-full bg-[#9ad6d3]/20 blur-3xl" />
-
-          <div className="relative overflow-hidden rounded-[2rem] border border-slate-200 bg-white p-3 shadow-[0_24px_55px_rgba(15,23,42,0.12)]">
-            <img
-              src={heroImg}
-              alt="Therapy and wellness support"
-              className="h-[430px] w-full rounded-[1.4rem] object-cover sm:h-[500px]"
-            />
-
-            <div className="absolute bottom-8 left-8 right-8 rounded-2xl border border-white/60 bg-white/85 p-4 shadow-lg backdrop-blur-sm">
-              <div className="flex items-center gap-3">
-                <div className="rounded-xl bg-[#dff3f1] p-2 text-[#1c7c83]">
-                  <ShieldCheck className="h-5 w-5" />
-                </div>
-                <div>
-                  <p className="text-sm font-semibold text-slate-900">100% Confidentiality Guaranteed</p>
-                  <p className="text-xs text-slate-600">Secure online & in-person sessions</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="mx-auto mt-16 grid max-w-7xl gap-5 border-t border-[#1c7c83]/10 pt-8 md:grid-cols-3">
-        {[
-          { icon: ShieldCheck, title: 'Confidential care', text: 'Private, respectful support throughout your journey.' },
-          { icon: Sparkles, title: 'Evidence-based therapy', text: 'Compassionate care grounded in proven therapeutic methods.' },
-          { icon: CalendarCheck2, title: 'Flexible sessions', text: 'Book online or in person with easy scheduling options.' },
-        ].map(({ icon: Icon, title, text }) => (
-          <div key={title} className="flex items-start gap-3 rounded-2xl border border-slate-200 bg-white/70 p-4 shadow-sm">
-            <div className="rounded-xl bg-[#edf7f7] p-2 text-[#1c7c83]">
-              <Icon className="h-5 w-5" />
-            </div>
-            <div>
-              <h3 className="text-sm font-semibold text-slate-900">{title}</h3>
-              <p className="mt-1 text-sm leading-relaxed text-slate-600">{text}</p>
-            </div>
-          </div>
-        ))}
       </div>
     </section>
   );

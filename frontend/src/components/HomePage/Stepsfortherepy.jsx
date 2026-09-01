@@ -2,64 +2,74 @@ import React from 'react';
 
 const steps = [
   {
-    number: '01',
-    title: 'Book a consultation',
-    description:
-      'Share your concerns and preferred format. We respond quickly and help you choose the support that best matches your situation.',
-    tag: 'Step 1',
+    number: "01",
+    title: "Book a Session",
+    description: "We start with a safe, confidential space to discuss your goals, current challenges, and what you hope to achieve through therapy.",
+    tag: "Step One"
   },
   {
-    number: '02',
-    title: 'Initial assessment',
-    description:
-      'In your first session, we understand your challenges, goals, and emotional patterns so your care feels grounded and personalized.',
-    tag: 'Step 2',
+    number: "02",
+    title: "Initial Consultation & Assessment",
+    description: "Together, we map out a tailored therapeutic roadmap using evidence-based techniques suited to your unique personality and needs.",
+    tag: "Step Two"
   },
   {
-    number: '03',
-    title: 'Create your treatment plan',
-    description:
-      'We design a clear, realistic therapeutic roadmap with practical strategies, supportive tools, and a pace that feels manageable.',
-    tag: 'Step 3',
+    number: "03",
+    title: "Goals & Therapy Structure",
+    description: "In regular sessions, you’ll explore thought patterns, build coping strategies, process emotions, and gain deeper self-awareness.",
+    tag: "Step Three"
   },
   {
-    number: '04',
-    title: 'Track your progress',
-    description:
-      'Through regular sessions, you build resilience, improve daily coping, and begin to notice meaningful, lasting transformation.',
-    tag: 'Step 4',
-  },
+    number: "04",
+    title: "Growth & Progress Tracking",
+    description: "Apply practical tools in your everyday life, build long-term resilience, and experience real transformation in your mental well-being.",
+    tag: "Step Four"
+  }
 ];
 
 export default function Stepsfortherepy() {
   return (
-    <section className="bg-[#F2F7F7] px-6 py-16 text-[#1F3A3D] sm:px-8 sm:py-20 lg:px-12">
-      <div className="mx-auto max-w-7xl space-y-12">
-        <div className="mx-auto max-w-3xl space-y-3 text-center">
-          <div className="inline-flex items-center gap-2 rounded-full border border-[#1C7C83]/20 bg-[#E6F0F0] px-3.5 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-[#1C7C83]">
-            Simple process
+    <section className="bg-[#F2F7F7] text-[#1F3A3D] py-16 sm:py-20 px-6 sm:px-8 lg:px-12 font-sans">
+      <div className="max-w-7xl mx-auto space-y-12">
+        
+        {/* Section Header */}
+        <div className="text-center max-w-3xl mx-auto space-y-3">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#E6F0F0] border border-[#1C7C83]/20 text-[#1C7C83] text-xs font-semibold tracking-wider uppercase">
+            Your Journey To Healing
           </div>
-          <h2 className="text-3xl font-bold tracking-tight text-[#1F3A3D] sm:text-4xl lg:text-5xl">
-            How it works: <span className="font-serif italic text-[#1C7C83]">clear steps, gentle support.</span>
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold text-[#1F3A3D] tracking-tight">
+            How Therapy Works? <span className="italic font-normal text-[#1C7C83]">A Step-by-Step Guide</span>
           </h2>
-          <p className="mx-auto max-w-2xl text-sm leading-relaxed text-gray-600 sm:text-base">
-            Therapy should feel structured, supportive, and easy to begin. We make the path simple so you can focus on healing without unnecessary stress.
+          <p className="text-gray-600 text-sm sm:text-base leading-relaxed max-w-2xl mx-auto pt-1">
+            Therapy is a collaborative process designed to help you understand your mind, process complex emotions, and create meaningful, lasting change in your daily life.
           </p>
         </div>
 
-        <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+        {/* Step-by-Step Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {steps.map((step) => (
-            <div
+            <div 
               key={step.number}
-              className="group flex min-h-[280px] flex-col rounded-[2rem] border border-[#1C7C83]/15 bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-[#1C7C83]/30 hover:shadow-lg"
+              className="bg-white rounded-[2rem] p-6 sm:p-8 border border-[#1C7C83]/15 shadow-sm hover:shadow-md hover:border-[#1C7C83]/30 transition-all duration-300 flex flex-col justify-between group"
             >
-              <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-[#E6F0F0] text-lg font-bold text-[#1C7C83] transition group-hover:bg-[#1C7C83] group-hover:text-white">
-                {step.number}
-              </div>
+              <div className="space-y-4">
+                <div className="w-12 h-12 rounded-xl bg-[#E6F0F0] text-[#1C7C83] flex items-center justify-center font-serif font-bold text-lg border border-[#1C7C83]/15 group-hover:bg-[#1C7C83] group-hover:text-white transition-colors duration-300">
+                  {step.number}
+                </div>
+                
+                <div className="space-y-1">
+                  <span className="text-[11px] font-bold text-[#1C7C83] uppercase tracking-wider">
+                    {step.tag}
+                  </span>
+                  <h3 className="text-xl font-serif font-bold text-[#1F3A3D] leading-snug">
+                    {step.title}
+                  </h3>
+                </div>
 
-              <span className="text-[11px] font-bold uppercase tracking-[0.18em] text-[#1C7C83]">{step.tag}</span>
-              <h3 className="mt-3 text-xl font-bold text-[#1F3A3D]">{step.title}</h3>
-              <p className="mt-3 text-sm leading-relaxed text-gray-600">{step.description}</p>
+                <p className="text-gray-600 text-sm leading-relaxed">
+                  {step.description}
+                </p>
+              </div>
             </div>
           ))}
         </div>
