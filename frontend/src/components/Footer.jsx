@@ -50,35 +50,6 @@ const Footer = () => {
       <div className="absolute top-0 left-1/2 -translate-x-1/2 h-40 w-full max-w-7xl bg-gradient-to-b from-[#1c7c83]/5 to-transparent pointer-events-none" />
 
       <div className="relative mx-auto max-w-7xl space-y-14 px-4 py-16 sm:px-6 lg:px-8">
-        
-        {/* Call to Action Banner */}
-        <div className="relative overflow-hidden rounded-[2rem] border border-[#1c7c83]/15 bg-gradient-to-br from-white via-slate-50 to-[#1c7c83]/5 p-8 shadow-xl shadow-slate-200/50 sm:p-10 lg:flex lg:items-center lg:justify-between lg:gap-8">
-          <div className="relative z-10 max-w-xl text-center lg:text-left">
-            <h3 className="text-2xl font-extrabold tracking-tight text-slate-900 sm:text-3xl">
-              Ready to prioritize your wellbeing?
-            </h3>
-            <p className="mt-2 text-sm text-slate-600">
-              Connect with compassionate certified professionals in a safe, judgment-free virtual environment.
-            </p>
-          </div>
-          <div className="mt-8 flex flex-col justify-center gap-3.5 sm:flex-row lg:mt-0 lg:shrink-0">
-            <Link
-              to="/booking"
-              className="group inline-flex items-center justify-center rounded-full bg-[#1c7c83] px-7 py-3.5 text-sm font-semibold text-white shadow-md shadow-[#1c7c83]/20 transition-all duration-200 hover:bg-[#15646a] hover:shadow-lg hover:shadow-[#1c7c83]/30 active:scale-[0.98]"
-            >
-              <span>Book a Session</span>
-              <svg className="ml-2 h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-              </svg>
-            </Link>
-            <Link
-              to="/contact"
-              className="inline-flex items-center justify-center rounded-full border border-slate-300/80 bg-white px-7 py-3.5 text-sm font-semibold text-slate-700 shadow-sm transition-all duration-200 hover:border-[#1c7c83]/40 hover:bg-slate-50 hover:text-[#1c7c83] active:scale-[0.98]"
-            >
-              Ask a Question
-            </Link>
-          </div>
-        </div>
 
         {/* Main Grid Links */}
         <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-12 lg:gap-8">
