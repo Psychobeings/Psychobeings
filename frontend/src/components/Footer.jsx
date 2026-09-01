@@ -54,10 +54,7 @@ const Footer = () => {
         {/* Call to Action Banner */}
         <div className="relative overflow-hidden rounded-[2rem] border border-[#1c7c83]/15 bg-gradient-to-br from-white via-slate-50 to-[#1c7c83]/5 p-8 shadow-xl shadow-slate-200/50 sm:p-10 lg:flex lg:items-center lg:justify-between lg:gap-8">
           <div className="relative z-10 max-w-xl text-center lg:text-left">
-            <span className="inline-block rounded-full bg-[#1c7c83]/10 px-3.5 py-1 text-xs font-bold uppercase tracking-[0.2em] text-[#1c7c83]">
-              Take the first step
-            </span>
-            <h3 className="mt-3 text-2xl font-extrabold tracking-tight text-slate-900 sm:text-3xl">
+            <h3 className="text-2xl font-extrabold tracking-tight text-slate-900 sm:text-3xl">
               Ready to prioritize your wellbeing?
             </h3>
             <p className="mt-2 text-sm text-slate-600">
@@ -181,7 +178,7 @@ const Footer = () => {
         {/* Bottom Bar with Back to Top */}
         <div className="flex flex-col items-center justify-between gap-4 border-t border-slate-200/80 pt-8 text-xs text-slate-500 sm:flex-row">
           <p>© {currentYear} Psychobeings. All rights reserved.</p>
-          <div className="flex flex-wrap items-center gap-6">
+          <div className="flex flex-xxl items-center gap-6">
             <Link to="/privacy" className="transition hover:text-[#1c7c83]">Privacy Policy</Link>
             <Link to="/terms" className="transition hover:text-[#1c7c83]">Terms of Service</Link>
             <Link to="/contact" className="transition hover:text-[#1c7c83]">Help Center</Link>
