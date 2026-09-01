@@ -4,6 +4,11 @@ import Navbar from './components/Navbar';
 import Home from './pages/Home';
 import About from './pages/About';
 import Services from './pages/Services';
+import IndividualCounselling from './pages/services/IndividualCounselling';
+import ChildAdolescentTherapy from './pages/services/ChildAdolescentTherapy';
+import CorporateWellness from './pages/services/CorporateWellness';
+import SchoolsCollegesWellness from './pages/services/SchoolsCollegesWellness';
+import SeminarsWorkshops from './pages/services/SeminarsWorkshops';
 import Packages from './pages/Packages';
 import Contact from './pages/Contact';
 import Footer from './components/Footer';
@@ -29,6 +34,11 @@ function App() {
             <Route path="/about" element={<About />} />
             <Route path="/services" element={<Services />} />
             <Route path="/services/:therapyId" element={<TherapyDetails />} />
+            <Route path="/services/counselling/individual-counselling" element={<IndividualCounselling />} />
+            <Route path="/services/counselling/child-adolescent-therapy" element={<ChildAdolescentTherapy />} />
+            <Route path="/services/wellness/corporate-wellness" element={<CorporateWellness />} />
+            <Route path="/services/wellness/schools-colleges-wellness" element={<SchoolsCollegesWellness />} />
+            <Route path="/services/wellness/seminars-workshops" element={<SeminarsWorkshops />} />
             <Route path="/packages" element={<Packages />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/booking" element={<Booking />} />

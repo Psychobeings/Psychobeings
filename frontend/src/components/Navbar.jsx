@@ -48,15 +48,18 @@ const Navbar = () => {
 
   const serviceCategories = [
     {
-      category: 'Counselling Services',
+      category: 'Counselling / Therapy Services',
       items: [
-        { name: 'Individual & Child', path: '/services#individual' },
+        { name: 'Individual Counselling', path: '/services/counselling/individual-counselling' },
+        { name: 'Child & Adolescent Therapy', path: '/services/counselling/child-adolescent-therapy' },
       ],
     },
     {
-      category: 'Wellness',
+      category: 'Psychological Wellness',
       items: [
-        { name: 'Corporate & Seminars', path: '/services#corporate' },
+        { name: 'Corporate Wellness', path: '/services/wellness/corporate-wellness' },
+        { name: 'Schools/Colleges Wellness', path: '/services/wellness/schools-colleges-wellness' },
+        { name: 'Seminars & Workshops', path: '/services/wellness/seminars-workshops' },
       ],
     },
     {
