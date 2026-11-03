@@ -1,29 +1,23 @@
 import mongoose from 'mongoose';
-import dotenv from 'dotenv'
 
-
-dotenv.config()
-
-export const Connection = () => {
-    const dbUser = process.env.DB_USER;
-    const dbPassword = process.env.DB_PASSWORD;
-
-    if (!dbUser || !dbPassword) {
-        console.warn('MongoDB credentials are missing. Database connection skipped.');
-        return;
+export async function Connection() {
+  let uri = process.env.MONGODB_URI;
+  if (!uri) {
+    const cluster = process.env.DB_USER;
+    const password = process.env.DB_PASSWORD;
+    if (!cluster || !password) {
+      throw new Error('Set MONGODB_URI or both DB_USER and DB_PASSWORD before starting the backend.');
     }
+    uri = `mongodb+srv://support:${encodeURIComponent(password)}@${cluster}.h2llo.mongodb.net/?retryWrites=true&w=majority&appName=Psychobeings`;
+  }
 
-    mongoose.connect(`mongodb+srv://support:${dbPassword}@${dbUser}.h2llo.mongodb.net/?retryWrites=true&w=majority&appName=Psychobeings`);
+  await mongoose.connect(uri);
+  console.log('Database connected');
 
-    mongoose.connection.on('connected', () => {
-        console.log("Database connected")
-    })
-
-    mongoose.connection.on('disconnected', () => {
-        console.log("Database disconnected")
-    })
-
-    mongoose.connection.on('error', (err) => {
-        console.log("Error occured! ", err)
-    })
+  mongoose.connection.on('disconnected', () => {
+    console.warn('Database disconnected');
+  });
+  mongoose.connection.on('error', (error) => {
+    console.error('Database connection error:', error.message);
+  });
 }

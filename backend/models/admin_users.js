@@ -1,9 +1,6 @@
-import express from 'express'
-import mongoose from 'mongoose'
+import mongoose from 'mongoose';
 
-
-// User Model
-const UserSchema = new mongoose.Schema({
+const userSchema = new mongoose.Schema({
   email: {
     type: String,
     required: true,
@@ -15,12 +12,42 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  role: {
+    type: String,
+    enum: ['admin'],
+    default: 'admin',
+    immutable: true
+  },
+  twoFactorSecret: {
+    type: String,
+    default: null,
+    select: false
+  },
+  twoFactorEnabled: {
+    type: Boolean,
+    default: false
+  },
+  failedLoginAttempts: {
+    type: Number,
+    default: 0,
+    select: false
+  },
+  lockedUntil: {
+    type: Date,
+    default: null,
+    select: false
+  },
+  tokenVersion: {
+    type: Number,
+    default: 0,
+    select: false
+  },
   createdAt: {
     type: Date,
     default: Date.now
   }
 });
 
-const User = mongoose.model('User', UserSchema);
+const User = mongoose.models.User || mongoose.model('User', userSchema);
 
-export default User
+export default User;

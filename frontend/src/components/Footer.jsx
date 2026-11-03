@@ -2,6 +2,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import logo2 from '../assets/PSYCHOBEINGS website logo.jpg';
 
+const ADMIN_PORTAL_URL = process.env.REACT_APP_ADMIN_URL || '/admin/login';
+
 const Footer = () => {
   const currentYear = new Date().getFullYear();
 
@@ -153,6 +155,7 @@ const Footer = () => {
             <Link to="/privacy" className="transition hover:text-[#1c7c83]">Privacy Policy</Link>
             <Link to="/terms" className="transition hover:text-[#1c7c83]">Terms of Service</Link>
             <Link to="/contact" className="transition hover:text-[#1c7c83]">Help Center</Link>
+            <a href={ADMIN_PORTAL_URL} className="text-[11px] text-slate-400 transition hover:text-[#1c7c83]">Admin Login</a>
             <button
               onClick={scrollToTop}
               className="inline-flex items-center gap-1 font-medium text-[#1c7c83] transition hover:text-[#15646a] focus:outline-none focus:underline"

@@ -68,3 +68,11 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+## Admin portal
+
+The admin app supports `/admin/login` (also available at `/signin`) and the protected admin workspace at `/dashboard`. Login verifies the administrator password, then requires authenticator-app TOTP; first-time accounts are prompted to enroll TOTP before access is granted. The app uses the backend's `httpOnly` admin cookie and does not store bearer tokens in browser storage.
+
+The frontend reads `REACT_APP_URL` as the backend base URL and defaults to `http://localhost:8080`. For local development, set the backend's `ADMIN_URL` to `http://localhost:3000` (or the admin app's actual origin) and send requests with credentials. Follow [the backend setup notes](../backend/README.md) to provision an administrator with `ADMIN_BOOTSTRAP_KEY` and configure MongoDB, JWT, and email reset delivery.
+
+The overview, crisis queue, users, bookings, support inbox, and audit log connect to existing backend routes. Counselor management and persisted content management APIs are not currently available; those sections identify the gap rather than presenting fabricated records. AI credentials remain server-side and are not exposed in the browser.

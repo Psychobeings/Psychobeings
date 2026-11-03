@@ -1,18 +1,44 @@
-import {Signin, Signup, Reset} from '../controllers/admin_users.js'
-import {Verify, Send} from '../controllers/admin_email.js'
 import express from 'express';
+import {
+  adminSignup,
+  adminSignin,
+  startAdminTwoFactorSetup,
+  confirmAdminTwoFactorSetup,
+  verifyAdminTwoFactor,
+  adminLogout,
+  adminForgotPassword,
+  adminResetPassword,
+  currentSession
+} from '../controllers/auth_controller.js';
+import { requireRole } from '../middleware/auth.js';
+import { rateLimit } from '../middleware/rate_limit.js';
+import {
+  getAdminOverview,
+  getClients,
+  getCrisisAlerts,
+  updateCrisisAlert,
+  getAuditLog
+} from '../controllers/admin_controller.js';
 
 const router = express.Router();
+const authRateLimit = rateLimit({ windowMs: 15 * 60 * 1000, max: 10, keyPrefix: 'admin-auth' });
 
+router.post('/signup', authRateLimit, adminSignup);
+router.post('/signin', authRateLimit, adminSignin);
+router.post('/signin/verify-2fa', authRateLimit, verifyAdminTwoFactor);
+router.post('/2fa/setup', authRateLimit, startAdminTwoFactorSetup);
+router.post('/2fa/confirm', authRateLimit, confirmAdminTwoFactorSetup);
+router.post('/password/forgot', authRateLimit, adminForgotPassword);
+router.post('/password/reset', authRateLimit, adminResetPassword);
 
+router.post('/logout', requireRole('admin'), adminLogout);
+router.get('/session', requireRole('admin'), currentSession);
 
-
-router.post('/signup', Signup);
-router.post('/signin', Signin);
-router.post('/reset-password', Reset)
-
-router.post('/email/verify', Verify)
-router.post('/email/send', Send)
-
+router.use(requireRole('admin'));
+router.get('/overview', getAdminOverview);
+router.get('/users', getClients);
+router.get('/crisis-alerts', getCrisisAlerts);
+router.patch('/crisis-alerts/:id', updateCrisisAlert);
+router.get('/audit-log', getAuditLog);
 
 export default router;

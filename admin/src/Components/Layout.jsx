@@ -1,164 +1,116 @@
 import React, { useState } from 'react';
-import { NavLink, Outlet, useNavigate } from 'react-router-dom';
-import { 
-  LayoutDashboard, 
-  Users, 
-  Calendar, 
-  FileText, 
-  CheckSquare, 
-  Settings, 
-  LogOut, 
-  Menu,
-  X,
-  Notebook,
-  Mail
+import axios from 'axios';
+import {
+  AlertTriangle, BookOpen, Bot, CalendarDays, FileText, Headphones,
+  HeartPulse, LogOut, Menu, ShieldCheck, Users, X
 } from 'lucide-react';
+import { NavLink, Outlet, useNavigate } from 'react-router-dom';
+import logo from '../Assets/Psychobeings.png';
 
-export default function Layout() {
+const API_BASE_URL = (process.env.REACT_APP_URL || 'http://localhost:8080').replace(/\/+$/u, '');
+const adminApi = axios.create({ baseURL: API_BASE_URL, withCredentials: true });
+
+const navItems = [
+  { label: 'Overview', path: '/dashboard', icon: HeartPulse },
+  { label: 'Crisis Safety Center', path: '/crisis-safety', icon: AlertTriangle },
+  { label: 'Users', path: '/users', icon: Users },
+  { label: 'Counselors', path: '/counselors', icon: ShieldCheck },
+  { label: 'Bookings', path: '/bookings', icon: CalendarDays },
+  { label: 'Content manager', path: '/content', icon: BookOpen },
+  { label: 'AI settings', path: '/ai-settings', icon: Bot },
+  { label: 'Support', path: '/support', icon: Headphones },
+  { label: 'Audit log', path: '/audit-log', icon: FileText }
+];
+
+export default function Layout({ user }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [logoutError, setLogoutError] = useState('');
+  const [loggingOut, setLoggingOut] = useState(false);
   const navigate = useNavigate();
 
-  const handleLogout = () => {
-    localStorage.removeItem('authToken');
-    navigate('/signin');
+  const handleLogout = async () => {
+    setLogoutError('');
+    setLoggingOut(true);
+    try {
+      await adminApi.post('/admin/logout');
+      navigate('/admin/login', { replace: true });
+    } catch (error) {
+      setLogoutError(error.response?.data?.message || 'Unable to sign out. Please try again.');
+    } finally {
+      setLoggingOut(false);
+    }
   };
 
-  const navItems = [
-    { label: 'Dashboard', path: '/dashboard', icon: LayoutDashboard },
-    { label: 'Client Roster', path: '/clients', icon: Users },
-    { label: 'Session Calendar', path: '/calendar', icon: Calendar },
-    { label: 'Case History', path: '/case-history', icon: FileText },
-    { label: 'Tasks & Worksheets', path: '/tasks-worksheets', icon: CheckSquare },
-    { label: 'Post-session Activities', path: '/post-session-activities', icon: Notebook },
-    { label: 'Messages', path: '/messages', icon: Mail },
-    { label: 'Settings', path: '/settings', icon: Settings },
-  ];
-
   return (
-    <div className="min-h-screen flex bg-[#F4F7F6] text-stone-800 font-sans">
-      {/* Mobile Backdrop Overlay */}
+    <div className="min-h-screen bg-[#f3f6f8] font-sans text-slate-800">
       {sidebarOpen && (
-        <div 
-          onClick={() => setSidebarOpen(false)} 
-          className="fixed inset-0 bg-stone-900/40 z-40 lg:hidden backdrop-blur-sm"
-        />
+        <button type="button" aria-label="Close navigation" onClick={() => setSidebarOpen(false)} className="fixed inset-0 z-40 bg-[#071b2b]/50 backdrop-blur-sm lg:hidden" />
       )}
 
-      {/* Sidebar Navigation Drawer */}
-      <aside 
-        className={`
-          fixed lg:static inset-y-0 left-0 z-50 w-64 bg-white border-r border-stone-200/80 
-          flex flex-col justify-between transition-transform duration-300 ease-in-out
-          ${sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
-        `}
-      >
-        <div>
-          {/* Brand Logo & Header */}
-          <div className="p-6 flex items-center justify-between border-b border-stone-100">
-            <div className="flex items-center gap-3">
-              <div className="h-9 w-9 rounded-xl bg-[#237A88] text-white flex items-center justify-center font-bold text-base shadow-md shadow-[#237A88]/20">
-                P
-              </div>
-              <div>
-                <h1 className="font-bold text-stone-900 text-base leading-tight">Psychobeings</h1>
-                <span className="text-[10px] tracking-wider uppercase font-semibold text-[#237A88]">Clinical Portal</span>
-              </div>
-            </div>
-            <button 
-              onClick={() => setSidebarOpen(false)}
-              className="lg:hidden text-stone-400 hover:text-stone-600 cursor-pointer"
-            >
-              <X size={20} />
-            </button>
+      <aside className={`fixed inset-y-0 left-0 z-50 flex w-[278px] flex-col border-r border-white/10 bg-[#0F2D3A] text-white transition-transform duration-300 lg:translate-x-0 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
+        <div className="flex h-[78px] items-center justify-between border-b border-white/10 px-6">
+          <div className="rounded-lg bg-white px-3 py-1.5">
+            <img src={logo} alt="Psychobeings" className="h-9 w-36 object-contain" />
           </div>
-
-          {/* Sidebar Navigation Items */}
-          <nav className="p-4 space-y-1.5">
-            {navItems.map((item) => {
-              const Icon = item.icon;
-              return (
-                <NavLink
-                  key={item.path}
-                  to={item.path}
-                  onClick={() => setSidebarOpen(false)}
-                  className={({ isActive }) =>
-                    `flex items-center gap-3 px-3.5 py-3 rounded-2xl text-xs font-semibold transition-all duration-200 ${
-                      isActive
-                        ? 'bg-[#237A88]/10 text-[#237A88]'
-                        : 'text-stone-600 hover:bg-stone-50 hover:text-stone-900'
-                    }`
-                  }
-                >
-                  {({ isActive }) => (
-                    <>
-                      <Icon className={`h-4 w-4 ${isActive ? 'text-[#237A88]' : 'text-stone-400'}`} />
-                      <span>{item.label}</span>
-                    </>
-                  )}
-                </NavLink>
-              );
-            })}
-          </nav>
+          <button type="button" onClick={() => setSidebarOpen(false)} aria-label="Close menu" className="rounded-lg p-2 text-white/60 hover:bg-white/10 hover:text-white lg:hidden">
+            <X size={18} />
+          </button>
         </div>
 
-        {/* Sidebar Footer / Profile & Sign Out */}
-        <div className="p-4 border-t border-stone-100 space-y-3">
-          <div className="flex items-center gap-3 px-3 py-2 rounded-2xl bg-stone-50">
-            <div className="h-8 w-8 rounded-xl bg-[#237A88]/10 text-[#237A88] flex items-center justify-center font-bold text-xs">
-              PB
-            </div>
-            <div className="flex-1 min-w-0">
-              <p className="text-xs font-bold text-stone-900 truncate">Psychobeings Team</p>
-              <p className="text-[10px] text-stone-500 truncate">Practitioner Workspace</p>
+        <div className="px-6 pb-3 pt-7">
+          <p className="text-[9px] font-bold uppercase tracking-[0.22em] text-white/40">Administration</p>
+        </div>
+        <nav aria-label="Admin dashboard" className="flex-1 space-y-1 overflow-y-auto px-3 pb-5">
+          {navItems.map(({ label, path, icon: Icon }) => (
+            <NavLink
+              key={path}
+              to={path}
+              onClick={() => setSidebarOpen(false)}
+              className={({ isActive }) => `group flex items-center gap-3 rounded-xl px-3.5 py-3 text-xs font-medium transition ${
+                isActive ? 'bg-[#007F80] text-white shadow-lg shadow-black/10' : 'text-white/65 hover:bg-white/[0.07] hover:text-white'
+              }`}
+            >
+              {({ isActive }) => (
+                <>
+                  <Icon size={16} className={isActive ? 'text-white' : 'text-white/45 group-hover:text-[#83d2ca]'} aria-hidden="true" />
+                  <span>{label}</span>
+                  {label === 'Crisis Safety Center' && <span className="ml-auto h-1.5 w-1.5 rounded-full bg-amber-400" />}
+                </>
+              )}
+            </NavLink>
+          ))}
+        </nav>
+
+        <div className="border-t border-white/10 p-4">
+          <div className="mb-3 flex items-center gap-3 rounded-xl bg-white/[0.06] px-3 py-3">
+            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[#007F80] text-xs font-bold">{user?.email?.slice(0, 1).toUpperCase() || 'A'}</span>
+            <div className="min-w-0">
+              <p className="truncate text-xs font-semibold">{user?.email || 'Administrator'}</p>
+              <p className="mt-0.5 text-[9px] uppercase tracking-wider text-white/45">2FA protected</p>
             </div>
           </div>
-
-          <button
-            onClick={handleLogout}
-            className="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-2xl text-xs font-semibold text-rose-600 hover:bg-rose-50 transition-colors cursor-pointer"
-          >
-            <LogOut className="h-4 w-4" />
-            <span>Sign Out</span>
+          {logoutError && <p role="alert" className="mb-2 text-[10px] leading-4 text-rose-300">{logoutError}</p>}
+          <button type="button" disabled={loggingOut} onClick={handleLogout} className="flex w-full items-center gap-3 rounded-xl px-3.5 py-2.5 text-xs font-medium text-white/60 transition hover:bg-rose-500/10 hover:text-rose-200 disabled:opacity-50">
+            <LogOut size={15} aria-hidden="true" />{loggingOut ? 'Signing out...' : 'Sign out'}
           </button>
         </div>
       </aside>
 
-      {/* Main Content Container */}
-      <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
-        {/* Top Header Navbar */}
-        <header className="h-16 bg-white border-b border-stone-200/80 px-4 sm:px-8 flex items-center justify-between shadow-sm">
+      <div className="min-h-screen lg:pl-[278px]">
+        <header className="sticky top-0 z-30 flex h-[70px] items-center justify-between border-b border-slate-200 bg-white/95 px-4 backdrop-blur sm:px-7 lg:px-9">
           <div className="flex items-center gap-3">
-            <button 
-              onClick={() => setSidebarOpen(true)}
-              className="p-2 text-stone-600 hover:bg-stone-50 rounded-xl lg:hidden cursor-pointer"
-            >
-              <Menu size={20} />
-            </button>
-
-            {/* Vertical Divider */}
-            <div className="h-6 w-[1px] bg-stone-200 hidden lg:block" />
-
-            {/* Header Title Context */}
+            <button type="button" aria-label="Open navigation menu" onClick={() => setSidebarOpen(true)} className="rounded-xl border border-slate-200 p-2 text-slate-600 hover:bg-slate-50 lg:hidden"><Menu size={18} /></button>
             <div>
-              <h2 className="text-xs font-black uppercase tracking-wider text-stone-400">Workspace</h2>
-              <p className="text-sm font-bold text-stone-900">Psychobeings Clinical Portal</p>
+              <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-slate-400">Psychobeings</p>
+              <p className="mt-0.5 text-xs font-semibold text-[#102b40]">Secure admin workspace</p>
             </div>
           </div>
-
-          {/* Right Header Side Profile Indicator */}
-          <div className="flex items-center gap-3">
-            <div className="h-9 w-9 rounded-2xl bg-[#237A88]/10 text-[#237A88] flex items-center justify-center font-bold text-xs border border-[#237A88]/20">
-              PB
-            </div>
-            <div className="hidden sm:block text-left">
-              <p className="text-xs font-bold text-stone-900 leading-none">Psychobeings Team</p>
-              <p className="text-[10px] text-stone-500 mt-1 font-medium">Practitioner Workspace</p>
-            </div>
+          <div className="flex items-center gap-2 rounded-full border border-emerald-100 bg-emerald-50 px-3 py-2 text-[10px] font-semibold text-emerald-800">
+            <ShieldCheck size={14} aria-hidden="true" /> <span className="hidden sm:inline">Protected session</span><span className="sm:hidden">Secure</span>
           </div>
         </header>
 
-        {/* Dynamic Nested Route Content Page Area */}
-        <main className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8">
+        <main className="mx-auto max-w-[1500px] px-4 py-7 sm:px-7 sm:py-9 lg:px-9">
           <Outlet />
         </main>
       </div>

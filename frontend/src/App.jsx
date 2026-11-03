@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Home from './pages/Home';
 import About from './pages/About';
@@ -21,41 +21,58 @@ import PrivacyPolicy from './pages/Privacy';
 import TermsAndConditions from './pages/Terms&Conditions';
 import CancellationPolicy from './pages/CancellationPolicy';
 import WhatsAppChat from './components/WhatsAppChat';
+import ClientAuth from './pages/ClientAuth';
+import ClientDashboard from './pages/ClientDashboard';
+
+function AppContent() {
+  const { pathname } = useLocation();
+  const isClientPortal = pathname === '/login'
+    || pathname === '/reset-password'
+    || pathname === '/client'
+    || pathname.startsWith('/client/');
+
+  return (
+    <div className={`min-h-screen ${isClientPortal ? 'bg-[#f3faf9]' : 'bg-[#f8fcfc]'}`}>
+      {!isClientPortal && <Navbar />}
+      <Toaster position="top-right" reverseOrder={false} />
+      <div className="w-full">
+        <Routes>
+          <Route path="/login" element={<ClientAuth />} />
+          <Route path="/reset-password" element={<ClientAuth />} />
+          <Route path="/client/dashboard" element={<ClientDashboard />} />
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/services" element={<Services />} />
+          <Route path="/services/:therapyId" element={<TherapyDetails />} />
+          <Route path="/services/counselling/individual-counselling" element={<IndividualCounselling />} />
+          <Route path="/services/counselling/child-adolescent-therapy" element={<ChildAdolescentTherapy />} />
+          <Route path="/services/wellness/corporate-wellness" element={<CorporateWellness />} />
+          <Route path="/services/wellness/schools-colleges-wellness" element={<SchoolsCollegesWellness />} />
+          <Route path="/services/wellness/seminars-workshops" element={<SeminarsWorkshops />} />
+          <Route path="/packages" element={<Packages />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/booking" element={<Booking />} />
+          <Route path="/individual-therapy" element={<SessionBookingForm />} />
+          <Route path="/couples-therapy" element={<SessionBookingForm />} />
+          <Route path="/family-therapy" element={<ComingSoon />} />
+          <Route path="/group-therapy" element={<ComingSoon />} />
+          <Route path="/privacy" element={<PrivacyPolicy />} />
+          <Route path="/terms" element={<TermsAndConditions />} />
+          <Route path="/terms&conditions" element={<TermsAndConditions />} />
+          <Route path="/cancellation-policy" element={<CancellationPolicy />} />
+          <Route path="/refund-policy" element={<CancellationPolicy />} />
+        </Routes>
+      </div>
+      {!isClientPortal && <WhatsAppChat />}
+      {!isClientPortal && <Footer />}
+    </div>
+  );
+}
 
 function App() {
   return (
     <Router>
-      <div className="min-h-screen bg-[#f8fcfc]">
-        <Navbar />
-        <Toaster position="top-right" reverseOrder={false} />
-        <main className="w-full">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/services" element={<Services />} />
-            <Route path="/services/:therapyId" element={<TherapyDetails />} />
-            <Route path="/services/counselling/individual-counselling" element={<IndividualCounselling />} />
-            <Route path="/services/counselling/child-adolescent-therapy" element={<ChildAdolescentTherapy />} />
-            <Route path="/services/wellness/corporate-wellness" element={<CorporateWellness />} />
-            <Route path="/services/wellness/schools-colleges-wellness" element={<SchoolsCollegesWellness />} />
-            <Route path="/services/wellness/seminars-workshops" element={<SeminarsWorkshops />} />
-            <Route path="/packages" element={<Packages />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/booking" element={<Booking />} />
-            <Route path="/individual-therapy" element={<SessionBookingForm />} />
-            <Route path="/couples-therapy" element={<SessionBookingForm />} />
-            <Route path="/family-therapy" element={<ComingSoon />} />
-            <Route path="/group-therapy" element={<ComingSoon />} />
-            <Route path="/privacy" element={<PrivacyPolicy />} />
-            <Route path="/terms" element={<TermsAndConditions />} />
-            <Route path="/terms&conditions" element={<TermsAndConditions />} />
-            <Route path="/cancellation-policy" element={<CancellationPolicy />} />
-            <Route path="/refund-policy" element={<CancellationPolicy />} />
-          </Routes>
-        </main>
-      </div>
-      <WhatsAppChat />
-      <Footer />
+      <AppContent />
     </Router>
   );
 }

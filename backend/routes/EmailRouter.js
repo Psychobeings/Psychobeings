@@ -6,10 +6,11 @@ import {
   getContactMessages,
   updateContactMessageStatus,
 } from '../controllers/contact_message_controller.js';
+import { requireRole } from '../middleware/auth.js';
 
 route.post('/sendmessage', SendMessage);
 route.post('/messages', saveContactMessage);
-route.get('/messages', getContactMessages);
-route.patch('/messages/:id/status', updateContactMessageStatus);
+route.get('/messages', requireRole('admin'), getContactMessages);
+route.patch('/messages/:id/status', requireRole('admin'), updateContactMessageStatus);
 
 export default route;
