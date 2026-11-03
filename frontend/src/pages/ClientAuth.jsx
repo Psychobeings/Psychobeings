@@ -11,6 +11,12 @@ function getErrorMessage(error) {
   return error.response?.data?.message || 'We could not complete that request. Please try again.';
 }
 
+function maskEmail(value) {
+  const [localPart, domain] = value.trim().split('@');
+  if (!localPart || !domain) return 'your email address';
+  return `${localPart[0]}${'*'.repeat(Math.max(3, Math.min(6, localPart.length - 1)))}@${domain}`;
+}
+
 export default function ClientAuth() {
   const [searchParams] = useSearchParams();
   const resetToken = searchParams.get('token');
@@ -21,6 +27,7 @@ export default function ClientAuth() {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [notice, setNotice] = useState('');
+  const [resetRequestedFor, setResetRequestedFor] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -28,6 +35,7 @@ export default function ClientAuth() {
     setMode(nextMode);
     setError('');
     setNotice('');
+    setResetRequestedFor('');
   };
 
   const handleSubmit = async (event) => {
@@ -44,8 +52,8 @@ export default function ClientAuth() {
         await clientApi.post('/auth/client/signup', { email, password, consent });
         navigate('/client/dashboard', { replace: true });
       } else if (mode === 'forgot') {
-        const response = await clientApi.post('/auth/client/password/forgot', { email });
-        setNotice(response.data.message);
+        await clientApi.post('/auth/client/password/forgot', { email });
+        setResetRequestedFor(email.trim());
       } else {
         await clientApi.post('/auth/client/password/reset', { token: resetToken, password });
         setPassword('');
@@ -59,14 +67,16 @@ export default function ClientAuth() {
     }
   };
 
-  const title = {
+  const title = resetRequestedFor ? 'Check your email' : {
     signin: 'Welcome back',
     signup: 'Create your account',
     forgot: 'Reset your password',
     reset: 'Choose a new password'
   }[mode];
 
-  const description = {
+  const description = resetRequestedFor
+    ? 'If an account exists for this address, we’ve sent a secure password reset link.'
+    : {
     signin: 'Your personal space for reflection, support, and steady progress.',
     signup: 'Start a private space for your wellbeing journey.',
     forgot: 'Enter your email and we’ll send a secure password reset link if an account exists.',
@@ -115,12 +125,33 @@ export default function ClientAuth() {
               {error}
             </div>
           )}
-          {notice && (
+          {notice && !resetRequestedFor && (
             <div role="status" className="mb-5 rounded-xl border border-[#b8ded9] bg-[#E6F4F3] px-4 py-3 text-sm leading-6 text-[#0F2D3A]">
               {notice}
             </div>
           )}
 
+          {resetRequestedFor ? (
+            <div role="status" className="space-y-5 rounded-2xl border border-[#b8ded9] bg-[#E6F4F3] p-5 text-sm leading-6 text-[#0F2D3A]">
+              <div>
+                <p className="font-semibold">Reset link requested for</p>
+                <p className="mt-1 font-mono">{maskEmail(resetRequestedFor)}</p>
+              </div>
+              <p>
+                Check your inbox and spam folder. Open the link in the email to verify your address and access the password reset page. The link expires after 30 minutes.
+              </p>
+              <button
+                type="button"
+                onClick={() => {
+                  setResetRequestedFor('');
+                  setError('');
+                }}
+                className="text-xs font-semibold text-[#007F80] underline"
+              >
+                Try a different email
+              </button>
+            </div>
+          ) : (
           <form onSubmit={handleSubmit} className="space-y-5">
             {mode !== 'reset' && (
               <div>
@@ -217,6 +248,7 @@ export default function ClientAuth() {
               {!loading && <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" aria-hidden="true" />}
             </button>
           </form>
+          )}
 
           <div className="mt-7 border-t border-slate-100 pt-6 text-center text-sm text-slate-500">
             {mode === 'signin' ? (
