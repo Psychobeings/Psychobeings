@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import logo2 from '../assets/PSYCHOBEINGS website logo.jpg';
 
-const ADMIN_PORTAL_URL = process.env.REACT_APP_ADMIN_URL || '/admin/login';
+const ADMIN_PORTAL_URL = process.env.REACT_APP_ADMIN_URL || 'https://admin-psychobeings.vercel.app/admin/login';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();

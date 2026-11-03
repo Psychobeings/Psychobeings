@@ -7,7 +7,9 @@ import {
 } from 'lucide-react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
-const API_BASE_URL = (process.env.REACT_APP_URL || 'http://localhost:8080').replace(/\/+$/u, '');
+const API_BASE_URL = process.env.NODE_ENV === 'production'
+  ? '/api'
+  : (process.env.REACT_APP_URL || 'http://localhost:8080').replace(/\/+$/u, '');
 const adminApi = axios.create({ baseURL: API_BASE_URL, withCredentials: true });
 
 const LABELS = {

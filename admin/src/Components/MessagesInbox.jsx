@@ -2,7 +2,9 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { MessageSquareText, Mail, Phone, Clock3, CheckCheck } from 'lucide-react';
 
-const API_BASE_URL = (process.env.REACT_APP_URL || 'http://localhost:8080/').replace(/\/?$/, '/');
+const API_BASE_URL = process.env.NODE_ENV === 'production'
+  ? '/api/'
+  : (process.env.REACT_APP_URL || 'http://localhost:8080/').replace(/\/?$/, '/');
 
 export default function MessagesInbox() {
   const [messages, setMessages] = useState([]);
@@ -13,6 +15,7 @@ export default function MessagesInbox() {
     try {
       setLoading(true);
       const response = await axios.get(`${API_BASE_URL}email/messages`, {
+        withCredentials: true,
         headers: {
           Authorization: `Bearer ${localStorage.getItem('authToken') || ''}`,
         },
@@ -34,6 +37,7 @@ export default function MessagesInbox() {
   const updateStatus = async (id, status) => {
     try {
       await axios.patch(`${API_BASE_URL}email/messages/${id}/status`, { status }, {
+        withCredentials: true,
         headers: {
           Authorization: `Bearer ${localStorage.getItem('authToken') || ''}`,
         },

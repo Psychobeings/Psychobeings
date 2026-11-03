@@ -75,6 +75,6 @@ The client login is available at `/login`, password reset at `/reset-password`, 
 
 The frontend reads `REACT_APP_URL` as the backend base URL and defaults to `http://localhost:8080` when it is unset. For local development, set it to the backend you intend to use and configure that backend's `SOURCE_URL` to include `http://localhost:3000`. Browser requests use credentials so the separate client session cookie can be sent. Follow [the backend setup notes](../backend/README.md) to configure authentication and chat.
 
-The footer's Admin Login link uses `REACT_APP_ADMIN_URL` when set; otherwise it points to the same-origin `/admin/login` route. Set this variable to the deployed admin app URL when the admin app is hosted separately.
+The footer's Admin Login link uses `REACT_APP_ADMIN_URL` when set; otherwise it points to the deployed admin app at `https://admin-psychobeings.vercel.app/admin/login`.
 
 Run `npm start` in this directory, then open `http://localhost:3000/login`. The dashboard needs a valid client session; signup requires consent to the terms and privacy policy.

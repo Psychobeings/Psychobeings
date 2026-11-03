@@ -6,7 +6,9 @@ import {
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import logo from '../Assets/Psychobeings.png';
 
-const API_BASE_URL = (process.env.REACT_APP_URL || 'http://localhost:8080').replace(/\/+$/u, '');
+const API_BASE_URL = process.env.NODE_ENV === 'production'
+  ? '/api'
+  : (process.env.REACT_APP_URL || 'http://localhost:8080').replace(/\/+$/u, '');
 const adminApi = axios.create({ baseURL: API_BASE_URL, withCredentials: true });
 
 function getErrorMessage(error) {
