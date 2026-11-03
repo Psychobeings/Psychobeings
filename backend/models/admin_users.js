@@ -18,15 +18,6 @@ const userSchema = new mongoose.Schema({
     default: 'admin',
     immutable: true
   },
-  twoFactorSecret: {
-    type: String,
-    default: null,
-    select: false
-  },
-  twoFactorEnabled: {
-    type: Boolean,
-    default: false
-  },
   failedLoginAttempts: {
     type: Number,
     default: 0,

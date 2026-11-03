@@ -1,13 +1,11 @@
 import bcrypt from 'bcrypt';
 import { createHash, randomBytes, timingSafeEqual } from 'node:crypto';
-import jwt from 'jsonwebtoken';
 import AdminUser from '../models/admin_users.js';
 import ClientUser from '../models/client_user.js';
 import PasswordReset from '../models/password_reset.js';
 import AuditLog from '../models/audit_log.js';
 import { adminSessionCookie, clientSessionCookie, clearSessionCookie } from '../middleware/auth.js';
 import { sendPasswordResetEmail } from '../services/email.js';
-import { createTotpProvisioningUri, generateTotpSecret, verifyTotp } from '../utils/totp.js';
 
 const LOCKOUT_MS = 15 * 60 * 1000;
 const PASSWORD_MIN_LENGTH = 12;
@@ -22,22 +20,6 @@ function validEmail(email) {
 
 function validPassword(password) {
   return typeof password === 'string' && password.length >= PASSWORD_MIN_LENGTH && password.length <= 128;
-}
-
-function createChallengeToken(user, purpose, audience, expiresIn = '5m') {
-  if (!process.env.JWT_SECRET) throw new Error('JWT_SECRET is required to issue authentication tokens');
-  return jwt.sign(
-    { role: 'admin', purpose, tokenVersion: user.tokenVersion || 0 },
-    process.env.JWT_SECRET,
-    { subject: String(user._id), issuer: 'psychobeings', audience, expiresIn }
-  );
-}
-
-function verifyChallengeToken(token, purpose, audience) {
-  if (!process.env.JWT_SECRET) throw new Error('JWT_SECRET is required to verify authentication tokens');
-  const payload = jwt.verify(token, process.env.JWT_SECRET, { issuer: 'psychobeings', audience });
-  if (payload.role !== 'admin' || payload.purpose !== purpose) return null;
-  return payload;
 }
 
 async function checkLockout(user) {
@@ -178,7 +160,7 @@ export async function adminSignup(req, res, next) {
     }
 
     await AdminUser.create({ email, password: await bcrypt.hash(password, 12), role: 'admin' });
-    return res.status(201).json({ message: 'Admin account created. Configure two-factor authentication at first sign-in.' });
+    return res.status(201).json({ message: 'Admin account created.' });
   } catch (error) {
     if (error.code === 11000) return res.status(409).json({ message: 'An admin account with this email already exists.' });
     return next(error);
@@ -193,7 +175,7 @@ export async function adminSignin(req, res, next) {
       return res.status(400).json({ message: 'Email and password are required.' });
     }
 
-    const user = await AdminUser.findOne({ email }).select('+password +twoFactorSecret +failedLoginAttempts +lockedUntil +tokenVersion');
+    const user = await AdminUser.findOne({ email }).select('+password +failedLoginAttempts +lockedUntil +tokenVersion');
     if (!user) return res.status(401).json({ message: 'Invalid email or password.' });
     if (await checkLockout(user)) {
       return res.status(423).json({ message: 'Account temporarily locked after failed sign-in attempts.' });
@@ -203,89 +185,6 @@ export async function adminSignin(req, res, next) {
       return res.status(locked ? 423 : 401).json({
         message: locked ? 'Account temporarily locked after failed sign-in attempts.' : 'Invalid email or password.'
       });
-    }
-
-    if (!user.twoFactorEnabled || !user.twoFactorSecret) {
-      return res.json({
-        message: 'Two-factor setup is required.',
-        requiresTwoFactorSetup: true,
-        enrollmentToken: createChallengeToken(user, 'enroll', 'admin-enrollment')
-      });
-    }
-
-    return res.json({
-      message: 'Enter your authenticator code.',
-      requiresTwoFactor: true,
-      challengeToken: createChallengeToken(user, 'verify', 'admin-login')
-    });
-  } catch (error) {
-    return next(error);
-  }
-}
-
-async function getAdminFromChallenge(token, purpose, audience) {
-  let payload;
-  try {
-    payload = verifyChallengeToken(token, purpose, audience);
-  } catch {
-    return null;
-  }
-  if (!payload) return null;
-  const user = await AdminUser.findById(payload.sub).select('+twoFactorSecret +tokenVersion +failedLoginAttempts +lockedUntil');
-  if (!user || (user.tokenVersion || 0) !== payload.tokenVersion || await checkLockout(user)) return null;
-  return user;
-}
-
-export async function startAdminTwoFactorSetup(req, res, next) {
-  try {
-    const user = await getAdminFromChallenge(req.body.enrollmentToken, 'enroll', 'admin-enrollment');
-    if (!user || user.twoFactorEnabled) {
-      return res.status(401).json({ message: 'The enrollment challenge is invalid or expired. Sign in again.' });
-    }
-
-    const secret = generateTotpSecret();
-    user.twoFactorSecret = secret;
-    await user.save();
-    return res.json({
-      secret,
-      otpauthUrl: createTotpProvisioningUri(secret, user.email),
-      message: 'Add this account to an authenticator app, then confirm with its six-digit code.'
-    });
-  } catch (error) {
-    return next(error);
-  }
-}
-
-export async function confirmAdminTwoFactorSetup(req, res, next) {
-  try {
-    const user = await getAdminFromChallenge(req.body.enrollmentToken, 'enroll', 'admin-enrollment');
-    if (!user || user.twoFactorEnabled || !user.twoFactorSecret) {
-      return res.status(401).json({ message: 'The enrollment challenge is invalid or expired. Sign in again.' });
-    }
-    if (!verifyTotp(user.twoFactorSecret, String(req.body.code || ''))) {
-      const locked = await registerFailure(user);
-      return res.status(locked ? 423 : 401).json({ message: 'The authenticator code is invalid.' });
-    }
-
-    user.twoFactorEnabled = true;
-    await resetFailures(user);
-    adminSessionCookie(res, user);
-    await AuditLog.create({ actorId: user._id, actorRole: 'admin', action: 'admin.two_factor_enabled' });
-    return res.json({ message: 'Two-factor authentication enabled.', user: { id: user._id, email: user.email, role: 'admin' } });
-  } catch (error) {
-    return next(error);
-  }
-}
-
-export async function verifyAdminTwoFactor(req, res, next) {
-  try {
-    const user = await getAdminFromChallenge(req.body.challengeToken, 'verify', 'admin-login');
-    if (!user || !user.twoFactorEnabled || !user.twoFactorSecret) {
-      return res.status(401).json({ message: 'The sign-in challenge is invalid or expired. Sign in again.' });
-    }
-    if (!verifyTotp(user.twoFactorSecret, String(req.body.code || ''))) {
-      const locked = await registerFailure(user);
-      return res.status(locked ? 423 : 401).json({ message: 'The authenticator code is invalid.' });
     }
 
     await resetFailures(user);

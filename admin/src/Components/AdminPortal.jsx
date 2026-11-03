@@ -221,7 +221,7 @@ function SupportInbox({ messages, onUpdate, updatingId }) {
 }
 
 function AuditTable({ logs }) {
-  if (!logs.length) return <Panel><EmptyState icon={FileText} title="No audit events yet" description="Administrative sign-ins, 2FA enrollment, and crisis alert status changes are recorded here." /></Panel>;
+  if (!logs.length) return <Panel><EmptyState icon={FileText} title="No audit events yet" description="Administrative sign-ins and crisis alert status changes are recorded here." /></Panel>;
   return (
     <Panel className="overflow-hidden p-0">
       <div className="overflow-x-auto">

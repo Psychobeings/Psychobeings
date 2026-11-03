@@ -86,7 +86,7 @@ export default function Layout({ user }) {
             <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[#007F80] text-xs font-bold">{user?.email?.slice(0, 1).toUpperCase() || 'A'}</span>
             <div className="min-w-0">
               <p className="truncate text-xs font-semibold">{user?.email || 'Administrator'}</p>
-              <p className="mt-0.5 text-[9px] uppercase tracking-wider text-white/45">2FA protected</p>
+              <p className="mt-0.5 text-[9px] uppercase tracking-wider text-white/45">Admin account</p>
             </div>
           </div>
           {logoutError && <p role="alert" className="mb-2 text-[10px] leading-4 text-rose-300">{logoutError}</p>}

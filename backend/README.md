@@ -14,15 +14,13 @@ npm start
 - `POST /auth/client/signin`, `POST /auth/client/logout`, `GET /auth/client/session`
 - `POST /auth/client/password/forgot` and `/auth/client/password/reset`
 - `POST /admin/signup` — one-time/controlled provisioning protected by `x-admin-bootstrap-key`.
-- `POST /admin/signin` — verifies the password and returns either a short-lived first-time enrollment token or a short-lived 2FA challenge.
-- `POST /admin/2fa/setup` and `/admin/2fa/confirm` — enroll an authenticator app with TOTP.
-- `POST /admin/signin/verify-2fa`, `POST /admin/logout`, `GET /admin/session`
+- `POST /admin/signin`, `POST /admin/logout`, `GET /admin/session` — administrator password sign-in and session management.
 - `POST /admin/password/forgot` and `/admin/password/reset`
 - `GET /auth/mood`, `POST /auth/mood` — client-owned mood entries.
 - `POST /auth/chat` — client-only Psycho Buddy chat. Requires `consentToExternalProcessing: true` before any message is sent to Anthropic. Every message is checked for crisis signals first; detected messages create an admin alert and receive the crisis support response instead of being sent to Claude.
 - Admin-only `GET /admin/overview`, `/admin/users`, `/admin/crisis-alerts`, `/admin/audit-log`, and `PATCH /admin/crisis-alerts/:id`.
 
-Admin accounts are locked for 15 minutes after five failed password or authenticator-code attempts. Admin sessions have a 30-minute sliding inactivity timeout. Logout and password reset invalidate earlier sessions. Role guards use separate cookie names, JWT audiences, and MongoDB collections; the admin guard also requires completed 2FA.
+Admin accounts are locked for 15 minutes after five failed password attempts. Admin sessions have a 30-minute sliding inactivity timeout. Logout and password reset invalidate earlier sessions. Role guards use separate cookie names, JWT audiences, and MongoDB collections. Admin sign-in currently uses password-only authentication; re-enable multi-factor authentication before relying on the admin portal for sensitive production operations.
 
 Public `POST /session-form/register` remains available for the existing booking form. Reading, booking, or deleting session records and reading/updating contact inbox messages now requires an admin session.
 

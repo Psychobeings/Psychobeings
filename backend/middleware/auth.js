@@ -103,10 +103,6 @@ export function requireRole(role) {
         return res.status(401).json({ message: 'Session is no longer valid.' });
       }
 
-      if (role === 'admin' && !user.twoFactorEnabled) {
-        return res.status(403).json({ message: 'Admin two-factor authentication is required.' });
-      }
-
       req.auth = { userId: user._id, role, user };
       setSessionCookie(res, cookieRole, createSessionToken(user, cookieRole));
       return next();

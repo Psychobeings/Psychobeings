@@ -2,9 +2,6 @@ import express from 'express';
 import {
   adminSignup,
   adminSignin,
-  startAdminTwoFactorSetup,
-  confirmAdminTwoFactorSetup,
-  verifyAdminTwoFactor,
   adminLogout,
   adminForgotPassword,
   adminResetPassword,
@@ -25,9 +22,6 @@ const authRateLimit = rateLimit({ windowMs: 15 * 60 * 1000, max: 10, keyPrefix: 
 
 router.post('/signup', authRateLimit, adminSignup);
 router.post('/signin', authRateLimit, adminSignin);
-router.post('/signin/verify-2fa', authRateLimit, verifyAdminTwoFactor);
-router.post('/2fa/setup', authRateLimit, startAdminTwoFactorSetup);
-router.post('/2fa/confirm', authRateLimit, confirmAdminTwoFactorSetup);
 router.post('/password/forgot', authRateLimit, adminForgotPassword);
 router.post('/password/reset', authRateLimit, adminResetPassword);
 

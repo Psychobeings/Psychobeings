@@ -10,7 +10,8 @@
   Brand colors: teal #007F80, navy #0F2D3A, mint #E6F4F3.
 - Use the logo file in the project's images folder.
 - Two separate logins: Client (role "customer") and Admin
-  (role "admin", with 2FA). Separate pages, tokens, and route guards.
+  (role "admin"). Keep separate pages, tokens, and route guards.
+  Admin 2FA is temporarily disabled; retain lockout and rate limiting.
   A client token must never work on admin routes.
 - Security: hashed passwords, server-side role checks, rate limiting,
   httpOnly cookies, no secrets in code (use .env, never commit it).
