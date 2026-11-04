@@ -73,7 +73,7 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 
 Client login and password recovery are available at `/login` and `/reset-password` through the footer's Client Login link. The login link is intentionally not shown in the main navigation. Admin-created client invitations are accepted at `/reset-password?invite=...`.
 
-The frontend reads `REACT_APP_URL` as the backend base URL and defaults to `http://localhost:8080` when it is unset. For local development, set it to the backend you intend to use and configure that backend's `SOURCE_URL` to include `http://localhost:3000`. Browser requests use credentials so the separate client session cookie can be sent. Follow [the backend setup notes](../backend/README.md) to configure authentication and chat.
+In production, client portal API calls use the same-origin `/api` rewrite to the backend so the session cookie remains first-party. For local development, the frontend reads `REACT_APP_URL` as the backend base URL and defaults to `http://localhost:8080` when it is unset; configure the backend's `SOURCE_URL` to include `http://localhost:3000`. Browser requests use credentials. Follow [the backend setup notes](../backend/README.md) to configure authentication and chat.
 
 The footer's Admin Login link uses `REACT_APP_ADMIN_URL` when set; otherwise it points to the deployed admin app at `https://admin-psychobeings.vercel.app/admin/login`.
 

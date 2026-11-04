@@ -8,7 +8,9 @@ import {
 import { Link, useNavigate } from 'react-router-dom';
 import logo from '../assets/Psychobeings.png';
 
-const API_BASE_URL = (process.env.REACT_APP_URL || 'http://localhost:8080').replace(/\/+$/u, '');
+const API_BASE_URL = process.env.NODE_ENV === 'production'
+  ? '/api'
+  : (process.env.REACT_APP_URL || 'http://localhost:8080').replace(/\/+$/u, '');
 const clientApi = axios.create({ baseURL: API_BASE_URL, withCredentials: true });
 
 const MOODS = [
