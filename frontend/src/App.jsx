@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Home from './pages/Home';
 import About from './pages/About';
@@ -23,6 +23,8 @@ import CancellationPolicy from './pages/CancellationPolicy';
 import WhatsAppChat from './components/WhatsAppChat';
 import ClientDashboard from './pages/ClientDashboard';
 import ClientAuth from './pages/ClientAuth';
+import ClientLanding from './pages/ClientLanding';
+import ClientOnboarding from './pages/ClientOnboarding';
 
 function AppContent() {
   const { pathname } = useLocation();
@@ -39,7 +41,16 @@ function AppContent() {
         <Routes>
           <Route path="/login" element={<ClientAuth />} />
           <Route path="/reset-password" element={<ClientAuth />} />
+          <Route path="/client" element={<ClientLanding />} />
+          <Route path="/client/onboarding" element={<ClientOnboarding />} />
           <Route path="/client/dashboard" element={<ClientDashboard />} />
+          <Route path="/client/mood" element={<ClientDashboard />} />
+          <Route path="/client/journal" element={<ClientDashboard />} />
+          <Route path="/client/chat" element={<ClientDashboard />} />
+          <Route path="/client/library" element={<ClientDashboard />} />
+          <Route path="/client/booking" element={<ClientDashboard />} />
+          <Route path="/client/profile" element={<ClientDashboard />} />
+          <Route path="/client/:section" element={<Navigate to="/client/dashboard" replace />} />
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route path="/services" element={<Services />} />

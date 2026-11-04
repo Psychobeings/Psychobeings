@@ -11,7 +11,11 @@ import {
 import { requireRole } from '../middleware/auth.js';
 import { rateLimit } from '../middleware/rate_limit.js';
 import { sendChatMessage } from '../controllers/chat_controller.js';
-import { createMoodEntry, getMoodEntries } from '../controllers/client_data_controller.js';
+import {
+  completeClientOnboarding,
+  createMoodEntry,
+  getMoodEntries
+} from '../controllers/client_data_controller.js';
 
 const router = express.Router();
 const authRateLimit = rateLimit({ windowMs: 15 * 60 * 1000, max: 10, keyPrefix: 'client-auth' });
@@ -24,6 +28,7 @@ router.post('/client/password/forgot', authRateLimit, clientForgotPassword);
 router.post('/client/password/reset', authRateLimit, clientResetPassword);
 router.post('/client/logout', requireRole('customer'), clientLogout);
 router.get('/client/session', requireRole('customer'), currentSession);
+router.put('/client/onboarding', requireRole('customer'), completeClientOnboarding);
 
 router.post('/chat', requireRole('customer'), chatRateLimit, sendChatMessage);
 router.get('/mood', requireRole('customer'), getMoodEntries);

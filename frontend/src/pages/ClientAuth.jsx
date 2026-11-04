@@ -23,7 +23,9 @@ export default function ClientAuth() {
   const [searchParams] = useSearchParams();
   const resetToken = searchParams.get('token');
   const inviteToken = searchParams.get('invite');
-  const [mode, setMode] = useState(inviteToken ? 'invite' : resetToken ? 'reset' : 'signin');
+  const requestedMode = searchParams.get('mode');
+  const initialMode = inviteToken ? 'invite' : resetToken ? 'reset' : requestedMode === 'signup' ? 'signup' : 'signin';
+  const [mode, setMode] = useState(initialMode);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [consent, setConsent] = useState(false);
@@ -53,10 +55,10 @@ export default function ClientAuth() {
         navigate('/client/dashboard', { replace: true });
       } else if (mode === 'signup') {
         await clientApi.post('/auth/client/signup', { email, password, consent });
-        navigate('/client/dashboard', { replace: true });
+        navigate('/client/onboarding', { replace: true });
       } else if (mode === 'invite') {
         await clientApi.post('/auth/client/invitation/accept', { token: inviteToken, email, password, consent });
-        navigate('/client/dashboard', { replace: true });
+        navigate('/client/onboarding', { replace: true });
       } else if (mode === 'forgot') {
         await clientApi.post('/auth/client/password/forgot', { email });
         setResetRequestedFor(email.trim());

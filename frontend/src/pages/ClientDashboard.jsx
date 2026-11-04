@@ -2,10 +2,10 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import axios from 'axios';
 import {
   Activity, ArrowRight, BookOpen, CalendarDays, Check, ChevronRight, CircleUserRound,
-  Heart, HeartPulse, Home, Leaf, LogOut, Menu, MessageCircle, NotebookPen, Send, ShieldAlert,
+  Flame, Heart, HeartPulse, Home, Leaf, LogOut, Menu, MessageCircle, NotebookPen, Send, ShieldAlert,
   Sparkles, Sprout, TreeDeciduous, Trees, X
 } from 'lucide-react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import logo from '../assets/Psychobeings.png';
 
 const API_BASE_URL = process.env.NODE_ENV === 'production'
@@ -14,11 +14,16 @@ const API_BASE_URL = process.env.NODE_ENV === 'production'
 const clientApi = axios.create({ baseURL: API_BASE_URL, withCredentials: true });
 
 const MOODS = [
-  { value: 1, label: 'Very low', face: '😔', color: '#b76464' },
+  { value: 1, label: 'Struggling', face: '😔', color: '#b76464' },
   { value: 2, label: 'Low', face: '😕', color: '#cf9164' },
   { value: 3, label: 'Okay', face: '😐', color: '#c4aa57' },
   { value: 4, label: 'Good', face: '🙂', color: '#73a98e' },
   { value: 5, label: 'Great', face: '😊', color: '#268c82' }
+];
+
+const FEELINGS = [
+  'Calm', 'Grateful', 'Hopeful', 'Tired', 'Anxious', 'Stressed',
+  'Lonely', 'Sad', 'Angry', 'Motivated', 'Overwhelmed', 'Content'
 ];
 
 const NAV_ITEMS = [
@@ -30,6 +35,16 @@ const NAV_ITEMS = [
   { id: 'booking', label: 'Session booking', icon: CalendarDays },
   { id: 'profile', label: 'Profile', icon: CircleUserRound }
 ];
+
+const SECTION_PATHS = {
+  overview: '/client/dashboard',
+  mood: '/client/mood',
+  journal: '/client/journal',
+  chat: '/client/chat',
+  library: '/client/library',
+  booking: '/client/booking',
+  profile: '/client/profile'
+};
 
 const LIBRARY_ITEMS = [
   { title: 'A gentle grounding pause', category: 'Grounding', duration: '3 min', description: 'Notice what is around you, one sense at a time, and give yourself a moment to arrive.' },
@@ -50,6 +65,17 @@ function errorMessage(error) {
 
 function formatDate(value, options = { month: 'short', day: 'numeric' }) {
   return new Intl.DateTimeFormat(undefined, options).format(new Date(value));
+}
+
+function localDateKey(date = new Date()) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
+
+function entryDateKey(entry) {
+  return entry.date || localDateKey(new Date(entry.createdAt));
 }
 
 function MoodChart({ entries }) {
@@ -96,7 +122,7 @@ function MoodChart({ entries }) {
         </div>
       )}
       <div className="mt-3 flex justify-between text-[10px] text-slate-400">
-        <span>Very low</span><span>Okay</span><span>Great</span>
+        <span>Struggling</span><span>Okay</span><span>Great</span>
       </div>
     </div>
   );
@@ -119,7 +145,7 @@ function Panel({ children, className = '' }) {
   return <section className={`rounded-2xl border border-[#deece9] bg-white p-5 shadow-[0_8px_24px_rgba(15,45,58,0.035)] sm:p-6 ${className}`}>{children}</section>;
 }
 
-function GrowthTree({ totalCheckIns }) {
+function GrowthTree({ totalCheckIns, streak, longestStreak }) {
   const stage = [...GROWTH_STAGES].reverse().find(({ min }) => totalCheckIns >= min) || GROWTH_STAGES[0];
   const StageIcon = stage.icon;
   const progress = stage.next
@@ -156,42 +182,58 @@ function GrowthTree({ totalCheckIns }) {
               : 'Your grove is thriving. Keep nurturing it at your own pace.'}
           </p>
         </div>
-        <p className="mt-4 rounded-xl bg-white/10 px-3 py-2 text-center text-sm font-semibold">
-          {totalCheckIns} {totalCheckIns === 1 ? 'check-in' : 'check-ins'} so far
-        </p>
+        <div className="mt-4 grid grid-cols-3 gap-2 text-center">
+          {[
+            { label: 'Day streak', value: streak, icon: true },
+            { label: 'Best streak', value: longestStreak, icon: false },
+            { label: 'Check-ins', value: totalCheckIns, icon: false }
+          ].map((stat) => (
+            <div key={stat.label} className="rounded-xl bg-white/10 py-3">
+              <p className="flex items-center justify-center gap-1 text-xl font-semibold">
+                {stat.icon && <Flame size={16} aria-hidden="true" />}{stat.value}
+              </p>
+              <p className="mt-1 text-[10px] text-white/75">{stat.label}</p>
+            </div>
+          ))}
+        </div>
       </div>
     </Panel>
   );
 }
 
 function WeekStrip({ entries }) {
-  const checkedInDays = useMemo(
-    () => new Set(entries.map((entry) => {
-      const date = new Date(entry.createdAt);
-      return `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
-    })),
-    [entries]
-  );
+  const entriesByDay = useMemo(() => {
+    const map = new Map();
+    entries.forEach((entry) => {
+      const key = entryDateKey(entry);
+      if (!map.has(key)) map.set(key, entry);
+    });
+    return map;
+  }, [entries]);
   const today = new Date();
   const days = Array.from({ length: 7 }, (_, index) => {
     const date = new Date(today.getFullYear(), today.getMonth(), today.getDate() - (6 - index));
-    const key = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
-    return { date, checkedIn: checkedInDays.has(key), isToday: index === 6 };
+    const key = localDateKey(date);
+    const entry = entriesByDay.get(key);
+    const mood = entry ? MOODS[entry.mood - 1] : null;
+    return { date, entry, mood, isToday: index === 6 };
   });
 
   return (
     <div role="group" aria-label="Mood check-ins over the last seven days" className="grid grid-cols-7 gap-2">
-      {days.map(({ date, checkedIn, isToday }) => (
+      {days.map(({ date, entry, mood, isToday }) => (
         <div
           key={date.toISOString()}
           role="img"
-          aria-label={`${isToday ? 'Today' : formatDate(date, { weekday: 'long' })}: ${checkedIn ? 'check-in saved' : 'no check-in'}`}
+          aria-label={`${isToday ? 'Today' : formatDate(date, { weekday: 'long' })}: ${mood?.label || 'no check-in'}`}
           className={`flex flex-col items-center gap-2 rounded-xl px-1 py-3 ${isToday ? 'bg-[#E6F4F3]' : 'bg-[#f7fbfa]'}`}
         >
           <span className="text-[10px] font-medium text-slate-500">
             {isToday ? 'Today' : formatDate(date, { weekday: 'short' })}
           </span>
-          <span className={`h-2.5 w-2.5 rounded-full ${checkedIn ? 'bg-[#007F80]' : 'bg-slate-200'}`} aria-hidden="true" />
+          {entry
+            ? <span className="text-base" aria-hidden="true">{mood?.face || '•'}</span>
+            : <span className="h-2.5 w-2.5 rounded-full bg-slate-200" aria-hidden="true" />}
         </div>
       ))}
     </div>
@@ -202,14 +244,17 @@ export default function ClientDashboard() {
   const [user, setUser] = useState(null);
   const [entries, setEntries] = useState([]);
   const [totalCheckIns, setTotalCheckIns] = useState(null);
+  const [streak, setStreak] = useState(0);
+  const [longestStreak, setLongestStreak] = useState(0);
   const [loading, setLoading] = useState(true);
-  const [activeSection, setActiveSection] = useState('overview');
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [error, setError] = useState('');
   const [notice, setNotice] = useState('');
   const [savingMood, setSavingMood] = useState(false);
   const [selectedMood, setSelectedMood] = useState(0);
+  const [selectedFeelings, setSelectedFeelings] = useState([]);
   const [moodNote, setMoodNote] = useState('');
+  const [editingToday, setEditingToday] = useState(true);
   const [chatMessages, setChatMessages] = useState([
     { role: 'assistant', text: 'Hi, I’m Psycho Buddy. I can offer a supportive space to reflect, but I’m not a therapist and can’t diagnose or prescribe. What’s on your mind today?' }
   ]);
@@ -217,18 +262,30 @@ export default function ClientDashboard() {
   const [chatConsent, setChatConsent] = useState(false);
   const [sendingChat, setSendingChat] = useState(false);
   const navigate = useNavigate();
+  const { pathname } = useLocation();
+  const section = pathname.split('/').filter(Boolean).pop();
+  const activeSection = section === 'dashboard' ? 'overview' : section;
+  const validSection = NAV_ITEMS.some((item) => item.id === activeSection);
 
   const loadDashboard = useCallback(async () => {
     setLoading(true);
     setError('');
     try {
-      const [sessionResponse, moodResponse] = await Promise.all([
-        clientApi.get('/auth/client/session'),
-        clientApi.get('/auth/mood')
-      ]);
-      setUser(sessionResponse.data.user);
+      const sessionResponse = await clientApi.get('/auth/client/session');
+      const sessionUser = sessionResponse.data.user;
+      setUser(sessionUser);
+      if (!sessionUser.onboarded) {
+        navigate('/client/onboarding', { replace: true });
+        return;
+      }
+
+      const moodResponse = await clientApi.get('/auth/mood', {
+        params: { timezoneOffsetMinutes: new Date().getTimezoneOffset() }
+      });
       setEntries(moodResponse.data.entries);
       setTotalCheckIns(moodResponse.data.totalCheckIns);
+      setStreak(moodResponse.data.streak);
+      setLongestStreak(moodResponse.data.longestStreak);
     } catch (requestError) {
       if (requestError.response?.status === 401 || requestError.response?.status === 403) {
         navigate('/login', { replace: true });
@@ -243,6 +300,23 @@ export default function ClientDashboard() {
   useEffect(() => {
     loadDashboard();
   }, [loadDashboard]);
+
+  useEffect(() => {
+    if (!validSection) {
+      navigate('/client/dashboard', { replace: true });
+    }
+  }, [navigate, validSection]);
+
+  const today = localDateKey();
+  const todayEntry = entries.find((entry) => entryDateKey(entry) === today);
+
+  useEffect(() => {
+    if (activeSection !== 'mood') return;
+    setSelectedMood(todayEntry?.mood || 0);
+    setSelectedFeelings(todayEntry?.feelings || []);
+    setMoodNote(todayEntry?.note || '');
+    setEditingToday(!todayEntry);
+  }, [activeSection, todayEntry]);
 
   const handleLogout = async () => {
     setError('');
@@ -261,12 +335,24 @@ export default function ClientDashboard() {
     setError('');
     setNotice('');
     try {
-      const response = await clientApi.post('/auth/mood', { mood: selectedMood, note: moodNote });
-      setEntries((current) => [response.data.entry, ...current]);
-      setTotalCheckIns((current) => (current === null ? null : current + 1));
-      setSelectedMood(0);
-      setMoodNote('');
-      setNotice('Your check-in has been saved. Thank you for taking a moment for yourself.');
+      const response = await clientApi.post('/auth/mood', {
+        date: today,
+        timezoneOffsetMinutes: new Date().getTimezoneOffset(),
+        mood: selectedMood,
+        feelings: selectedFeelings,
+        note: moodNote
+      });
+      setEntries((current) => [
+        response.data.entry,
+        ...current.filter((entry) => entryDateKey(entry) !== today)
+      ].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)));
+      setTotalCheckIns(response.data.totalCheckIns);
+      setStreak(response.data.streak);
+      setLongestStreak(response.data.longestStreak);
+      setEditingToday(false);
+      setNotice(response.data.created
+        ? 'Your check-in has been saved. Thank you for taking a moment for yourself.'
+        : "Today's check-in has been updated.");
     } catch (requestError) {
       setError(errorMessage(requestError));
     } finally {
@@ -301,14 +387,14 @@ export default function ClientDashboard() {
   };
 
   const selectSection = (section) => {
-    setActiveSection(section);
+    navigate(SECTION_PATHS[section] || SECTION_PATHS.overview);
     setSidebarOpen(false);
     setError('');
     setNotice('');
   };
 
   const latestMood = entries[0] ? MOODS[entries[0].mood - 1] : null;
-  const firstName = user?.email?.split('@')[0] || 'there';
+  const firstName = user?.displayName || user?.email?.split('@')[0] || 'there';
 
   if (loading) {
     return (
@@ -428,7 +514,13 @@ export default function ClientDashboard() {
                 </Panel>
 
                 <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-1">
-                  {totalCheckIns !== null && <GrowthTree totalCheckIns={totalCheckIns} />}
+                  {totalCheckIns !== null && (
+                    <GrowthTree
+                      totalCheckIns={totalCheckIns}
+                      streak={streak}
+                      longestStreak={longestStreak}
+                    />
+                  )}
                   <Panel className="bg-gradient-to-br from-[#E6F4F3] to-white">
                     <div className="flex items-start justify-between">
                       <div>
@@ -479,41 +571,106 @@ export default function ClientDashboard() {
               <SectionHeading eyebrow="Mood check-in" title="How are you feeling right now?" description="There is no right answer. Choose what feels closest, then add a note if you would like." />
               <div className="grid gap-5 xl:grid-cols-[1fr_1.2fr]">
                 <Panel>
-                  <form onSubmit={handleMoodSubmit}>
-                    <fieldset>
-                      <legend className="text-sm font-semibold text-[#0F2D3A]">Pick a feeling</legend>
-                      <div className="mt-4 grid grid-cols-5 gap-2">
-                        {MOODS.map((mood) => (
+                  {todayEntry && !editingToday ? (
+                    <div>
+                      <p className="text-xs font-semibold text-slate-500">Today's check-in</p>
+                      <p className="mt-3 text-2xl font-semibold text-[#0F2D3A]">
+                        {MOODS[todayEntry.mood - 1]?.face} {MOODS[todayEntry.mood - 1]?.label}
+                      </p>
+                      {todayEntry.feelings?.length > 0 && (
+                        <div className="mt-4 flex flex-wrap gap-2">
+                          {todayEntry.feelings.map((feeling) => (
+                            <span key={feeling} className="rounded-full bg-[#E6F4F3] px-3 py-1 text-[10px] font-medium text-[#007F80]">{feeling}</span>
+                          ))}
+                        </div>
+                      )}
+                      {todayEntry.note && <p className="mt-4 whitespace-pre-wrap text-sm leading-6 text-slate-600">{todayEntry.note}</p>}
+                      <button
+                        type="button"
+                        onClick={() => setEditingToday(true)}
+                        className="mt-6 inline-flex items-center gap-2 rounded-xl border border-[#b8ded9] px-4 py-2.5 text-xs font-semibold text-[#007F80] hover:bg-[#f7fbfa]"
+                      >
+                        Edit today's check-in
+                      </button>
+                    </div>
+                  ) : (
+                    <form onSubmit={handleMoodSubmit}>
+                      <fieldset>
+                        <legend className="text-sm font-semibold text-[#0F2D3A]">Pick a mood</legend>
+                        <div className="mt-4 grid grid-cols-5 gap-2">
+                          {MOODS.map((mood) => (
+                            <button
+                              key={mood.value}
+                              type="button"
+                              aria-pressed={selectedMood === mood.value}
+                              onClick={() => setSelectedMood(mood.value)}
+                              className={`flex flex-col items-center gap-2 rounded-xl border px-1 py-3 transition ${
+                                selectedMood === mood.value ? 'border-[#007F80] bg-[#E6F4F3] ring-2 ring-[#007F80]/15' : 'border-slate-100 bg-slate-50/70 hover:border-[#b8ded9]'
+                              }`}
+                            >
+                              <span className="text-2xl" aria-hidden="true">{mood.face}</span>
+                              <span className="text-[9px] font-semibold text-slate-600 sm:text-[10px]">{mood.label}</span>
+                            </button>
+                          ))}
+                        </div>
+                      </fieldset>
+                      <fieldset className="mt-6">
+                        <legend className="text-xs font-semibold text-slate-700">What else are you feeling? <span className="font-normal text-slate-400">(optional, choose up to 8)</span></legend>
+                        <div className="mt-3 flex flex-wrap gap-2">
+                          {FEELINGS.map((feeling) => {
+                            const selected = selectedFeelings.includes(feeling);
+                            return (
+                              <button
+                                key={feeling}
+                                type="button"
+                                aria-pressed={selected}
+                                onClick={() => setSelectedFeelings((current) => (
+                                  selected
+                                    ? current.filter((item) => item !== feeling)
+                                    : current.length < 8 ? [...current, feeling] : current
+                                ))}
+                                className={`rounded-full border px-3 py-1.5 text-[10px] font-medium transition ${
+                                  selected ? 'border-[#007F80] bg-[#E6F4F3] text-[#007F80]' : 'border-slate-200 text-slate-600 hover:border-[#b8ded9]'
+                                }`}
+                              >
+                                {feeling}
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </fieldset>
+                      <label htmlFor="mood-note" className="mb-2 mt-6 block text-xs font-semibold text-slate-700">Add a note <span className="font-normal text-slate-400">(optional)</span></label>
+                      <textarea
+                        id="mood-note"
+                        rows={4}
+                        maxLength={1000}
+                        value={moodNote}
+                        onChange={(event) => setMoodNote(event.target.value)}
+                        placeholder="What might be contributing to how you feel?"
+                        className="w-full resize-y rounded-xl border border-slate-200 bg-white px-3.5 py-3 text-sm leading-6 text-[#0F2D3A] outline-none placeholder:text-slate-400 focus:border-[#007F80] focus:ring-4 focus:ring-[#007F80]/10"
+                      />
+                      <p className="mt-1 text-right text-[10px] text-slate-400">{moodNote.length}/1000</p>
+                      <div className="mt-3 flex gap-2">
+                        {todayEntry && (
                           <button
-                            key={mood.value}
                             type="button"
-                            aria-pressed={selectedMood === mood.value}
-                            onClick={() => setSelectedMood(mood.value)}
-                            className={`flex flex-col items-center gap-2 rounded-xl border px-1 py-3 transition ${
-                              selectedMood === mood.value ? 'border-[#007F80] bg-[#E6F4F3] ring-2 ring-[#007F80]/15' : 'border-slate-100 bg-slate-50/70 hover:border-[#b8ded9]'
-                            }`}
+                            onClick={() => {
+                              setSelectedMood(todayEntry.mood);
+                              setSelectedFeelings(todayEntry.feelings || []);
+                              setMoodNote(todayEntry.note || '');
+                              setEditingToday(false);
+                            }}
+                            className="rounded-xl border border-slate-200 px-4 py-3 text-sm font-semibold text-slate-600 hover:bg-slate-50"
                           >
-                            <span className="text-2xl" aria-hidden="true">{mood.face}</span>
-                            <span className="text-[9px] font-semibold text-slate-600 sm:text-[10px]">{mood.label}</span>
+                            Cancel
                           </button>
-                        ))}
+                        )}
+                        <button type="submit" disabled={!selectedMood || savingMood} className="inline-flex flex-1 items-center justify-center gap-2 rounded-xl bg-[#007F80] px-4 py-3 text-sm font-semibold text-white transition hover:bg-[#00696a] disabled:cursor-not-allowed disabled:opacity-50">
+                          {savingMood ? 'Saving...' : todayEntry ? 'Update check-in' : 'Save check-in'} <Check size={16} aria-hidden="true" />
+                        </button>
                       </div>
-                    </fieldset>
-                    <label htmlFor="mood-note" className="mb-2 mt-6 block text-xs font-semibold text-slate-700">Add a note <span className="font-normal text-slate-400">(optional)</span></label>
-                    <textarea
-                      id="mood-note"
-                      rows={4}
-                      maxLength={2000}
-                      value={moodNote}
-                      onChange={(event) => setMoodNote(event.target.value)}
-                      placeholder="What might be contributing to how you feel?"
-                      className="w-full resize-y rounded-xl border border-slate-200 bg-white px-3.5 py-3 text-sm leading-6 text-[#0F2D3A] outline-none placeholder:text-slate-400 focus:border-[#007F80] focus:ring-4 focus:ring-[#007F80]/10"
-                    />
-                    <p className="mt-1 text-right text-[10px] text-slate-400">{moodNote.length}/2000</p>
-                    <button type="submit" disabled={!selectedMood || savingMood} className="mt-3 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#007F80] px-4 py-3 text-sm font-semibold text-white transition hover:bg-[#00696a] disabled:cursor-not-allowed disabled:opacity-50">
-                      {savingMood ? 'Saving...' : 'Save check-in'} <Check size={16} aria-hidden="true" />
-                    </button>
-                  </form>
+                    </form>
+                  )}
                 </Panel>
                 <Panel>
                   <div className="mb-5">
@@ -556,6 +713,13 @@ export default function ClientDashboard() {
                             <time className="text-[10px] text-slate-400" dateTime={entry.createdAt}>{formatDate(entry.createdAt, { weekday: 'short', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' })}</time>
                           </div>
                           {entry.note ? <p className="mt-2 whitespace-pre-wrap text-sm leading-6 text-slate-600">{entry.note}</p> : <p className="mt-2 text-xs italic text-slate-400">No note added.</p>}
+                          {entry.feelings?.length > 0 && (
+                            <div className="mt-3 flex flex-wrap gap-2">
+                              {entry.feelings.map((feeling) => (
+                                <span key={feeling} className="rounded-full bg-[#E6F4F3] px-2.5 py-1 text-[10px] font-medium text-[#007F80]">{feeling}</span>
+                              ))}
+                            </div>
+                          )}
                         </div>
                       </Panel>
                     );
@@ -655,13 +819,28 @@ export default function ClientDashboard() {
               <Panel className="max-w-2xl">
                 <div className="flex items-center gap-4 border-b border-[#edf3f1] pb-5">
                   <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#E6F4F3] text-lg font-semibold text-[#007F80]">{user?.email?.slice(0, 1).toUpperCase() || 'P'}</span>
-                  <div><p className="text-sm font-semibold text-[#0F2D3A]">Client account</p><p className="mt-1 text-xs text-slate-500">Customer portal</p></div>
+                  <div>
+                    <p className="text-sm font-semibold text-[#0F2D3A]">{user?.displayName || 'Client account'}</p>
+                    <p className="mt-1 text-xs text-slate-500">Customer portal</p>
+                  </div>
                 </div>
                 <div className="grid gap-1 py-5 sm:grid-cols-[150px_1fr]">
                   <span className="py-2 text-xs font-semibold text-slate-500">Email address</span>
                   <span className="break-all py-2 text-sm text-[#0F2D3A]">{user?.email}</span>
                   <span className="py-2 text-xs font-semibold text-slate-500">Account type</span>
                   <span className="py-2 text-sm text-[#0F2D3A]">Client</span>
+                  {user?.goals?.length > 0 && (
+                    <>
+                      <span className="py-2 text-xs font-semibold text-slate-500">Your goals</span>
+                      <span className="py-2 text-sm leading-6 text-[#0F2D3A]">{user.goals.join(', ')}</span>
+                    </>
+                  )}
+                  {user?.preferences?.length > 0 && (
+                    <>
+                      <span className="py-2 text-xs font-semibold text-slate-500">Preferences</span>
+                      <span className="py-2 text-sm leading-6 text-[#0F2D3A]">{user.preferences.join(', ')}</span>
+                    </>
+                  )}
                 </div>
                 <div className="flex flex-wrap gap-3 border-t border-[#edf3f1] pt-5">
                   <Link to="/privacy" className="inline-flex items-center gap-2 rounded-xl border border-slate-200 px-4 py-2.5 text-xs font-semibold text-slate-600 hover:border-[#007F80] hover:text-[#007F80]">Privacy policy <ChevronRight size={14} aria-hidden="true" /></Link>

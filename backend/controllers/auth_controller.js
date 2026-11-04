@@ -253,7 +253,19 @@ export async function clientLogout(req, res, next) {
 
 export function currentSession(req, res) {
   const { user } = req.auth;
-  return res.json({ user: { id: user._id, email: user.email, role: req.auth.role } });
+  return res.json({
+    user: {
+      id: user._id,
+      email: user.email,
+      role: req.auth.role,
+      displayName: user.displayName || '',
+      onboarded: Boolean(user.onboarded),
+      ageGroup: user.ageGroup || '',
+      language: user.language || 'en',
+      goals: user.goals || [],
+      preferences: user.preferences || []
+    }
+  });
 }
 
 export function requestPasswordReset(role) {
