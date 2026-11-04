@@ -2,6 +2,7 @@ import bcrypt from 'bcrypt';
 import { createHash, randomBytes, timingSafeEqual } from 'node:crypto';
 import AdminUser from '../models/admin_users.js';
 import ClientUser from '../models/client_user.js';
+import ClientInvitation from '../models/client_invitation.js';
 import PasswordReset from '../models/password_reset.js';
 import AuditLog from '../models/audit_log.js';
 import { adminSessionCookie, clientSessionCookie, clearSessionCookie } from '../middleware/auth.js';
@@ -100,6 +101,40 @@ export async function clientSignup(req, res, next) {
       consentVersion: process.env.CONSENT_VERSION || '1'
     });
 
+    clientSessionCookie(res, user);
+    return res.status(201).json({ message: 'Account created.', user: { id: user._id, email: user.email, role: user.role } });
+  } catch (error) {
+    if (error.code === 11000) return res.status(409).json({ message: 'An account with this email already exists.' });
+    return next(error);
+  }
+}
+
+export async function acceptClientInvitation(req, res, next) {
+  try {
+    const { token, email: submittedEmail, password, consent } = req.body;
+    const email = normalizeEmail(submittedEmail);
+    if (typeof token !== 'string' || !validEmail(email) || !validPassword(password)) {
+      return res.status(400).json({ message: 'A valid invitation, email, and password of at least 12 characters are required.' });
+    }
+    if (consent !== true) {
+      return res.status(400).json({ message: 'Consent is required to create an account.' });
+    }
+
+    const tokenHash = createHash('sha256').update(token).digest('hex');
+    const invitation = await ClientInvitation.findOne({
+      email,
+      tokenHash,
+      expiresAt: { $gt: new Date() }
+    });
+    if (!invitation) return res.status(400).json({ message: 'The invitation is invalid or expired.' });
+
+    const user = await ClientUser.create({
+      email,
+      password: await bcrypt.hash(password, 12),
+      consentAt: new Date(),
+      consentVersion: process.env.CONSENT_VERSION || '1'
+    });
+    await ClientInvitation.deleteOne({ _id: invitation._id });
     clientSessionCookie(res, user);
     return res.status(201).json({ message: 'Account created.', user: { id: user._id, email: user.email, role: user.role } });
   } catch (error) {

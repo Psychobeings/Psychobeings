@@ -21,8 +21,8 @@ import PrivacyPolicy from './pages/Privacy';
 import TermsAndConditions from './pages/Terms&Conditions';
 import CancellationPolicy from './pages/CancellationPolicy';
 import WhatsAppChat from './components/WhatsAppChat';
-import ClientAuth from './pages/ClientAuth';
 import ClientDashboard from './pages/ClientDashboard';
+import ClientAuth from './pages/ClientAuth';
 
 function AppContent() {
   const { pathname } = useLocation();

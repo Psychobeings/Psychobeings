@@ -1,6 +1,7 @@
 import express from 'express';
 import {
   clientSignup,
+  acceptClientInvitation,
   clientSignin,
   clientLogout,
   clientForgotPassword,
@@ -17,6 +18,7 @@ const authRateLimit = rateLimit({ windowMs: 15 * 60 * 1000, max: 10, keyPrefix: 
 const chatRateLimit = rateLimit({ windowMs: 60 * 1000, max: 20, keyPrefix: 'client-chat' });
 
 router.post('/client/signup', authRateLimit, clientSignup);
+router.post('/client/invitation/accept', authRateLimit, acceptClientInvitation);
 router.post('/client/signin', authRateLimit, clientSignin);
 router.post('/client/password/forgot', authRateLimit, clientForgotPassword);
 router.post('/client/password/reset', authRateLimit, clientResetPassword);

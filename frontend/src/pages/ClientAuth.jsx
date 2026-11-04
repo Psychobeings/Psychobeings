@@ -20,7 +20,8 @@ function maskEmail(value) {
 export default function ClientAuth() {
   const [searchParams] = useSearchParams();
   const resetToken = searchParams.get('token');
-  const [mode, setMode] = useState(resetToken ? 'reset' : 'signin');
+  const inviteToken = searchParams.get('invite');
+  const [mode, setMode] = useState(inviteToken ? 'invite' : resetToken ? 'reset' : 'signin');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [consent, setConsent] = useState(false);
@@ -51,6 +52,9 @@ export default function ClientAuth() {
       } else if (mode === 'signup') {
         await clientApi.post('/auth/client/signup', { email, password, consent });
         navigate('/client/dashboard', { replace: true });
+      } else if (mode === 'invite') {
+        await clientApi.post('/auth/client/invitation/accept', { token: inviteToken, email, password, consent });
+        navigate('/client/dashboard', { replace: true });
       } else if (mode === 'forgot') {
         await clientApi.post('/auth/client/password/forgot', { email });
         setResetRequestedFor(email.trim());
@@ -70,6 +74,7 @@ export default function ClientAuth() {
   const title = resetRequestedFor ? 'Check your email' : {
     signin: 'Welcome back',
     signup: 'Create your account',
+    invite: 'Accept your invitation',
     forgot: 'Reset your password',
     reset: 'Choose a new password'
   }[mode];
@@ -79,6 +84,7 @@ export default function ClientAuth() {
     : {
     signin: 'Your personal space for reflection, support, and steady progress.',
     signup: 'Start a private space for your wellbeing journey.',
+    invite: 'Create your password and review the terms to finish setting up your client portal.',
     forgot: 'Enter your email and we’ll send a secure password reset link if an account exists.',
     reset: 'Choose a new password to secure your account.'
   }[mode];
@@ -155,7 +161,7 @@ export default function ClientAuth() {
           <form onSubmit={handleSubmit} className="space-y-5">
             {mode !== 'reset' && (
               <div>
-                <label htmlFor="client-email" className="mb-2 block text-xs font-semibold text-slate-700">Email address</label>
+                <label htmlFor="client-email" className="mb-2 block text-xs font-semibold text-slate-700">Email address{mode === 'invite' ? ' (the address the invitation was sent to)' : ''}</label>
                 <div className="relative">
                   <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={17} aria-hidden="true" />
                   <input
@@ -172,11 +178,11 @@ export default function ClientAuth() {
               </div>
             )}
 
-            {(mode === 'signin' || mode === 'signup' || mode === 'reset') && (
+            {(mode === 'signin' || mode === 'signup' || mode === 'reset' || mode === 'invite') && (
               <div>
                 <div className="mb-2 flex items-center justify-between">
                   <label htmlFor="client-password" className="text-xs font-semibold text-slate-700">
-                    {mode === 'reset' ? 'New password' : 'Password'}
+                    {mode === 'reset' ? 'New password' : mode === 'invite' ? 'Create password' : 'Password'}
                   </label>
                   {mode === 'signin' && (
                     <button type="button" onClick={() => setAuthMode('forgot')} className="text-xs font-semibold text-[#007F80] hover:underline">
@@ -213,7 +219,7 @@ export default function ClientAuth() {
               </div>
             )}
 
-            {mode === 'signup' && (
+            {(mode === 'signup' || mode === 'invite') && (
               <label className="flex items-start gap-3 rounded-xl border border-slate-200 bg-[#f8fcfb] p-4 text-xs leading-5 text-slate-600">
                 <input
                   type="checkbox"
@@ -231,7 +237,7 @@ export default function ClientAuth() {
 
             <button
               type="submit"
-              disabled={loading || (mode === 'signup' && !consent)}
+              disabled={loading || ((mode === 'signup' || mode === 'invite') && !consent)}
               className="group flex w-full items-center justify-center gap-2 rounded-xl bg-[#007F80] px-5 py-3.5 text-sm font-semibold text-white shadow-lg shadow-[#007F80]/20 transition hover:bg-[#00696a] focus:outline-none focus:ring-4 focus:ring-[#007F80]/20 disabled:cursor-not-allowed disabled:opacity-60"
             >
               <span>
@@ -241,6 +247,8 @@ export default function ClientAuth() {
                     ? 'Sign in'
                     : mode === 'signup'
                       ? 'Create account'
+                      : mode === 'invite'
+                        ? 'Accept invitation'
                       : mode === 'forgot'
                         ? 'Send reset link'
                         : 'Update password'}

@@ -3,7 +3,7 @@ import axios from 'axios';
 import {
   AlertTriangle, ArrowUpRight, Bot, BookOpen, CalendarDays, Check, ChevronRight,
   CircleHelp, Clock3, FileText, LifeBuoy, LoaderCircle,
-  Mail, RefreshCw, ShieldCheck, Sparkles, Users
+  Mail, RefreshCw, ShieldCheck, Sparkles, Trash2, UserPlus, Users
 } from 'lucide-react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
@@ -150,19 +150,56 @@ function CrisisQueue({ alerts, onUpdate, updatingId }) {
   );
 }
 
-function UsersTable({ users }) {
-  if (!users.length) return <Panel><EmptyState icon={Users} title="No client accounts yet" description="Client accounts created through the client portal will appear here." /></Panel>;
+function UsersTable({ users, onInvite, onDelete, updatingId }) {
+  const [showInviteForm, setShowInviteForm] = useState(false);
+  const [email, setEmail] = useState('');
+
+  const submitInvite = async (event) => {
+    event.preventDefault();
+    const sent = await onInvite(email);
+    if (sent) {
+      setEmail('');
+      setShowInviteForm(false);
+    }
+  };
+
   return (
-    <Panel className="overflow-hidden p-0">
-      <div className="overflow-x-auto">
-        <table className="w-full min-w-[560px] text-left text-xs">
-          <thead className="bg-slate-50 text-[10px] uppercase tracking-wide text-slate-500"><tr><th className="px-5 py-4 font-semibold">Client</th><th className="px-5 py-4 font-semibold">Account created</th><th className="px-5 py-4 font-semibold">Consent recorded</th><th className="px-5 py-4 font-semibold">Role</th></tr></thead>
-          <tbody className="divide-y divide-slate-100">
-            {users.map((user) => <tr key={user._id} className="hover:bg-slate-50/70"><td className="px-5 py-4 font-medium text-slate-800">{user.email}</td><td className="px-5 py-4 text-slate-500">{formatDate(user.createdAt)}</td><td className="px-5 py-4 text-slate-500">{formatDate(user.consentAt)}</td><td className="px-5 py-4"><span className="rounded-full bg-teal-50 px-2.5 py-1 text-[10px] font-semibold text-teal-800">Customer</span></td></tr>)}
-          </tbody>
-        </table>
-      </div>
-    </Panel>
+    <div className="space-y-4">
+      <Panel>
+        <div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-center">
+          <div>
+            <h2 className="text-sm font-semibold text-slate-800">Client accounts</h2>
+            <p className="mt-1 text-xs text-slate-500">Invite a client by email or remove an account.</p>
+          </div>
+          <button type="button" onClick={() => setShowInviteForm((shown) => !shown)} className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#0F2D3A] px-4 py-2.5 text-xs font-semibold text-white transition hover:bg-[#16445a]">
+            <UserPlus size={14} aria-hidden="true" />{showInviteForm ? 'Cancel invitation' : 'Invite client'}
+          </button>
+        </div>
+        {showInviteForm && (
+          <form onSubmit={submitInvite} className="mt-5 flex flex-col gap-3 border-t border-slate-100 pt-5 sm:flex-row">
+            <label className="sr-only" htmlFor="client-invite-email">Client email address</label>
+            <input id="client-invite-email" type="email" required autoComplete="email" value={email} onChange={(event) => setEmail(event.target.value)} placeholder="client@example.com" className="min-w-0 flex-1 rounded-xl border border-slate-200 px-3.5 py-2.5 text-sm outline-none transition focus:border-teal-600 focus:ring-4 focus:ring-teal-600/10" />
+            <button type="submit" disabled={updatingId === 'invite'} className="rounded-xl bg-teal-700 px-4 py-2.5 text-xs font-semibold text-white transition hover:bg-teal-800 disabled:opacity-50">{updatingId === 'invite' ? 'Sending...' : 'Send invitation'}</button>
+          </form>
+        )}
+      </Panel>
+      {!users.length ? (
+        <Panel><EmptyState icon={Users} title="No client accounts yet" description="Client accounts created through the client portal will appear here." /></Panel>
+      ) : (
+        <Panel className="overflow-hidden p-0">
+          <div className="overflow-x-auto">
+            <table className="w-full min-w-[700px] text-left text-xs">
+              <thead className="bg-slate-50 text-[10px] uppercase tracking-wide text-slate-500"><tr><th className="px-5 py-4 font-semibold">Client</th><th className="px-5 py-4 font-semibold">Account created</th><th className="px-5 py-4 font-semibold">Consent recorded</th><th className="px-5 py-4 font-semibold">Role</th><th className="px-5 py-4 font-semibold">Actions</th></tr></thead>
+              <tbody className="divide-y divide-slate-100">
+                {users.map((user) => <tr key={user._id} className="hover:bg-slate-50/70"><td className="px-5 py-4 font-medium text-slate-800">{user.email}</td><td className="px-5 py-4 text-slate-500">{formatDate(user.createdAt)}</td><td className="px-5 py-4 text-slate-500">{formatDate(user.consentAt)}</td><td className="px-5 py-4"><span className="rounded-full bg-teal-50 px-2.5 py-1 text-[10px] font-semibold text-teal-800">Customer</span></td><td className="px-5 py-4"><button type="button" disabled={updatingId === user._id} onClick={() => {
+                  if (window.confirm(`Delete the account for ${user.email}? Associated wellness records will be retained.`)) onDelete(user._id);
+                }} className="inline-flex items-center gap-1.5 rounded-lg border border-rose-200 px-2.5 py-2 text-[10px] font-semibold text-rose-700 transition hover:bg-rose-50 disabled:opacity-50"><Trash2 size={13} aria-hidden="true" />{updatingId === user._id ? 'Deleting...' : 'Delete'}</button></td></tr>)}
+              </tbody>
+            </table>
+          </div>
+        </Panel>
+      )}
+    </div>
   );
 }
 
@@ -332,6 +369,34 @@ export default function AdminPortal() {
     }
   };
 
+  const inviteClient = async (email) => {
+    setUpdatingId('invite');
+    setError('');
+    try {
+      await adminApi.post('/admin/users/invitations', { email });
+      setRefreshKey((key) => key + 1);
+      return true;
+    } catch (requestError) {
+      setError(getErrorMessage(requestError));
+      return false;
+    } finally {
+      setUpdatingId('');
+    }
+  };
+
+  const deleteClient = async (id) => {
+    setUpdatingId(id);
+    setError('');
+    try {
+      await adminApi.delete(`/admin/users/${id}`);
+      setRefreshKey((key) => key + 1);
+    } catch (requestError) {
+      setError(getErrorMessage(requestError));
+    } finally {
+      setUpdatingId('');
+    }
+  };
+
   const records = section === 'crisis-safety' ? data?.alerts
     : section === 'users' ? data?.clients
       : section === 'bookings' ? data?.result
@@ -355,7 +420,7 @@ export default function AdminPortal() {
       ) : section === 'crisis-safety' ? (
         <CrisisQueue alerts={list} onUpdate={updateCrisisAlert} updatingId={updatingId} />
       ) : section === 'users' ? (
-        <UsersTable users={list} />
+        <UsersTable users={list} onInvite={inviteClient} onDelete={deleteClient} updatingId={updatingId} />
       ) : section === 'bookings' ? (
         <BookingsTable
           bookings={list}

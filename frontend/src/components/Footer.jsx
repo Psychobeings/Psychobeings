@@ -155,6 +155,7 @@ const Footer = () => {
             <Link to="/privacy" className="transition hover:text-[#1c7c83]">Privacy Policy</Link>
             <Link to="/terms" className="transition hover:text-[#1c7c83]">Terms of Service</Link>
             <Link to="/contact" className="transition hover:text-[#1c7c83]">Help Center</Link>
+            <Link to="/login" className="text-[11px] text-slate-400 transition hover:text-[#1c7c83]">Client Login</Link>
             <a href={ADMIN_PORTAL_URL} className="text-[11px] text-slate-400 transition hover:text-[#1c7c83]">Admin Login</a>
             <button
               onClick={scrollToTop}

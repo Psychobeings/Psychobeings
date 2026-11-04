@@ -71,12 +71,10 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 
 ## Client portal
 
-The client login is available at `/login`, password reset at `/reset-password`, and the protected client dashboard at `/client/dashboard`. The dashboard uses the backend APIs for the client session, mood entries, and Psycho Buddy chat.
-
-Client password recovery sends a single-use link to the submitted email. The confirmation masks the entered email and does not reveal whether an account exists. Opening the link verifies email ownership and displays the password reset form; the link expires after 30 minutes.
+Client login and password recovery are available at `/login` and `/reset-password` through the footer's Client Login link. The login link is intentionally not shown in the main navigation. Admin-created client invitations are accepted at `/reset-password?invite=...`.
 
 The frontend reads `REACT_APP_URL` as the backend base URL and defaults to `http://localhost:8080` when it is unset. For local development, set it to the backend you intend to use and configure that backend's `SOURCE_URL` to include `http://localhost:3000`. Browser requests use credentials so the separate client session cookie can be sent. Follow [the backend setup notes](../backend/README.md) to configure authentication and chat.
 
 The footer's Admin Login link uses `REACT_APP_ADMIN_URL` when set; otherwise it points to the deployed admin app at `https://admin-psychobeings.vercel.app/admin/login`.
 
-Run `npm start` in this directory, then open `http://localhost:3000/login`. The dashboard needs a valid client session; signup requires consent to the terms and privacy policy.
+Run `npm start` in this directory, then open `http://localhost:3000`.

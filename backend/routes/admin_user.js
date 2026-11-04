@@ -12,6 +12,8 @@ import { rateLimit } from '../middleware/rate_limit.js';
 import {
   getAdminOverview,
   getClients,
+  inviteClient,
+  deleteClient,
   getCrisisAlerts,
   updateCrisisAlert,
   getAuditLog
@@ -31,6 +33,8 @@ router.get('/session', requireRole('admin'), currentSession);
 router.use(requireRole('admin'));
 router.get('/overview', getAdminOverview);
 router.get('/users', getClients);
+router.post('/users/invitations', authRateLimit, inviteClient);
+router.delete('/users/:id', deleteClient);
 router.get('/crisis-alerts', getCrisisAlerts);
 router.patch('/crisis-alerts/:id', updateCrisisAlert);
 router.get('/audit-log', getAuditLog);

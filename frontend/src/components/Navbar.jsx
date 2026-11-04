@@ -256,16 +256,6 @@ const Navbar = () => {
           </a>
 
           <Link
-            to="/login"
-            onClick={() => setIsOpen(false)}
-            className={`inline-flex items-center justify-center rounded-full border border-[#0a7272]/30 bg-white px-4 py-2.5 text-sm font-semibold text-[#0a7272] transition hover:border-[#0a7272] hover:bg-[#0a7272]/5 focus:outline-none focus:ring-2 focus:ring-[#0a7272]/30 ${
-              mobile ? 'w-full' : ''
-            }`}
-          >
-            Client Login
-          </Link>
-
-          <Link
             to="/booking"
             onClick={() => setIsOpen(false)}
             className={`inline-flex items-center justify-center rounded-full bg-[#0a7272] px-5 py-2.5 text-sm font-semibold text-white shadow-[0_10px_24px_rgba(10,114,114,0.24)] transition-all hover:bg-[#0d5c5e] hover:shadow-[0_12px_28px_rgba(10,114,114,0.32)] active:scale-[0.98] ${
