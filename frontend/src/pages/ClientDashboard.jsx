@@ -1,9 +1,8 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import axios from 'axios';
 import {
-  Activity, ArrowRight, BookOpen, CalendarDays, Check, ChevronRight, CircleUserRound,
-  Flame, Heart, HeartPulse, Home, Leaf, LogOut, Menu, MessageCircle, NotebookPen, Send, ShieldAlert,
-  Sparkles, Sprout, TreeDeciduous, Trees, X
+  Activity, ArrowRight, BookOpen, CalendarDays, ChevronRight, CircleUserRound,
+  Flame, Heart, HeartPulse, Home, Leaf, LogOut, Menu, MessageCircle, NotebookPen, Send, ShieldAlert, Sprout, TreeDeciduous, Trees, X
 } from 'lucide-react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import logo from '../assets/Psychobeings.png';
@@ -110,7 +109,7 @@ function MoodChart({ entries }) {
               strokeWidth="2"
             />
             {points.map(({ x, y, entry }) => (
-              <circle key={entry._id} cx={x} cy={y} r="2.6" fill="#007F80" stroke="white" strokeWidth="1.4">
+              <circle key={entry._id || entry.createdAt} cx={x} cy={y} r="2.6" fill="#007F80" stroke="white" strokeWidth="1.4">
                 <title>{`${MOODS[entry.mood - 1]?.label || 'Mood'} on ${formatDate(entry.createdAt)}`}</title>
               </circle>
             ))}
@@ -647,213 +646,190 @@ export default function ClientDashboard() {
                         value={moodNote}
                         onChange={(event) => setMoodNote(event.target.value)}
                         placeholder="What might be contributing to how you feel?"
-                        className="w-full resize-y rounded-xl border border-slate-200 bg-white px-3.5 py-3 text-sm leading-6 text-[#0F2D3A] outline-none placeholder:text-slate-400 focus:border-[#007F80] focus:ring-4 focus:ring-[#007F80]/10"
+                        className="w-full resize-y rounded-xl border border-slate-200 bg-white px-3.5 py-3 text-sm leading-6 text-[#0F2D3A] outline-none transition focus:border-[#007F80] focus:ring-2 focus:ring-[#007F80]/15"
                       />
-                      <p className="mt-1 text-right text-[10px] text-slate-400">{moodNote.length}/1000</p>
-                      <div className="mt-3 flex gap-2">
-                        {todayEntry && (
-                          <button
-                            type="button"
-                            onClick={() => {
-                              setSelectedMood(todayEntry.mood);
-                              setSelectedFeelings(todayEntry.feelings || []);
-                              setMoodNote(todayEntry.note || '');
-                              setEditingToday(false);
-                            }}
-                            className="rounded-xl border border-slate-200 px-4 py-3 text-sm font-semibold text-slate-600 hover:bg-slate-50"
-                          >
-                            Cancel
-                          </button>
-                        )}
-                        <button type="submit" disabled={!selectedMood || savingMood} className="inline-flex flex-1 items-center justify-center gap-2 rounded-xl bg-[#007F80] px-4 py-3 text-sm font-semibold text-white transition hover:bg-[#00696a] disabled:cursor-not-allowed disabled:opacity-50">
-                          {savingMood ? 'Saving...' : todayEntry ? 'Update check-in' : 'Save check-in'} <Check size={16} aria-hidden="true" />
-                        </button>
-                      </div>
+                      <button
+                        type="submit"
+                        disabled={!selectedMood || savingMood}
+                        className="mt-6 w-full rounded-xl bg-[#007F80] px-4 py-3 text-xs font-semibold text-white transition hover:bg-[#00696a] disabled:opacity-50"
+                      >
+                        {savingMood ? 'Saving...' : todayEntry ? "Update today's check-in" : 'Save check-in'}
+                      </button>
                     </form>
                   )}
                 </Panel>
-                <Panel>
-                  <div className="mb-5">
-                    <p className="text-sm font-semibold text-[#0F2D3A]">Your recent check-ins</p>
-                    <p className="mt-1 text-xs text-slate-500">A personal reflection, not a clinical assessment</p>
-                  </div>
-                  <MoodChart entries={entries} />
-                  <div className="mt-6">
-                    <p className="mb-3 text-xs font-semibold text-slate-600">Last 7 days</p>
-                    <WeekStrip entries={entries} />
-                  </div>
-                  <button type="button" onClick={() => selectSection('journal')} className="mt-5 inline-flex items-center gap-2 text-xs font-semibold text-[#007F80] hover:underline">
-                    Browse your journal <ArrowRight size={14} aria-hidden="true" />
-                  </button>
-                </Panel>
+                <div className="space-y-5">
+                  <Panel>
+                    <h2 className="text-sm font-semibold text-[#0F2D3A]">Past 7 days</h2>
+                    <div className="mt-4">
+                      <WeekStrip entries={entries} />
+                    </div>
+                  </Panel>
+                  {totalCheckIns !== null && (
+                    <GrowthTree
+                      totalCheckIns={totalCheckIns}
+                      streak={streak}
+                      longestStreak={longestStreak}
+                    />
+                  )}
+                </div>
               </div>
             </div>
           )}
 
           {activeSection === 'journal' && (
-            <div>
-              <SectionHeading eyebrow="Your reflections" title="Mood journal" description="Only your own check-ins and notes appear here. Take a look back whenever it feels helpful." action={<button type="button" onClick={() => selectSection('mood')} className="inline-flex items-center gap-2 rounded-xl bg-[#007F80] px-4 py-2.5 text-xs font-semibold text-white hover:bg-[#00696a]">New check-in <ArrowRight size={14} aria-hidden="true" /></button>} />
-              {entries.length === 0 ? (
-                <Panel className="py-12 text-center">
-                  <NotebookPen className="mx-auto text-[#007F80]" size={28} aria-hidden="true" />
-                  <h2 className="mt-4 text-lg font-semibold">Your journal starts with a check-in</h2>
-                  <p className="mx-auto mt-2 max-w-sm text-sm leading-6 text-slate-500">Add a mood and an optional note whenever you want to make a record for yourself.</p>
-                  <button type="button" onClick={() => selectSection('mood')} className="mt-5 rounded-xl bg-[#007F80] px-4 py-2.5 text-xs font-semibold text-white hover:bg-[#00696a]">Make a check-in</button>
-                </Panel>
-              ) : (
-                <div className="space-y-3">
-                  {entries.map((entry) => {
+            <div className="space-y-6">
+              <SectionHeading eyebrow="Mood journal" title="Your reflections" description="A look back at your check-in notes over time." />
+              <div className="space-y-4">
+                {entries.length === 0 ? (
+                  <Panel className="py-12 text-center text-slate-500">
+                    <p className="text-sm">No check-ins logged yet.</p>
+                    <button type="button" onClick={() => selectSection('mood')} className="mt-4 inline-flex items-center gap-2 text-xs font-semibold text-[#007F80] hover:underline">
+                      Make your first check-in <ArrowRight size={14} />
+                    </button>
+                  </Panel>
+                ) : (
+                  entries.map((entry) => {
                     const mood = MOODS[entry.mood - 1];
                     return (
-                      <Panel key={entry._id} className="flex items-start gap-4">
-                        <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[#E6F4F3] text-2xl">{mood?.face}</span>
-                        <div className="min-w-0 flex-1">
-                          <div className="flex flex-col justify-between gap-1 sm:flex-row sm:items-center">
-                            <p className="text-sm font-semibold text-[#0F2D3A]">{mood?.label || 'Mood check-in'}</p>
-                            <time className="text-[10px] text-slate-400" dateTime={entry.createdAt}>{formatDate(entry.createdAt, { weekday: 'short', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' })}</time>
+                      <Panel key={entry._id || entry.createdAt}>
+                        <div className="flex items-start justify-between gap-4">
+                          <div className="flex items-center gap-3">
+                            <span className="text-2xl" aria-hidden="true">{mood?.face}</span>
+                            <div>
+                              <p className="text-sm font-semibold text-[#0F2D3A]">{mood?.label}</p>
+                              <p className="text-[10px] text-slate-400">{formatDate(entry.createdAt, { month: 'long', day: 'numeric', year: 'numeric' })}</p>
+                            </div>
                           </div>
-                          {entry.note ? <p className="mt-2 whitespace-pre-wrap text-sm leading-6 text-slate-600">{entry.note}</p> : <p className="mt-2 text-xs italic text-slate-400">No note added.</p>}
                           {entry.feelings?.length > 0 && (
-                            <div className="mt-3 flex flex-wrap gap-2">
+                            <div className="flex flex-wrap gap-1.5">
                               {entry.feelings.map((feeling) => (
-                                <span key={feeling} className="rounded-full bg-[#E6F4F3] px-2.5 py-1 text-[10px] font-medium text-[#007F80]">{feeling}</span>
+                                <span key={feeling} className="rounded-full bg-[#E6F4F3] px-2.5 py-0.5 text-[10px] font-medium text-[#007F80]">{feeling}</span>
                               ))}
                             </div>
                           )}
                         </div>
+                        {entry.note && <p className="mt-4 whitespace-pre-wrap text-xs leading-6 text-slate-600">{entry.note}</p>}
                       </Panel>
                     );
-                  })}
-                </div>
-              )}
+                  })
+                )}
+              </div>
             </div>
           )}
 
           {activeSection === 'chat' && (
-            <div>
-              <SectionHeading eyebrow="Psycho Buddy" title="A supportive space to reflect" description="This AI companion can offer general wellbeing support. It is not a therapist, does not diagnose or prescribe, and is not a crisis service." />
-              <Panel className="mx-auto max-w-3xl overflow-hidden p-0">
-                <div className="flex items-center gap-3 border-b border-[#edf3f1] px-5 py-4">
-                  <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#E6F4F3] text-[#007F80]"><Sparkles size={19} aria-hidden="true" /></span>
-                  <div><p className="text-sm font-semibold">Psycho Buddy</p><p className="mt-0.5 text-[10px] text-slate-500">Here to listen, not to diagnose</p></div>
-                </div>
-                <div className="max-h-[440px] min-h-[270px] space-y-4 overflow-y-auto bg-[#f9fcfb] p-4 sm:p-6" aria-live="polite">
-                  {chatMessages.map((message, index) => (
-                    <div key={`${message.role}-${index}`} className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                      <div className={`max-w-[88%] whitespace-pre-wrap rounded-2xl px-4 py-3 text-sm leading-6 ${
-                        message.role === 'user' ? 'rounded-br-md bg-[#007F80] text-white' : message.crisis ? 'rounded-bl-md border border-amber-200 bg-amber-50 text-amber-950' : 'rounded-bl-md border border-[#deece9] bg-white text-slate-700'
+            <div className="space-y-6">
+              <SectionHeading eyebrow="Psycho Buddy" title="Supportive AI chat" description="A quiet space to think out loud and process your thoughts." />
+              <Panel className="flex h-[550px] flex-col p-0 overflow-hidden">
+                <div className="flex-1 overflow-y-auto p-4 space-y-4">
+                  {chatMessages.map((msg, index) => (
+                    <div key={index} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+                      <div className={`max-w-[80%] rounded-2xl px-4 py-3 text-xs leading-6 ${
+                        msg.role === 'user' ? 'bg-[#007F80] text-white' : 'bg-[#f7fbfa] text-[#0F2D3A] border border-[#deece9]'
                       }`}>
-                        {message.crisis && <span className="mb-2 flex items-center gap-2 text-xs font-bold"><ShieldAlert size={15} aria-hidden="true" /> Please reach out for support</span>}
-                        {message.text}
+                        <p>{msg.text}</p>
+                        {msg.crisis && (
+                          <div className="mt-3 flex items-center gap-2 rounded-lg bg-rose-50 p-2 text-rose-700">
+                            <ShieldAlert size={16} />
+                            <span>If you need immediate help, please contact emergency services or a national helpline.</span>
+                          </div>
+                        )}
                       </div>
                     </div>
                   ))}
-                  {sendingChat && <div className="text-xs text-slate-400" role="status">Psycho Buddy is replying...</div>}
                 </div>
-                <form onSubmit={handleChatSubmit} className="border-t border-[#edf3f1] bg-white p-4 sm:p-5">
-                  <label htmlFor="chat-consent" className="mb-3 flex items-start gap-2 text-[10px] leading-5 text-slate-500">
-                    <input id="chat-consent" type="checkbox" checked={chatConsent} onChange={(event) => setChatConsent(event.target.checked)} className="mt-1 h-3.5 w-3.5 shrink-0 accent-[#007F80]" />
-                    <span>I agree that my message may be processed by Anthropic to generate an AI response. Avoid sharing information you do not want sent to this service. Crisis messages are screened first and not sent to the AI.</span>
-                  </label>
-                  <div className="flex items-end gap-2">
-                    <label className="sr-only" htmlFor="chat-message">Message Psycho Buddy</label>
-                    <textarea
-                      id="chat-message"
-                      rows={2}
-                      maxLength={4000}
-                      value={chatInput}
-                      onChange={(event) => setChatInput(event.target.value)}
-                      placeholder="Share what’s on your mind..."
-                      className="min-h-[48px] flex-1 resize-y rounded-xl border border-slate-200 px-3.5 py-3 text-sm outline-none placeholder:text-slate-400 focus:border-[#007F80] focus:ring-4 focus:ring-[#007F80]/10"
+                <form onSubmit={handleChatSubmit} className="border-t border-[#deece9] bg-white p-4">
+                  <div className="mb-3 flex items-center gap-2 text-[11px] text-slate-500">
+                    <input
+                      type="checkbox"
+                      id="consent"
+                      checked={chatConsent}
+                      onChange={(e) => setChatConsent(e.target.checked)}
+                      className="rounded border-slate-300 text-[#007F80] focus:ring-[#007F80]"
                     />
-                    <button type="submit" disabled={!chatConsent || !chatInput.trim() || sendingChat} aria-label="Send message" className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#007F80] text-white transition hover:bg-[#00696a] disabled:cursor-not-allowed disabled:opacity-45">
-                      <Send size={17} aria-hidden="true" />
+                    <label htmlFor="consent">I understand Psycho Buddy is an AI and not a replacement for therapy.</label>
+                  </div>
+                  <div className="flex gap-2">
+                    <input
+                      type="text"
+                      value={chatInput}
+                      onChange={(e) => setChatInput(e.target.value)}
+                      placeholder="Type a message..."
+                      className="flex-1 rounded-xl border border-slate-200 px-3.5 py-2.5 text-xs outline-none focus:border-[#007F80]"
+                    />
+                    <button
+                      type="submit"
+                      disabled={!chatInput.trim() || !chatConsent || sendingChat}
+                      className="flex items-center justify-center rounded-xl bg-[#007F80] px-4 py-2.5 text-white disabled:opacity-50"
+                    >
+                      <Send size={16} />
                     </button>
                   </div>
                 </form>
               </Panel>
-              <p className="mx-auto mt-4 flex max-w-3xl items-start gap-2 rounded-xl border border-amber-200 bg-amber-50 p-4 text-xs leading-5 text-amber-950">
-                <ShieldAlert size={16} className="mt-0.5 shrink-0" aria-hidden="true" />
-                If you may be in immediate danger, call 112 in India or go to the nearest emergency department. For mental health support in India, call Tele-MANAS at 14416.
-              </p>
             </div>
           )}
 
           {activeSection === 'library' && (
-            <div>
-              <SectionHeading eyebrow="Explore at your pace" title="Content library" description="Small practices and prompts for everyday wellbeing. You can pause or stop any activity whenever you like." />
-              <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-                {LIBRARY_ITEMS.map((item) => (
-                  <Panel key={item.title} className="flex min-h-[230px] flex-col">
-                    <div className="flex items-center justify-between">
-                      <span className="rounded-full bg-[#E6F4F3] px-3 py-1 text-[10px] font-bold uppercase tracking-wide text-[#007F80]">{item.category}</span>
-                      <span className="text-[10px] text-slate-400">{item.duration}</span>
+            <div className="space-y-6">
+              <SectionHeading eyebrow="Content library" title="Self-guided practices" description="Short grounding exercises and reflection tools." />
+              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                {LIBRARY_ITEMS.map((item, idx) => (
+                  <Panel key={idx} className="flex flex-col justify-between">
+                    <div>
+                      <div className="flex items-center justify-between text-[10px] font-semibold text-slate-400">
+                        <span>{item.category}</span>
+                        <span>{item.duration}</span>
+                      </div>
+                      <h3 className="mt-2 text-base font-semibold text-[#0F2D3A]">{item.title}</h3>
+                      <p className="mt-2 text-xs leading-5 text-slate-500">{item.description}</p>
                     </div>
-                    <h2 className="mt-5 text-lg font-semibold text-[#0F2D3A]">{item.title}</h2>
-                    <p className="mt-2 flex-1 text-sm leading-6 text-slate-500">{item.description}</p>
-                    <p className="mt-5 inline-flex items-center gap-2 text-xs font-semibold text-[#007F80]"><Heart size={14} aria-hidden="true" /> A gentle practice</p>
+                    <button type="button" className="mt-5 inline-flex items-center gap-2 text-xs font-semibold text-[#007F80] hover:underline">
+                      Begin exercise <ArrowRight size={14} />
+                    </button>
                   </Panel>
                 ))}
               </div>
-              <p className="mt-5 text-xs leading-5 text-slate-500">These activities are general wellbeing ideas, not a substitute for professional mental health care.</p>
             </div>
           )}
 
           {activeSection === 'booking' && (
-            <div>
-              <SectionHeading eyebrow="Professional support" title="Session booking" description="If you would like to speak with a professional, continue to the existing Psychobeings booking page." />
-              <Panel className="max-w-2xl">
-                <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#E6F4F3] text-[#007F80]"><CalendarDays size={22} aria-hidden="true" /></span>
-                <h2 className="mt-5 text-xl font-semibold">Choose a session that works for you</h2>
-                <p className="mt-2 text-sm leading-6 text-slate-500">You’ll continue to the existing session booking experience to share your availability and request an appointment.</p>
-                <Link to="/booking" className="mt-6 inline-flex items-center gap-2 rounded-xl bg-[#007F80] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#00696a]">
-                  Continue to booking <ArrowRight size={16} aria-hidden="true" />
-                </Link>
+            <div className="space-y-6">
+              <SectionHeading eyebrow="Session booking" title="Book a 1:1 Session" description="Schedule time with a qualified professional." />
+              <Panel className="py-12 text-center">
+                <CalendarDays size={36} className="mx-auto text-[#007F80]" />
+                <h3 className="mt-4 text-base font-semibold text-[#0F2D3A]">Ready to schedule?</h3>
+                <p className="mt-2 text-xs text-slate-500">You will be redirected to our appointment scheduler.</p>
+                <a
+                  href="/booking"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-6 inline-flex items-center gap-2 rounded-xl bg-[#007F80] px-5 py-3 text-xs font-semibold text-white transition hover:bg-[#00696a]"
+                >
+                  Go to session booking <ArrowRight size={14} />
+                </a>
               </Panel>
             </div>
           )}
 
           {activeSection === 'profile' && (
-            <div>
-              <SectionHeading eyebrow="Your account" title="Profile" description="Your portal sign-in details and privacy information." />
-              <Panel className="max-w-2xl">
-                <div className="flex items-center gap-4 border-b border-[#edf3f1] pb-5">
-                  <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#E6F4F3] text-lg font-semibold text-[#007F80]">{user?.email?.slice(0, 1).toUpperCase() || 'P'}</span>
+            <div className="space-y-6">
+              <SectionHeading eyebrow="Profile settings" title="Account Details" description="Manage your personal preferences." />
+              <Panel className="max-w-xl">
+                <div className="space-y-4">
                   <div>
-                    <p className="text-sm font-semibold text-[#0F2D3A]">{user?.displayName || 'Client account'}</p>
-                    <p className="mt-1 text-xs text-slate-500">Customer portal</p>
+                    <label className="block text-xs font-semibold text-slate-500">Email Address</label>
+                    <p className="mt-1 text-sm font-medium text-[#0F2D3A]">{user?.email}</p>
                   </div>
-                </div>
-                <div className="grid gap-1 py-5 sm:grid-cols-[150px_1fr]">
-                  <span className="py-2 text-xs font-semibold text-slate-500">Email address</span>
-                  <span className="break-all py-2 text-sm text-[#0F2D3A]">{user?.email}</span>
-                  <span className="py-2 text-xs font-semibold text-slate-500">Account type</span>
-                  <span className="py-2 text-sm text-[#0F2D3A]">Client</span>
-                  {user?.goals?.length > 0 && (
-                    <>
-                      <span className="py-2 text-xs font-semibold text-slate-500">Your goals</span>
-                      <span className="py-2 text-sm leading-6 text-[#0F2D3A]">{user.goals.join(', ')}</span>
-                    </>
-                  )}
-                  {user?.preferences?.length > 0 && (
-                    <>
-                      <span className="py-2 text-xs font-semibold text-slate-500">Preferences</span>
-                      <span className="py-2 text-sm leading-6 text-[#0F2D3A]">{user.preferences.join(', ')}</span>
-                    </>
-                  )}
-                </div>
-                <div className="flex flex-wrap gap-3 border-t border-[#edf3f1] pt-5">
-                  <Link to="/privacy" className="inline-flex items-center gap-2 rounded-xl border border-slate-200 px-4 py-2.5 text-xs font-semibold text-slate-600 hover:border-[#007F80] hover:text-[#007F80]">Privacy policy <ChevronRight size={14} aria-hidden="true" /></Link>
-                  <button type="button" onClick={handleLogout} className="inline-flex items-center gap-2 rounded-xl border border-rose-200 px-4 py-2.5 text-xs font-semibold text-rose-700 hover:bg-rose-50">Sign out <LogOut size={14} aria-hidden="true" /></button>
+                  <div>
+                    <label className="block text-xs font-semibold text-slate-500">Account ID</label>
+                    <p className="mt-1 text-sm font-mono text-slate-600">{user?._id || user?.id || 'N/A'}</p>
+                  </div>
                 </div>
               </Panel>
             </div>
           )}
-
-          <footer className="mt-10 flex flex-col gap-2 border-t border-[#deece9] pt-5 text-[10px] text-slate-400 sm:flex-row sm:items-center sm:justify-between">
-            <span>Psychobeings · A personal space for your wellbeing</span>
-            <span className="flex items-center gap-1"><Heart size={11} aria-hidden="true" /> Support is available when you need it</span>
-          </footer>
         </main>
       </div>
     </div>

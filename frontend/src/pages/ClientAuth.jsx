@@ -10,7 +10,11 @@ const API_BASE_URL = process.env.NODE_ENV === 'production'
 const clientApi = axios.create({ baseURL: API_BASE_URL, withCredentials: true });
 
 function getErrorMessage(error) {
-  return error.response?.data?.message || 'We could not complete that request. Please try again.';
+  if (error.response?.data?.message) return error.response.data.message;
+  if (error.request) {
+    return 'We could not reach the client portal server. Please check that the server is running and try again.';
+  }
+  return 'We could not complete that request. Please try again.';
 }
 
 function maskEmail(value) {
