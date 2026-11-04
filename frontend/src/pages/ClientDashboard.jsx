@@ -2,8 +2,8 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import axios from 'axios';
 import {
   Activity, ArrowRight, BookOpen, CalendarDays, Check, ChevronRight, CircleUserRound,
-  Heart, HeartPulse, Home, LogOut, Menu, MessageCircle, NotebookPen, Send, ShieldAlert,
-  Sparkles, X
+  Heart, HeartPulse, Home, Leaf, LogOut, Menu, MessageCircle, NotebookPen, Send, ShieldAlert,
+  Sparkles, Sprout, TreeDeciduous, Trees, X
 } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import logo from '../assets/Psychobeings.png';
@@ -35,6 +35,13 @@ const LIBRARY_ITEMS = [
   { title: 'A gentle grounding pause', category: 'Grounding', duration: '3 min', description: 'Notice what is around you, one sense at a time, and give yourself a moment to arrive.' },
   { title: 'Making space for a feeling', category: 'Reflection', duration: '5 min', description: 'A short prompt to name what you are noticing without judging yourself for it.' },
   { title: 'A calmer breathing rhythm', category: 'Breathing', duration: '2 min', description: 'Try a comfortable, unforced breath and return to your natural rhythm whenever you need.' }
+];
+
+const GROWTH_STAGES = [
+  { min: 0, name: 'Seed', icon: Leaf, next: 3 },
+  { min: 3, name: 'Sprout', icon: Sprout, next: 10 },
+  { min: 10, name: 'Young tree', icon: TreeDeciduous, next: 30 },
+  { min: 30, name: 'Flourishing grove', icon: Trees, next: null }
 ];
 
 function errorMessage(error) {
@@ -112,9 +119,89 @@ function Panel({ children, className = '' }) {
   return <section className={`rounded-2xl border border-[#deece9] bg-white p-5 shadow-[0_8px_24px_rgba(15,45,58,0.035)] sm:p-6 ${className}`}>{children}</section>;
 }
 
+function GrowthTree({ totalCheckIns }) {
+  const stage = [...GROWTH_STAGES].reverse().find(({ min }) => totalCheckIns >= min) || GROWTH_STAGES[0];
+  const StageIcon = stage.icon;
+  const progress = stage.next
+    ? ((totalCheckIns - stage.min) / (stage.next - stage.min)) * 100
+    : 100;
+
+  return (
+    <Panel className="relative overflow-hidden border-0 bg-[#007F80] text-white shadow-[0_8px_24px_rgba(0,127,128,0.16)]">
+      <div className="pointer-events-none absolute -bottom-12 -right-8 h-40 w-40 rounded-full bg-white/10" />
+      <div className="relative">
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <p className="text-xs font-medium text-white/75">Your Growth Tree</p>
+            <h2 className="mt-1 text-xl font-semibold">{stage.name}</h2>
+          </div>
+          <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-white/15">
+            <StageIcon size={26} aria-hidden="true" />
+          </span>
+        </div>
+        <div className="mt-5">
+          <div
+            role="progressbar"
+            aria-label="Progress to next Growth Tree stage"
+            aria-valuemin={0}
+            aria-valuemax={100}
+            aria-valuenow={Math.round(progress)}
+            className="h-2 overflow-hidden rounded-full bg-white/20"
+          >
+            <div className="h-full rounded-full bg-white transition-[width]" style={{ width: `${progress}%` }} />
+          </div>
+          <p className="mt-2 text-xs text-white/80">
+            {stage.next
+              ? `${stage.next - totalCheckIns} more ${stage.next - totalCheckIns === 1 ? 'check-in' : 'check-ins'} to ${GROWTH_STAGES[GROWTH_STAGES.indexOf(stage) + 1].name}`
+              : 'Your grove is thriving. Keep nurturing it at your own pace.'}
+          </p>
+        </div>
+        <p className="mt-4 rounded-xl bg-white/10 px-3 py-2 text-center text-sm font-semibold">
+          {totalCheckIns} {totalCheckIns === 1 ? 'check-in' : 'check-ins'} so far
+        </p>
+      </div>
+    </Panel>
+  );
+}
+
+function WeekStrip({ entries }) {
+  const checkedInDays = useMemo(
+    () => new Set(entries.map((entry) => {
+      const date = new Date(entry.createdAt);
+      return `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
+    })),
+    [entries]
+  );
+  const today = new Date();
+  const days = Array.from({ length: 7 }, (_, index) => {
+    const date = new Date(today.getFullYear(), today.getMonth(), today.getDate() - (6 - index));
+    const key = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
+    return { date, checkedIn: checkedInDays.has(key), isToday: index === 6 };
+  });
+
+  return (
+    <div role="group" aria-label="Mood check-ins over the last seven days" className="grid grid-cols-7 gap-2">
+      {days.map(({ date, checkedIn, isToday }) => (
+        <div
+          key={date.toISOString()}
+          role="img"
+          aria-label={`${isToday ? 'Today' : formatDate(date, { weekday: 'long' })}: ${checkedIn ? 'check-in saved' : 'no check-in'}`}
+          className={`flex flex-col items-center gap-2 rounded-xl px-1 py-3 ${isToday ? 'bg-[#E6F4F3]' : 'bg-[#f7fbfa]'}`}
+        >
+          <span className="text-[10px] font-medium text-slate-500">
+            {isToday ? 'Today' : formatDate(date, { weekday: 'short' })}
+          </span>
+          <span className={`h-2.5 w-2.5 rounded-full ${checkedIn ? 'bg-[#007F80]' : 'bg-slate-200'}`} aria-hidden="true" />
+        </div>
+      ))}
+    </div>
+  );
+}
+
 export default function ClientDashboard() {
   const [user, setUser] = useState(null);
   const [entries, setEntries] = useState([]);
+  const [totalCheckIns, setTotalCheckIns] = useState(null);
   const [loading, setLoading] = useState(true);
   const [activeSection, setActiveSection] = useState('overview');
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -141,6 +228,7 @@ export default function ClientDashboard() {
       ]);
       setUser(sessionResponse.data.user);
       setEntries(moodResponse.data.entries);
+      setTotalCheckIns(moodResponse.data.totalCheckIns);
     } catch (requestError) {
       if (requestError.response?.status === 401 || requestError.response?.status === 403) {
         navigate('/login', { replace: true });
@@ -175,6 +263,7 @@ export default function ClientDashboard() {
     try {
       const response = await clientApi.post('/auth/mood', { mood: selectedMood, note: moodNote });
       setEntries((current) => [response.data.entry, ...current]);
+      setTotalCheckIns((current) => (current === null ? null : current + 1));
       setSelectedMood(0);
       setMoodNote('');
       setNotice('Your check-in has been saved. Thank you for taking a moment for yourself.');
@@ -339,6 +428,7 @@ export default function ClientDashboard() {
                 </Panel>
 
                 <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-1">
+                  {totalCheckIns !== null && <GrowthTree totalCheckIns={totalCheckIns} />}
                   <Panel className="bg-gradient-to-br from-[#E6F4F3] to-white">
                     <div className="flex items-start justify-between">
                       <div>
@@ -431,6 +521,10 @@ export default function ClientDashboard() {
                     <p className="mt-1 text-xs text-slate-500">A personal reflection, not a clinical assessment</p>
                   </div>
                   <MoodChart entries={entries} />
+                  <div className="mt-6">
+                    <p className="mb-3 text-xs font-semibold text-slate-600">Last 7 days</p>
+                    <WeekStrip entries={entries} />
+                  </div>
                   <button type="button" onClick={() => selectSection('journal')} className="mt-5 inline-flex items-center gap-2 text-xs font-semibold text-[#007F80] hover:underline">
                     Browse your journal <ArrowRight size={14} aria-hidden="true" />
                   </button>

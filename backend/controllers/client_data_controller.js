@@ -23,11 +23,14 @@ export async function getMoodEntries(req, res, next) {
   try {
     const requestedLimit = Number.parseInt(req.query.limit, 10);
     const limit = Number.isInteger(requestedLimit) ? Math.min(Math.max(requestedLimit, 1), 100) : 30;
-    const entries = await MoodEntry.find({ userId: req.auth.userId })
-      .sort({ createdAt: -1 })
-      .limit(limit)
-      .lean();
-    return res.json({ entries });
+    const [entries, totalCheckIns] = await Promise.all([
+      MoodEntry.find({ userId: req.auth.userId })
+        .sort({ createdAt: -1 })
+        .limit(limit)
+        .lean(),
+      MoodEntry.countDocuments({ userId: req.auth.userId })
+    ]);
+    return res.json({ entries, totalCheckIns });
   } catch (error) {
     return next(error);
   }
