@@ -25,39 +25,3 @@ export const saveContactMessage = async (req, res) => {
     return res.status(500).json({ message: 'Unable to save contact message.' });
   }
 };
-
-export const getContactMessages = async (req, res) => {
-  try {
-    const messages = await ContactMessage.find().sort({ createdAt: -1 });
-    return res.status(200).json(messages);
-  } catch (error) {
-    console.error('getContactMessages error:', error);
-    return res.status(500).json({ message: 'Unable to fetch contact messages.' });
-  }
-};
-
-export const updateContactMessageStatus = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const { status } = req.body;
-
-    if (!['new', 'read', 'replied'].includes(status)) {
-      return res.status(400).json({ message: 'Invalid status.' });
-    }
-
-    const updatedMessage = await ContactMessage.findByIdAndUpdate(
-      id,
-      { status },
-      { new: true }
-    );
-
-    if (!updatedMessage) {
-      return res.status(404).json({ message: 'Message not found.' });
-    }
-
-    return res.status(200).json(updatedMessage);
-  } catch (error) {
-    console.error('updateContactMessageStatus error:', error);
-    return res.status(500).json({ message: 'Unable to update contact message status.' });
-  }
-};

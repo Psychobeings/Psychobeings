@@ -30,7 +30,6 @@ const PrivacyPolicy = () => {
             <ul className="list-disc pl-5 space-y-1 text-slate-600">
               <li>Identity & Contact details (Name, age, gender, email address, phone number, emergency contact).</li>
               <li>Clinical & Intake details (Information provided in consent/assessment forms, session notes, progress records, treatment plans).</li>
-              <li>Client portal information you choose to provide, including your display name, optional age group, language, wellbeing goals, preferences, mood check-ins, and journal notes.</li>
               <li>Administrative data (Appointment history, transaction records, communications via WhatsApp/Email/forms).</li>
               <li>Technical usage data (Browser/device info collected through our website).</li>
             </ul>
@@ -40,7 +39,6 @@ const PrivacyPolicy = () => {
             <h2 className="text-lg font-bold text-slate-900 mb-3 text-teal-700">2. How We Use Your Information</h2>
             <ul className="list-disc pl-5 space-y-1.5 text-slate-600">
               <li>Deliver psychological counseling, therapy, and customized wellness support.</li>
-              <li>Provide client portal features such as saved check-ins, a mood journal, and your selected wellbeing preferences.</li>
               <li>Schedule, confirm, or modify appointments and handle financial transactions.</li>
               <li>Maintain accurate clinical records in compliance with professional standards.</li>
               <li>Meet legal, administrative, and regulatory requirements.</li>
@@ -84,21 +82,14 @@ const PrivacyPolicy = () => {
           </section>
 
           <section className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
-            <h2 className="text-lg font-bold text-slate-900 mb-3 text-teal-700">7. AI Features & External Processing</h2>
-            <p className="text-slate-600">
-              Psycho Buddy is an AI wellbeing companion, not a therapist or crisis service. A chat message is sent to Anthropic for an AI response only after you agree to external processing in chat. Messages matching the crisis safety screen are not sent to Anthropic; they are stored as safety alerts. Please avoid sharing information you do not want processed by the AI service.
-            </p>
-          </section>
-
-          <section className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
-            <h2 className="text-lg font-bold text-slate-900 mb-3 text-teal-700">8. Social Media & External Platforms</h2>
+            <h2 className="text-lg font-bold text-slate-900 mb-3 text-teal-700">7. Social Media & External Platforms</h2>
             <p className="text-slate-600">
               Social media profiles are strictly for educational and awareness purposes. Interacting with Psychobeings on social media or direct messaging does not establish a formal therapist-client relationship. Please avoid posting sensitive medical information publicly.
             </p>
           </section>
 
           <section className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-3">
-            <h2 className="text-lg font-bold text-slate-900 text-teal-700">9. Contact Us</h2>
+            <h2 className="text-lg font-bold text-slate-900 text-teal-700">8. Contact Us</h2>
             <p className="text-slate-600">
               If you have questions, concerns, or requests regarding this Privacy Policy or your data, please reach out to us:
             </p>
