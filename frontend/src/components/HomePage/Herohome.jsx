@@ -1,5 +1,6 @@
 import React from 'react';
 import { ArrowRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import heroImg from '../../assets/coupletherapy1.svg'
 const HeroHome = () => {
   return (
@@ -46,13 +47,13 @@ const HeroHome = () => {
 
           {/* Call to Action Buttons */}
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 w-full sm:w-auto pt-2">
-            <a
-              href="#book"
+            <Link
+              to="/booking"
               className="inline-flex justify-center items-center gap-2 bg-[#1C7C83] hover:bg-[#135B60] text-white font-medium text-sm px-8 py-3.5 rounded-full shadow-sm hover:shadow transition-all duration-300 text-center"
             >
               Begin Your Journey
               <ArrowRight className="w-4 h-4" />
-            </a>
+            </Link>
 
             <a
               href="#services"

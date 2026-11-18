@@ -26,3 +26,13 @@ img {
   background: rgba(28, 124, 131, 0.18);
   color: #0f172a;
 }
+
+.booking-embed iframe {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: 726px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}

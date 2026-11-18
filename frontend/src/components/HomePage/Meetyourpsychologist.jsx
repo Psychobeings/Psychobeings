@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import foundersimage from "../../assets/foundersimage.png";
 
 export default function MeetYourPsychologist() {
@@ -117,12 +118,12 @@ export default function MeetYourPsychologist() {
                 <p className="text-xl font-serif font-bold text-[#1F3A3D] mt-0.5">Amanpreet Kaur</p>
               </div>
 
-              <a
-                href="#book"
+              <Link
+                to="/booking"
                 className="w-full sm:w-auto px-8 py-3.5 bg-[#1C7C83] hover:bg-[#135B60] text-white font-medium text-sm rounded-full shadow-sm hover:shadow transition duration-300 text-center"
               >
                 Schedule Consultation
-              </a>
+              </Link>
             </div>
 
           </div>

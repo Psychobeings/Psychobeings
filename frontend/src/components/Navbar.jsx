@@ -223,25 +223,6 @@ const Navbar = () => {
           )}
         </Link>
 
-        <Link
-          to="/contact"
-          onClick={() => setIsOpen(false)}
-          className={`relative transition-colors duration-200 ${
-            mobile
-              ? `block py-2.5 text-base font-medium rounded-lg px-3 ${
-                  isActive('/contact') ? 'bg-[#0a7272]/10 text-[#0a7272] font-semibold' : 'text-slate-700 hover:bg-slate-50'
-                }`
-              : `mx-2 text-sm font-medium py-1 ${
-                  isActive('/contact') ? 'text-[#0a7272] font-semibold' : 'text-slate-600 hover:text-[#0a7272]'
-                }`
-          }`}
-        >
-          <span>Contact</span>
-          {!mobile && isActive('/contact') && (
-            <span className="absolute bottom-[-4px] left-0 h-0.5 w-full rounded-full bg-[#0a7272]" />
-          )}
-        </Link>
-
         <div className={`${mobile ? 'pt-4 border-t border-slate-100 mt-2 flex flex-col gap-3' : 'flex items-center gap-3 ml-2'}`}>
           <a
             href="https://wa.me/919962979176?text=Hello%20Psychobeings%2C%20I%20want%20to%20book%20a%20session."

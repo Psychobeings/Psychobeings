@@ -25,7 +25,8 @@ import PsychobeingsPortal from './components/PsychobeingsPortal';
 
 function AppContent() {
   const { pathname } = useLocation();
-  const showPublicChrome = pathname !== '/portal';
+  const isPortalRoute = pathname === '/therapist-portal';
+  const showPublicChrome = !isPortalRoute;
 
   return (
     <div className="min-h-screen bg-[#f8fcfc]">
@@ -44,7 +45,7 @@ function AppContent() {
             <Route path="/services/wellness/seminars-workshops" element={<SeminarsWorkshops />} />
             <Route path="/packages" element={<Packages />} />
             <Route path="/contact" element={<Contact />} />
-            <Route path="/portal" element={<PsychobeingsPortal />} />
+            <Route path="/therapist-portal" element={<PsychobeingsPortal />} />
             <Route path="/booking" element={<Booking />} />
             <Route path="/individual-therapy" element={<SessionBookingForm />} />
             <Route path="/couples-therapy" element={<SessionBookingForm />} />
